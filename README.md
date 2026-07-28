@@ -72,18 +72,32 @@ npx wrangler deploy
 
 可选 `API_TOKEN`：请求带 `?token=` 或头 `X-Api-Token`。
 
-### 5. 洁净筛选（VPS / 非家宽）
+### 5. Clash 节点测活（免费 GitHub Actions）
 
-```bash
-python scripts/local/clean_filter.py \
-  --input dist/online/http.txt \
-  --out dist/clean/http.txt \
-  --nodes dist/online/nodes.txt \
-  --out-nodes dist/clean/nodes.txt
-git add dist/clean && git commit -m "chore(clean): filter" && git push
+**不要用 CF / Vercel 测活**（超时短、做不了 vless/hy2 握手）。
+
+本仓 workflow **`check-nodes`**：
+
+| 模式 | 何时 | 行为 |
+|------|------|------|
+| `incremental` | 约每 6 小时 | 只测**新节点** + 上次**死掉**的；上次活着的直接保留 |
+| `full` | 每天 UTC 03:27 一次 | 对 `clash.yaml` 里全部节点做 mihomo delay 测试 |
+
+产出：`dist/clean/clash.yaml`、`alive.json`、`check_report.json`  
+
+客户端订阅（测活后）：
+
+```text
+https://proxy-pipeline-api.d05j86dzd.workers.dev/sub/clash-live
 ```
 
-Worker：`/pool/http?src=clean`
+额度：GitHub 免费 Actions 对**公开仓**一般够用；几百节点全量大约数分钟～十几分钟，一天 1 次全量 + 几次增量通常远低于限额。
+
+### 6. HTTP 池洁净（可选，VPS）
+
+```bash
+python scripts/local/clean_filter.py --input dist/online/http.txt --out dist/clean/http.txt
+```
 
 ## API
 

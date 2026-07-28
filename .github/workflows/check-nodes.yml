@@ -1,0 +1,92 @@
+name: check-nodes
+
+# Free GitHub Actions: mihomo delay-test on clash.yaml (hundreds of nodes).
+# - Daily FULL retest (UTC 03:27)
+# - Every 6h INCREMENTAL (new + previously dead only)
+# No CF/Vercel — they cannot do real protocol probes.
+
+on:
+  schedule:
+    - cron: "27 3 * * *"      # daily full
+    - cron: "40 */6 * * *"    # incremental-ish; script mode chosen below
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: full or incremental
+        required: true
+        default: incremental
+        type: choice
+        options:
+          - incremental
+          - full
+
+concurrency:
+  group: check-nodes
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mihomo
+        run: |
+          set -e
+          mkdir -p bin
+          TAG=$(curl -fsSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | python -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
+          echo "mihomo $TAG"
+          URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
+          curl -fsSL "$URL" -o /tmp/mihomo.gz
+          gunzip -c /tmp/mihomo.gz > bin/mihomo
+          chmod +x bin/mihomo
+          ./bin/mihomo -v || true
+
+      - name: Resolve mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "27 3 * * *" ]; then
+            echo "value=full" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=incremental" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure clash.yaml exists
+        run: |
+          if [ ! -f dist/online/clash.yaml ]; then
+            echo "No dist/online/clash.yaml — run online-scan first"
+            exit 1
+          fi
+          wc -l dist/online/clash.yaml
+
+      - name: Delay-test nodes
+        run: |
+          mkdir -p bin dist/clean
+          python scripts/online/check_clash_nodes.py \
+            --mode "${{ steps.mode.outputs.value }}" \
+            --timeout-ms 5000 \
+            --input dist/online/clash.yaml
+
+      - name: Commit dist/clean
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+          if git diff --staged --quiet; then
+            echo "No clean changes"
+          else
+            git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi

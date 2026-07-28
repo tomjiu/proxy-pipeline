@@ -105,7 +105,16 @@ export default {
     }
 
     if (path === "/sub/clash" || path === "/clash.yaml") {
+      // prefer alive/clean if present and ?src=clean or default try clean first when src unset? 
+      // default: online raw; ?src=clean → delay-tested
+      if (track === "clean") {
+        return withCors(await fetchDist(env, "clean/clash.yaml"));
+      }
       return withCors(await fetchDist(env, "online/clash.yaml"));
+    }
+
+    if (path === "/sub/clash-live" || path === "/sub/clash/live") {
+      return withCors(await fetchDist(env, "clean/clash.yaml"));
     }
 
     return json(
@@ -194,7 +203,8 @@ a{color:var(--acc)}
 
   <div class="card">
     <h2>节点 / 订阅</h2>
-    ${linkRow("Clash 订阅 (YAML)", o + "/sub/clash")}
+    ${linkRow("Clash 全量(未测活)", o + "/sub/clash")}
+    ${linkRow("Clash 测活后(推荐)", o + "/sub/clash-live")}
     ${linkRow("节点 URI 列表", o + "/sub/nodes")}
     ${linkRow("Base64 (v2rayN)", o + "/sub/base64")}
   </div>
