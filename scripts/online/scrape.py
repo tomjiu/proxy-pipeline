@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import base64
 import json
+import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -203,6 +204,54 @@ def scrape_tg_channels() -> tuple[set[str], set[str]]:
     return nodes, proxies
 
 
+def maybe_decode_subscription(text: str) -> str:
+    """Decode base64 whole-file subs; keep plain/URI/yaml as-is."""
+    raw = text.strip()
+    if "proxies:" in raw or raw.startswith("ss://") or raw.startswith("vless://"):
+        return raw
+    # single-line or compact base64
+    compact = re.sub(r"\s+", "", raw)
+    if len(compact) < 32:
+        return raw
+    try:
+        pad = "=" * (-len(compact) % 4)
+        dec = base64.b64decode(compact + pad, validate=False).decode("utf-8", errors="ignore")
+        if any(
+            s in dec
+            for s in (
+                "ss://",
+                "vmess://",
+                "trojan://",
+                "vless://",
+                "hysteria2://",
+                "hy2://",
+                "proxies:",
+            )
+        ):
+            return dec
+    except Exception:  # noqa: BLE001
+        pass
+    # line-wise base64 (some lists)
+    lines_out: list[str] = []
+    for line in raw.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        if any(s.lower().startswith(x) for x in ("ss://", "vmess://", "vless://", "trojan://", "hy2://", "hysteria2://")):
+            lines_out.append(s)
+            continue
+        try:
+            pad = "=" * (-len(s) % 4)
+            dec = base64.b64decode(s + pad, validate=False).decode("utf-8", errors="ignore")
+            if any(dec.lower().startswith(x) for x in ("ss://", "vmess://", "vless://", "trojan://", "hy2", "hysteria")):
+                lines_out.append(dec.strip())
+            elif "://" in dec:
+                lines_out.append(dec.strip())
+        except Exception:  # noqa: BLE001
+            lines_out.append(s)
+    return "\n".join(lines_out) if lines_out else raw
+
+
 def scrape_subs() -> set[str]:
     urls = read_lines(SOURCES / "sub-urls.txt")
     nodes: set[str] = set()
@@ -210,21 +259,20 @@ def scrape_subs() -> set[str]:
     for url in urls:
         body, err = fetch(url)
         if err or not body:
-            print(f"  ! sub -> {err or 'empty'}")
+            print(f"  ! sub {short_name(url)} -> {err or 'empty'}")
             continue
-        text = body.strip()
-        try:
-            pad = "=" * (-len(text) % 4)
-            dec = base64.b64decode(text + pad, validate=False).decode("utf-8", errors="ignore")
-            if any(s in dec for s in ("ss://", "vmess://", "trojan://", "vless://", "proxies:")):
-                text = dec
-        except Exception:  # noqa: BLE001
-            pass
+        text = maybe_decode_subscription(body)
         before = len(nodes)
         for u in extract_node_uris(text):
             nodes.add(u)
-        print(f"  + sub new_uris={len(nodes) - before}")
-        time.sleep(0.3)
+        print(f"  + sub {short_name(url)} new_uris={len(nodes) - before} total={len(nodes)}")
+        time.sleep(0.25)
+        # soft cap — still fetch remaining sources if we lack non-ss diversity
+        if len(nodes) >= 25000:
+            schemes = {u.split("://", 1)[0].lower() for u in nodes}
+            if len(schemes) >= 4:
+                print("  ~ node cap reached with diverse schemes, stop")
+                break
     return nodes
 
 
@@ -250,7 +298,42 @@ def main() -> int:
     http_all = sorted(set(http) | set(unknown))
 
     all_pool = sorted(set(http_all) | set(socks4) | set(socks5))
-    all_nodes = sorted(tg_nodes | sub_nodes)
+    # diversify by scheme so vless/vmess/trojan/hy2 not wiped by sorted ss flood
+    merged = list(tg_nodes | sub_nodes)
+    by_scheme: dict[str, list[str]] = {}
+    for u in merged:
+        sch = u.split("://", 1)[0].lower()
+        if sch == "hy2":
+            sch = "hysteria2"
+        by_scheme.setdefault(sch, []).append(u)
+    for sch in by_scheme:
+        by_scheme[sch] = sorted(set(by_scheme[sch]))
+
+    # round-robin pick up to NODE_CAP
+    NODE_CAP = 12000
+    all_nodes: list[str] = []
+    keys = sorted(by_scheme.keys())
+    idxs = {k: 0 for k in keys}
+    while len(all_nodes) < NODE_CAP and keys:
+        progress = False
+        for k in list(keys):
+            i = idxs[k]
+            lst = by_scheme[k]
+            if i >= len(lst):
+                keys.remove(k)
+                continue
+            all_nodes.append(lst[i])
+            idxs[k] = i + 1
+            progress = True
+            if len(all_nodes) >= NODE_CAP:
+                break
+        if not progress:
+            break
+
+    scheme_counts: dict[str, int] = {}
+    for u in all_nodes:
+        sch = u.split("://", 1)[0].lower()
+        scheme_counts[sch] = scheme_counts.get(sch, 0) + 1
 
     write_text(DIST_ONLINE / "http.txt", "\n".join(http_all) + ("\n" if http_all else ""))
     write_text(DIST_ONLINE / "socks4.txt", "\n".join(socks4) + ("\n" if socks4 else ""))
@@ -264,11 +347,19 @@ def main() -> int:
     else:
         write_text(DIST_ONLINE / "nodes.base64.txt", "")
 
+    # Clash Meta YAML from share links
+    try:
+        from nodes_to_clash import main as clash_main  # type: ignore
+
+        clash_main()
+    except Exception as e:  # noqa: BLE001
+        print(f"[clash] skip: {e}")
+
     ok_sources = sum(1 for s in per_source if s.get("ok"))
     meta = {
         "generated_at": started,
         "finished_at": datetime.now(timezone.utc).isoformat(),
-        "mode": "mirror-dedupe",
+        "mode": "mirror-dedupe+nodes",
         "counts": {
             "http": len(http_all),
             "socks4": len(socks4),
@@ -277,15 +368,15 @@ def main() -> int:
             "nodes": len(all_nodes),
             "tg_nodes": len(tg_nodes),
             "sub_nodes": len(sub_nodes),
+            "nodes_by_scheme": scheme_counts,
             "sources_ok": ok_sources,
             "sources_total": len(per_source),
         },
-        "dedupe": "ip:port unique; protocol pick socks5>socks4>http",
+        "dedupe": "ip:port unique; nodes unique share-URI; protocol socks5>socks4>http",
         "sources": per_source,
-        "note": "Follow upstream raws only; clean filter on VPS/local",
+        "note": "pool=HTTP/SOCKS; nodes/clash=ss/vmess/vless/trojan/hy2 for clients",
     }
     write_text(DIST_ONLINE / "meta.json", json.dumps(meta, ensure_ascii=False, indent=2) + "\n")
-    # compact sources report
     write_text(
         DIST_ONLINE / "sources_report.json",
         json.dumps(per_source, ensure_ascii=False, indent=2) + "\n",

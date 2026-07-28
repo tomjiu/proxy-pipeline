@@ -1,9 +1,5 @@
 /**
- * Cloudflare Worker — read-only API over GitHub raw dist/.
- *
- * wrangler vars:
- *   RAW_BASE   e.g. https://raw.githubusercontent.com/USER/REPO/main/dist
- *   API_TOKEN  optional; require ?token= or header X-Api-Token
+ * Cloudflare Worker — read-only API + simple HTML UI over GitHub raw dist/.
  */
 
 export interface Env {
@@ -25,15 +21,29 @@ export default {
       });
     }
 
+    const url = new URL(req.url);
+    const path = url.pathname.replace(/\/+$/, "") || "/";
+
+    // Public homepage (no API token required for UI shell)
+    if (path === "/" && wantsHtml(req)) {
+      return htmlPage(url.origin);
+    }
+    if (path === "/") {
+      return json({
+        ok: true,
+        service: "proxy-pipeline-worker",
+        ui: "open in browser for dashboard",
+        health: "/health",
+      });
+    }
+
     if (!checkAuth(req, env)) {
       return json({ error: "unauthorized" }, 401);
     }
 
-    const url = new URL(req.url);
-    const path = url.pathname.replace(/\/+$/, "") || "/";
     const track = normalizeTrack(url.searchParams.get("src"));
 
-    if (path === "/" || path === "/health") {
+    if (path === "/health") {
       return json({ ok: true, service: "proxy-pipeline-worker" });
     }
 
@@ -94,30 +104,158 @@ export default {
       return withCors(await fetchDist(env, "online/nodes.base64.txt"));
     }
 
-    if (path === "/sub/clash") {
-      return withCors(await fetchDist(env, "online/nodes.txt"));
+    if (path === "/sub/clash" || path === "/clash.yaml") {
+      return withCors(await fetchDist(env, "online/clash.yaml"));
     }
 
     return json(
       {
         error: "not_found",
         routes: [
+          "/",
           "/health",
-          "/meta?src=online|clean",
-          "/pool/http?src=online|clean&live=1",
+          "/meta",
+          "/pool/http",
           "/pool/socks5",
           "/pool/socks4",
           "/pool/all",
-          "/pool/random?proto=http|socks5",
+          "/pool/random",
           "/sub/nodes",
           "/sub/base64",
-          "/sub/clash",
         ],
       },
       404,
     );
   },
 };
+
+function wantsHtml(req: Request): boolean {
+  const accept = req.headers.get("accept") || "";
+  if (accept.includes("text/html")) return true;
+  // curl without Accept still gets JSON at / via path===/ non-html branch;
+  // browsers always send text/html
+  return false;
+}
+
+function htmlPage(origin: string): Response {
+  const o = origin.replace(/\/$/, "");
+  const body = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>proxy-pipeline</title>
+<style>
+:root{--bg:#0f1419;--card:#1a2332;--text:#e7ecf3;--muted:#8b9bb4;--acc:#3d9cf0;--ok:#3ecf8e;--line:#2a3548}
+*{box-sizing:border-box}
+body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.wrap{max-width:880px;margin:0 auto;padding:28px 18px 48px}
+h1{font-size:1.45rem;margin:0 0 6px;font-weight:650}
+.sub{color:var(--muted);font-size:.92rem;margin-bottom:22px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:.78rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.card h2{font-size:.95rem;margin:0 0 12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.row{display:flex;gap:8px;align-items:center;margin:8px 0;flex-wrap:wrap}
+.row code{flex:1;min-width:0;background:#0c1017;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.8rem;overflow:auto;word-break:break-all}
+button,.btn{appearance:none;border:0;background:var(--acc);color:#fff;border-radius:8px;padding:9px 12px;font-size:.82rem;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap}
+button.sec,.btn.sec{background:#2a3548}
+button:hover,.btn:hover{filter:brightness(1.08)}
+.note{color:var(--muted);font-size:.85rem;margin-top:18px}
+.err{color:#ff7b7b}
+.ok{color:var(--ok)}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>proxy-pipeline</h1>
+  <p class="sub">多源公开代理 raw 镜像 · 去重 · 只读 API。免费列表不稳定，仅供学习/测试。</p>
+  <div class="stats" id="stats">
+    <div class="stat"><b id="c-http">—</b><span>HTTP</span></div>
+    <div class="stat"><b id="c-s4">—</b><span>SOCKS4</span></div>
+    <div class="stat"><b id="c-s5">—</b><span>SOCKS5</span></div>
+    <div class="stat"><b id="c-all">—</b><span>合计</span></div>
+    <div class="stat"><b id="c-src">—</b><span>源 OK</span></div>
+  </div>
+  <p class="sub" id="updated">加载 meta…</p>
+
+  <div class="card">
+    <h2>代理池链接（复制到软件 / 脚本）</h2>
+    ${linkRow("HTTP", o + "/pool/http")}
+    ${linkRow("SOCKS5", o + "/pool/socks5")}
+    ${linkRow("SOCKS4", o + "/pool/socks4")}
+    ${linkRow("全部 all", o + "/pool/all")}
+    ${linkRow("随机一条", o + "/pool/random")}
+    ${linkRow("抽样 live HTTP", o + "/pool/http?live=1")}
+  </div>
+
+  <div class="card">
+    <h2>节点 / 订阅</h2>
+    ${linkRow("Clash 订阅 (YAML)", o + "/sub/clash")}
+    ${linkRow("节点 URI 列表", o + "/sub/nodes")}
+    ${linkRow("Base64 (v2rayN)", o + "/sub/base64")}
+  </div>
+
+  <div class="card">
+    <h2>其它</h2>
+    ${linkRow("Meta JSON", o + "/meta")}
+    ${linkRow("Health", o + "/health")}
+    <div class="row">
+      <a class="btn sec" href="https://github.com/tomjiu/proxy-pipeline" target="_blank" rel="noopener">GitHub 仓库</a>
+      <a class="btn sec" href="https://raw.githubusercontent.com/tomjiu/proxy-pipeline/main/dist/online/http.txt" target="_blank" rel="noopener">直连 raw http</a>
+    </div>
+  </div>
+
+  <p class="note">两套数据：<b>池子</b> <code>/pool/*</code> = HTTP/SOCKS <code>ip:port</code>（爬虫用）；<b>节点</b> <code>/sub/clash</code> = ss/vmess/vless/trojan/hy2（Clash Meta / v2rayN）。免费节点不稳定，仅测试。</p>
+</div>
+<script>
+const origin = ${JSON.stringify(o)};
+function copy(t){
+  navigator.clipboard.writeText(t).then(()=>toast('已复制')).catch(()=>{
+    prompt('复制:', t);
+  });
+}
+function toast(m){
+  const n=document.getElementById('updated');
+  const old=n.textContent;
+  n.innerHTML='<span class="ok">'+m+'</span>';
+  setTimeout(()=>{n.textContent=old},1200);
+}
+function fmt(n){return typeof n==='number'?n.toLocaleString():'—'}
+fetch(origin+'/meta').then(r=>r.json()).then(m=>{
+  const c=m.counts||{};
+  document.getElementById('c-http').textContent=fmt(c.http);
+  document.getElementById('c-s4').textContent=fmt(c.socks4);
+  document.getElementById('c-s5').textContent=fmt(c.socks5);
+  document.getElementById('c-all').textContent=fmt(c.all_pool);
+  document.getElementById('c-src').textContent=(c.sources_ok??'—')+'/'+(c.sources_total??'—');
+  document.getElementById('updated').textContent='更新: '+(m.finished_at||m.generated_at||'—')+' · mode '+(m.mode||'');
+}).catch(e=>{
+  document.getElementById('updated').innerHTML='<span class="err">meta 加载失败</span>';
+});
+</script>
+</body>
+</html>`;
+
+  return new Response(body, {
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "public, max-age=60",
+    },
+  });
+}
+
+function linkRow(label: string, href: string): string {
+  const safe = href.replace(/"/g, "&quot;");
+  return `<div class="row">
+  <code title="${label}">${safe}</code>
+  <button type="button" onclick="copy(${JSON.stringify(href)})">复制</button>
+  <a class="btn sec" href="${safe}" target="_blank" rel="noopener">打开</a>
+</div>`;
+}
 
 function normalizeTrack(src: string | null): "online" | "clean" | "local" {
   if (src === "clean" || src === "local") return src;

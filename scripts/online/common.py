@@ -81,6 +81,21 @@ def parse_ip_ports(text: str) -> list[tuple[str, int, str]]:
     return found
 
 
+def _valid_share_uri(u: str) -> bool:
+    low = u.lower()
+    if not any(low.startswith(s) for s in URI_SCHEMES):
+        return False
+    # reject garbage like ss://https://t.me/...
+    if re.search(r"://https?://", low) or "t.me/" in low:
+        return False
+    if low.startswith("vmess://"):
+        return len(u) > 20
+    # most need user@host or base64 body
+    if low.startswith("ss://"):
+        return len(u) > 16
+    return "@" in u or low.startswith("vmess://")
+
+
 def extract_node_uris(text: str) -> list[str]:
     uris: list[str] = []
     for raw in text.splitlines():
@@ -95,7 +110,8 @@ def extract_node_uris(text: str) -> list[str]:
     seen: set[str] = set()
     out: list[str] = []
     for u in uris:
-        if u not in seen:
-            seen.add(u)
-            out.append(u)
+        if u in seen or not _valid_share_uri(u):
+            continue
+        seen.add(u)
+        out.append(u)
     return out
