@@ -347,13 +347,24 @@ def main() -> int:
     else:
         write_text(DIST_ONLINE / "nodes.base64.txt", "")
 
-    # Clash Meta YAML from share links
+    # Clash subscription: prefer quality YAML feeds (少而精), not mega dead dumps
     try:
-        from nodes_to_clash import main as clash_main  # type: ignore
+        from build_clash_from_feeds import main as feeds_main  # type: ignore
 
-        clash_main()
+        rc = feeds_main()
+        if rc != 0:
+            print("[clash] feeds empty — fallback share-link converter")
+            from nodes_to_clash import main as clash_main  # type: ignore
+
+            clash_main()
     except Exception as e:  # noqa: BLE001
-        print(f"[clash] skip: {e}")
+        print(f"[clash] feeds error {e}; fallback nodes_to_clash")
+        try:
+            from nodes_to_clash import main as clash_main  # type: ignore
+
+            clash_main()
+        except Exception as e2:  # noqa: BLE001
+            print(f"[clash] skip: {e2}")
 
     ok_sources = sum(1 for s in per_source if s.get("ok"))
     meta = {

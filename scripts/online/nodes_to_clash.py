@@ -12,7 +12,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import DIST_ONLINE, read_lines, write_text  # noqa: E402
 
-MAX_PROXIES = 800
+MAX_PROXIES = 200  # fallback only; primary path is build_clash_from_feeds
 
 # Only emit SS with known ciphers — garbage "F" / uuid-as-method breaks mobile Clash.
 SS_CIPHERS = {

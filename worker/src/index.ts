@@ -222,7 +222,7 @@ a{color:var(--acc)}
     </div>
   </div>
 
-  <p class="note">两套数据：<b>池子</b> <code>/pool/*</code> = HTTP/SOCKS <code>ip:port</code>（爬虫用）；<b>节点</b> <code>/sub/clash</code> = ss/vmess/vless/trojan/hy2（Clash Meta / v2rayN）。免费节点不稳定，仅测试。</p>
+  <p class="note">两套数据：<b>池子</b> <code>/pool/*</code>=HTTP/SOCKS；<b>Clash</b> <code>/sub/clash</code> 现改为<strong>少而精</strong>（优先已筛选/测活类公开源，约百来条）。公开免费节点仍易挂，请用组 <code>AUTO</code> 测速；日常请自建/机场。</p>
 </div>
 <script>
 const origin = ${JSON.stringify(o)};
