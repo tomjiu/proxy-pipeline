@@ -135,11 +135,14 @@ def find_mihomo() -> str:
     raise SystemExit("mihomo not found")
 
 
-def wait_api(timeout: float = 45) -> None:
+def wait_api(proc: subprocess.Popen, timeout: float = 90) -> None:
     deadline = time.time() + timeout
     while time.time() < deadline:
+        if proc.poll() is not None:
+            raise SystemExit(f"mihomo exited early code={proc.returncode}")
         try:
-            urllib.request.urlopen(f"http://{CONTROLLER}/version", timeout=2)
+            with urllib.request.urlopen(f"http://{CONTROLLER}/version", timeout=2) as r:
+                print(f"[check] api ok: {r.read()[:120]!r}")
             return
         except Exception:
             time.sleep(0.5)
@@ -203,18 +206,47 @@ def main() -> int:
     print(f"[check] test={len(to_test)} keep={len(keep)}")
 
     tmp = ROOT / ".mihomo-run"
+    if tmp.exists():
+        shutil.rmtree(tmp, ignore_errors=True)
     tmp.mkdir(exist_ok=True)
     cfg = tmp / "config.yaml"
+    # force controller + quiet log for CI
+    if "external-controller:" not in text:
+        text = "external-controller: 127.0.0.1:9090\n" + text
+    else:
+        text = re.sub(
+            r"(?m)^external-controller:.*$",
+            "external-controller: 127.0.0.1:9090",
+            text,
+        )
+    text = re.sub(r"(?m)^log-level:.*$", "log-level: error", text)
+    # disable geodata auto-update noise in CI if present
     cfg.write_text(text, encoding="utf-8")
 
     mihomo = find_mihomo()
+    log_path = tmp / "mihomo.log"
+    logf = open(log_path, "w", encoding="utf-8")
     proc = subprocess.Popen(
-        [mihomo, "-d", str(tmp), "-f", str(cfg)],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        [
+            mihomo,
+            "-d",
+            str(tmp),
+            "-f",
+            str(cfg),
+            "-ext-ctl",
+            CONTROLLER,
+        ],
+        stdout=logf,
+        stderr=subprocess.STDOUT,
     )
     try:
-        wait_api()
+        try:
+            wait_api(proc, 90)
+        except SystemExit:
+            logf.flush()
+            tail = log_path.read_text(encoding="utf-8", errors="ignore")[-2000:]
+            print("[check] mihomo log tail:\n", tail)
+            raise
         alive_rows: list[tuple[str, str, str, int]] = list(keep)
         ok = fail = 0
         for i, (name, fp, raw) in enumerate(to_test):
@@ -273,6 +305,10 @@ def main() -> int:
         print(json.dumps(report, ensure_ascii=False))
         return 0
     finally:
+        try:
+            logf.close()
+        except Exception:
+            pass
         proc.terminate()
         try:
             proc.wait(timeout=8)

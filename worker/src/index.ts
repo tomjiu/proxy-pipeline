@@ -105,16 +105,19 @@ export default {
     }
 
     if (path === "/sub/clash" || path === "/clash.yaml") {
-      // prefer alive/clean if present and ?src=clean or default try clean first when src unset? 
-      // default: online raw; ?src=clean → delay-tested
       if (track === "clean") {
-        return withCors(await fetchDist(env, "clean/clash.yaml"));
+        const clean = await fetchDist(env, "clean/clash.yaml");
+        if (clean.ok) return asYaml(clean);
+        // fall back so clients never 404
+        return asYaml(await fetchDist(env, "online/clash.yaml"));
       }
-      return withCors(await fetchDist(env, "online/clash.yaml"));
+      return asYaml(await fetchDist(env, "online/clash.yaml"));
     }
 
     if (path === "/sub/clash-live" || path === "/sub/clash/live") {
-      return withCors(await fetchDist(env, "clean/clash.yaml"));
+      const clean = await fetchDist(env, "clean/clash.yaml");
+      if (clean.ok) return asYaml(clean);
+      return asYaml(await fetchDist(env, "online/clash.yaml"));
     }
 
     return json(
@@ -203,8 +206,8 @@ a{color:var(--acc)}
 
   <div class="card">
     <h2>节点 / 订阅</h2>
-    ${linkRow("Clash 全量(未测活)", o + "/sub/clash")}
-    ${linkRow("Clash 测活后(推荐)", o + "/sub/clash-live")}
+    ${linkRow("Clash 订阅 (可用)", o + "/sub/clash")}
+    ${linkRow("Clash 测活优先", o + "/sub/clash-live")}
     ${linkRow("节点 URI 列表", o + "/sub/nodes")}
     ${linkRow("Base64 (v2rayN)", o + "/sub/base64")}
   </div>
@@ -336,5 +339,16 @@ function json(data: unknown, status = 200): Response {
 function withCors(res: Response): Response {
   const headers = new Headers(res.headers);
   headers.set("access-control-allow-origin", "*");
+  return new Response(res.body, { status: res.status, headers });
+}
+
+/** Clash clients expect yaml content-type, not octet-stream from GitHub raw. */
+function asYaml(res: Response): Response {
+  const headers = new Headers(res.headers);
+  headers.set("access-control-allow-origin", "*");
+  if (res.ok) {
+    headers.set("content-type", "text/yaml; charset=utf-8");
+    headers.set("content-disposition", "inline; filename=\"clash.yaml\"");
+  }
   return new Response(res.body, { status: res.status, headers });
 }
