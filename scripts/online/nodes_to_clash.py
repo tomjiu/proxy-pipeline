@@ -14,6 +14,29 @@ from common import DIST_ONLINE, read_lines, write_text  # noqa: E402
 
 MAX_PROXIES = 800
 
+# Only emit SS with known ciphers — garbage "F" / uuid-as-method breaks mobile Clash.
+SS_CIPHERS = {
+    "aes-128-gcm",
+    "aes-192-gcm",
+    "aes-256-gcm",
+    "aes-128-cfb",
+    "aes-192-cfb",
+    "aes-256-cfb",
+    "aes-128-ctr",
+    "aes-192-ctr",
+    "aes-256-ctr",
+    "chacha20-ietf",
+    "chacha20-ietf-poly1305",
+    "chacha20-poly1305",
+    "xchacha20-ietf-poly1305",
+    "2022-blake3-aes-128-gcm",
+    "2022-blake3-aes-256-gcm",
+    "2022-blake3-chacha20-poly1305",
+    "rc4-md5",
+    "plain",
+    "none",
+}
+
 
 def b64decode(data: str) -> bytes:
     s = data.strip().replace("-", "+").replace("_", "/")
@@ -90,18 +113,20 @@ def parse_ss(uri: str, idx: int) -> dict | None:
             host, port_s = hostpart.rsplit(":", 1)
             port = int(port_s)
         host = clean_str(host.strip("[]"))
-        method = clean_str(method)
+        method = clean_str(method).lower().strip()
         password = clean_str(password)
         if not host or port < 1 or not method or not password:
             return None
-        # ss that was mis-tagged vless-style uuid-only is invalid as classic ss
-        if method.startswith("http") or " " in method:
+        # mis-decoded share links often yield single-letter / uuid "methods"
+        if method not in SS_CIPHERS:
+            return None
+        if len(password) < 1 or password.startswith("http"):
             return None
         return {
             "name": safe_name(name or f"ss-{host}", idx),
             "type": "ss",
             "server": host,
-            "port": port,
+            "port": int(port),
             "cipher": method,
             "password": password,
             "udp": True,
