@@ -21,10 +21,36 @@ def b64decode(data: str) -> bytes:
     return base64.b64decode(s + pad, validate=False)
 
 
+def clean_str(s: object) -> str:
+    """Strip NULs/controls that break YAML parsers (Clash Verge: invalid yaml)."""
+    t = str(s if s is not None else "")
+    # drop C0 controls + DEL; keep tab/lf only if ever needed (we flatten later)
+    t = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", t)
+    return t
+
+
 def safe_name(s: str, idx: int) -> str:
-    s = unquote(s or "")
-    s = re.sub(r"[\r\n#:{}\[\]]+", " ", s).strip() or f"node-{idx}"
-    return (s[:48] + f"-{idx}") if s else f"node-{idx}"
+    s = unquote(clean_str(s or ""))
+    s = re.sub(r"[\r\n#:{}\[\]]+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip() or f"node-{idx}"
+    # ASCII-ish short name for max client compatibility
+    s = s[:40]
+    return f"{s}-{idx}" if s else f"node-{idx}"
+
+
+def looks_like_uuid(s: str) -> bool:
+    s = clean_str(s).strip()
+    if not s or s.startswith("@") or " " in s:
+        return False
+    if re.fullmatch(
+        r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+        s,
+    ):
+        return True
+    # some free lists use non-standard ids; allow hex-ish 8+ chars without junk
+    if re.fullmatch(r"[0-9a-zA-Z_-]{8,64}", s) and not s.startswith("-"):
+        return True
+    return False
 
 
 def parse_ss(uri: str, idx: int) -> dict | None:
@@ -34,6 +60,9 @@ def parse_ss(uri: str, idx: int) -> dict | None:
         name = ""
         if "#" in raw:
             raw, name = raw.split("#", 1)
+        # reject non-ss share junk
+        if "://" in raw.split("@")[0] if "@" in raw else raw:
+            return None
         if "@" in raw:
             user, hostpart = raw.rsplit("@", 1)
             try:
@@ -54,15 +83,19 @@ def parse_ss(uri: str, idx: int) -> dict | None:
             port = int(port_s)
         else:
             dec = b64decode(raw).decode("utf-8", errors="ignore")
-            # method:pass@host:port
             if "@" not in dec or ":" not in dec:
                 return None
             user, hostpart = dec.rsplit("@", 1)
             method, password = user.split(":", 1)
             host, port_s = hostpart.rsplit(":", 1)
             port = int(port_s)
-        host = host.strip("[]")
-        if not host or port < 1:
+        host = clean_str(host.strip("[]"))
+        method = clean_str(method)
+        password = clean_str(password)
+        if not host or port < 1 or not method or not password:
+            return None
+        # ss that was mis-tagged vless-style uuid-only is invalid as classic ss
+        if method.startswith("http") or " " in method:
             return None
         return {
             "name": safe_name(name or f"ss-{host}", idx),
@@ -83,20 +116,21 @@ def parse_vmess(uri: str, idx: int) -> dict | None:
         if "#" in raw:
             raw = raw.split("#", 1)[0]
         obj = json.loads(b64decode(raw).decode("utf-8", errors="ignore"))
-        host = obj.get("add") or obj.get("host") or ""
+        host = clean_str(obj.get("add") or obj.get("host") or "")
         port = int(obj.get("port") or 0)
-        if not host or not port:
+        uid = clean_str(obj.get("id") or "")
+        if not host or not port or not looks_like_uuid(uid):
             return None
-        net = (obj.get("net") or "tcp").lower()
-        tls = (obj.get("tls") or "").lower()
+        net = clean_str(obj.get("net") or "tcp").lower()
+        tls = clean_str(obj.get("tls") or "").lower()
         node = {
             "name": safe_name(obj.get("ps") or f"vmess-{host}", idx),
             "type": "vmess",
             "server": host,
             "port": port,
-            "uuid": obj.get("id") or "",
+            "uuid": uid,
             "alterId": int(obj.get("aid") or 0),
-            "cipher": obj.get("scy") or "auto",
+            "cipher": clean_str(obj.get("scy") or "auto") or "auto",
             "udp": True,
         }
         if net and net != "tcp":
@@ -107,10 +141,10 @@ def parse_vmess(uri: str, idx: int) -> dict | None:
                 node["servername"] = obj["sni"]
         if net == "ws":
             node["ws-opts"] = {
-                "path": obj.get("path") or "/",
-                "headers": {"Host": obj.get("host") or host},
+                "path": clean_str(obj.get("path") or "/") or "/",
+                "headers": {"Host": clean_str(obj.get("host") or host)},
             }
-        return node if node["uuid"] else None
+        return node
     except Exception:
         return None
 
@@ -121,14 +155,16 @@ def parse_vless_trojan_hy2(uri: str, idx: int) -> dict | None:
         scheme = (u.scheme or "").lower()
         if scheme == "hy2":
             scheme = "hysteria2"
-        host = u.hostname
+        host = clean_str(u.hostname or "")
         port = u.port
-        password = unquote(u.username or "")
+        password = clean_str(unquote(u.username or ""))
         if not host or not port or not password:
             return None
-        q = {k: v[0] for k, v in parse_qs(u.query).items()}
+        q = {k: clean_str(v[0]) for k, v in parse_qs(u.query).items()}
         name = safe_name(u.fragment or f"{scheme}-{host}", idx)
         if scheme == "vless":
+            if not looks_like_uuid(password):
+                return None
             node: dict = {
                 "name": name,
                 "type": "vless",
@@ -137,15 +173,20 @@ def parse_vless_trojan_hy2(uri: str, idx: int) -> dict | None:
                 "uuid": password,
                 "udp": True,
                 "tls": q.get("security", "") in ("tls", "reality"),
-                "flow": q.get("flow") or "",
                 "client-fingerprint": q.get("fp") or "chrome",
             }
+            flow = q.get("flow") or ""
+            if flow:
+                node["flow"] = flow
             if q.get("security") == "reality":
+                pbk = q.get("pbk") or ""
+                if not pbk:
+                    return None
                 node["reality-opts"] = {
-                    "public-key": q.get("pbk") or "",
+                    "public-key": pbk,
                     "short-id": q.get("sid") or "",
                 }
-                node["servername"] = q.get("sni") or ""
+                node["servername"] = q.get("sni") or host
             elif q.get("sni"):
                 node["servername"] = q["sni"]
             net = q.get("type") or "tcp"
@@ -158,11 +199,9 @@ def parse_vless_trojan_hy2(uri: str, idx: int) -> dict | None:
             elif net == "grpc":
                 node["network"] = "grpc"
                 node["grpc-opts"] = {"grpc-service-name": q.get("serviceName") or ""}
-            if not node.get("flow"):
-                node.pop("flow", None)
             return node
         if scheme == "trojan":
-            node = {
+            return {
                 "name": name,
                 "type": "trojan",
                 "server": host,
@@ -173,9 +212,8 @@ def parse_vless_trojan_hy2(uri: str, idx: int) -> dict | None:
                 "skip-cert-verify": q.get("allowInsecure") in ("1", "true")
                 or q.get("insecure") in ("1", "true"),
             }
-            return node
         if scheme == "hysteria2":
-            node = {
+            return {
                 "name": name,
                 "type": "hysteria2",
                 "server": host,
@@ -184,10 +222,6 @@ def parse_vless_trojan_hy2(uri: str, idx: int) -> dict | None:
                 "sni": q.get("sni") or host,
                 "skip-cert-verify": q.get("insecure") in ("1", "true"),
             }
-            if q.get("pinSHA256"):
-                # mihomo may use different key; keep password auth path
-                pass
-            return node
         return None
     except Exception:
         return None
@@ -207,37 +241,18 @@ def uri_to_proxy(uri: str, idx: int) -> dict | None:
 
 
 def to_yaml(proxies: list[dict]) -> str:
-    # minimal hand-rolled yaml to avoid PyYAML dependency
-    def dump_val(v, indent: int) -> str:
-        sp = "  " * indent
+    def dump_val(v) -> str:
         if isinstance(v, bool):
             return "true" if v else "false"
         if isinstance(v, (int, float)):
             return str(v)
-        if isinstance(v, dict):
-            if not v:
-                return "{}"
-            lines = [""]
-            for k, val in v.items():
-                if isinstance(val, (dict, list)):
-                    lines.append(f"{sp}  {k}: {dump_val(val, indent + 1)}")
-                else:
-                    lines.append(f"{sp}  {k}: {dump_val(val, indent + 1)}")
-            return "\n".join(lines)
-        if isinstance(v, list):
-            if not v:
-                return "[]"
-            lines = [""]
-            for item in v:
-                lines.append(f"{sp}  - {dump_val(item, indent + 1)}")
-            return "\n".join(lines)
-        s = str(v).replace("\\", "\\\\").replace('"', '\\"')
-        if re.search(r'[:#{}[\],&*?|>!%@`]', s) or s != s.strip() or s == "":
-            return f'"{s}"'
-        return s
+        s = clean_str(v)
+        # always double-quote strings for Clash client safety
+        s = s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ").replace("\r", "")
+        return f'"{s}"'
 
     lines = [
-        "# Generated by proxy-pipeline — Clash Meta / mihomo",
+        "# Generated by proxy-pipeline - Clash Meta / mihomo",
         "# Free public nodes: unstable; for test only",
         "mixed-port: 7890",
         "allow-lan: false",
@@ -248,34 +263,58 @@ def to_yaml(proxies: list[dict]) -> str:
     ]
     names: list[str] = []
     for p in proxies:
+        # deep clean strings
+        p = {k: (clean_str(v) if isinstance(v, str) else v) for k, v in p.items()}
+        if isinstance(p.get("reality-opts"), dict):
+            p["reality-opts"] = {
+                kk: clean_str(vv) if isinstance(vv, str) else vv
+                for kk, vv in p["reality-opts"].items()
+            }
+        if isinstance(p.get("ws-opts"), dict):
+            wo = dict(p["ws-opts"])
+            if isinstance(wo.get("headers"), dict):
+                wo["headers"] = {
+                    kk: clean_str(vv) if isinstance(vv, str) else vv
+                    for kk, vv in wo["headers"].items()
+                }
+            if "path" in wo:
+                wo["path"] = clean_str(wo["path"])
+            p["ws-opts"] = wo
         names.append(p["name"])
-        lines.append("  - name: " + dump_val(p["name"], 1))
+        lines.append(f"  - name: {dump_val(p['name'])}")
         for k, v in p.items():
             if k == "name":
                 continue
             if isinstance(v, dict):
                 lines.append(f"    {k}:")
                 for kk, vv in v.items():
-                    lines.append(f"      {kk}: {dump_val(vv, 3)}")
+                    if isinstance(vv, dict):
+                        lines.append(f"      {kk}:")
+                        for k3, v3 in vv.items():
+                            lines.append(f"        {k3}: {dump_val(v3)}")
+                    else:
+                        lines.append(f"      {kk}: {dump_val(vv)}")
             else:
-                lines.append(f"    {k}: {dump_val(v, 2)}")
+                lines.append(f"    {k}: {dump_val(v)}")
     lines.append("proxy-groups:")
     lines.append('  - name: "PROXY"')
     lines.append("    type: select")
     lines.append("    proxies:")
     for n in names[:MAX_PROXIES]:
-        lines.append(f"      - {dump_val(n, 3)}")
+        lines.append(f"      - {dump_val(n)}")
     lines.append('  - name: "AUTO"')
     lines.append("    type: url-test")
-    lines.append("    url: http://www.gstatic.com/generate_204")
+    lines.append('    url: "http://www.gstatic.com/generate_204"')
     lines.append("    interval: 300")
     lines.append("    proxies:")
     for n in names[: min(200, len(names))]:
-        lines.append(f"      - {dump_val(n, 3)}")
+        lines.append(f"      - {dump_val(n)}")
     lines.append("rules:")
     lines.append("  - GEOIP,CN,DIRECT")
     lines.append("  - MATCH,PROXY")
-    return "\n".join(lines) + "\n"
+    out = "\n".join(lines) + "\n"
+    # final safety: no NUL
+    return out.replace("\x00", "")
 
 
 def _uniq_name(base: str, seen: set[str]) -> str:
