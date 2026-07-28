@@ -1,0 +1,760 @@
+# Alive only — mihomo delay-tested (GitHub Actions)
+# updated: 2026-07-28T09:26:15.847785+00:00
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: warning
+external-controller: 127.0.0.1:9090
+proxies:
+  - name: "hysteria2-180178213-0"
+    type: "hysteria2"
+    server: "155.248.209.237"
+    port: 33333
+    password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
+    skip-cert-verify: true
+    sni: "155.248.209.237"
+  - name: "hysteria2-180992728-2"
+    type: "hysteria2"
+    server: "172.86.95.17"
+    port: 8433
+    password: "d2e3768f-cb23-4cfc-a884-dbd6813cb70b"
+    skip-cert-verify: true
+    sni: "de1-hy2.veilvpn.life"
+  - name: "vless-180992713-72"
+    type: "vless"
+    server: "158.247.123.142"
+    port: 62145
+    network: "tcp"
+    udp: true
+    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
+  - name: "vless-180383214-70"
+    type: "vless"
+    server: "144.21.33.246"
+    port: 62145
+    network: "raw"
+    udp: true
+    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
+  - name: "shadowsocks-180992736-4"
+    type: "ss"
+    server: "129.151.78.150"
+    port: 61312
+    cipher: "chacha20-ietf-poly1305"
+    password: "MGU4ZjVkMGNhY2Y3YzM0NmIxMDgyNDQ5OGVjZjY2Y2Y="
+    udp: true
+  - name: "vless-180273215-136"
+    type: "vless"
+    server: "mypanel.unixzone.us"
+    port: 12068
+    network: "ws"
+    udp: true
+    uuid: "05caca6c-9e97-4c0f-8edf-7b88a6e572c5"
+  - name: "trojan-180992735-14"
+    type: "trojan"
+    server: "35.180.10.212"
+    port: 443
+    password: "IQ68037294"
+    skip-cert-verify: true
+    sni: "firm-warthog.rooster465.autos"
+    udp: true
+  - name: "vless-180273214-134"
+    type: "vless"
+    server: "85.17.145.65"
+    port: 12068
+    network: "ws"
+    udp: true
+    uuid: "05caca6c-9e97-4c0f-8edf-7b88a6e572c5"
+  - name: "trojan-180220228-268"
+    type: "trojan"
+    server: "13.39.127.43"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "united-bedbug.rooster465.autos"
+    udp: true
+  - name: "trojan-182535647-16"
+    type: "trojan"
+    server: "15.237.217.186"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "desired-pony.rooster465.autos"
+    udp: true
+  - name: "trojan-180216217-274"
+    type: "trojan"
+    server: "13.39.127.43"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "united-bedbug.rooster465.autos"
+    udp: true
+  - name: "trojan-180992775-74"
+    type: "trojan"
+    server: "firm-warthog.rooster465.autos"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: true
+    sni: ""
+    udp: true
+  - name: "trojan-180220273-204"
+    type: "trojan"
+    server: "79.133.126.137"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "workable-crawdad.rooster465.autos"
+    udp: true
+  - name: "trojan-180220308-338"
+    type: "trojan"
+    server: "89.39.70.208"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "actual-aardvark.rooster465.autos"
+    udp: true
+  - name: "trojan-180216218-352"
+    type: "trojan"
+    server: "15.237.250.154"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "chief-cricket.rooster465.autos"
+    udp: true
+  - name: "vless-180420214-142"
+    type: "vless"
+    server: "5.175.249.199"
+    port: 52315
+    network: "ws"
+    udp: true
+    uuid: "bece874b-e905-48a4-9620-5ef59b49081a"
+  - name: "trojan-182068878-186"
+    type: "trojan"
+    server: "desired-pony.rooster465.autos"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "desired-pony.rooster465.autos"
+    udp: true
+  - name: "trojan-180220270-164"
+    type: "trojan"
+    server: "62.112.222.57"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "fast-ghost.rooster465.autos"
+    udp: true
+  - name: "trojan-180216224-350"
+    type: "trojan"
+    server: "62.112.222.57"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "fast-ghost.rooster465.autos"
+    udp: true
+  - name: "trojan-180220267-302"
+    type: "trojan"
+    server: "62.112.222.212"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "more-trout.rooster465.autos"
+    udp: true
+  - name: "trojan-180220269-52"
+    type: "trojan"
+    server: "62.112.222.27"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "optimal-urchin.rooster465.autos"
+    udp: true
+  - name: "trojan-180232213-24"
+    type: "trojan"
+    server: "62.112.222.121"
+    port: 443
+    password: "SX95078263"
+    skip-cert-verify: false
+    sni: "primary-leech.rooster465.autos"
+    udp: true
+  - name: "trojan-180220262-40"
+    type: "trojan"
+    server: "62.112.222.121"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "primary-leech.rooster465.autos"
+    udp: true
+  - name: "trojan-180220330-194"
+    type: "trojan"
+    server: "legible-possum.rooster465.autos"
+    port: 443
+    password: "KV63147582"
+    skip-cert-verify: false
+    sni: "legible-possum.rooster465.autos"
+    udp: true
+  - name: "trojan-180231214-42"
+    type: "trojan"
+    server: "fast-ghost.rooster465.autos"
+    port: 443
+    password: "PD07395842"
+    skip-cert-verify: false
+    sni: "fast-ghost.rooster465.autos"
+    udp: true
+  - name: "trojan-180220265-314"
+    type: "trojan"
+    server: "62.112.222.151"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "emerging-weevil.rooster465.autos"
+    udp: true
+  - name: "trojan-180218214-266"
+    type: "trojan"
+    server: "62.112.222.27"
+    port: 443
+    password: "IQ68037294"
+    skip-cert-verify: false
+    sni: "optimal-urchin.rooster465.autos"
+    udp: true
+  - name: "trojan-180230214-18"
+    type: "trojan"
+    server: "chief-antelope.rooster465.autos"
+    port: 443
+    password: "ON38567014"
+    skip-cert-verify: false
+    sni: "chief-antelope.rooster465.autos"
+    udp: true
+  - name: "trojan-180220300-124"
+    type: "trojan"
+    server: "82.117.226.88"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "immortal-woodcock.rooster465.autos"
+    udp: true
+  - name: "trojan-180220289-46"
+    type: "trojan"
+    server: "82.117.226.159"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "wealthy-bengal.rooster465.autos"
+    udp: true
+  - name: "trojan-180220257-354"
+    type: "trojan"
+    server: "45.135.228.28"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "pleased-sawfly.rooster465.autos"
+    udp: true
+  - name: "trojan-180216235-196"
+    type: "trojan"
+    server: "91.243.81.18"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "bright-quagga.rooster465.autos"
+    udp: true
+  - name: "trojan-180220322-312"
+    type: "trojan"
+    server: "91.243.81.138"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "decent-raven.rooster465.autos"
+    udp: true
+  - name: "trojan-180220328-192"
+    type: "trojan"
+    server: "91.243.81.50"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "smooth-cougar.rooster465.autos"
+    udp: true
+  - name: "trojan-180220325-200"
+    type: "trojan"
+    server: "91.243.81.18"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "bright-quagga.rooster465.autos"
+    udp: true
+  - name: "trojan-180220279-236"
+    type: "trojan"
+    server: "81.28.13.246"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "mutual-raccoon.rooster465.autos"
+    udp: true
+  - name: "trojan-180218216-84"
+    type: "trojan"
+    server: "artistic-pigeon.rooster465.autos"
+    port: 443
+    password: "IQ68037294"
+    skip-cert-verify: true
+    sni: "artistic-pigeon.rooster465.autos"
+    udp: true
+  - name: "trojan-180220260-88"
+    type: "trojan"
+    server: "45.135.228.63"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "fair-reptile.rooster465.autos"
+    udp: true
+  - name: "trojan-180992744-220"
+    type: "trojan"
+    server: "stirred-sunbeam.rooster465.autos"
+    port: 443
+    password: "IQ68037294"
+    skip-cert-verify: true
+    sni: ""
+    udp: true
+  - name: "trojan-180220326-126"
+    type: "trojan"
+    server: "91.243.81.192"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "sterling-fowl.rooster465.autos"
+    udp: true
+  - name: "trojan-180220224-270"
+    type: "trojan"
+    server: "109.61.127.68"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "quick-tiger.rooster465.autos"
+    udp: true
+  - name: "trojan-180220295-282"
+    type: "trojan"
+    server: "82.117.226.224"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "exotic-chicken.rooster465.autos"
+    udp: true
+  - name: "trojan-180220320-346"
+    type: "trojan"
+    server: "91.243.81.114"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "happy-mutt.rooster465.autos"
+    udp: true
+  - name: "trojan-180992745-146"
+    type: "trojan"
+    server: "109.61.127.151"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: true
+    sni: "picked-hippo.rooster465.autos"
+    udp: true
+  - name: "trojan-180220301-188"
+    type: "trojan"
+    server: "82.117.226.92"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "superb-dory.rooster465.autos"
+    udp: true
+  - name: "trojan-180220297-190"
+    type: "trojan"
+    server: "82.117.226.60"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "arriving-hyena.rooster465.autos"
+    udp: true
+  - name: "trojan-180220319-240"
+    type: "trojan"
+    server: "91.243.81.101"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "still-mastodon.rooster465.autos"
+    udp: true
+  - name: "trojan-180220221-318"
+    type: "trojan"
+    server: "109.61.127.24"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "artistic-pigeon.rooster465.autos"
+    udp: true
+  - name: "trojan-180177987-22"
+    type: "trojan"
+    server: "quick-tiger.rooster465.autos"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "quick-tiger.rooster465.autos"
+    udp: true
+  - name: "trojan-180220294-26"
+    type: "trojan"
+    server: "82.117.226.221"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "accurate-drake.rooster465.autos"
+    udp: true
+  - name: "trojan-180220329-58"
+    type: "trojan"
+    server: "touching-pigeon.rooster465.autos"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-180220216-148"
+    type: "trojan"
+    server: "109.61.127.121"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "closing-sailfish.rooster465.autos"
+    udp: true
+  - name: "trojan-180992742-258"
+    type: "trojan"
+    server: "picked-hippo.rooster465.autos"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: true
+    sni: "picked-hippo.rooster465.autos"
+    udp: true
+  - name: "trojan-180220324-340"
+    type: "trojan"
+    server: "91.243.81.178"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "brave-cattle.rooster465.autos"
+    udp: true
+  - name: "trojan-180220288-316"
+    type: "trojan"
+    server: "82.117.226.157"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "fair-ram.rooster465.autos"
+    udp: true
+  - name: "trojan-180992743-332"
+    type: "trojan"
+    server: "absolute-boxer.rooster465.autos"
+    port: 443
+    password: "WG39087154"
+    skip-cert-verify: true
+    sni: "absolute-boxer.rooster465.autos"
+    udp: true
+  - name: "trojan-180220292-90"
+    type: "trojan"
+    server: "82.117.226.195"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "proud-pheasant.rooster465.autos"
+    udp: true
+  - name: "trojan-180220276-114"
+    type: "trojan"
+    server: "81.28.13.126"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "resolved-gelding.rooster465.autos"
+    udp: true
+  - name: "trojan-180220291-272"
+    type: "trojan"
+    server: "82.117.226.173"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "powerful-opossum.rooster465.autos"
+    udp: true
+  - name: "trojan-180220217-348"
+    type: "trojan"
+    server: "109.61.127.124"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "free-tuna.rooster465.autos"
+    udp: true
+  - name: "trojan-180233216-44"
+    type: "trojan"
+    server: "45.135.228.223"
+    port: 443
+    password: "WG39087154"
+    skip-cert-verify: false
+    sni: "open-caribou.rooster465.autos"
+    udp: true
+  - name: "trojan-180220323-228"
+    type: "trojan"
+    server: "91.243.81.165"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "magnetic-woodcock.rooster465.autos"
+    udp: true
+  - name: "trojan-180220214-308"
+    type: "trojan"
+    server: "109.61.127.100"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "definite-filly.rooster465.autos"
+    udp: true
+  - name: "trojan-180220255-224"
+    type: "trojan"
+    server: "45.135.228.215"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "coherent-newt.rooster465.autos"
+    udp: true
+  - name: "trojan-180220277-342"
+    type: "trojan"
+    server: "81.28.13.202"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "definite-sturgeon.rooster465.autos"
+    udp: true
+  - name: "trojan-180216225-166"
+    type: "trojan"
+    server: "81.28.13.202"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "definite-sturgeon.rooster465.autos"
+    udp: true
+  - name: "trojan-180230215-78"
+    type: "trojan"
+    server: "leading-ram.rooster465.autos"
+    port: 443
+    password: "ON38567014"
+    skip-cert-verify: false
+    sni: "leading-ram.rooster465.autos"
+    udp: true
+  - name: "trojan-180177986-56"
+    type: "trojan"
+    server: "saved-mudfish.rooster465.autos"
+    port: 443
+    password: "FC60532879"
+    skip-cert-verify: false
+    sni: "saved-mudfish.rooster465.autos"
+    udp: true
+  - name: "trojan-180228213-80"
+    type: "trojan"
+    server: "full-ox.rooster465.autos"
+    port: 443
+    password: "NQ26071394"
+    skip-cert-verify: false
+    sni: "full-ox.rooster465.autos"
+    udp: true
+  - name: "trojan-180220213-158"
+    type: "trojan"
+    server: "well-marmot.rooster465.autos"
+    port: 443
+    password: "IQ68037294"
+    skip-cert-verify: false
+    sni: "well-marmot.rooster465.autos"
+    udp: true
+  - name: "trojan-180230213-54"
+    type: "trojan"
+    server: "desired-tahr.rooster465.autos"
+    port: 443
+    password: "OD90375861"
+    skip-cert-verify: false
+    sni: "desired-tahr.rooster465.autos"
+    udp: true
+  - name: "trojan-180220253-238"
+    type: "trojan"
+    server: "45.135.228.100"
+    port: 443
+    password: "JT80563429"
+    skip-cert-verify: false
+    sni: "meet-doe.rooster465.autos"
+    udp: true
+  - name: "trojan-182535618-370"
+    type: "trojan"
+    server: "18.163.180.201"
+    port: 6357
+    password: "d1960ba9f0f6353353994fa844cf817b"
+    skip-cert-verify: true
+    sni: "www.nintendogames.net"
+    udp: true
+  - name: "shadowsocks-180181213-8"
+    type: "ss"
+    server: "47.81.56.202"
+    port: 44617
+    cipher: "chacha20-ietf-poly1305"
+    password: "lhuULRwO4slM6k262pAC4cbq5A1H6z8eaOHV27vi7Yw="
+    udp: true
+  - name: "shadowsocks-182052687-10"
+    type: "ss"
+    server: "64.90.7.12"
+    port: 47509
+    cipher: "chacha20-ietf-poly1305"
+    password: "cgnu9tVCvDXc"
+    udp: true
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - hysteria2-180178213-0
+      - hysteria2-180992728-2
+      - vless-180992713-72
+      - vless-180383214-70
+      - shadowsocks-180992736-4
+      - vless-180273215-136
+      - trojan-180992735-14
+      - vless-180273214-134
+      - trojan-180220228-268
+      - trojan-182535647-16
+      - trojan-180216217-274
+      - trojan-180992775-74
+      - trojan-180220273-204
+      - trojan-180220308-338
+      - trojan-180216218-352
+      - vless-180420214-142
+      - trojan-182068878-186
+      - trojan-180220270-164
+      - trojan-180216224-350
+      - trojan-180220267-302
+      - trojan-180220269-52
+      - trojan-180232213-24
+      - trojan-180220262-40
+      - trojan-180220330-194
+      - trojan-180231214-42
+      - trojan-180220265-314
+      - trojan-180218214-266
+      - trojan-180230214-18
+      - trojan-180220300-124
+      - trojan-180220289-46
+      - trojan-180220257-354
+      - trojan-180216235-196
+      - trojan-180220322-312
+      - trojan-180220328-192
+      - trojan-180220325-200
+      - trojan-180220279-236
+      - trojan-180218216-84
+      - trojan-180220260-88
+      - trojan-180992744-220
+      - trojan-180220326-126
+      - trojan-180220224-270
+      - trojan-180220295-282
+      - trojan-180220320-346
+      - trojan-180992745-146
+      - trojan-180220301-188
+      - trojan-180220297-190
+      - trojan-180220319-240
+      - trojan-180220221-318
+      - trojan-180177987-22
+      - trojan-180220294-26
+      - trojan-180220329-58
+      - trojan-180220216-148
+      - trojan-180992742-258
+      - trojan-180220324-340
+      - trojan-180220288-316
+      - trojan-180992743-332
+      - trojan-180220292-90
+      - trojan-180220276-114
+      - trojan-180220291-272
+      - trojan-180220217-348
+      - trojan-180233216-44
+      - trojan-180220323-228
+      - trojan-180220214-308
+      - trojan-180220255-224
+      - trojan-180220277-342
+      - trojan-180216225-166
+      - trojan-180230215-78
+      - trojan-180177986-56
+      - trojan-180228213-80
+      - trojan-180220213-158
+      - trojan-180230213-54
+      - trojan-180220253-238
+      - trojan-182535618-370
+      - shadowsocks-180181213-8
+      - shadowsocks-182052687-10
+  - name: "AUTO"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - hysteria2-180178213-0
+      - hysteria2-180992728-2
+      - vless-180992713-72
+      - vless-180383214-70
+      - shadowsocks-180992736-4
+      - vless-180273215-136
+      - trojan-180992735-14
+      - vless-180273214-134
+      - trojan-180220228-268
+      - trojan-182535647-16
+      - trojan-180216217-274
+      - trojan-180992775-74
+      - trojan-180220273-204
+      - trojan-180220308-338
+      - trojan-180216218-352
+      - vless-180420214-142
+      - trojan-182068878-186
+      - trojan-180220270-164
+      - trojan-180216224-350
+      - trojan-180220267-302
+      - trojan-180220269-52
+      - trojan-180232213-24
+      - trojan-180220262-40
+      - trojan-180220330-194
+      - trojan-180231214-42
+      - trojan-180220265-314
+      - trojan-180218214-266
+      - trojan-180230214-18
+      - trojan-180220300-124
+      - trojan-180220289-46
+      - trojan-180220257-354
+      - trojan-180216235-196
+      - trojan-180220322-312
+      - trojan-180220328-192
+      - trojan-180220325-200
+      - trojan-180220279-236
+      - trojan-180218216-84
+      - trojan-180220260-88
+      - trojan-180992744-220
+      - trojan-180220326-126
+      - trojan-180220224-270
+      - trojan-180220295-282
+      - trojan-180220320-346
+      - trojan-180992745-146
+      - trojan-180220301-188
+      - trojan-180220297-190
+      - trojan-180220319-240
+      - trojan-180220221-318
+      - trojan-180177987-22
+      - trojan-180220294-26
+      - trojan-180220329-58
+      - trojan-180220216-148
+      - trojan-180992742-258
+      - trojan-180220324-340
+      - trojan-180220288-316
+      - trojan-180992743-332
+      - trojan-180220292-90
+      - trojan-180220276-114
+      - trojan-180220291-272
+      - trojan-180220217-348
+      - trojan-180233216-44
+      - trojan-180220323-228
+      - trojan-180220214-308
+      - trojan-180220255-224
+      - trojan-180220277-342
+      - trojan-180216225-166
+      - trojan-180230215-78
+      - trojan-180177986-56
+      - trojan-180228213-80
+      - trojan-180220213-158
+      - trojan-180230213-54
+      - trojan-180220253-238
+      - trojan-182535618-370
+      - shadowsocks-180181213-8
+      - shadowsocks-182052687-10
+rules:
+  - GEOIP,CN,DIRECT
+  - MATCH,PROXY
