@@ -1,0 +1,52 @@
+name: online-scan
+
+on:
+  schedule:
+    # every 2 hours — adjust as needed (Actions cron is UTC, may delay)
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "sources/**"
+      - "scripts/online/**"
+      - ".github/workflows/online-scan.yml"
+
+concurrency:
+  group: online-scan
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Mirror multi-repo raws + dedupe + TG previews
+        run: python scripts/online/scrape.py
+
+      - name: Light HTTP sample check
+        run: python scripts/online/light_check.py --sample 400 --workers 50 --timeout 6
+        continue-on-error: true
+
+      - name: Commit dist/online
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p dist/online
+          git add dist/online
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore(online): refresh scrape $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi
