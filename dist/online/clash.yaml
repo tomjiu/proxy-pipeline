@@ -1,5 +1,5 @@
 # proxy-pipeline — quality free feeds (少而精, not mega dead dumps)
-# built: 2026-08-13T17:12:01.103054+00:00
+# built: 2026-08-13T19:19:48.511402+00:00
 # Use group AUTO. Public free nodes still die; not a paid airport.
 mixed-port: 7890
 allow-lan: false
@@ -7,7 +7,75 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-  - name: "vless-468154251-0"
+  - name: "trojan-372803807-0"
+    type: "trojan"
+    server: "t11.qifei.app"
+    port: 55682
+    password: "7d8e6db4-96cc-4710-afc0-619edde2d7a1"
+    skip-cert-verify: true
+    sni: ""
+    udp: true
+  - name: "vless-395875280-2"
+    type: "vless"
+    server: "46.250.250.149"
+    port: 2053
+    client-fingerprint: "firefox"
+    network: "tcp"
+    public-key: "2mp1wwmKQyvIVuGujoT0AGoAHwP1IFXlZRj8jB_UnGo"
+    short-id: "61abecf0a82c31f5"
+    servername: "www.cloudflare.com"
+    tls: true
+    udp: true
+    uuid: "98944209-4d92-41b2-9c24-c5ac17b3b493"
+  - name: "trojan-395852279-4"
+    type: "trojan"
+    server: "160.16.110.77"
+    port: 55682
+    password: "7d8e6db4-96cc-4710-afc0-619edde2d7a1"
+    skip-cert-verify: false
+    sni: "t11.qifei.app"
+    udp: true
+  - name: "trojan-453179915-6"
+    type: "trojan"
+    server: "relevant-cicada.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179905-8"
+    type: "trojan"
+    server: "precious-racer.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179861-10"
+    type: "trojan"
+    server: "full-mayfly.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453177861-12"
+    type: "trojan"
+    server: "allowed-hermit.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179920-14"
+    type: "trojan"
+    server: "saved-ghoul.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "vless-468154251-16"
     type: "vless"
     server: "185.212.58.79"
     port: 50159
@@ -20,14 +88,24 @@ proxies:
     tls: true
     udp: true
     uuid: "dc555618-e45e-457f-a3a2-2966be122bc7"
-  - name: "vless-468154240-2"
+  - name: "vless-468154240-18"
     type: "vless"
     server: "52.74.176.20"
     port: 443
     network: "ws"
     udp: true
     uuid: "5ad0bed3-68ac-495e-b778-8b2d0e1dc176"
-  - name: "vless-468892510-4"
+  - name: "vless-461827954-20"
+    type: "vless"
+    server: "cf.130209.xyz"
+    port: 8443
+    network: "ws"
+    servername: "hongkong.11459178.xyz"
+    skip-cert-verify: false
+    tls: true
+    udp: true
+    uuid: "65c56e1f-5c41-40bc-b0b5-9346772476ca"
+  - name: "vless-468892510-22"
     type: "vless"
     server: "143.110.192.171"
     port: 13779
@@ -40,14 +118,21 @@ proxies:
     tls: true
     udp: true
     uuid: "928e6cce-8ced-4243-9a48-a6642edd09b0"
-  - name: "vless-468892507-6"
+  - name: "vless-461745755-24"
+    type: "vless"
+    server: "152.70.59.205"
+    port: 62145
+    network: "tcp"
+    udp: true
+    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
+  - name: "vless-468892507-26"
     type: "vless"
     server: "69.84.182.152"
     port: 2095
     network: "ws"
     udp: true
     uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-  - name: "vless-468892535-8"
+  - name: "vless-468892535-28"
     type: "vless"
     server: "157.20.27.44"
     port: 443
@@ -60,21 +145,21 @@ proxies:
     tls: true
     udp: true
     uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "hysteria2-468892433-10"
+  - name: "hysteria2-468892433-30"
     type: "hysteria2"
     server: "3.34.139.135"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
-  - name: "hysteria2-468892436-12"
+  - name: "hysteria2-468892436-32"
     type: "hysteria2"
     server: "43.201.1.129"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "t.me"
-  - name: "trojan-470342345-14"
+  - name: "trojan-470342345-34"
     type: "trojan"
     server: "52.195.10.183"
     port: 443
@@ -82,7 +167,7 @@ proxies:
     skip-cert-verify: false
     sni: "improved-anteater.rooster465.autos"
     udp: true
-  - name: "trojan-470979900-16"
+  - name: "trojan-470979900-36"
     type: "trojan"
     server: "frank-frog.rooster465.autos"
     port: 443
@@ -90,7 +175,15 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979965-18"
+  - name: "trojan-453179889-38"
+    type: "trojan"
+    server: "maximum-elk.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979965-40"
     type: "trojan"
     server: "whole-perch.rooster465.autos"
     port: 443
@@ -98,7 +191,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979898-20"
+  - name: "trojan-470979898-42"
     type: "trojan"
     server: "exciting-grizzly.rooster465.autos"
     port: 443
@@ -106,7 +199,23 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979964-22"
+  - name: "trojan-453179867-44"
+    type: "trojan"
+    server: "harmless-imp.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453177867-46"
+    type: "trojan"
+    server: "charmed-fly.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979964-48"
     type: "trojan"
     server: "whole-grub.rooster465.autos"
     port: 443
@@ -114,14 +223,90 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "vless-468154185-24"
+  - name: "trojan-453179919-50"
+    type: "trojan"
+    server: "sacred-hound.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179877-52"
+    type: "trojan"
+    server: "intimate-koi.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453177880-54"
+    type: "trojan"
+    server: "eager-camel.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179891-56"
+    type: "trojan"
+    server: "modern-bulldog.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179910-58"
+    type: "trojan"
+    server: "prepared-thrush.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179907-60"
+    type: "trojan"
+    server: "premium-weevil.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179916-62"
+    type: "trojan"
+    server: "rich-gelding.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179881-64"
+    type: "trojan"
+    server: "known-albacore.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "vless-468154185-66"
     type: "vless"
     server: "52.76.177.127"
     port: 17771
     network: "ws"
     udp: true
     uuid: "1178e691-88c5-4c7d-b4ea-1cefcdf52553"
-  - name: "vless-468154253-26"
+  - name: "vless-395870277-68"
+    type: "vless"
+    server: "217.217.254.126"
+    port: 2053
+    client-fingerprint: "firefox"
+    network: "tcp"
+    public-key: "T4CMxxAJiCcrGk2r87kMkDcvmfNs3nL-gKleaE1wTHQ"
+    short-id: "fb7ebc9996caf9ac"
+    servername: "www.cloudflare.com"
+    tls: true
+    udp: true
+    uuid: "6b408e62-c5d5-45e1-ae3a-4c9833d46d82"
+  - name: "vless-468154253-70"
     type: "vless"
     server: "157.20.27.29"
     port: 443
@@ -134,7 +319,17 @@ proxies:
     tls: true
     udp: true
     uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-470978003-28"
+  - name: "vless-461844954-72"
+    type: "vless"
+    server: "xmm5.130209.xyz"
+    port: 8443
+    network: "ws"
+    servername: "hongkong.11459178.xyz"
+    skip-cert-verify: false
+    tls: true
+    udp: true
+    uuid: "65c56e1f-5c41-40bc-b0b5-9346772476ca"
+  - name: "vless-470978003-74"
     type: "vless"
     server: "3.114.220.22"
     port: 19645
@@ -147,14 +342,14 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470984040-30"
+  - name: "vless-470984040-76"
     type: "vless"
     server: "nmslfangbinxing.pusytroller.gq"
     port: 2095
     network: "ws"
     udp: true
     uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-  - name: "vless-470978002-34"
+  - name: "vless-470978002-80"
     type: "vless"
     server: "3.114.220.22"
     port: 10583
@@ -167,7 +362,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470977997-36"
+  - name: "vless-470977997-82"
     type: "vless"
     server: "103.106.229.190"
     port: 13898
@@ -180,7 +375,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470978036-38"
+  - name: "vless-470978036-84"
     type: "vless"
     server: "178.128.112.70"
     port: 443
@@ -193,7 +388,14 @@ proxies:
     tls: true
     udp: true
     uuid: "9206ae06-88ee-49b1-a558-531ade80fcaa"
-  - name: "vless-468891149-42"
+  - name: "vless-89074-88"
+    type: "vless"
+    server: "freetg.strettenvpn.com"
+    port: 9999
+    network: "tcp"
+    udp: true
+    uuid: "f83d8e60-f039-45c8-95d2-2a44c59025f6"
+  - name: "vless-468891149-92"
     type: "vless"
     server: "nll.mcqueenconnection.ru"
     port: 443
@@ -206,84 +408,78 @@ proxies:
     tls: true
     udp: true
     uuid: "176bc48c-460b-4260-abbd-68fd5ea85270"
-  - name: "hysteria2-468892434-44"
+  - name: "hysteria2-468892434-94"
     type: "hysteria2"
     server: "3.36.93.159"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "css.rbxcdn.com"
-  - name: "hysteria2-468892437-46"
+  - name: "hysteria2-468892437-96"
     type: "hysteria2"
     server: "43.201.58.201"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "css.rbxcdn.com"
-  - name: "hysteria2-468220570-48"
+  - name: "hysteria2-468220570-98"
     type: "hysteria2"
     server: "hk02.xn--9kq85xcu6b.com"
     port: 65534
     password: "45dae7e6-4573-4e6b-a1f3-57b3bbaf990d"
     skip-cert-verify: true
     sni: ""
-  - name: "hysteria2-468234575-50"
+  - name: "hysteria2-468234575-100"
     type: "hysteria2"
     server: "hk03.poke-mon.xyz"
     port: 20000
     password: "e03ce527-eb73-4ad3-9c88-966def39ae95"
     skip-cert-verify: true
     sni: "www.bing.com"
-  - name: "hysteria2-467420662-52"
+  - name: "hysteria2-467420662-102"
     type: "hysteria2"
     server: "202.146.222.174"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "https://t.me/oneclickvpnkeys"
-  - name: "hysteria2-461629106-54"
-    type: "hysteria2"
-    server: "srvhy1.ezcon24.online"
-    port: 8443
-    password: "130e6aab-9eba-441e-9021-22cbccc72832"
-    skip-cert-verify: true
-    sni: "srvhy1.ezcon24.online"
-  - name: "shadowsocks-467980814-56"
+  - name: "shadowsocks-467980814-104"
     type: "ss"
     server: "161.118.210.227"
     port: 56927
     cipher: "chacha20-ietf-poly1305"
     password: "Y2QwZTQ0MDYzOWFhNjA5YmE0NTZhNWFkODkzMWNmODU="
     udp: true
-  - name: "shadowsocks-468218487-58"
+  - name: "shadowsocks-468218487-106"
     type: "ss"
     server: "138.199.43.159"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "shadowsocks-465806702-60"
+  - name: "shadowsocks-465806702-108"
     type: "ss"
     server: "ca225.vpnbook.com"
     port: 443
     cipher: "chacha20-ietf-poly1305"
     password: "ytw2awn"
     udp: true
-  - name: "shadowsocks-463736415-62"
+  - name: "shadowsocks-463736415-110"
     type: "ss"
     server: "212.192.13.221"
     port: 10910
     cipher: "aes-256-gcm"
     password: "72553320ae6bcc8f"
     udp: true
-  - name: "shadowsocks-461629108-64"
-    type: "ss"
-    server: "130.61.40.253"
-    port: 59924
-    cipher: "chacha20-ietf-poly1305"
-    password: "OWVhYWM4OTFlNGFhNTFiNjY5NDNlODI3ZDE5Njc0ZmE="
+  - name: "trojan-406334568-112"
+    type: "trojan"
+    server: "picked-guinea.rooster465.autos"
+    port: 443
+    password: "ND91608427"
+    skip-cert-verify: false
+    sni: ""
     udp: true
-  - name: "trojan-463728960-66"
+  - name: "trojan-463728960-114"
     type: "trojan"
     server: "polished-imp.rooster465.autos"
     port: 443
@@ -291,7 +487,7 @@ proxies:
     skip-cert-verify: false
     sni: "polished-imp.rooster465.autos"
     udp: true
-  - name: "trojan-468215403-70"
+  - name: "trojan-468215403-118"
     type: "trojan"
     server: "engaged-ram.rooster465.autos"
     port: 443
@@ -299,15 +495,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-468070477-72"
-    type: "trojan"
-    server: "t11.qifei.app"
-    port: 55682
-    password: "7d8e6db4-96cc-4710-afc0-619edde2d7a1"
-    skip-cert-verify: true
-    sni: ""
-    udp: true
-  - name: "trojan-470979884-74"
+  - name: "trojan-470979884-124"
     type: "trojan"
     server: "climbing-frog.rooster465.autos"
     port: 443
@@ -315,7 +503,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-468215294-76"
+  - name: "trojan-468215294-126"
     type: "trojan"
     server: "literate-cow.rooster465.autos"
     port: 443
@@ -323,7 +511,7 @@ proxies:
     skip-cert-verify: true
     sni: ""
     udp: true
-  - name: "trojan-470979946-78"
+  - name: "trojan-470979946-128"
     type: "trojan"
     server: "real-cardinal.rooster465.autos"
     port: 443
@@ -331,7 +519,23 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979958-80"
+  - name: "trojan-453179878-130"
+    type: "trojan"
+    server: "inviting-burro.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453177863-132"
+    type: "trojan"
+    server: "awaited-lark.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979958-134"
     type: "trojan"
     server: "together-mayfly.rooster465.autos"
     port: 443
@@ -339,7 +543,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979966-82"
+  - name: "trojan-470979966-136"
     type: "trojan"
     server: "wise-longhorn.rooster465.autos"
     port: 443
@@ -347,7 +551,15 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979957-84"
+  - name: "trojan-453179866-138"
+    type: "trojan"
+    server: "grateful-crawdad.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979957-140"
     type: "trojan"
     server: "sweeping-parakeet.rooster465.autos"
     port: 443
@@ -355,7 +567,23 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979883-86"
+  - name: "trojan-453179927-142"
+    type: "trojan"
+    server: "skilled-monster.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179883-144"
+    type: "trojan"
+    server: "learning-ibex.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979883-146"
     type: "trojan"
     server: "clear-heron.rooster465.autos"
     port: 443
@@ -363,15 +591,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979882-88"
-    type: "trojan"
-    server: "charmed-fly.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979881-90"
+  - name: "trojan-470979881-150"
     type: "trojan"
     server: "central-jawfish.rooster465.autos"
     port: 443
@@ -379,7 +599,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-465835916-92"
+  - name: "trojan-465835916-152"
     type: "trojan"
     server: "sacred-anemone.rooster465.autos"
     port: 443
@@ -387,15 +607,7 @@ proxies:
     skip-cert-verify: false
     sni: "sacred-anemone.rooster465.autos"
     udp: true
-  - name: "trojan-461629130-94"
-    type: "trojan"
-    server: "maximum-elk.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "maximum-elk.rooster465.autos"
-    udp: true
-  - name: "trojan-468227531-96"
+  - name: "trojan-468227531-154"
     type: "trojan"
     server: "smiling-ray.rooster465.autos"
     port: 443
@@ -403,27 +615,7 @@ proxies:
     skip-cert-verify: false
     sni: "smiling-ray.rooster465.autos"
     udp: true
-  - name: "vless-461791955-98"
-    type: "vless"
-    server: "220.130.75.247"
-    port: 10000
-    network: "tcp"
-    udp: true
-    uuid: "431fe973-a43a-4fac-bf83-2a772e0d0625"
-  - name: "vless-461835954-100"
-    type: "vless"
-    server: "nk.riverveil.com"
-    port: 39530
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "QeVN5jn6k7sYotK0uyppQoepe1tw6PkVblMoSDUODD4"
-    short-id: "6ba85179e30d4fc2"
-    servername: "s0.awsstatic.com"
-    tls: true
-    udp: true
-    uuid: "6d9db439-291f-464e-98c6-a79c2b3c02be"
-  - name: "vless-468227540-102"
+  - name: "vless-468227540-156"
     type: "vless"
     server: "35.241.98.220"
     port: 443
@@ -435,7 +627,7 @@ proxies:
     tls: true
     udp: true
     uuid: "96563f88-f743-4395-a3b2-27ec462ae45e"
-  - name: "vless-467980817-104"
+  - name: "vless-467980817-158"
     type: "vless"
     server: "hong1.panel11.ru"
     port: 443
@@ -448,7 +640,7 @@ proxies:
     tls: true
     udp: true
     uuid: "9aff0732-7ce4-4b34-ba20-e67c6df64fdd"
-  - name: "vless-468906031-110"
+  - name: "vless-468906031-164"
     type: "vless"
     server: "13.193.205.133"
     port: 27407
@@ -460,7 +652,7 @@ proxies:
     tls: true
     udp: true
     uuid: "cd5cf6e7-7ce5-42c9-9316-68210fa72a32"
-  - name: "vless-468906026-112"
+  - name: "vless-468906026-166"
     type: "vless"
     server: "69.58.9.51"
     port: 443
@@ -473,7 +665,7 @@ proxies:
     tls: true
     udp: true
     uuid: "bda0ede7-ef0a-4fbc-b3b6-1205e55ffb48"
-  - name: "vless-468901438-114"
+  - name: "vless-468901438-168"
     type: "vless"
     server: "3.39.4.109"
     port: 18967
@@ -486,7 +678,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-468154254-118"
+  - name: "vless-468154254-172"
     type: "vless"
     server: "157.20.27.52"
     port: 443
@@ -499,7 +691,7 @@ proxies:
     tls: true
     udp: true
     uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-468154255-120"
+  - name: "vless-468154255-174"
     type: "vless"
     server: "apxc.falsemirrov.com"
     port: 443
@@ -512,7 +704,7 @@ proxies:
     tls: true
     udp: true
     uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-468906028-122"
+  - name: "vless-468906028-176"
     type: "vless"
     server: "70.39.198.183"
     port: 46197
@@ -524,7 +716,7 @@ proxies:
     tls: true
     udp: true
     uuid: "5aab0d40-c509-4560-b048-ade921fdfb6a"
-  - name: "vless-470362344-126"
+  - name: "vless-470362344-180"
     type: "vless"
     server: "195.211.99.49"
     port: 443
@@ -537,14 +729,14 @@ proxies:
     tls: true
     udp: true
     uuid: "7eed6d87-ecf6-467b-a8ca-52071fa84fca"
-  - name: "vless-468154233-128"
+  - name: "vless-468154233-182"
     type: "vless"
     server: "134.98.141.186"
     port: 62145
     network: "tcp"
     udp: true
     uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
-  - name: "vless-468316548-132"
+  - name: "vless-468316548-186"
     type: "vless"
     server: "104.21.4.33"
     port: 443
@@ -554,14 +746,14 @@ proxies:
     tls: true
     udp: true
     uuid: "c110db8f-72c8-52a2-8ae9-dfbfd9704035"
-  - name: "vless-470495486-134"
+  - name: "vless-470495486-188"
     type: "vless"
     server: "63.186.212.143"
     port: 22222
     network: "tcp"
     udp: true
     uuid: "e4514801-0d5a-42ba-869f-39bd605aef9e"
-  - name: "vless-468904445-136"
+  - name: "vless-468904445-190"
     type: "vless"
     server: "195.211.99.45"
     port: 443
@@ -574,7 +766,7 @@ proxies:
     tls: true
     udp: true
     uuid: "1f999bcd-f85e-47c3-afd7-92b6dd6b14b0"
-  - name: "vless-470978000-138"
+  - name: "vless-470978000-192"
     type: "vless"
     server: "3.0.111.82"
     port: 12972
@@ -587,7 +779,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470978015-140"
+  - name: "vless-470978015-194"
     type: "vless"
     server: "31.58.50.200"
     port: 8443
@@ -600,7 +792,7 @@ proxies:
     tls: true
     udp: true
     uuid: "865329ac-d8a1-40b6-8199-fee4661bf2ad"
-  - name: "vless-470978043-142"
+  - name: "vless-470978043-196"
     type: "vless"
     server: "179.253.240.24"
     port: 25129
@@ -612,7 +804,7 @@ proxies:
     tls: true
     udp: true
     uuid: "98d58579-9dc4-4e3e-b94e-6a472faf6a41"
-  - name: "vless-468892483-144"
+  - name: "vless-468892483-198"
     type: "vless"
     server: "87.120.196.190"
     port: 2443
@@ -624,14 +816,14 @@ proxies:
     tls: true
     udp: true
     uuid: "35066ccf-e303-4b0e-993b-aa2c2cef9c87"
-  - name: "vless-470984239-146"
+  - name: "vless-470984239-200"
     type: "vless"
     server: "de-193-58.neobo-tooth.ru"
     port: 2096
     network: "ws"
     udp: true
     uuid: "b6c29ae7-4748-4049-b642-b695c0d2c776"
-  - name: "vless-470977999-150"
+  - name: "vless-470977999-204"
     type: "vless"
     server: "3.0.111.82"
     port: 10574
@@ -644,7 +836,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470977878-152"
+  - name: "vless-470977878-206"
     type: "vless"
     server: "91.192.81.214"
     port: 443
@@ -657,7 +849,7 @@ proxies:
     tls: true
     udp: true
     uuid: "607801ac-dbdd-4938-a167-129015d9978e"
-  - name: "vless-470977980-154"
+  - name: "vless-470977980-208"
     type: "vless"
     server: "147.182.212.232"
     port: 56565
@@ -670,7 +862,7 @@ proxies:
     tls: true
     udp: true
     uuid: "7b188eea-b08f-42c2-bac7-d3b0e74218b8"
-  - name: "vless-470977912-156"
+  - name: "vless-470977912-210"
     type: "vless"
     server: "31.58.50.200"
     port: 8443
@@ -683,7 +875,7 @@ proxies:
     tls: true
     udp: true
     uuid: "6fba61f2-d538-4bba-8c86-b19568a0b687"
-  - name: "vless-470978115-158"
+  - name: "vless-470978115-212"
     type: "vless"
     server: "31.58.50.200"
     port: 8443
@@ -696,7 +888,7 @@ proxies:
     tls: true
     udp: true
     uuid: "b555fe25-c488-4758-8574-7f70b357c175"
-  - name: "vless-470975915-160"
+  - name: "vless-470975915-214"
     type: "vless"
     server: "85.192.41.222"
     port: 25565
@@ -708,7 +900,7 @@ proxies:
     tls: true
     udp: true
     uuid: "086422b2-3347-45f8-b527-d9e1be25dc56"
-  - name: "vless-468892476-162"
+  - name: "vless-468892476-216"
     type: "vless"
     server: "31.77.152.224"
     port: 443
@@ -721,7 +913,7 @@ proxies:
     tls: true
     udp: true
     uuid: "176bc48c-460b-4260-abbd-68fd5ea85270"
-  - name: "vless-468877607-164"
+  - name: "vless-468877607-218"
     type: "vless"
     server: "176.108.252.108"
     port: 9879
@@ -733,7 +925,7 @@ proxies:
     tls: true
     udp: true
     uuid: "130e6aab-9eba-441e-9021-22cbccc72832"
-  - name: "vless-468892492-166"
+  - name: "vless-468892492-220"
     type: "vless"
     server: "176.108.240.74"
     port: 9443
@@ -746,7 +938,7 @@ proxies:
     tls: true
     udp: true
     uuid: "553e3253-c454-431d-a7e6-42bc06ea5e14"
-  - name: "vmess-465811707-168"
+  - name: "vmess-465811707-222"
     type: "vmess"
     server: "82.198.246.37"
     port: 180
@@ -755,7 +947,7 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
-  - name: "vmess-463901255-170"
+  - name: "vmess-463901255-224"
     type: "vmess"
     server: "142.93.176.61"
     port: 15422
@@ -764,7 +956,7 @@ proxies:
     network: "ws"
     udp: true
     uuid: "40ec6644-4c68-4825-be1e-cf71c16942c7"
-  - name: "vmess-471035802-172"
+  - name: "vmess-471035802-226"
     type: "vmess"
     server: "172.111.146.64"
     port: 80
@@ -773,42 +965,50 @@ proxies:
     network: "ws"
     udp: true
     uuid: "05b8c783-7f59-47f9-9923-06a465679f6a"
-  - name: "hysteria2-468892456-178"
+  - name: "hysteria2-468892456-232"
     type: "hysteria2"
     server: "54.255.220.11"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "css.rbxcdn.com"
-  - name: "hysteria2-468892454-180"
+  - name: "hysteria2-468892454-234"
     type: "hysteria2"
     server: "13.229.110.73"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
-  - name: "hysteria2-468892455-182"
+  - name: "hysteria2-468892455-236"
     type: "hysteria2"
     server: "47.129.9.33"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
-  - name: "hysteria2-468883170-184"
+  - name: "hysteria2-468883170-238"
     type: "hysteria2"
     server: "150.241.102.127"
     port: 443
     password: "042a1881-44e4-4781-bd40-bf75164faf4f"
     skip-cert-verify: true
     sni: ""
-  - name: "shadowsocks-467980813-186"
+  - name: "shadowsocks-467980813-240"
     type: "ss"
     server: "168.107.93.104"
     port: 56927
     cipher: "chacha20-ietf-poly1305"
     password: "Y2QwZTQ0MDYzOWFhNjA5YmE0NTZhNWFkODkzMWNmODU="
     udp: true
-  - name: "trojan-465912217-188"
+  - name: "trojan-266972492-242"
+    type: "trojan"
+    server: "3.112.15.214"
+    port: 443
+    password: "ND91608427"
+    skip-cert-verify: true
+    sni: "adjusted-labrador.rooster465.autos"
+    udp: true
+  - name: "trojan-465912217-244"
     type: "trojan"
     server: "supreme-lobster.rooster465.autos"
     port: 443
@@ -816,15 +1016,63 @@ proxies:
     skip-cert-verify: true
     sni: "supreme-lobster.rooster465.autos"
     udp: true
-  - name: "trojan-470979877-190"
+  - name: "trojan-453179892-246"
     type: "trojan"
-    server: "awaited-lark.rooster465.autos"
+    server: "modest-pup.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: "modest-pup.rooster465.autos"
+    udp: true
+  - name: "trojan-473961180-248"
+    type: "trojan"
+    server: "13.158.135.118"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: "literate-cow.rooster465.autos"
+    udp: true
+  - name: "trojan-473961181-250"
+    type: "trojan"
+    server: "13.193.221.67"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: "main-impala.rooster465.autos"
+    udp: true
+  - name: "trojan-473961179-252"
+    type: "trojan"
+    server: "13.115.230.84"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: "polished-imp.rooster465.autos"
+    udp: true
+  - name: "trojan-453179898-254"
+    type: "trojan"
+    server: "on-roughy.rooster465.autos"
     port: 443
     password: "AE62539071"
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979896-192"
+  - name: "trojan-453179895-258"
+    type: "trojan"
+    server: "new-antelope.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179864-260"
+    type: "trojan"
+    server: "glorious-lark.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979896-264"
     type: "trojan"
     server: "evolving-kangaroo.rooster465.autos"
     port: 443
@@ -832,7 +1080,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979878-194"
+  - name: "trojan-470979878-266"
     type: "trojan"
     server: "balanced-goat.rooster465.autos"
     port: 443
@@ -840,15 +1088,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979948-198"
-    type: "trojan"
-    server: "rich-gelding.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979888-200"
+  - name: "trojan-470979888-272"
     type: "trojan"
     server: "definite-hen.rooster465.autos"
     port: 443
@@ -856,7 +1096,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979953-202"
+  - name: "trojan-470979953-274"
     type: "trojan"
     server: "simple-rodent.rooster465.autos"
     port: 443
@@ -864,23 +1104,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979979-204"
-    type: "trojan"
-    server: "picked-guinea.rooster465.autos"
-    port: 443
-    password: "ND91608427"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-461629133-206"
-    type: "trojan"
-    server: "inviting-burro.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "inviting-burro.rooster465.autos"
-    udp: true
-  - name: "trojan-468227521-208"
+  - name: "trojan-468227521-280"
     type: "trojan"
     server: "dynamic-grubworm.rooster465.autos"
     port: 443
@@ -888,15 +1112,7 @@ proxies:
     skip-cert-verify: false
     sni: "dynamic-grubworm.rooster465.autos"
     udp: true
-  - name: "trojan-461629143-210"
-    type: "trojan"
-    server: "oriented-pegasus.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "oriented-pegasus.rooster465.autos"
-    udp: true
-  - name: "trojan-463730959-212"
+  - name: "trojan-463730959-282"
     type: "trojan"
     server: "v1in2.stableq.top"
     port: 24407
@@ -904,29 +1120,40 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "vless-461844954-214"
+  - name: "vless-472516257-284"
     type: "vless"
-    server: "xmm5.130209.xyz"
-    port: 8443
+    server: "104.16.6.70"
+    port: 443
     network: "ws"
-    servername: "hongkong.11459178.xyz"
+    servername: "josni.hoyes.cloudns.ch"
     skip-cert-verify: false
     tls: true
     udp: true
-    uuid: "65c56e1f-5c41-40bc-b0b5-9346772476ca"
-  - name: "vless-463767993-216"
+    uuid: "83afd88f-200f-4d89-bfc7-66eff160c1d8"
+  - name: "vless-472516258-286"
     type: "vless"
-    server: "18.141.210.77"
-    port: 8686
-    client-fingerprint: "chrome"
-    network: "tcp"
-    public-key: "A3NXnUIT-W0m1Y_leRnv5so2IeCvk9FCFgL31PulfTw"
-    short-id: "628b3c90c98ead4f"
-    servername: "www.apple.com"
+    server: "104.16.89.120"
+    port: 443
+    network: "ws"
+    servername: "josni.hoyes.cloudns.ch"
+    skip-cert-verify: false
     tls: true
     udp: true
-    uuid: "1a17b19d-4896-4531-af79-6e91d8ef8228"
-  - name: "vless-468154215-220"
+    uuid: "83afd88f-200f-4d89-bfc7-66eff160c1d8"
+  - name: "vless-413051575-288"
+    type: "vless"
+    server: "31.58.50.200"
+    port: 8443
+    client-fingerprint: "firefox"
+    flow: "xtls-rprx-vision"
+    network: "tcp"
+    public-key: "mr5AF0LFyDzYDRoYAwH6QNcHXL77-LoiwRx50ZzU8QU"
+    short-id: ""
+    servername: "tradingview.com"
+    tls: true
+    udp: true
+    uuid: "8ed35e81-16b9-4316-bcb4-4be6c4db4449"
+  - name: "vless-468154215-292"
     type: "vless"
     server: "31.58.50.200"
     port: 8443
@@ -939,7 +1166,7 @@ proxies:
     tls: true
     udp: true
     uuid: "00dda8ac-c263-4106-a740-1e4478a7dc44"
-  - name: "vless-468154225-222"
+  - name: "vless-468154225-294"
     type: "vless"
     server: "169.40.42.232"
     port: 443
@@ -952,7 +1179,7 @@ proxies:
     tls: true
     udp: true
     uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
-  - name: "vless-468121237-224"
+  - name: "vless-468121237-296"
     type: "vless"
     server: "51.81.223.225"
     port: 11094
@@ -965,7 +1192,7 @@ proxies:
     tls: true
     udp: true
     uuid: "f1fa0ad9-b122-4b7c-da82-4bea9edc48dd"
-  - name: "vless-468154221-228"
+  - name: "vless-468154221-300"
     type: "vless"
     server: "67.220.73.204"
     port: 18662
@@ -978,7 +1205,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-468154212-230"
+  - name: "vless-468154212-302"
     type: "vless"
     server: "164.37.105.2"
     port: 443
@@ -991,7 +1218,7 @@ proxies:
     tls: true
     udp: true
     uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-468901448-232"
+  - name: "vless-468901448-304"
     type: "vless"
     server: "34.96.200.38"
     port: 443
@@ -1003,7 +1230,7 @@ proxies:
     tls: true
     udp: true
     uuid: "2058418a-7718-4050-bdd5-db7487ffdb3b"
-  - name: "vless-468906021-234"
+  - name: "vless-468906021-306"
     type: "vless"
     server: "198.105.113.205"
     port: 443
@@ -1016,7 +1243,7 @@ proxies:
     tls: true
     udp: true
     uuid: "18fd025a-eeb7-4860-b468-299a80b1b2c6"
-  - name: "vless-468906023-236"
+  - name: "vless-468906023-308"
     type: "vless"
     server: "2.26.139.200"
     port: 443
@@ -1029,7 +1256,7 @@ proxies:
     tls: true
     udp: true
     uuid: "bda0ede7-ef0a-4fbc-b3b6-1205e55ffb48"
-  - name: "vless-470361345-238"
+  - name: "vless-470361345-310"
     type: "vless"
     server: "france.zestmarket.ir"
     port: 6800
@@ -1041,7 +1268,7 @@ proxies:
     tls: true
     udp: true
     uuid: "7595cd50-9326-48e4-a7bc-802e85e643ec"
-  - name: "vless-468905070-240"
+  - name: "vless-468905070-312"
     type: "vless"
     server: "164.37.100.59"
     port: 443
@@ -1051,7 +1278,7 @@ proxies:
     tls: true
     udp: true
     uuid: "272b98b4-d02b-4dbc-bd8c-d8de5249b999"
-  - name: "vless-468905075-244"
+  - name: "vless-468905075-316"
     type: "vless"
     server: "144.31.106.22"
     port: 443
@@ -1064,7 +1291,7 @@ proxies:
     tls: true
     udp: true
     uuid: "6981a67d-fe1e-48c6-b7f0-53a86a14da0d"
-  - name: "vless-468906030-246"
+  - name: "vless-468906030-318"
     type: "vless"
     server: "70.39.198.93"
     port: 46197
@@ -1076,7 +1303,7 @@ proxies:
     tls: true
     udp: true
     uuid: "5aab0d40-c509-4560-b048-ade921fdfb6a"
-  - name: "vless-468154209-248"
+  - name: "vless-468154209-320"
     type: "vless"
     server: "151.245.217.159"
     port: 443
@@ -1089,7 +1316,7 @@ proxies:
     tls: true
     udp: true
     uuid: "f20db72d-58c3-4789-9225-03a8cfc2e2c3"
-  - name: "vless-470978089-250"
+  - name: "vless-470978089-322"
     type: "vless"
     server: "216.106.183.132"
     port: 443
@@ -1102,7 +1329,7 @@ proxies:
     tls: true
     udp: true
     uuid: "aa8250e1-954c-449e-98fc-aa56a973a3f1"
-  - name: "vless-468889185-252"
+  - name: "vless-468889185-324"
     type: "vless"
     server: "156.229.161.107"
     port: 10001
@@ -1115,7 +1342,7 @@ proxies:
     tls: true
     udp: true
     uuid: "9c79aceb-4649-44ea-9698-b5e9ecf6d6da"
-  - name: "vless-470980168-254"
+  - name: "vless-470980168-326"
     type: "vless"
     server: "estproxy2.lockdwn.com"
     port: 8443
@@ -1125,7 +1352,7 @@ proxies:
     tls: true
     udp: true
     uuid: "19f54e37-5fae-47f6-bc10-e71ccbc58389"
-  - name: "vless-470984246-256"
+  - name: "vless-470984246-328"
     type: "vless"
     server: "35.187.156.27"
     port: 443
@@ -1137,7 +1364,7 @@ proxies:
     tls: true
     udp: true
     uuid: "b8ca2900-3ed7-4b58-970e-060d0a6cbf99"
-  - name: "vless-470986111-258"
+  - name: "vless-470986111-330"
     type: "vless"
     server: "germ2.freeinternat.com"
     port: 443
@@ -1150,7 +1377,7 @@ proxies:
     tls: true
     udp: true
     uuid: "fbb74aa8-b89a-4f20-9504-6b25aadf6681"
-  - name: "vless-470977960-260"
+  - name: "vless-470977960-332"
     type: "vless"
     server: "31.58.50.200"
     port: 8443
@@ -1163,7 +1390,7 @@ proxies:
     tls: true
     udp: true
     uuid: "72d995a9-df53-4e8e-a8b6-e83f3a7d08ea"
-  - name: "vless-470977998-264"
+  - name: "vless-470977998-336"
     type: "vless"
     server: "103.106.229.190"
     port: 19261
@@ -1176,7 +1403,7 @@ proxies:
     tls: true
     udp: true
     uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-  - name: "vless-470976070-266"
+  - name: "vless-470976070-338"
     type: "vless"
     server: "204.48.20.223"
     port: 30906
@@ -1188,7 +1415,7 @@ proxies:
     tls: true
     udp: true
     uuid: "43a13764-23dd-4e01-8b79-cde8a16e13ce"
-  - name: "vless-470978154-268"
+  - name: "vless-470978154-340"
     type: "vless"
     server: "137.184.218.169"
     port: 36925
@@ -1201,14 +1428,14 @@ proxies:
     tls: true
     udp: true
     uuid: "c9fd0fb1-8251-4106-b09a-f4b426736f67"
-  - name: "vless-470983995-270"
+  - name: "vless-470983995-342"
     type: "vless"
     server: "95.85.224.3"
     port: 8443
     network: "grpc"
     udp: true
     uuid: "7e8f7489-e65f-4be6-93ed-867a74ec6759"
-  - name: "vless-468880792-272"
+  - name: "vless-468880792-344"
     type: "vless"
     server: "144.31.190.133"
     port: 8081
@@ -1221,7 +1448,7 @@ proxies:
     tls: true
     udp: true
     uuid: "d69008f8-f222-4016-a8c2-349c21e6f2af"
-  - name: "vless-468877491-274"
+  - name: "vless-468877491-346"
     type: "vless"
     server: "72.56.36.96"
     port: 40443
@@ -1234,35 +1461,35 @@ proxies:
     tls: true
     udp: true
     uuid: "598b823c-d3fc-4013-aae5-837f10080f7a"
-  - name: "hysteria2-468892439-276"
+  - name: "hysteria2-468892439-348"
     type: "hysteria2"
     server: "vpn-ca-001.fastervpn.world"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "css.rbxcdn.com"
-  - name: "hysteria2-467980788-278"
+  - name: "hysteria2-467980788-350"
     type: "hysteria2"
     server: "202.146.222.89"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "https://t.me/clashv8\\U0001F1E8\\U0001F1F3"
-  - name: "hysteria2-468883194-280"
+  - name: "hysteria2-468883194-352"
     type: "hysteria2"
     server: "66.94.121.46"
     port: 443
     password: "gf1:gfhysteria2024"
     skip-cert-verify: true
     sni: "www.broadcom.com"
-  - name: "shadowsocks-467980824-282"
+  - name: "shadowsocks-467980824-354"
     type: "ss"
     server: "161.153.115.187"
     port: 50356
     cipher: "2022-blake3-chacha20-poly1305"
     password: "2ecH6KjZ47PFvs90eNt1AAstlT3n5eZergD2O5IXEas="
     udp: true
-  - name: "trojan-468076258-284"
+  - name: "trojan-468076258-358"
     type: "trojan"
     server: "better-molly.rooster465.autos"
     port: 443
@@ -1270,7 +1497,15 @@ proxies:
     skip-cert-verify: false
     sni: "better-molly.rooster465.autos"
     udp: true
-  - name: "trojan-465910220-286"
+  - name: "trojan-453179899-360"
+    type: "trojan"
+    server: "oriented-pegasus.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-465910220-362"
     type: "trojan"
     server: "causal-ladybug.rooster465.autos"
     port: 443
@@ -1278,7 +1513,7 @@ proxies:
     skip-cert-verify: false
     sni: "causal-ladybug.rooster465.autos"
     udp: true
-  - name: "trojan-468215301-288"
+  - name: "trojan-468215301-364"
     type: "trojan"
     server: "main-impala.rooster465.autos"
     port: 443
@@ -1286,7 +1521,7 @@ proxies:
     skip-cert-verify: true
     sni: ""
     udp: true
-  - name: "trojan-470979945-290"
+  - name: "trojan-470979945-366"
     type: "trojan"
     server: "pure-kodiak.rooster465.autos"
     port: 443
@@ -1294,7 +1529,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979944-292"
+  - name: "trojan-470979944-368"
     type: "trojan"
     server: "proper-mouse.rooster465.autos"
     port: 443
@@ -1302,7 +1537,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-468227534-294"
+  - name: "trojan-468227534-370"
     type: "trojan"
     server: "wealthy-loon.rooster465.autos"
     port: 443
@@ -1310,15 +1545,7 @@ proxies:
     skip-cert-verify: false
     sni: "wealthy-loon.rooster465.autos"
     udp: true
-  - name: "trojan-461629142-296"
-    type: "trojan"
-    server: "glorious-lark.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "glorious-lark.rooster465.autos"
-    udp: true
-  - name: "trojan-470979915-298"
+  - name: "trojan-470979915-372"
     type: "trojan"
     server: "immortal-woodcock.rooster465.autos"
     port: 443
@@ -1326,7 +1553,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979887-300"
+  - name: "trojan-470979887-374"
     type: "trojan"
     server: "deep-ringtail.rooster465.autos"
     port: 443
@@ -1334,15 +1561,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-461629135-302"
-    type: "trojan"
-    server: "eager-camel.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "eager-camel.rooster465.autos"
-    udp: true
-  - name: "trojan-470979895-304"
+  - name: "trojan-470979895-376"
     type: "trojan"
     server: "engaged-skink.rooster465.autos"
     port: 443
@@ -1350,7 +1569,15 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979885-306"
+  - name: "trojan-453177874-378"
+    type: "trojan"
+    server: "dear-hermit.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-470979885-380"
     type: "trojan"
     server: "coherent-newt.rooster465.autos"
     port: 443
@@ -1358,7 +1585,7 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979904-308"
+  - name: "trojan-470979904-382"
     type: "trojan"
     server: "game-thrush.rooster465.autos"
     port: 443
@@ -1366,15 +1593,47 @@ proxies:
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "trojan-470979909-310"
+  - name: "trojan-453179872-386"
     type: "trojan"
-    server: "harmless-imp.rooster465.autos"
+    server: "ideal-phoenix.rooster465.autos"
     port: 443
     password: "AE62539071"
     skip-cert-verify: false
     sni: ""
     udp: true
-  - name: "vless-465856923-314"
+  - name: "trojan-453179862-388"
+    type: "trojan"
+    server: "fun-poodle.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179873-390"
+    type: "trojan"
+    server: "infinite-tuna.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453179874-392"
+    type: "trojan"
+    server: "integral-quetzal.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "trojan-453181871-396"
+    type: "trojan"
+    server: "upright-bedbug.rooster465.autos"
+    port: 443
+    password: "AE62539071"
+    skip-cert-verify: false
+    sni: ""
+    udp: true
+  - name: "vless-465856923-402"
     type: "vless"
     server: "172.66.44.97"
     port: 443
@@ -1384,7 +1643,30 @@ proxies:
     tls: true
     udp: true
     uuid: "83afd88f-200f-4d89-bfc7-66eff160c1d8"
-  - name: "vless-468207513-316"
+  - name: "vless-406346568-404"
+    type: "vless"
+    server: "192.204.33.111"
+    port: 56679
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    network: "raw"
+    public-key: "nXNWy2NMbCitk1oBQwEmbattbPeIC1vYpNrCahGFlRc"
+    short-id: "574fb961ca6be4"
+    servername: "www.tesla.com"
+    tls: true
+    udp: true
+    uuid: "4935bf38-dd83-454a-ba0f-6fa18c418fc0"
+  - name: "vless-472513255-406"
+    type: "vless"
+    server: "www.usyun.cc"
+    port: 443
+    network: "ws"
+    servername: "usyun.cc"
+    skip-cert-verify: false
+    tls: true
+    udp: true
+    uuid: "6ae4e810-7917-4c33-882a-eca792ae33d9"
+  - name: "vless-468207513-408"
     type: "vless"
     server: "xmmcf.130209.xyz"
     port: 8443
@@ -1394,579 +1676,239 @@ proxies:
     tls: true
     udp: true
     uuid: "65c56e1f-5c41-40bc-b0b5-9346772476ca"
-  - name: "vless-461814960-318"
+  - name: "vless-473980754-410"
     type: "vless"
-    server: "84.32.61.68"
+    server: "178.128.52.52"
     port: 443
-    client-fingerprint: "firefox"
+    client-fingerprint: "chrome"
     flow: "xtls-rprx-vision"
     network: "tcp"
-    public-key: "oYo4UjPmIVNSFTLYR7wuadY2v44sVuckzRAKyzi0UAE"
-    short-id: "a25c781f24d4209f"
-    servername: "united.nosok-top.com"
+    public-key: "EeLAX-BAjzSdRes-zpUFzVOYsBedmP8lUOHhXXJFXyI"
+    short-id: "5a42dbd7e26a0415"
+    servername: "zoom.us"
     tls: true
     udp: true
-    uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-468173300-322"
+    uuid: "efd11a89-7506-44ce-95b6-6654859f155b"
+  - name: "vless-468173300-412"
     type: "vless"
     server: "84.235.168.64"
     port: 62145
     network: "tcp"
     udp: true
     uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
-  - name: "vless-465809710-326"
+  - name: "vless-472518255-414"
+    type: "vless"
+    server: "84.235.172.212"
+    port: 62145
+    network: "tcp"
+    udp: true
+    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
+  - name: "vless-473979752-416"
+    type: "vless"
+    server: "169.40.42.179"
+    port: 443
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    network: "tcp"
+    public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
+    short-id: "c39cc7310a"
+    servername: "yahoo.com"
+    tls: true
+    udp: true
+    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
+  - name: "vless-465809710-418"
     type: "vless"
     server: "microb.pymmaster.shop"
     port: 2040
     network: "tcp"
     udp: true
     uuid: "ab34edc2-b617-4598-ba0a-e15d3b78fe21"
-  - name: "vless-468103022-328"
-    type: "vless"
-    server: "134.98.157.168"
-    port: 62145
-    network: "tcp"
-    udp: true
-    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
-  - name: "vless-463745415-330"
-    type: "vless"
-    server: "157.137.224.236"
-    port: 62145
-    network: "tcp"
-    udp: true
-    uuid: "8fb65472-5957-4f64-ba2d-b5812b2f155a"
-  - name: "vless-468906610-332"
-    type: "vless"
-    server: "95.163.232.183"
-    port: 443
-    client-fingerprint: "firefox"
-    network: "grpc"
-    public-key: "V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ"
-    short-id: "abcd"
-    servername: "5post-gate.x5.ru"
-    tls: true
-    udp: true
-    uuid: "aa12df70-879c-49b9-aaf7-3c243c059ba5"
-  - name: "vless-468906594-334"
-    type: "vless"
-    server: "95.163.232.183"
-    port: 443
-    client-fingerprint: "firefox"
-    network: "grpc"
-    public-key: "V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ"
-    short-id: "abcd"
-    servername: "5post-gate.x5.ru"
-    tls: true
-    udp: true
-    uuid: "fc648d52-2b36-49a1-a97d-6608f733878a"
-  - name: "vless-468905072-338"
-    type: "vless"
-    server: "2.26.130.157"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "GUdrwZxYWVvIFgC2fSJDs6U5Un6c7t1Yuvzl7yI1ohU"
-    short-id: "2f6a8c3e90b2d574"
-    servername: "nora.mycdn-me.ru"
-    tls: true
-    udp: true
-    uuid: "bda0ede7-ef0a-4fbc-b3b6-1205e55ffb48"
-  - name: "vless-468906645-340"
-    type: "vless"
-    server: "95.163.232.183"
-    port: 443
-    client-fingerprint: "firefox"
-    network: "grpc"
-    public-key: "V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ"
-    short-id: "abcd"
-    servername: "5post-gate.x5.ru"
-    tls: true
-    udp: true
-    uuid: "3259e320-639c-43a5-ab23-0975dadd6296"
-  - name: "vless-468906020-346"
-    type: "vless"
-    server: "195.133.35.81"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "8R53x47787bPBVJnKyLkOhTztNW6djdTh0WEWph8710"
-    short-id: 7479
-    servername: "www.amd.com"
-    tls: true
-    udp: true
-    uuid: "e2cd1f88-8582-4ab9-9497-de59de37b626"
-  - name: "vless-468901396-348"
-    type: "vless"
-    server: "104.16.72.41"
-    port: 2095
-    network: "ws"
-    udp: true
-    uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-  - name: "vless-470969182-350"
-    type: "vless"
-    server: "62.233.43.86"
-    port: 9893
-    client-fingerprint: "qq"
-    network: "grpc"
-    public-key: "bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU"
-    short-id: ""
-    servername: "dl.google.com"
-    tls: true
-    udp: true
-    uuid: "553e3253-c454-431d-a7e6-42bc06ea5e14"
-  - name: "vless-468906636-352"
-    type: "vless"
-    server: "95.163.232.183"
-    port: 443
-    client-fingerprint: "firefox"
-    network: "grpc"
-    public-key: "V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ"
-    short-id: "abcd"
-    servername: "5post-gate.x5.ru"
-    tls: true
-    udp: true
-    uuid: "dca16f50-7b3f-473b-9acf-2d2c3c4c78a9"
-  - name: "vless-468905063-354"
-    type: "vless"
-    server: "104.243.39.90"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "x8V9jdSIUmz0pTfefPynLuMZNBPphuZcN6eSnbfk1hk"
-    short-id: "a111c0e21d7b6485"
-    servername: "karapetik.mycdn-me.ru"
-    tls: true
-    udp: true
-    uuid: "bda0ede7-ef0a-4fbc-b3b6-1205e55ffb48"
-  - name: "vless-468906029-356"
-    type: "vless"
-    server: "176.109.108.196"
-    port: 9899
-    client-fingerprint: "qq"
-    network: "grpc"
-    public-key: "bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU"
-    short-id: "aa"
-    servername: "dl.google.com"
-    tls: true
-    udp: true
-    uuid: "14777bd9-56a5-46f6-a94f-826b4800dc05"
-  - name: "vless-468888167-360"
-    type: "vless"
-    server: "176.109.108.83"
-    port: 9830
-    client-fingerprint: "qq"
-    network: "grpc"
-    public-key: "bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU"
-    short-id: "aabb"
-    servername: "dl.google.com"
-    tls: true
-    udp: true
-    uuid: "553e3253-c454-431d-a7e6-42bc06ea5e14"
-  - name: "vless-468894828-362"
-    type: "vless"
-    server: "88.216.190.139"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "NqYnddqVskPX-aTP4Vdip_XDnMphLwVtgc3XwTc2QVg"
-    short-id: "9c2378562188c3cb"
-    servername: "ger.nosok-top.com"
-    tls: true
-    udp: true
-    uuid: "ff1b0b50-70dc-4bae-866e-55cff86f4d6d"
-  - name: "vless-470980167-364"
-    type: "vless"
-    server: "estproxy2.lockdwn.com"
-    port: 443
-    network: "ws"
-    udp: true
-    uuid: "19f54e37-5fae-47f6-bc10-e71ccbc58389"
-  - name: "vless-470976184-366"
-    type: "vless"
-    server: "70.39.197.13"
-    port: 46197
-    client-fingerprint: "firefox"
-    network: "tcp"
-    public-key: "npJEB6VpYJ9iYTZ-z0IL06Xs7PEz0N3fZU_IRwftQ00"
-    short-id: "f24c17bb7fc284"
-    servername: "updates.cdn-apple.com"
-    tls: true
-    udp: true
-    uuid: "5aab0d40-c509-4560-b048-ade921fdfb6a"
-  - name: "vless-470978104-368"
-    type: "vless"
-    server: "216.167.37.6"
-    port: 37262
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "2CdblQdVObz2O0shOAdrW5Joljbng8mXIoWVWa2sFSI"
-    short-id: "3a8e473202"
-    servername: "yahoo.com"
-    tls: true
-    udp: true
-    uuid: "b0804657-2bd1-4ccd-bdc8-b599b2d2f23d"
-  - name: "vless-470978283-370"
-    type: "vless"
-    server: "31.58.50.200"
-    port: 8443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "mr5AF0LFyDzYDRoYAwH6QNcHXL77-LoiwRx50ZzU8QU"
-    short-id: ""
-    servername: "tradingview.com"
-    tls: true
-    udp: true
-    uuid: "fcdee475-6aa0-4b8b-be8d-f587b5c5478c"
-  - name: "vless-470978128-372"
-    type: "vless"
-    server: "216.227.169.104"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "AYL1z7PNyo6LqYLeZpXa50FnK9eEu7o18KHRhOlST1w"
-    short-id: "bd72"
-    servername: "deepl.com"
-    tls: true
-    udp: true
-    uuid: "b8794f67-80d9-4124-8fc5-2d2ce5516573"
-  - name: "vless-468890188-376"
-    type: "vless"
-    server: "fin1.panel11.ru"
-    port: 443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "lQ8pnlOU0kqS77TA7Fftl8nSzktXLzFpOLGqCZEAhjg"
-    short-id: "aaec521b22bbe6cb"
-    servername: "fin1.panel11.ru"
-    tls: true
-    udp: true
-    uuid: "9aff0732-7ce4-4b34-ba20-e67c6df64fdd"
-  - name: "vless-470982106-378"
-    type: "vless"
-    server: "fr213.mechvpn.online"
-    port: 443
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    servername: "fr213.mechvpn.online"
-    skip-cert-verify: false
-    tls: true
-    udp: true
-    uuid: "53c76647-14d1-4df5-99cb-be99ad2e6bd9"
-  - name: "vless-470978276-380"
-    type: "vless"
-    server: "31.58.50.200"
-    port: 8443
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    network: "tcp"
-    public-key: "mr5AF0LFyDzYDRoYAwH6QNcHXL77-LoiwRx50ZzU8QU"
-    short-id: ""
-    servername: "tradingview.com"
-    tls: true
-    udp: true
-    uuid: "fab6b76a-1abe-4f34-8272-77ab121c391c"
-  - name: "vless-468888176-384"
-    type: "vless"
-    server: "45.151.30.127"
-    port: 9872
-    client-fingerprint: "qq"
-    network: "grpc"
-    public-key: "bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU"
-    short-id: "aabbccdd"
-    servername: "dl.google.com"
-    tls: true
-    udp: true
-    uuid: "553e3253-c454-431d-a7e6-42bc06ea5e14"
-  - name: "trojan-465911217-390"
-    type: "trojan"
-    server: "elegant-marten.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: "elegant-marten.rooster465.autos"
-    udp: true
-  - name: "trojan-468215563-394"
-    type: "trojan"
-    server: "shining-haddock.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: "shining-haddock.rooster465.autos"
-    udp: true
-  - name: "trojan-468215295-396"
-    type: "trojan"
-    server: "sacred-hound.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: ""
-    udp: true
-  - name: "trojan-470979897-398"
-    type: "trojan"
-    server: "excited-sole.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979914-400"
-    type: "trojan"
-    server: "ideal-phoenix.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979908-402"
-    type: "trojan"
-    server: "grateful-crawdad.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-461629138-404"
-    type: "trojan"
-    server: "gorgeous-hookworm.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: true
-    sni: "gorgeous-hookworm.rooster465.autos"
-    udp: true
-  - name: "trojan-470979918-406"
-    type: "trojan"
-    server: "intense-wildcat.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979902-408"
-    type: "trojan"
-    server: "fun-poodle.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470979880-410"
-    type: "trojan"
-    server: "capable-jay.rooster465.autos"
-    port: 443
-    password: "AE62539071"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
-  - name: "trojan-470975881-414"
-    type: "trojan"
-    server: "35.72.13.34"
-    port: 443
-    password: "ND91608427"
-    skip-cert-verify: false
-    sni: "casual-bee.rooster465.autos"
-    udp: true
-  - name: "trojan-463730960-416"
-    type: "trojan"
-    server: "v1in2.stableq.top"
-    port: 24408
-    password: "00954640-916f-48d8-aa9a-baee2d828d0e"
-    skip-cert-verify: false
-    sni: ""
-    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - "vless-468154251-0"
-      - "vless-468154240-2"
-      - "vless-468892510-4"
-      - "vless-468892507-6"
-      - "vless-468892535-8"
-      - "hysteria2-468892433-10"
-      - "hysteria2-468892436-12"
-      - "trojan-470342345-14"
-      - "trojan-470979900-16"
-      - "trojan-470979965-18"
-      - "trojan-470979898-20"
-      - "trojan-470979964-22"
-      - "vless-468154185-24"
-      - "vless-468154253-26"
-      - "vless-470978003-28"
-      - "vless-470984040-30"
-      - "vless-470978002-34"
-      - "vless-470977997-36"
-      - "vless-470978036-38"
-      - "vless-468891149-42"
-      - "hysteria2-468892434-44"
-      - "hysteria2-468892437-46"
-      - "hysteria2-468220570-48"
-      - "hysteria2-468234575-50"
-      - "hysteria2-467420662-52"
-      - "hysteria2-461629106-54"
-      - "shadowsocks-467980814-56"
-      - "shadowsocks-468218487-58"
-      - "shadowsocks-465806702-60"
-      - "shadowsocks-463736415-62"
-      - "shadowsocks-461629108-64"
-      - "trojan-463728960-66"
-      - "trojan-468215403-70"
-      - "trojan-468070477-72"
-      - "trojan-470979884-74"
-      - "trojan-468215294-76"
-      - "trojan-470979946-78"
-      - "trojan-470979958-80"
-      - "trojan-470979966-82"
-      - "trojan-470979957-84"
-      - "trojan-470979883-86"
-      - "trojan-470979882-88"
-      - "trojan-470979881-90"
-      - "trojan-465835916-92"
-      - "trojan-461629130-94"
-      - "trojan-468227531-96"
-      - "vless-461791955-98"
-      - "vless-461835954-100"
-      - "vless-468227540-102"
-      - "vless-467980817-104"
-      - "vless-468906031-110"
-      - "vless-468906026-112"
-      - "vless-468901438-114"
-      - "vless-468154254-118"
-      - "vless-468154255-120"
-      - "vless-468906028-122"
-      - "vless-470362344-126"
-      - "vless-468154233-128"
-      - "vless-468316548-132"
-      - "vless-470495486-134"
-      - "vless-468904445-136"
-      - "vless-470978000-138"
-      - "vless-470978015-140"
-      - "vless-470978043-142"
-      - "vless-468892483-144"
-      - "vless-470984239-146"
-      - "vless-470977999-150"
-      - "vless-470977878-152"
-      - "vless-470977980-154"
-      - "vless-470977912-156"
-      - "vless-470978115-158"
-      - "vless-470975915-160"
-      - "vless-468892476-162"
-      - "vless-468877607-164"
-      - "vless-468892492-166"
-      - "vmess-465811707-168"
-      - "vmess-463901255-170"
-      - "vmess-471035802-172"
-      - "hysteria2-468892456-178"
-      - "hysteria2-468892454-180"
-      - "hysteria2-468892455-182"
-      - "hysteria2-468883170-184"
-      - "shadowsocks-467980813-186"
-      - "trojan-465912217-188"
-      - "trojan-470979877-190"
-      - "trojan-470979896-192"
-      - "trojan-470979878-194"
-      - "trojan-470979948-198"
-      - "trojan-470979888-200"
-      - "trojan-470979953-202"
-      - "trojan-470979979-204"
-      - "trojan-461629133-206"
-      - "trojan-468227521-208"
-      - "trojan-461629143-210"
-      - "trojan-463730959-212"
-      - "vless-461844954-214"
-      - "vless-463767993-216"
-      - "vless-468154215-220"
-      - "vless-468154225-222"
-      - "vless-468121237-224"
-      - "vless-468154221-228"
-      - "vless-468154212-230"
-      - "vless-468901448-232"
-      - "vless-468906021-234"
-      - "vless-468906023-236"
-      - "vless-470361345-238"
-      - "vless-468905070-240"
-      - "vless-468905075-244"
-      - "vless-468906030-246"
-      - "vless-468154209-248"
-      - "vless-470978089-250"
-      - "vless-468889185-252"
-      - "vless-470980168-254"
-      - "vless-470984246-256"
-      - "vless-470986111-258"
-      - "vless-470977960-260"
-      - "vless-470977998-264"
-      - "vless-470976070-266"
-      - "vless-470978154-268"
-      - "vless-470983995-270"
-      - "vless-468880792-272"
-      - "vless-468877491-274"
-      - "hysteria2-468892439-276"
-      - "hysteria2-467980788-278"
-      - "hysteria2-468883194-280"
-      - "shadowsocks-467980824-282"
-      - "trojan-468076258-284"
-      - "trojan-465910220-286"
-      - "trojan-468215301-288"
-      - "trojan-470979945-290"
-      - "trojan-470979944-292"
-      - "trojan-468227534-294"
-      - "trojan-461629142-296"
-      - "trojan-470979915-298"
-      - "trojan-470979887-300"
-      - "trojan-461629135-302"
-      - "trojan-470979895-304"
-      - "trojan-470979885-306"
-      - "trojan-470979904-308"
-      - "trojan-470979909-310"
-      - "vless-465856923-314"
-      - "vless-468207513-316"
-      - "vless-461814960-318"
-      - "vless-468173300-322"
-      - "vless-465809710-326"
-      - "vless-468103022-328"
-      - "vless-463745415-330"
-      - "vless-468906610-332"
-      - "vless-468906594-334"
-      - "vless-468905072-338"
-      - "vless-468906645-340"
-      - "vless-468906020-346"
-      - "vless-468901396-348"
-      - "vless-470969182-350"
-      - "vless-468906636-352"
-      - "vless-468905063-354"
-      - "vless-468906029-356"
-      - "vless-468888167-360"
-      - "vless-468894828-362"
-      - "vless-470980167-364"
-      - "vless-470976184-366"
-      - "vless-470978104-368"
-      - "vless-470978283-370"
-      - "vless-470978128-372"
-      - "vless-468890188-376"
-      - "vless-470982106-378"
-      - "vless-470978276-380"
-      - "vless-468888176-384"
-      - "trojan-465911217-390"
-      - "trojan-468215563-394"
-      - "trojan-468215295-396"
-      - "trojan-470979897-398"
-      - "trojan-470979914-400"
-      - "trojan-470979908-402"
-      - "trojan-461629138-404"
-      - "trojan-470979918-406"
-      - "trojan-470979902-408"
-      - "trojan-470979880-410"
-      - "trojan-470975881-414"
-      - "trojan-463730960-416"
+      - "trojan-372803807-0"
+      - "vless-395875280-2"
+      - "trojan-395852279-4"
+      - "trojan-453179915-6"
+      - "trojan-453179905-8"
+      - "trojan-453179861-10"
+      - "trojan-453177861-12"
+      - "trojan-453179920-14"
+      - "vless-468154251-16"
+      - "vless-468154240-18"
+      - "vless-461827954-20"
+      - "vless-468892510-22"
+      - "vless-461745755-24"
+      - "vless-468892507-26"
+      - "vless-468892535-28"
+      - "hysteria2-468892433-30"
+      - "hysteria2-468892436-32"
+      - "trojan-470342345-34"
+      - "trojan-470979900-36"
+      - "trojan-453179889-38"
+      - "trojan-470979965-40"
+      - "trojan-470979898-42"
+      - "trojan-453179867-44"
+      - "trojan-453177867-46"
+      - "trojan-470979964-48"
+      - "trojan-453179919-50"
+      - "trojan-453179877-52"
+      - "trojan-453177880-54"
+      - "trojan-453179891-56"
+      - "trojan-453179910-58"
+      - "trojan-453179907-60"
+      - "trojan-453179916-62"
+      - "trojan-453179881-64"
+      - "vless-468154185-66"
+      - "vless-395870277-68"
+      - "vless-468154253-70"
+      - "vless-461844954-72"
+      - "vless-470978003-74"
+      - "vless-470984040-76"
+      - "vless-470978002-80"
+      - "vless-470977997-82"
+      - "vless-470978036-84"
+      - "vless-89074-88"
+      - "vless-468891149-92"
+      - "hysteria2-468892434-94"
+      - "hysteria2-468892437-96"
+      - "hysteria2-468220570-98"
+      - "hysteria2-468234575-100"
+      - "hysteria2-467420662-102"
+      - "shadowsocks-467980814-104"
+      - "shadowsocks-468218487-106"
+      - "shadowsocks-465806702-108"
+      - "shadowsocks-463736415-110"
+      - "trojan-406334568-112"
+      - "trojan-463728960-114"
+      - "trojan-468215403-118"
+      - "trojan-470979884-124"
+      - "trojan-468215294-126"
+      - "trojan-470979946-128"
+      - "trojan-453179878-130"
+      - "trojan-453177863-132"
+      - "trojan-470979958-134"
+      - "trojan-470979966-136"
+      - "trojan-453179866-138"
+      - "trojan-470979957-140"
+      - "trojan-453179927-142"
+      - "trojan-453179883-144"
+      - "trojan-470979883-146"
+      - "trojan-470979881-150"
+      - "trojan-465835916-152"
+      - "trojan-468227531-154"
+      - "vless-468227540-156"
+      - "vless-467980817-158"
+      - "vless-468906031-164"
+      - "vless-468906026-166"
+      - "vless-468901438-168"
+      - "vless-468154254-172"
+      - "vless-468154255-174"
+      - "vless-468906028-176"
+      - "vless-470362344-180"
+      - "vless-468154233-182"
+      - "vless-468316548-186"
+      - "vless-470495486-188"
+      - "vless-468904445-190"
+      - "vless-470978000-192"
+      - "vless-470978015-194"
+      - "vless-470978043-196"
+      - "vless-468892483-198"
+      - "vless-470984239-200"
+      - "vless-470977999-204"
+      - "vless-470977878-206"
+      - "vless-470977980-208"
+      - "vless-470977912-210"
+      - "vless-470978115-212"
+      - "vless-470975915-214"
+      - "vless-468892476-216"
+      - "vless-468877607-218"
+      - "vless-468892492-220"
+      - "vmess-465811707-222"
+      - "vmess-463901255-224"
+      - "vmess-471035802-226"
+      - "hysteria2-468892456-232"
+      - "hysteria2-468892454-234"
+      - "hysteria2-468892455-236"
+      - "hysteria2-468883170-238"
+      - "shadowsocks-467980813-240"
+      - "trojan-266972492-242"
+      - "trojan-465912217-244"
+      - "trojan-453179892-246"
+      - "trojan-473961180-248"
+      - "trojan-473961181-250"
+      - "trojan-473961179-252"
+      - "trojan-453179898-254"
+      - "trojan-453179895-258"
+      - "trojan-453179864-260"
+      - "trojan-470979896-264"
+      - "trojan-470979878-266"
+      - "trojan-470979888-272"
+      - "trojan-470979953-274"
+      - "trojan-468227521-280"
+      - "trojan-463730959-282"
+      - "vless-472516257-284"
+      - "vless-472516258-286"
+      - "vless-413051575-288"
+      - "vless-468154215-292"
+      - "vless-468154225-294"
+      - "vless-468121237-296"
+      - "vless-468154221-300"
+      - "vless-468154212-302"
+      - "vless-468901448-304"
+      - "vless-468906021-306"
+      - "vless-468906023-308"
+      - "vless-470361345-310"
+      - "vless-468905070-312"
+      - "vless-468905075-316"
+      - "vless-468906030-318"
+      - "vless-468154209-320"
+      - "vless-470978089-322"
+      - "vless-468889185-324"
+      - "vless-470980168-326"
+      - "vless-470984246-328"
+      - "vless-470986111-330"
+      - "vless-470977960-332"
+      - "vless-470977998-336"
+      - "vless-470976070-338"
+      - "vless-470978154-340"
+      - "vless-470983995-342"
+      - "vless-468880792-344"
+      - "vless-468877491-346"
+      - "hysteria2-468892439-348"
+      - "hysteria2-467980788-350"
+      - "hysteria2-468883194-352"
+      - "shadowsocks-467980824-354"
+      - "trojan-468076258-358"
+      - "trojan-453179899-360"
+      - "trojan-465910220-362"
+      - "trojan-468215301-364"
+      - "trojan-470979945-366"
+      - "trojan-470979944-368"
+      - "trojan-468227534-370"
+      - "trojan-470979915-372"
+      - "trojan-470979887-374"
+      - "trojan-470979895-376"
+      - "trojan-453177874-378"
+      - "trojan-470979885-380"
+      - "trojan-470979904-382"
+      - "trojan-453179872-386"
+      - "trojan-453179862-388"
+      - "trojan-453179873-390"
+      - "trojan-453179874-392"
+      - "trojan-453181871-396"
+      - "vless-465856923-402"
+      - "vless-406346568-404"
+      - "vless-472513255-406"
+      - "vless-468207513-408"
+      - "vless-473980754-410"
+      - "vless-468173300-412"
+      - "vless-472518255-414"
+      - "vless-473979752-416"
+      - "vless-465809710-418"
   - name: "AUTO"
     type: url-test
     url: "http://www.gstatic.com/generate_204"
@@ -1974,186 +1916,186 @@ proxy-groups:
     tolerance: 50
     lazy: true
     proxies:
-      - "vless-468154251-0"
-      - "vless-468154240-2"
-      - "vless-468892510-4"
-      - "vless-468892507-6"
-      - "vless-468892535-8"
-      - "hysteria2-468892433-10"
-      - "hysteria2-468892436-12"
-      - "trojan-470342345-14"
-      - "trojan-470979900-16"
-      - "trojan-470979965-18"
-      - "trojan-470979898-20"
-      - "trojan-470979964-22"
-      - "vless-468154185-24"
-      - "vless-468154253-26"
-      - "vless-470978003-28"
-      - "vless-470984040-30"
-      - "vless-470978002-34"
-      - "vless-470977997-36"
-      - "vless-470978036-38"
-      - "vless-468891149-42"
-      - "hysteria2-468892434-44"
-      - "hysteria2-468892437-46"
-      - "hysteria2-468220570-48"
-      - "hysteria2-468234575-50"
-      - "hysteria2-467420662-52"
-      - "hysteria2-461629106-54"
-      - "shadowsocks-467980814-56"
-      - "shadowsocks-468218487-58"
-      - "shadowsocks-465806702-60"
-      - "shadowsocks-463736415-62"
-      - "shadowsocks-461629108-64"
-      - "trojan-463728960-66"
-      - "trojan-468215403-70"
-      - "trojan-468070477-72"
-      - "trojan-470979884-74"
-      - "trojan-468215294-76"
-      - "trojan-470979946-78"
-      - "trojan-470979958-80"
-      - "trojan-470979966-82"
-      - "trojan-470979957-84"
-      - "trojan-470979883-86"
-      - "trojan-470979882-88"
-      - "trojan-470979881-90"
-      - "trojan-465835916-92"
-      - "trojan-461629130-94"
-      - "trojan-468227531-96"
-      - "vless-461791955-98"
-      - "vless-461835954-100"
-      - "vless-468227540-102"
-      - "vless-467980817-104"
-      - "vless-468906031-110"
-      - "vless-468906026-112"
-      - "vless-468901438-114"
-      - "vless-468154254-118"
-      - "vless-468154255-120"
-      - "vless-468906028-122"
-      - "vless-470362344-126"
-      - "vless-468154233-128"
-      - "vless-468316548-132"
-      - "vless-470495486-134"
-      - "vless-468904445-136"
-      - "vless-470978000-138"
-      - "vless-470978015-140"
-      - "vless-470978043-142"
-      - "vless-468892483-144"
-      - "vless-470984239-146"
-      - "vless-470977999-150"
-      - "vless-470977878-152"
-      - "vless-470977980-154"
-      - "vless-470977912-156"
-      - "vless-470978115-158"
-      - "vless-470975915-160"
-      - "vless-468892476-162"
-      - "vless-468877607-164"
-      - "vless-468892492-166"
-      - "vmess-465811707-168"
-      - "vmess-463901255-170"
-      - "vmess-471035802-172"
-      - "hysteria2-468892456-178"
-      - "hysteria2-468892454-180"
-      - "hysteria2-468892455-182"
-      - "hysteria2-468883170-184"
-      - "shadowsocks-467980813-186"
-      - "trojan-465912217-188"
-      - "trojan-470979877-190"
-      - "trojan-470979896-192"
-      - "trojan-470979878-194"
-      - "trojan-470979948-198"
-      - "trojan-470979888-200"
-      - "trojan-470979953-202"
-      - "trojan-470979979-204"
-      - "trojan-461629133-206"
-      - "trojan-468227521-208"
-      - "trojan-461629143-210"
-      - "trojan-463730959-212"
-      - "vless-461844954-214"
-      - "vless-463767993-216"
-      - "vless-468154215-220"
-      - "vless-468154225-222"
-      - "vless-468121237-224"
-      - "vless-468154221-228"
-      - "vless-468154212-230"
-      - "vless-468901448-232"
-      - "vless-468906021-234"
-      - "vless-468906023-236"
-      - "vless-470361345-238"
-      - "vless-468905070-240"
-      - "vless-468905075-244"
-      - "vless-468906030-246"
-      - "vless-468154209-248"
-      - "vless-470978089-250"
-      - "vless-468889185-252"
-      - "vless-470980168-254"
-      - "vless-470984246-256"
-      - "vless-470986111-258"
-      - "vless-470977960-260"
-      - "vless-470977998-264"
-      - "vless-470976070-266"
-      - "vless-470978154-268"
-      - "vless-470983995-270"
-      - "vless-468880792-272"
-      - "vless-468877491-274"
-      - "hysteria2-468892439-276"
-      - "hysteria2-467980788-278"
-      - "hysteria2-468883194-280"
-      - "shadowsocks-467980824-282"
-      - "trojan-468076258-284"
-      - "trojan-465910220-286"
-      - "trojan-468215301-288"
-      - "trojan-470979945-290"
-      - "trojan-470979944-292"
-      - "trojan-468227534-294"
-      - "trojan-461629142-296"
-      - "trojan-470979915-298"
-      - "trojan-470979887-300"
-      - "trojan-461629135-302"
-      - "trojan-470979895-304"
-      - "trojan-470979885-306"
-      - "trojan-470979904-308"
-      - "trojan-470979909-310"
-      - "vless-465856923-314"
-      - "vless-468207513-316"
-      - "vless-461814960-318"
-      - "vless-468173300-322"
-      - "vless-465809710-326"
-      - "vless-468103022-328"
-      - "vless-463745415-330"
-      - "vless-468906610-332"
-      - "vless-468906594-334"
-      - "vless-468905072-338"
-      - "vless-468906645-340"
-      - "vless-468906020-346"
-      - "vless-468901396-348"
-      - "vless-470969182-350"
-      - "vless-468906636-352"
-      - "vless-468905063-354"
-      - "vless-468906029-356"
-      - "vless-468888167-360"
-      - "vless-468894828-362"
-      - "vless-470980167-364"
-      - "vless-470976184-366"
-      - "vless-470978104-368"
-      - "vless-470978283-370"
-      - "vless-470978128-372"
-      - "vless-468890188-376"
-      - "vless-470982106-378"
-      - "vless-470978276-380"
-      - "vless-468888176-384"
-      - "trojan-465911217-390"
-      - "trojan-468215563-394"
-      - "trojan-468215295-396"
-      - "trojan-470979897-398"
-      - "trojan-470979914-400"
-      - "trojan-470979908-402"
-      - "trojan-461629138-404"
-      - "trojan-470979918-406"
-      - "trojan-470979902-408"
-      - "trojan-470979880-410"
-      - "trojan-470975881-414"
-      - "trojan-463730960-416"
+      - "trojan-372803807-0"
+      - "vless-395875280-2"
+      - "trojan-395852279-4"
+      - "trojan-453179915-6"
+      - "trojan-453179905-8"
+      - "trojan-453179861-10"
+      - "trojan-453177861-12"
+      - "trojan-453179920-14"
+      - "vless-468154251-16"
+      - "vless-468154240-18"
+      - "vless-461827954-20"
+      - "vless-468892510-22"
+      - "vless-461745755-24"
+      - "vless-468892507-26"
+      - "vless-468892535-28"
+      - "hysteria2-468892433-30"
+      - "hysteria2-468892436-32"
+      - "trojan-470342345-34"
+      - "trojan-470979900-36"
+      - "trojan-453179889-38"
+      - "trojan-470979965-40"
+      - "trojan-470979898-42"
+      - "trojan-453179867-44"
+      - "trojan-453177867-46"
+      - "trojan-470979964-48"
+      - "trojan-453179919-50"
+      - "trojan-453179877-52"
+      - "trojan-453177880-54"
+      - "trojan-453179891-56"
+      - "trojan-453179910-58"
+      - "trojan-453179907-60"
+      - "trojan-453179916-62"
+      - "trojan-453179881-64"
+      - "vless-468154185-66"
+      - "vless-395870277-68"
+      - "vless-468154253-70"
+      - "vless-461844954-72"
+      - "vless-470978003-74"
+      - "vless-470984040-76"
+      - "vless-470978002-80"
+      - "vless-470977997-82"
+      - "vless-470978036-84"
+      - "vless-89074-88"
+      - "vless-468891149-92"
+      - "hysteria2-468892434-94"
+      - "hysteria2-468892437-96"
+      - "hysteria2-468220570-98"
+      - "hysteria2-468234575-100"
+      - "hysteria2-467420662-102"
+      - "shadowsocks-467980814-104"
+      - "shadowsocks-468218487-106"
+      - "shadowsocks-465806702-108"
+      - "shadowsocks-463736415-110"
+      - "trojan-406334568-112"
+      - "trojan-463728960-114"
+      - "trojan-468215403-118"
+      - "trojan-470979884-124"
+      - "trojan-468215294-126"
+      - "trojan-470979946-128"
+      - "trojan-453179878-130"
+      - "trojan-453177863-132"
+      - "trojan-470979958-134"
+      - "trojan-470979966-136"
+      - "trojan-453179866-138"
+      - "trojan-470979957-140"
+      - "trojan-453179927-142"
+      - "trojan-453179883-144"
+      - "trojan-470979883-146"
+      - "trojan-470979881-150"
+      - "trojan-465835916-152"
+      - "trojan-468227531-154"
+      - "vless-468227540-156"
+      - "vless-467980817-158"
+      - "vless-468906031-164"
+      - "vless-468906026-166"
+      - "vless-468901438-168"
+      - "vless-468154254-172"
+      - "vless-468154255-174"
+      - "vless-468906028-176"
+      - "vless-470362344-180"
+      - "vless-468154233-182"
+      - "vless-468316548-186"
+      - "vless-470495486-188"
+      - "vless-468904445-190"
+      - "vless-470978000-192"
+      - "vless-470978015-194"
+      - "vless-470978043-196"
+      - "vless-468892483-198"
+      - "vless-470984239-200"
+      - "vless-470977999-204"
+      - "vless-470977878-206"
+      - "vless-470977980-208"
+      - "vless-470977912-210"
+      - "vless-470978115-212"
+      - "vless-470975915-214"
+      - "vless-468892476-216"
+      - "vless-468877607-218"
+      - "vless-468892492-220"
+      - "vmess-465811707-222"
+      - "vmess-463901255-224"
+      - "vmess-471035802-226"
+      - "hysteria2-468892456-232"
+      - "hysteria2-468892454-234"
+      - "hysteria2-468892455-236"
+      - "hysteria2-468883170-238"
+      - "shadowsocks-467980813-240"
+      - "trojan-266972492-242"
+      - "trojan-465912217-244"
+      - "trojan-453179892-246"
+      - "trojan-473961180-248"
+      - "trojan-473961181-250"
+      - "trojan-473961179-252"
+      - "trojan-453179898-254"
+      - "trojan-453179895-258"
+      - "trojan-453179864-260"
+      - "trojan-470979896-264"
+      - "trojan-470979878-266"
+      - "trojan-470979888-272"
+      - "trojan-470979953-274"
+      - "trojan-468227521-280"
+      - "trojan-463730959-282"
+      - "vless-472516257-284"
+      - "vless-472516258-286"
+      - "vless-413051575-288"
+      - "vless-468154215-292"
+      - "vless-468154225-294"
+      - "vless-468121237-296"
+      - "vless-468154221-300"
+      - "vless-468154212-302"
+      - "vless-468901448-304"
+      - "vless-468906021-306"
+      - "vless-468906023-308"
+      - "vless-470361345-310"
+      - "vless-468905070-312"
+      - "vless-468905075-316"
+      - "vless-468906030-318"
+      - "vless-468154209-320"
+      - "vless-470978089-322"
+      - "vless-468889185-324"
+      - "vless-470980168-326"
+      - "vless-470984246-328"
+      - "vless-470986111-330"
+      - "vless-470977960-332"
+      - "vless-470977998-336"
+      - "vless-470976070-338"
+      - "vless-470978154-340"
+      - "vless-470983995-342"
+      - "vless-468880792-344"
+      - "vless-468877491-346"
+      - "hysteria2-468892439-348"
+      - "hysteria2-467980788-350"
+      - "hysteria2-468883194-352"
+      - "shadowsocks-467980824-354"
+      - "trojan-468076258-358"
+      - "trojan-453179899-360"
+      - "trojan-465910220-362"
+      - "trojan-468215301-364"
+      - "trojan-470979945-366"
+      - "trojan-470979944-368"
+      - "trojan-468227534-370"
+      - "trojan-470979915-372"
+      - "trojan-470979887-374"
+      - "trojan-470979895-376"
+      - "trojan-453177874-378"
+      - "trojan-470979885-380"
+      - "trojan-470979904-382"
+      - "trojan-453179872-386"
+      - "trojan-453179862-388"
+      - "trojan-453179873-390"
+      - "trojan-453179874-392"
+      - "trojan-453181871-396"
+      - "vless-465856923-402"
+      - "vless-406346568-404"
+      - "vless-472513255-406"
+      - "vless-468207513-408"
+      - "vless-473980754-410"
+      - "vless-468173300-412"
+      - "vless-472518255-414"
+      - "vless-473979752-416"
+      - "vless-465809710-418"
 rules:
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
