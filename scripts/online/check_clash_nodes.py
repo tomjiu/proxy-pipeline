@@ -10,6 +10,7 @@ Writes dist/clean/clash.yaml, alive.json, check_report.json
 from __future__ import annotations
 
 import argparse
+import ipaddress
 import json
 import re
 import shutil
@@ -20,12 +21,16 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.request import ProxyHandler, build_opener
 
 ROOT = Path(__file__).resolve().parents[2]
 DIST_ONLINE = ROOT / "dist" / "online"
 DIST_CLEAN = ROOT / "dist" / "clean"
 CONTROLLER = "127.0.0.1:9090"
+MIXED_PORT = 7890
+SELECT_GROUP = "PROXY"
 TEST_URL = "http://www.gstatic.com/generate_204"
+CLEAN_JUDGE = "https://api.ipify.org"
 
 
 def load_json(path: Path, default):
@@ -164,13 +169,88 @@ def delay_test(name: str, timeout_ms: int) -> int | None:
         return None
 
 
+def judge_sanity(timeout: int) -> bool:
+    """Ensure the cleanliness judge is reachable directly (guards against
+    judge-side outages poisoning the whole clean feed)."""
+    try:
+        req = urllib.request.Request(CLEAN_JUDGE, headers={"User-Agent": "proxy-pipeline-clean/1.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = resp.read(128).decode("utf-8", errors="ignore").strip()
+        ipaddress.ip_address(body)
+        return True
+    except Exception:
+        return False
+
+
+def select_proxy(name: str) -> bool:
+    """Point the PROXY select group at a specific node via mihomo controller."""
+    q = urllib.parse.quote(name, safe="")
+    body = json.dumps({"name": name}).encode()
+    req = urllib.request.Request(
+        f"http://{CONTROLLER}/proxies/{q}",
+        data=body,
+        method="PUT",
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            return resp.status in (200, 204)
+    except Exception:
+        return False
+
+
+def clean_probe(name: str, timeout_ms: int) -> tuple[bool, str]:
+    """
+    Route one request to the judge through the selected node and verify the
+    response is the expected plain IP — not a captive portal, injected ads,
+    or hijack HTML. Mirrors scripts/local/clean_filter.py heuristics.
+    """
+    if not select_proxy(name):
+        return False, "select_failed"
+    opener = build_opener(
+        ProxyHandler(
+            {
+                "http": f"http://127.0.0.1:{MIXED_PORT}",
+                "https": f"http://127.0.0.1:{MIXED_PORT}",
+            }
+        )
+    )
+    try:
+        req = urllib.request.Request(CLEAN_JUDGE, headers={"User-Agent": "proxy-pipeline-clean/1.0"})
+        with opener.open(req, timeout=timeout_ms / 1000 + 3) as resp:
+            body = resp.read(512).decode("utf-8", errors="ignore")
+            code = resp.status
+    except Exception as e:
+        return False, type(e).__name__
+    if code >= 400:
+        return False, "bad_status"
+    text = body.strip()
+    try:
+        ipaddress.ip_address(text)
+        return True, "ok"
+    except ValueError:
+        pass
+    low = text.lower()
+    if "<html" in low or "<!doctype" in low:
+        return False, "html_hijack"
+    if "advert" in low or "redirect" in low:
+        return False, "hijack_html"
+    return False, "unexpected_body"
+
+
 def main() -> int:
+    global CLEAN_JUDGE
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=("full", "incremental"), default="incremental")
     ap.add_argument("--timeout-ms", type=int, default=5000)
     ap.add_argument("--input", type=Path, default=DIST_ONLINE / "clash.yaml")
     ap.add_argument("--pause", type=float, default=0.03)
+    ap.add_argument("--skip-clean", action="store_true", help="skip content cleanliness probe")
+    ap.add_argument("--clean-timeout-ms", type=int, default=5000)
+    ap.add_argument("--clean-judge", default=CLEAN_JUDGE, help="judge URL for cleanliness probe")
     args = ap.parse_args()
+
+    CLEAN_JUDGE = args.clean_judge
 
     if not args.input.exists():
         print(f"missing {args.input}")
@@ -220,6 +300,10 @@ def main() -> int:
             text,
         )
     text = re.sub(r"(?m)^log-level:.*$", "log-level: error", text)
+    if "mixed-port:" in text:
+        text = re.sub(r"(?m)^mixed-port:.*$", f"mixed-port: {MIXED_PORT}", text)
+    else:
+        text = f"mixed-port: {MIXED_PORT}\n" + text
     # disable geodata auto-update noise in CI if present
     cfg.write_text(text, encoding="utf-8")
 
@@ -272,9 +356,50 @@ def main() -> int:
                 print(f"  … {i+1}/{len(to_test)} ok={ok} fail={fail}")
             time.sleep(args.pause)
 
+        # cleanliness phase: content-verify each alive node through mihomo
+        clean_rows: list[tuple[str, str, str, int]] = []
+        clean_reasons: dict[str, int] = {}
+        clean_checked = 0
+        feed_mode = "clean"
+        kept_fps = {fp for _, fp, _, _ in keep}
+        if not args.skip_clean:
+            if not judge_sanity(8):
+                print("[clean] judge unreachable directly — skipping, feeding alive-only")
+                feed_mode = "alive-only"
+            else:
+                for i, (name, fp, raw, d) in enumerate(alive_rows):
+                    if fp in kept_fps and nodes_db.get(fp, {}).get("clean") is not None:
+                        if nodes_db[fp]["clean"]:
+                            clean_rows.append((name, fp, raw, d))
+                        continue
+                    okc, reason = clean_probe(name, args.clean_timeout_ms)
+                    clean_checked += 1
+                    clean_reasons[reason] = clean_reasons.get(reason, 0) + 1
+                    nodes_db[fp]["clean"] = okc
+                    nodes_db[fp]["clean_reason"] = reason
+                    nodes_db[fp]["clean_at"] = now
+                    if okc:
+                        clean_rows.append((name, fp, raw, d))
+                    if (i + 1) % 20 == 0:
+                        print(f"  [clean] {i+1}/{len(alive_rows)} clean={len(clean_rows)}")
+                if clean_rows:
+                    feed_mode = "clean"
+                else:
+                    print("[clean] zero clean nodes — falling back to alive-only to keep feed non-empty")
+                    feed_mode = "alive-only"
+        else:
+            feed_mode = "clean-skipped"
+
+        feed_rows = clean_rows if feed_mode == "clean" else alive_rows
+
         # dedupe by fp, best delay
-        best: dict[str, tuple[str, str, str, int]] = {}
+        alive_best: dict[str, tuple[str, str, str, int]] = {}
         for name, fp, raw, d in alive_rows:
+            if fp not in alive_best or d < alive_best[fp][3]:
+                alive_best[fp] = (name, fp, raw, d)
+
+        best: dict[str, tuple[str, str, str, int]] = {}
+        for name, fp, raw, d in feed_rows:
             if fp not in best or d < best[fp][3]:
                 best[fp] = (name, fp, raw, d)
 
@@ -298,7 +423,12 @@ def main() -> int:
             "tested_ok": ok,
             "tested_fail": fail,
             "kept_skip_retest": len(keep),
-            "alive_output": len(ordered),
+            "alive_output": len(alive_best),
+            "clean_checked": clean_checked,
+            "clean_output": len(clean_rows),
+            "clean_reasons": clean_reasons,
+            "feed_output": len(best),
+            "feed_mode": feed_mode,
             "timeout_ms": args.timeout_ms,
         }
         write_json(DIST_CLEAN / "check_report.json", report)
