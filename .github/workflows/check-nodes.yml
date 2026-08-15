@@ -88,5 +88,7 @@ jobs:
             echo "No clean changes"
           else
             git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git fetch origin
+            git rebase origin/main
             git push
           fi
