@@ -1,10 +1,12 @@
 /**
- * Cloudflare Worker — read-only API + simple HTML UI over GitHub raw dist/.
+ * Cloudflare Worker — read-only API + simple HTML UI over dist/.
+ * Data layer: R2 bucket primary, GitHub raw fallback.
  */
 
 export interface Env {
   RAW_BASE: string;
   API_TOKEN?: string;
+  BUCKET?: R2Bucket;
 }
 
 const CACHE_TTL = 120;
@@ -302,11 +304,29 @@ function checkAuth(req: Request, env: Env): boolean {
 }
 
 async function fetchDist(env: Env, rel: string): Promise<Response> {
+  const cleanRel = rel.replace(/^\//, "");
+  const headers = new Headers();
+  headers.set("access-control-allow-origin", "*");
+  headers.set("cache-control", `public, max-age=${CACHE_TTL}`);
+
+  // Primary: R2 bucket (same colo, no external round-trip).
+  if (env.BUCKET) {
+    const obj = await env.BUCKET.get(cleanRel);
+    if (obj) {
+      headers.set(
+        "content-type",
+        obj.httpMetadata?.contentType || guessContentType(rel),
+      );
+      return new Response(obj.body, { status: 200, headers });
+    }
+  }
+
+  // Fallback: GitHub raw (kept for migration / R2 outage).
   const base = (env.RAW_BASE || "").replace(/\/$/, "");
   if (!base || base.includes("REPLACE_")) {
     return json({ error: "RAW_BASE not configured" }, 500);
   }
-  const target = `${base}/${rel.replace(/^\//, "")}`;
+  const target = `${base}/${cleanRel}`;
   const cache = caches.default;
   const cacheKey = new Request(target, { method: "GET" });
   const hit = await cache.match(cacheKey);
@@ -316,11 +336,8 @@ async function fetchDist(env: Env, rel: string): Promise<Response> {
     headers: { "user-agent": "proxy-pipeline-worker/1.0" },
   });
 
-  const headers = new Headers();
   const ct = upstream.headers.get("content-type") || guessContentType(rel);
   headers.set("content-type", ct);
-  headers.set("access-control-allow-origin", "*");
-  headers.set("cache-control", `public, max-age=${CACHE_TTL}`);
 
   const out = new Response(upstream.body, { status: upstream.status, headers });
   if (upstream.ok) {

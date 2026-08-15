@@ -92,3 +92,18 @@ jobs:
             git rebase origin/main
             git push
           fi
+
+      - name: Sync dist/clean to R2
+        if: ${{ success() }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "R2 secrets not configured — skipping sync"
+            exit 0
+          fi
+          aws s3 sync dist/clean/ "s3://proxy-pipeline-dist/clean/" \
+            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --region auto --delete --quiet
