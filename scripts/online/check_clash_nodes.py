@@ -410,6 +410,23 @@ def main() -> int:
         DIST_CLEAN.mkdir(parents=True, exist_ok=True)
         (DIST_CLEAN / "clash.yaml").write_text(rebuild_yaml(raws, names), encoding="utf-8")
 
+        # prune ghost entries from the persisted DB: nodes that vanished from
+        # the current online feed. Full mode is authoritative (drop any entry
+        # not in the feed); incremental only drops stale dead entries so a
+        # temporarily-missing feed node is kept until the next full retest.
+        current_fps = {fp for _, fp, _ in blocks}
+        stale: list[str] = []
+        if args.mode == "full":
+            stale = [fp for fp in list(nodes_db) if fp not in current_fps]
+        else:
+            stale = [
+                fp
+                for fp in list(nodes_db)
+                if fp not in current_fps and not nodes_db[fp].get("alive")
+            ]
+        for fp in stale:
+            del nodes_db[fp]
+
         alive_db["nodes"] = nodes_db
         alive_db["updated_at"] = now
         alive_db["mode_last"] = args.mode
@@ -429,6 +446,8 @@ def main() -> int:
             "clean_reasons": clean_reasons,
             "feed_output": len(best),
             "feed_mode": feed_mode,
+            "pruned_db": len(stale),
+            "db_size": len(nodes_db),
             "timeout_ms": args.timeout_ms,
         }
         write_json(DIST_CLEAN / "check_report.json", report)
