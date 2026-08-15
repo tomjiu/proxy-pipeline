@@ -184,7 +184,7 @@ def judge_sanity(timeout: int) -> bool:
 
 def select_proxy(name: str) -> bool:
     """Point the PROXY select group at a specific node via mihomo controller."""
-    q = urllib.parse.quote(name, safe="")
+    q = urllib.parse.quote(SELECT_GROUP, safe="")
     body = json.dumps({"name": name}).encode()
     req = urllib.request.Request(
         f"http://{CONTROLLER}/proxies/{q}",
