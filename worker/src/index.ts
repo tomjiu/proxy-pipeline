@@ -59,8 +59,11 @@ export default {
       if (url.searchParams.get("live") === "1") {
         return withCors(await fetchDist(env, "online/http.live.txt"));
       }
-      const rel = track === "clean" ? "clean/http.txt" : "online/http.txt";
-      return withCors(await fetchDist(env, rel));
+      const res =
+        track === "clean"
+          ? await fetchPreferred(env, "clean/http.txt", "online/http.txt")
+          : await fetchDist(env, "online/http.txt");
+      return withCors(res);
     }
 
     if (path === "/pool/socks5") {
@@ -77,11 +80,22 @@ export default {
 
     if (path === "/pool/random") {
       const proto = url.searchParams.get("proto") || "http";
-      let rel = "online/http.txt";
-      if (track === "clean") rel = "clean/http.txt";
-      else if (proto === "socks5") rel = "online/socks5.txt";
-      else if (proto === "socks4") rel = "online/socks4.txt";
-      const res = await fetchDist(env, rel);
+      let res: Response;
+      if (track === "clean") {
+        if (proto === "socks5" || proto === "socks4") {
+          res = await fetchDist(env, `online/${proto}.txt`);
+        } else {
+          res = await fetchPreferred(env, "clean/http.txt", "online/http.txt");
+        }
+      } else {
+        const rel =
+          proto === "socks5"
+            ? "online/socks5.txt"
+            : proto === "socks4"
+              ? "online/socks4.txt"
+              : "online/http.txt";
+        res = await fetchDist(env, rel);
+      }
       if (!res.ok) return withCors(res);
       const text = await res.text();
       const line = pickRandom(text.split("\n"));
@@ -96,8 +110,11 @@ export default {
     }
 
     if (path === "/sub/nodes") {
-      const rel = track === "clean" ? "clean/nodes.txt" : "online/nodes.txt";
-      return withCors(await fetchDist(env, rel));
+      const res =
+        track === "clean"
+          ? await fetchPreferred(env, "clean/nodes.txt", "online/nodes.txt")
+          : await fetchDist(env, "online/nodes.txt");
+      return withCors(res);
     }
 
     if (path === "/sub/base64") {
@@ -238,7 +255,9 @@ function toast(m){
   setTimeout(()=>{n.textContent=old},1200);
 }
 function fmt(n){return typeof n==='number'?n.toLocaleString():'—'}
-fetch(origin+'/meta').then(r=>r.json()).then(m=>{
+const t=new URLSearchParams(location.search).get('token');
+const metaUrl=origin+'/meta'+(t?'?token='+encodeURIComponent(t):'');
+fetch(metaUrl).then(r=>r.json()).then(m=>{
   const c=m.counts||{};
   document.getElementById('c-http').textContent=fmt(c.http);
   document.getElementById('c-s4').textContent=fmt(c.socks4);
@@ -312,6 +331,13 @@ async function fetchDist(env: Env, rel: string): Promise<Response> {
     }
   }
   return out;
+}
+
+/** Fetch primary; if missing, fall back so clients never 404. */
+async function fetchPreferred(env: Env, primary: string, fallback: string): Promise<Response> {
+  const res = await fetchDist(env, primary);
+  if (res.ok) return res;
+  return fetchDist(env, fallback);
 }
 
 function guessContentType(rel: string): string {
