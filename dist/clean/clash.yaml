@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-08-20T04:09:27.924966+00:00
+# updated: 2026-08-20T07:27:00.750912+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -85,6 +85,13 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
+  - name: "hysteria2-318025219-0"
+    type: "hysteria2"
+    server: "freedom.chenlan.top"
+    port: 12765
+    password: "STYyftThFn"
+    skip-cert-verify: true
+    sni: ""
   - name: "vless-661036888-268"
     type: "vless"
     server: "220.130.75.248"
@@ -1235,6 +1242,7 @@ proxy-groups:
       - hysteria2-561634420-310
       - shadowsocks-218-18
       - shadowsocks-213-316
+      - hysteria2-318025219-0
       - vless-661036888-268
       - vless-661036889-270
       - shadowsocks-415243974-318
@@ -1393,6 +1401,7 @@ proxy-groups:
       - hysteria2-561634420-310
       - shadowsocks-218-18
       - shadowsocks-213-316
+      - hysteria2-318025219-0
       - vless-661036888-268
       - vless-661036889-270
       - shadowsocks-415243974-318
@@ -1531,7 +1540,6 @@ proxy-groups:
       - trojan-656192096-52
       - trojan-656195700-388
       - trojan-656195768-390
-      - shadowsocks-717975174-320
 rules:
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
