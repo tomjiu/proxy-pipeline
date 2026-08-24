@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-08-24T01:57:08.539110+00:00",
-  "finished_at": "2026-08-24T01:57:31.014510+00:00",
+  "generated_at": "2026-08-24T03:16:13.929348+00:00",
+  "finished_at": "2026-08-24T03:16:38.952803+00:00",
   "mode": "mirror-dedupe+nodes",
   "counts": {
-    "http": 29809,
-    "socks4": 1204,
-    "socks5": 116158,
-    "all_pool": 147171,
-    "nodes": 3667,
+    "http": 29786,
+    "socks4": 1203,
+    "socks5": 116173,
+    "all_pool": 147162,
+    "nodes": 3681,
     "tg_nodes": 10,
-    "sub_nodes": 3657,
+    "sub_nodes": 3671,
     "nodes_by_scheme": {
-      "hy2": 210,
-      "ss": 1635,
-      "trojan": 266,
-      "vless": 1360,
-      "vmess": 104,
-      "hysteria2": 92
+      "hy2": 205,
+      "ss": 1645,
+      "trojan": 263,
+      "vless": 1351,
+      "vmess": 127,
+      "hysteria2": 90
     },
     "sources_ok": 97,
     "sources_total": 100
@@ -24,31 +24,59 @@
   "dedupe": "ip:port unique; nodes unique share-URI; protocol socks5>socks4>http",
   "sources": [
     {
-      "source": "gh/socks5/data.txt",
-      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt",
+      "source": "jsd/http/data.txt",
+      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/http/data.txt",
       "ok": true,
-      "count": 138,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/http/data.txt",
-      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/http/data.txt",
-      "ok": true,
-      "count": 656,
+      "count": 587,
       "hint": "http"
     },
     {
-      "source": "gh/proxies/working-proxies-socks4.txt",
-      "url": "https://raw.githubusercontent.com/Skillter/ProxyGather/master/proxies/working-proxies-socks4.txt",
+      "source": "api.proxyscrape.com//v2",
+      "url": "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks4&timeout=10000&country=all",
       "ok": true,
-      "count": 167,
+      "count": 194,
       "hint": "socks4"
+    },
+    {
+      "source": "jsd/socks4/data.txt",
+      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/socks4/data.txt",
+      "ok": true,
+      "count": 216,
+      "hint": "socks4"
+    },
+    {
+      "source": "jsd/free-proxy-list/socks5.txt",
+      "url": "https://cdn.jsdelivr.net/gh/databay-labs/free-proxy-list/socks5.txt",
+      "ok": true,
+      "count": 259,
+      "hint": "socks5"
+    },
+    {
+      "source": "api.proxyscrape.com//v2",
+      "url": "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=10000&country=all",
+      "ok": true,
+      "count": 439,
+      "hint": "socks5"
+    },
+    {
+      "source": "jsd/free-proxy-list/http.txt",
+      "url": "https://cdn.jsdelivr.net/gh/databay-labs/free-proxy-list/http.txt",
+      "ok": true,
+      "count": 2177,
+      "hint": "http"
     },
     {
       "source": "api.proxyscrape.com//v2",
       "url": "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
       "ok": true,
-      "count": 814,
+      "count": 934,
+      "hint": "http"
+    },
+    {
+      "source": "gh/all/data.txt",
+      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt",
+      "ok": true,
+      "count": 2339,
       "hint": "http"
     },
     {
@@ -59,17 +87,10 @@
       "hint": "socks5"
     },
     {
-      "source": "api.proxyscrape.com//v2",
-      "url": "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=10000&country=all",
+      "source": "gh/proxies/working-proxies-socks4.txt",
+      "url": "https://raw.githubusercontent.com/Skillter/ProxyGather/master/proxies/working-proxies-socks4.txt",
       "ok": true,
-      "count": 455,
-      "hint": "socks5"
-    },
-    {
-      "source": "api.proxyscrape.com//v2",
-      "url": "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks4&timeout=10000&country=all",
-      "ok": true,
-      "count": 196,
+      "count": 167,
       "hint": "socks4"
     },
     {
@@ -80,38 +101,59 @@
       "hint": "http"
     },
     {
-      "source": "jsd/http/data.txt",
-      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/http/data.txt",
+      "source": "gh/http/data.txt",
+      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/http/data.txt",
       "ok": true,
-      "count": 587,
+      "count": 703,
       "hint": "http"
-    },
-    {
-      "source": "jsd/free-proxy-list/http.txt",
-      "url": "https://cdn.jsdelivr.net/gh/databay-labs/free-proxy-list/http.txt",
-      "ok": true,
-      "count": 958,
-      "hint": "http"
-    },
-    {
-      "source": "gh/socks4/data.txt",
-      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks4/data.txt",
-      "ok": true,
-      "count": 209,
-      "hint": "socks4"
-    },
-    {
-      "source": "jsd/socks5/data.txt",
-      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/socks5/data.txt",
-      "ok": true,
-      "count": 596,
-      "hint": "socks5"
     },
     {
       "source": "jsd/socks5/socks5.txt",
       "url": "https://cdn.jsdelivr.net/gh/officialputuid/ProxyForEveryone@main/socks5/socks5.txt",
       "ok": true,
       "count": 539,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/socks5/data.txt",
+      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt",
+      "ok": true,
+      "count": 96,
+      "hint": "socks5"
+    },
+    {
+      "source": "jsd/http/http.txt",
+      "url": "https://cdn.jsdelivr.net/gh/officialputuid/ProxyForEveryone@main/http/http.txt",
+      "ok": true,
+      "count": 772,
+      "hint": "http"
+    },
+    {
+      "source": "gh/main/HTTPS_RAW.txt",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt",
+      "ok": true,
+      "count": 80,
+      "hint": "http"
+    },
+    {
+      "source": "gh/main/SOCKS4_RAW.txt",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4_RAW.txt",
+      "ok": true,
+      "count": 138,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/raw/all.txt",
+      "url": "https://raw.githubusercontent.com/ClearProxy/checked-proxy-list/main/http/raw/all.txt",
+      "ok": true,
+      "count": 120,
+      "hint": "http"
+    },
+    {
+      "source": "gh/main/SOCKS5_RAW.txt",
+      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5_RAW.txt",
+      "ok": true,
+      "count": 3,
       "hint": "socks5"
     },
     {
@@ -122,25 +164,18 @@
       "hint": "http"
     },
     {
-      "source": "gh/main/HTTPS_RAW.txt",
-      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt",
+      "source": "jsd/socks5/data.txt",
+      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/socks5/data.txt",
       "ok": true,
-      "count": 99,
-      "hint": "http"
+      "count": 596,
+      "hint": "socks5"
     },
     {
-      "source": "gh/all/data.txt",
-      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/all/data.txt",
+      "source": "gh/socks4/data.txt",
+      "url": "https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks4/data.txt",
       "ok": true,
-      "count": 2354,
-      "hint": "http"
-    },
-    {
-      "source": "jsd/http/http.txt",
-      "url": "https://cdn.jsdelivr.net/gh/officialputuid/ProxyForEveryone@main/http/http.txt",
-      "ok": true,
-      "count": 772,
-      "hint": "http"
+      "count": 202,
+      "hint": "socks4"
     },
     {
       "source": "gh/proxies/http.txt",
@@ -148,27 +183,6 @@
       "ok": true,
       "count": 249,
       "hint": "http"
-    },
-    {
-      "source": "gh/raw/all.txt",
-      "url": "https://raw.githubusercontent.com/ClearProxy/checked-proxy-list/main/http/raw/all.txt",
-      "ok": true,
-      "count": 120,
-      "hint": "http"
-    },
-    {
-      "source": "jsd/free-proxy-list/socks5.txt",
-      "url": "https://cdn.jsdelivr.net/gh/databay-labs/free-proxy-list/socks5.txt",
-      "ok": true,
-      "count": 258,
-      "hint": "socks5"
-    },
-    {
-      "source": "jsd/socks4/data.txt",
-      "url": "https://cdn.jsdelivr.net/gh/proxyscrape/free-proxy-list@main/proxies/protocols/socks4/data.txt",
-      "ok": true,
-      "count": 209,
-      "hint": "socks4"
     },
     {
       "source": "gh/raw/all.txt",
@@ -185,87 +199,17 @@
       "hint": "socks5"
     },
     {
-      "source": "gh/master/http.txt",
-      "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
+      "source": "gh/proxies/http.txt",
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
       "ok": true,
-      "count": 2198,
-      "hint": "http"
-    },
-    {
-      "source": "gh/main/SOCKS5_RAW.txt",
-      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5_RAW.txt",
-      "ok": true,
-      "count": 4,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/main/SOCKS4_RAW.txt",
-      "url": "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4_RAW.txt",
-      "ok": true,
-      "count": 150,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/master/socks4.txt",
-      "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
-      "ok": true,
-      "count": 1846,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/proxies/socks4.txt",
-      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
-      "ok": true,
-      "count": 92,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/master/http.txt",
-      "url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
-      "ok": true,
-      "count": 2198,
+      "count": 460,
       "hint": "http"
     },
     {
       "source": "gh/proxies/socks5.txt",
       "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
       "ok": true,
-      "count": 96,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/proxies/http.txt",
-      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt",
-      "ok": true,
-      "count": 404,
-      "hint": "http"
-    },
-    {
-      "source": "gh/master/socks5.txt",
-      "url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt",
-      "ok": true,
-      "count": 1440,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/master/proxy-list-raw.txt",
-      "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
-      "ok": true,
-      "count": 400,
-      "hint": "http"
-    },
-    {
-      "source": "gh/txt/proxies-http.txt",
-      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-http.txt",
-      "ok": true,
-      "count": 1801,
-      "hint": "http"
-    },
-    {
-      "source": "api.openproxylist.xyz//socks5.txt",
-      "url": "https://api.openproxylist.xyz/socks5.txt",
-      "ok": true,
-      "count": 2127,
+      "count": 100,
       "hint": "socks5"
     },
     {
@@ -276,34 +220,6 @@
       "hint": "http"
     },
     {
-      "source": "gh/master/proxy-list.txt",
-      "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt",
-      "ok": true,
-      "count": 400,
-      "hint": "auto"
-    },
-    {
-      "source": "gh/proxies/all.txt",
-      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/all.txt",
-      "ok": true,
-      "count": 574,
-      "hint": "auto"
-    },
-    {
-      "source": "openproxylist.xyz//socks5.txt",
-      "url": "https://openproxylist.xyz/socks5.txt",
-      "ok": true,
-      "count": 2127,
-      "hint": "socks5"
-    },
-    {
-      "source": "api.openproxylist.xyz//http.txt",
-      "url": "https://api.openproxylist.xyz/http.txt",
-      "ok": true,
-      "count": 5390,
-      "hint": "http"
-    },
-    {
       "source": "gh/master/https.txt",
       "url": "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/https.txt",
       "ok": true,
@@ -311,59 +227,10 @@
       "hint": "http"
     },
     {
-      "source": "openproxylist.xyz//http.txt",
-      "url": "https://openproxylist.xyz/http.txt",
+      "source": "gh/master/http.txt",
+      "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
       "ok": true,
-      "count": 5390,
-      "hint": "http"
-    },
-    {
-      "source": "gh/master/socks5.txt",
-      "url": "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt",
-      "ok": true,
-      "count": 279,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/txt/proxies-https.txt",
-      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-https.txt",
-      "ok": true,
-      "count": 2161,
-      "hint": "http"
-    },
-    {
-      "source": "gh/txt/proxies-socks5.txt",
-      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks5.txt",
-      "ok": true,
-      "count": 405,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/txt/proxies-socks4.txt",
-      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks4.txt",
-      "ok": true,
-      "count": 1603,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/proxies/http.txt",
-      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/http.txt",
-      "ok": true,
-      "count": 554,
-      "hint": "http"
-    },
-    {
-      "source": "openproxylist.xyz//socks4.txt",
-      "url": "https://openproxylist.xyz/socks4.txt",
-      "ok": true,
-      "count": 3456,
-      "hint": "socks4"
-    },
-    {
-      "source": "api.proxyscrape.com/free-proxy-list/get",
-      "url": "https://api.proxyscrape.com/v4/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=ipport&format=text&timeout=20000",
-      "ok": true,
-      "count": 1083,
+      "count": 2198,
       "hint": "http"
     },
     {
@@ -374,32 +241,137 @@
       "hint": "socks4"
     },
     {
-      "source": "gh/proxies/socks4.txt",
-      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks4.txt",
+      "source": "gh/master/socks5.txt",
+      "url": "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt",
       "ok": true,
-      "count": 630,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/proxies/socks5.txt",
-      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks5.txt",
-      "ok": true,
-      "count": 247,
+      "count": 279,
       "hint": "socks5"
     },
     {
-      "source": "gh/proxy_files/http_proxies.txt",
-      "url": "https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/http_proxies.txt",
+      "source": "gh/master/socks5.txt",
+      "url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt",
       "ok": true,
-      "count": 3477,
+      "count": 1440,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/master/http.txt",
+      "url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+      "ok": true,
+      "count": 2198,
       "hint": "http"
     },
     {
+      "source": "gh/txt/proxies-https.txt",
+      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-https.txt",
+      "ok": true,
+      "count": 2161,
+      "hint": "http"
+    },
+    {
+      "source": "gh/master/socks4.txt",
+      "url": "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
+      "ok": true,
+      "count": 1846,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/txt/proxies-http.txt",
+      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-http.txt",
+      "ok": true,
+      "count": 1801,
+      "hint": "http"
+    },
+    {
+      "source": "openproxylist.xyz//socks5.txt",
+      "url": "https://openproxylist.xyz/socks5.txt",
+      "ok": true,
+      "count": 2103,
+      "hint": "socks5"
+    },
+    {
       "source": "gh/proxies/socks4.txt",
-      "url": "https://raw.githubusercontent.com/BreakingTechFr/Proxy_Free/main/proxies/socks4.txt",
-      "ok": false,
-      "error": "HTTPError: HTTP Error 404: Not Found",
-      "count": 0
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
+      "ok": true,
+      "count": 113,
+      "hint": "socks4"
+    },
+    {
+      "source": "openproxylist.xyz//socks4.txt",
+      "url": "https://openproxylist.xyz/socks4.txt",
+      "ok": true,
+      "count": 3435,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/master/proxy-list-raw.txt",
+      "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+      "ok": true,
+      "count": 400,
+      "hint": "http"
+    },
+    {
+      "source": "gh/txt/proxies-socks4.txt",
+      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks4.txt",
+      "ok": true,
+      "count": 1603,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/proxies/all.txt",
+      "url": "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/all.txt",
+      "ok": true,
+      "count": 654,
+      "hint": "auto"
+    },
+    {
+      "source": "gh/txt/proxies-socks5.txt",
+      "url": "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks5.txt",
+      "ok": true,
+      "count": 405,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/master/proxy-list.txt",
+      "url": "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt",
+      "ok": true,
+      "count": 400,
+      "hint": "auto"
+    },
+    {
+      "source": "api.proxyscrape.com/free-proxy-list/get",
+      "url": "https://api.proxyscrape.com/v4/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=ipport&format=text&timeout=20000",
+      "ok": true,
+      "count": 1042,
+      "hint": "http"
+    },
+    {
+      "source": "api.openproxylist.xyz//socks5.txt",
+      "url": "https://api.openproxylist.xyz/socks5.txt",
+      "ok": true,
+      "count": 2103,
+      "hint": "socks5"
+    },
+    {
+      "source": "openproxylist.xyz//http.txt",
+      "url": "https://openproxylist.xyz/http.txt",
+      "ok": true,
+      "count": 5448,
+      "hint": "http"
+    },
+    {
+      "source": "api.openproxylist.xyz//http.txt",
+      "url": "https://api.openproxylist.xyz/http.txt",
+      "ok": true,
+      "count": 5448,
+      "hint": "http"
+    },
+    {
+      "source": "gh/proxies/http.txt",
+      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/http.txt",
+      "ok": true,
+      "count": 554,
+      "hint": "http"
     },
     {
       "source": "gh/proxies/http.txt",
@@ -409,10 +381,10 @@
       "count": 0
     },
     {
-      "source": "gh/main/socks5.txt",
-      "url": "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/socks5.txt",
+      "source": "gh/proxies/socks5.txt",
+      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks5.txt",
       "ok": true,
-      "count": 482,
+      "count": 247,
       "hint": "socks5"
     },
     {
@@ -423,25 +395,39 @@
       "count": 0
     },
     {
+      "source": "gh/proxies/socks4.txt",
+      "url": "https://raw.githubusercontent.com/BreakingTechFr/Proxy_Free/main/proxies/socks4.txt",
+      "ok": false,
+      "error": "HTTPError: HTTP Error 404: Not Found",
+      "count": 0
+    },
+    {
+      "source": "gh/proxy_files/socks5_proxies.txt",
+      "url": "https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/socks5_proxies.txt",
+      "ok": true,
+      "count": 530,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/proxies/socks4.txt",
+      "url": "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks4.txt",
+      "ok": true,
+      "count": 630,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/main/socks5.txt",
+      "url": "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/socks5.txt",
+      "ok": true,
+      "count": 506,
+      "hint": "socks5"
+    },
+    {
       "source": "gh/main/http.txt",
       "url": "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
       "ok": true,
       "count": 58,
       "hint": "http"
-    },
-    {
-      "source": "gh/main/http.txt",
-      "url": "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt",
-      "ok": true,
-      "count": 808,
-      "hint": "http"
-    },
-    {
-      "source": "gh/master/proxies.txt",
-      "url": "https://raw.githubusercontent.com/sunny9577/proxy-scraper/master/proxies.txt",
-      "ok": true,
-      "count": 946,
-      "hint": "auto"
     },
     {
       "source": "gh/main/socks5.txt",
@@ -451,32 +437,18 @@
       "hint": "socks5"
     },
     {
-      "source": "gh/proxy_files/socks5_proxies.txt",
-      "url": "https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/socks5_proxies.txt",
+      "source": "gh/proxy_files/http_proxies.txt",
+      "url": "https://raw.githubusercontent.com/Anonym0usWork1221/Free-Proxies/main/proxy_files/http_proxies.txt",
       "ok": true,
-      "count": 571,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/master/proxy.txt",
-      "url": "https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt",
-      "ok": true,
-      "count": 138,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/master/http.txt",
-      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/http.txt",
-      "ok": true,
-      "count": 157,
+      "count": 3521,
       "hint": "http"
     },
     {
-      "source": "gh/master/socks4.txt",
-      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/socks4.txt",
+      "source": "gh/main/http.txt",
+      "url": "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt",
       "ok": true,
-      "count": 163,
-      "hint": "socks4"
+      "count": 957,
+      "hint": "http"
     },
     {
       "source": "gh/generated/http_proxies.txt",
@@ -486,31 +458,94 @@
       "hint": "http"
     },
     {
-      "source": "gh/master/https.txt",
-      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/https.txt",
+      "source": "gh/master/proxy.txt",
+      "url": "https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt",
       "ok": true,
-      "count": 1333,
-      "hint": "http"
+      "count": 96,
+      "hint": "socks5"
     },
     {
-      "source": "gh/master/socks5.txt",
-      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/socks5.txt",
+      "source": "gh/master/proxies.txt",
+      "url": "https://raw.githubusercontent.com/sunny9577/proxy-scraper/master/proxies.txt",
       "ok": true,
-      "count": 168,
+      "count": 946,
+      "hint": "auto"
+    },
+    {
+      "source": "gh/master/socks4.txt",
+      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/socks4.txt",
+      "ok": true,
+      "count": 242,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/proxies/socks5.txt",
+      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks5.txt",
+      "ok": true,
+      "count": 18839,
       "hint": "socks5"
     },
     {
       "source": "gh/proxies/https.txt",
       "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/https.txt",
       "ok": true,
-      "count": 3005,
+      "count": 3001,
       "hint": "http"
     },
     {
-      "source": "gh/main/http.txt",
-      "url": "https://raw.githubusercontent.com/proxy4parsing/proxy-list/main/http.txt",
+      "source": "gh/master/http.txt",
+      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/http.txt",
       "ok": true,
-      "count": 19031,
+      "count": 169,
+      "hint": "http"
+    },
+    {
+      "source": "gh/master/socks5.txt",
+      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/socks5.txt",
+      "ok": true,
+      "count": 207,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/proxies/socks4.txt",
+      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks4.txt",
+      "ok": true,
+      "count": 17951,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/master/http.txt",
+      "url": "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/http.txt",
+      "ok": true,
+      "count": 524,
+      "hint": "http"
+    },
+    {
+      "source": "gh/master/socks5.txt",
+      "url": "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/socks5.txt",
+      "ok": true,
+      "count": 21,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/main/socks5.txt",
+      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks5.txt",
+      "ok": true,
+      "count": 100644,
+      "hint": "socks5"
+    },
+    {
+      "source": "gh/master/connect.txt",
+      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/connect.txt",
+      "ok": true,
+      "count": 1542,
+      "hint": "http"
+    },
+    {
+      "source": "gh/master/https.txt",
+      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/https.txt",
+      "ok": true,
+      "count": 1349,
       "hint": "http"
     },
     {
@@ -521,46 +556,11 @@
       "hint": "socks5"
     },
     {
-      "source": "gh/master/http.txt",
-      "url": "https://raw.githubusercontent.com/TuanMinPay/live-proxy/master/http.txt",
-      "ok": true,
-      "count": 7567,
-      "hint": "http"
-    },
-    {
-      "source": "gh/master/http.txt",
-      "url": "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/http.txt",
-      "ok": true,
-      "count": 524,
-      "hint": "http"
-    },
-    {
       "source": "gh/master/socks4.txt",
       "url": "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/socks4.txt",
       "ok": true,
       "count": 165,
       "hint": "socks4"
-    },
-    {
-      "source": "gh/master/socks5.txt",
-      "url": "https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/socks5.txt",
-      "ok": true,
-      "count": 21,
-      "hint": "socks5"
-    },
-    {
-      "source": "vakhov.github.io/fresh-proxy-list/http.txt",
-      "url": "https://vakhov.github.io/fresh-proxy-list/http.txt",
-      "ok": true,
-      "count": 524,
-      "hint": "http"
-    },
-    {
-      "source": "gh/main/free.txt",
-      "url": "https://raw.githubusercontent.com/saisuiu/Lionkings-Http-Proxys-Proxies/main/free.txt",
-      "ok": true,
-      "count": 1000,
-      "hint": "http"
     },
     {
       "source": "gh/main/http.txt",
@@ -570,53 +570,25 @@
       "hint": "http"
     },
     {
+      "source": "vakhov.github.io/fresh-proxy-list/http.txt",
+      "url": "https://vakhov.github.io/fresh-proxy-list/http.txt",
+      "ok": true,
+      "count": 524,
+      "hint": "http"
+    },
+    {
+      "source": "gh/master/http.txt",
+      "url": "https://raw.githubusercontent.com/TuanMinPay/live-proxy/master/http.txt",
+      "ok": true,
+      "count": 6625,
+      "hint": "http"
+    },
+    {
       "source": "gh/master/http.txt",
       "url": "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt",
       "ok": true,
-      "count": 191,
+      "count": 264,
       "hint": "http"
-    },
-    {
-      "source": "gh/global/socks5_checked.txt",
-      "url": "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/socks5/global/socks5_checked.txt",
-      "ok": true,
-      "count": 90,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/proxies/socks4.txt",
-      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks4.txt",
-      "ok": true,
-      "count": 17937,
-      "hint": "socks4"
-    },
-    {
-      "source": "gh/global/http_checked.txt",
-      "url": "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/http/global/http_checked.txt",
-      "ok": true,
-      "count": 336,
-      "hint": "http"
-    },
-    {
-      "source": "gh/proxies/socks5.txt",
-      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/socks5.txt",
-      "ok": true,
-      "count": 18800,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/master/socks5.txt",
-      "url": "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks5.txt",
-      "ok": true,
-      "count": 116,
-      "hint": "socks5"
-    },
-    {
-      "source": "gh/main/proxy_list.txt",
-      "url": "https://raw.githubusercontent.com/andigwandi/free-proxy/main/proxy_list.txt",
-      "ok": true,
-      "count": 755,
-      "hint": "auto"
     },
     {
       "source": "gh/main/proxies.txt",
@@ -626,45 +598,31 @@
       "hint": "auto"
     },
     {
+      "source": "gh/master/socks5.txt",
+      "url": "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks5.txt",
+      "ok": true,
+      "count": 133,
+      "hint": "socks5"
+    },
+    {
       "source": "gh/master/https.txt",
       "url": "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/https.txt",
       "ok": true,
-      "count": 368,
+      "count": 449,
       "hint": "http"
     },
     {
-      "source": "gh/main/http.txt",
-      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",
+      "source": "gh/global/http_checked.txt",
+      "url": "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/http/global/http_checked.txt",
       "ok": true,
-      "count": 101601,
+      "count": 404,
       "hint": "http"
     },
     {
-      "source": "gh/master/list.txt",
-      "url": "https://raw.githubusercontent.com/almroot/proxylist/master/list.txt",
+      "source": "gh/main/proxy_list.txt",
+      "url": "https://raw.githubusercontent.com/andigwandi/free-proxy/main/proxy_list.txt",
       "ok": true,
-      "count": 419,
-      "hint": "auto"
-    },
-    {
-      "source": "gh/master/connect.txt",
-      "url": "https://raw.githubusercontent.com/zloi-user/hideip.me/master/connect.txt",
-      "ok": true,
-      "count": 1817,
-      "hint": "http"
-    },
-    {
-      "source": "gh/proxies/http.txt",
-      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt",
-      "ok": true,
-      "count": 59621,
-      "hint": "http"
-    },
-    {
-      "source": "gh/master/free-proxy-list.txt",
-      "url": "https://raw.githubusercontent.com/a2u/free-proxy-list/master/free-proxy-list.txt",
-      "ok": true,
-      "count": 5,
+      "count": 802,
       "hint": "auto"
     },
     {
@@ -675,18 +633,25 @@
       "hint": "auto"
     },
     {
-      "source": "gh/main/HTTP.txt",
-      "url": "https://raw.githubusercontent.com/B4RC0DE-TM/proxy-list/main/HTTP.txt",
+      "source": "gh/main/free.txt",
+      "url": "https://raw.githubusercontent.com/saisuiu/Lionkings-Http-Proxys-Proxies/main/free.txt",
       "ok": true,
-      "count": 3184,
+      "count": 1000,
       "hint": "http"
     },
     {
-      "source": "spys.me//socks.txt",
-      "url": "https://spys.me/socks.txt",
+      "source": "gh/global/socks5_checked.txt",
+      "url": "https://raw.githubusercontent.com/elliottophellia/yakumo/master/results/socks5/global/socks5_checked.txt",
       "ok": true,
-      "count": 400,
+      "count": 96,
       "hint": "socks5"
+    },
+    {
+      "source": "gh/proxies/http.txt",
+      "url": "https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt",
+      "ok": true,
+      "count": 59653,
+      "hint": "http"
     },
     {
       "source": "gh/main/SOCKS5.txt",
@@ -703,30 +668,65 @@
       "hint": "http"
     },
     {
-      "source": "gh/main/socks5.txt",
-      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks5.txt",
+      "source": "gh/main/socks4.txt",
+      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks4.txt",
       "ok": true,
-      "count": 100644,
+      "count": 89691,
+      "hint": "socks4"
+    },
+    {
+      "source": "gh/master/list.txt",
+      "url": "https://raw.githubusercontent.com/almroot/proxylist/master/list.txt",
+      "ok": true,
+      "count": 419,
+      "hint": "auto"
+    },
+    {
+      "source": "gh/master/free-proxy-list.txt",
+      "url": "https://raw.githubusercontent.com/a2u/free-proxy-list/master/free-proxy-list.txt",
+      "ok": true,
+      "count": 5,
+      "hint": "auto"
+    },
+    {
+      "source": "gh/main/http.txt",
+      "url": "https://raw.githubusercontent.com/proxy4parsing/proxy-list/main/http.txt",
+      "ok": true,
+      "count": 19031,
+      "hint": "http"
+    },
+    {
+      "source": "gh/main/HTTP.txt",
+      "url": "https://raw.githubusercontent.com/B4RC0DE-TM/proxy-list/main/HTTP.txt",
+      "ok": true,
+      "count": 3184,
+      "hint": "http"
+    },
+    {
+      "source": "gh/main/http.txt",
+      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/http.txt",
+      "ok": true,
+      "count": 101601,
+      "hint": "http"
+    },
+    {
+      "source": "spys.me//socks.txt",
+      "url": "https://spys.me/socks.txt",
+      "ok": true,
+      "count": 0,
       "hint": "socks5"
     },
     {
       "source": "spys.me//proxy.txt",
       "url": "https://spys.me/proxy.txt",
       "ok": true,
-      "count": 400,
+      "count": 0,
       "hint": "auto"
-    },
-    {
-      "source": "gh/main/socks4.txt",
-      "url": "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks4.txt",
-      "ok": true,
-      "count": 89691,
-      "hint": "socks4"
     }
   ],
   "note": "pool=HTTP/SOCKS; nodes/clash=ss/vmess/vless/trojan/hy2 for clients",
   "light_check": {
-    "at": "2026-08-24T01:58:00.698514+00:00",
+    "at": "2026-08-24T03:17:09.610262+00:00",
     "sampled": 400,
     "live_http": 5,
     "judge": "https://httpbin.org/ip"
