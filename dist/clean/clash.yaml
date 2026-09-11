@@ -1,26 +1,21 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-09-11T08:14:49.066383+00:00
+# updated: 2026-09-11T11:49:13.763636+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
-  - name: "shadowsocks-195-690"
-    type: "ss"
-    server: "37.19.198.243"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
+  - name: "vmess-650629581-774"
+    type: "vmess"
+    server: "84.17.41.2"
+    port: 18000
+    alterId: 0
+    cipher: "auto"
+    network: "raw"
     udp: true
-  - name: "shadowsocks-193-696"
-    type: "ss"
-    server: "37.19.198.160"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
-  - name: "vmess-2387880-642"
+    uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
+  - name: "vmess-655845751-372"
     type: "vmess"
     server: "67.220.85.46"
     port: 18000
@@ -29,38 +24,28 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
-  - name: "shadowsocks-809724024-698"
-    type: "ss"
-    server: "51.79.64.198"
-    port: 8119
-    cipher: "aes-256-gcm"
-    password: "cdBIDV42DCwnfIN"
-    udp: true
-  - name: "shadowsocks-415242973-396"
-    type: "ss"
-    server: "15.235.75.71"
-    port: 8388
-    cipher: "chacha20-ietf-poly1305"
-    password: "FD3rCuOsxOay"
-    udp: true
-  - name: "shadowsocks-496614106-692"
-    type: "ss"
-    server: "51.222.12.127"
-    port: 445
-    cipher: "aes-256-gcm"
-    password: "zDNVedRFPQexG9v"
-    udp: true
-  - name: "vless-1229122846-734"
-    type: "vless"
-    server: "fq.jp188.dpdns.org"
-    port: 443
-    network: "ws"
-    servername: "fq.jp188.dpdns.org"
+  - name: "hysteria2-153592298-404"
+    type: "hysteria2"
+    server: "hy2.123266.xyz"
+    port: 33333
+    password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
     skip-cert-verify: false
-    tls: true
-    udp: true
-    uuid: "42c62a5a-cd31-4551-80ef-908732370287"
-  - name: "vmess-2387849-334"
+    sni: "hy2.123266.xyz"
+  - name: "hysteria2-918220920-398"
+    type: "hysteria2"
+    server: "163.192.14.135"
+    port: 50160
+    password: "099830134df5ac3a04a4b21d39b8c395"
+    skip-cert-verify: true
+    sni: "t.me"
+  - name: "hysteria2-652726872-6"
+    type: "hysteria2"
+    server: "hy2.561891.xyz"
+    port: 44356
+    password: "dongtaiwang.com"
+    skip-cert-verify: false
+    sni: ""
+  - name: "vmess-655845749-744"
     type: "vmess"
     server: "23.162.200.198"
     port: 18000
@@ -69,57 +54,44 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
-  - name: "hysteria2-1047737341-150"
+  - name: "hysteria2-1058393291-118"
     type: "hysteria2"
     server: "us4.xiaoliyu.cyou"
     port: 4433
     password: "19f72087-4591-4d72-930b-2697078ec2be"
     skip-cert-verify: true
-    sni: "us4.xiaoliyu.cyou"
-  - name: "shadowsocks-166-30"
-    type: "ss"
-    server: "137.184.174.93"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "shadowsocks-468218613-160"
-    type: "ss"
-    server: "138.197.141.58"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "hysteria2-1210298803-18"
+    sni: "vk.com"
+  - name: "hysteria2-1016364146-128"
     type: "hysteria2"
-    server: "162.249.126.7"
-    port: 8443
-    password: "9Me_Jx935gnHx13_Nx45M_NYXe037js_Be4z"
-    skip-cert-verify: false
-    sni: "hopp-germany-new.ddnsguru.com"
-  - name: "hysteria2-1208885879-16"
-    type: "hysteria2"
-    server: "205.237.109.176"
-    port: 8443
-    password: "Oz_Kx9342gefwJ89x3_M9z32kzf9KJq003_s"
-    skip-cert-verify: false
-    sni: "hopp-netherland-new.dynuddns.net"
-  - name: "hysteria2-1005126986-386"
-    type: "hysteria2"
-    server: "labs.frkn.org"
+    server: "15.223.122.197"
     port: 443
-    password: "3b8c82ed-fe66-472d-915e-034ccb57103f"
+    password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: ""
-  - name: "trojan-635823137-718"
-    type: "trojan"
-    server: "64.94.95.114"
-    port: 57142
-    password: "kkzh2prsyr2ik47as615"
+    sni: "t.me"
+  - name: "hysteria2-722298619-406"
+    type: "hysteria2"
+    server: "vpn-ca-001.fastervpn.world"
+    port: 443
+    password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: ""
+    sni: "whatsapp.com"
+  - name: "hysteria2-468892449-126"
+    type: "hysteria2"
+    server: "82.38.60.15"
+    port: 8443
+    password: "VB92_Ka9qwef143K_L23K1hz3_bF_Hz62uT_Bn1_sC"
+    skip-cert-verify: false
+    sni: "hopp-us.yyuyy.com"
+  - name: "vmess-5258767-726"
+    type: "vmess"
+    server: "169.197.142.22"
+    port: 18000
+    alterId: 0
+    cipher: "auto"
+    network: "raw"
     udp: true
-  - name: "vmess-2383023-128"
+    uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
+  - name: "vmess-717847176-366"
     type: "vmess"
     server: "82.198.246.250"
     port: 180
@@ -128,16 +100,16 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
-  - name: "vmess-1163296155-130"
+  - name: "vmess-655843968-88"
     type: "vmess"
     server: "82.198.246.233"
     port: 180
     alterId: 0
-    cipher: "aes-128-gcm"
-    network: "raw"
+    cipher: "auto"
+    network: "tcp"
     udp: true
     uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
-  - name: "vmess-2382969-124"
+  - name: "vmess-814613029-92"
     type: "vmess"
     server: "82.198.246.97"
     port: 180
@@ -146,28 +118,28 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
-  - name: "shadowsocks-1235531867-22"
+  - name: "shadowsocks-1235531867-30"
     type: "ss"
     server: "129.146.122.135"
     port: 50356
     cipher: "2022-blake3-chacha20-poly1305"
     password: "FRZXc5h3kXGKCK/6X0CXZOUDjQYPl5MLA0SH12omgxQ="
     udp: true
-  - name: "shadowsocks-468218514-24"
+  - name: "shadowsocks-468218514-164"
     type: "ss"
     server: "107.151.182.197"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "hysteria2-1048913651-388"
-    type: "hysteria2"
-    server: "85.204.107.183"
-    port: 8443
-    password: "Jz40_mIJ934vK0_k9D3jz92_Vx48q_GHa1_sz0"
-    skip-cert-verify: false
-    sni: "hopp-romania-new.roxa.org"
-  - name: "vmess-652375205-120"
+  - name: "shadowsocks-1211880885-432"
+    type: "ss"
+    server: "15.204.247.206"
+    port: 4444
+    cipher: "aes-256-gcm"
+    password: "pKEW8JPByTVTLtM"
+    udp: true
+  - name: "vmess-145155-90"
     type: "vmess"
     server: "82.198.246.37"
     port: 180
@@ -176,278 +148,335 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
-  - name: "shadowsocks-156-156"
+  - name: "vmess-655845748-374"
+    type: "vmess"
+    server: "216.106.183.35"
+    port: 22324
+    alterId: 0
+    cipher: "auto"
+    network: "tcp"
+    udp: true
+    uuid: "04621bae-ab36-11ec-b909-0242ac120002"
+  - name: "shadowsocks-196-434"
+    type: "ss"
+    server: "37.19.198.244"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
+  - name: "shadowsocks-156-154"
     type: "ss"
     server: "173.244.56.9"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "hysteria2-1058393303-684"
+  - name: "hysteria2-1227273038-24"
     type: "hysteria2"
-    server: "85.204.107.185"
-    port: 8443
-    password: "Jz40_mIJ934vK0_k9D3jz92_Vx48q_GHa1_sz0"
+    server: "72.56.102.31"
+    port: 443
+    password: "BWAFlp8g53"
     skip-cert-verify: false
-    sni: "hopp-romania-new.roxa.org"
-  - name: "hysteria2-858183556-688"
+    sni: "hys28.wba-pn.ru"
+  - name: "hysteria2-468883282-146"
     type: "hysteria2"
-    server: "104.165.205.40"
-    port: 8443
-    password: "54d2f622-fd71-4f5f-8813-832b68f4ca3b"
+    server: "5.129.235.85"
+    port: 443
+    password: "gf1:gfhysteria2024"
     skip-cert-verify: true
-    sni: "speedtestmark.com"
-  - name: "hysteria2-1108719512-686"
+    sni: "speedtest.tinkoff.ru"
+  - name: "hysteria2-720834172-136"
     type: "hysteria2"
-    server: "104.165.205.42"
+    server: "46.229.243.133"
     port: 8443
-    password: "52e3dd44-ed23-4030-b0cc-5b5a953f2d4d"
+    password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
     skip-cert-verify: true
-    sni: "speedtestmark.com"
-  - name: "shadowsocks-11012-700"
+    sni: "grape-turbo-fr.roxa.org"
+  - name: "hysteria2-813371785-132"
+    type: "hysteria2"
+    server: "46.229.243.139"
+    port: 8443
+    password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
+    skip-cert-verify: true
+    sni: "grape-turbo-fr.roxa.org"
+  - name: "hysteria2-934929268-426"
+    type: "hysteria2"
+    server: "hys28.wba-pn.ru"
+    port: 443
+    password: "BWAFlp8g53"
+    skip-cert-verify: false
+    sni: ""
+  - name: "hysteria2-796133334-408"
+    type: "hysteria2"
+    server: "46.229.243.137"
+    port: 8443
+    password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
+    skip-cert-verify: true
+    sni: "grape-turbo-fr.roxa.org"
+  - name: "hysteria2-591436862-142"
+    type: "hysteria2"
+    server: "46.229.243.131"
+    port: 8443
+    password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
+    skip-cert-verify: true
+    sni: "grape-turbo-fr.roxa.org"
+  - name: "hysteria2-819785927-412"
+    type: "hysteria2"
+    server: "46.229.243.138"
+    port: 8443
+    password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
+    skip-cert-verify: true
+    sni: "grape-turbo-fr.roxa.org"
+  - name: "shadowsocks-1212526365-430"
     type: "ss"
-    server: "198.98.53.130"
+    server: "ca225.vpnbook.com"
     port: 443
     cipher: "chacha20-ietf-poly1305"
-    password: "eDfN7SODQceIOmIAbtJJtK"
+    password: "3ssumf2"
     udp: true
-  - name: "hysteria2-13527647-678"
+  - name: "hysteria2-896855658-806"
     type: "hysteria2"
-    server: "45.88.43.116"
-    port: 52454
-    password: "6c077487-06af-4fb1-9e46-d485d98f0a31"
+    server: "205.237.109.163"
+    port: 8443
+    password: "Oz_Kx9342gefwJ89x3_M9z32kzf9KJq003_s"
     skip-cert-verify: true
-    sni: "www.bing.com"
-  - name: "shadowsocks-11022-168"
-    type: "ss"
-    server: "82.38.31.190"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    sni: "hopp-netherland-new.dynuddns.net"
+  - name: "hysteria2-589844090-424"
+    type: "hysteria2"
+    server: "de.1.23.h2corp.org"
+    port: 443
+    password: "mkL3AfdSZIpTWRB9TcWPn9vywPGN89MRHg3ToRDj"
+    skip-cert-verify: true
+    sni: "germany3.h2corp.local"
+  - name: "hysteria2-657042644-392"
+    type: "hysteria2"
+    server: "13.212.83.43"
+    port: 443
+    password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
+    skip-cert-verify: true
+    sni: "vpn-sg-001.fastervpn.world"
+  - name: "vmess-1130434817-84"
+    type: "vmess"
+    server: "45.32.57.118"
+    port: 4433
+    alterId: 0
+    cipher: "none"
+    network: "tcp"
     udp: true
-  - name: "shadowsocks-11032-400"
-    type: "ss"
-    server: "82.38.31.214"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-198822224-704"
-    type: "ss"
-    server: "193.29.139.168"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "QCXDxuDlTTMD7jtgHUjIoj"
-    udp: true
-  - name: "shadowsocks-188-394"
+    uuid: "35b89832-0a7c-48dd-8d1c-a2891b522195"
+  - name: "shadowsocks-188-438"
     type: "ss"
     server: "82.38.31.149"
     port: 8080
     cipher: "chacha20-ietf-poly1305"
     password: "oZIoA69Q8yhcQV8ka3Pa3A"
     udp: true
-  - name: "shadowsocks-273-694"
-    type: "ss"
-    server: "82.38.31.2"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-11031-390"
-    type: "ss"
-    server: "82.38.31.213"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-172-398"
-    type: "ss"
-    server: "82.38.31.194"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-217-162"
-    type: "ss"
-    server: "108.181.58.239"
-    port: 8388
-    cipher: "chacha20-ietf-poly1305"
-    password: "CJmTCCx7Ltud"
-    udp: true
-  - name: "shadowsocks-200379481-402"
-    type: "ss"
-    server: "193.29.139.234"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "4a2rfixophdjffa8KVA4Aa"
-    udp: true
-  - name: "shadowsocks-268-702"
-    type: "ss"
-    server: "82.38.31.35"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "hysteria2-1121839551-656"
+  - name: "hysteria2-651117976-418"
     type: "hysteria2"
-    server: "mz.hkychina.com"
-    port: 8443
-    password: "HysTeria2026!Proxy"
-    skip-cert-verify: false
-    sni: "mz.hkychina.com"
-  - name: "hysteria2-207301017-380"
-    type: "hysteria2"
-    server: "160.187.100.109"
+    server: "13.212.32.171"
     port: 443
-    password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
+    password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
-    sni: "vpn-tw-002.fastervpn.world"
-  - name: "hysteria2-1237100937-378"
+    sni: "vpn-sg-001.fastervpn.world"
+  - name: "hysteria2-907349609-420"
+    type: "hysteria2"
+    server: "144.31.148.87"
+    port: 443
+    password: "2691cbe7c20cced8b0aeb12c812d09077e5b3eec7669fb8f"
+    skip-cert-verify: true
+    sni: "replay.wwwinternetvideo.click"
+  - name: "hysteria2-1237100937-794"
     type: "hysteria2"
     server: "vpn-in-001.fastervpn.world"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "www.bing.com"
-  - name: "shadowsocks-114874950-392"
+  - name: "shadowsocks-114874950-436"
     type: "ss"
     server: "193.29.139.132"
     port: 8080
     cipher: "chacha20-ietf-poly1305"
     password: "k1dBOmOB4oqi7Ump37a1bQ"
     udp: true
-  - name: "hysteria2-468898830-148"
+  - name: "hysteria2-920243845-8"
     type: "hysteria2"
     server: "202.146.222.174"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: ""
-  - name: "hysteria2-1063751359-650"
+    sni: "https://t.me/wangcai2"
+  - name: "hysteria2-1063751359-790"
     type: "hysteria2"
     server: "138.2.73.238"
     port: 50160
     password: "f87376e17da040ed04c9665ce8972930"
     skip-cert-verify: true
     sni: "138.2.73.238"
-  - name: "hysteria2-483633865-146"
+  - name: "hysteria2-705682240-10"
     type: "hysteria2"
     server: "202.146.222.29"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: "https://t.me/wangcai2ð\\x9F\\x87¨ð\\x9F\\x87³"
-  - name: "hysteria2-1066924718-2"
+    sni: "www.bing.com"
+  - name: "hysteria2-1066924718-114"
     type: "hysteria2"
     server: "202.146.222.89"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
     sni: "off"
-  - name: "hysteria2-1180048411-6"
+  - name: "hysteria2-1180048411-0"
     type: "hysteria2"
     server: "54.151.142.26"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "54.151.142.26"
-  - name: "hysteria2-307174592-10"
+  - name: "hysteria2-722298650-106"
     type: "hysteria2"
     server: "vpn-tw-002.fastervpn.world"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: "127.0.0.1"
-  - name: "hysteria2-655837404-0"
+    sni: "vk.com"
+  - name: "hysteria2-737135161-4"
     type: "hysteria2"
     server: "103.115.109.49"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: "https://t.me/wangcai2\\U0001F1E8\\U0001F1F3"
-  - name: "hysteria2-722298606-136"
+    sni: "https:"
+  - name: "hysteria2-722298531-140"
     type: "hysteria2"
     server: "3.36.93.74"
     port: 443
     password: "H7mP2xY9kJ4nQ8wR5tF6vB3z"
     skip-cert-verify: true
-    sni: "whatsapp.com"
-  - name: "shadowsocks-1237383182-32"
-    type: "ss"
-    server: "germ6.velqixa.ir"
-    port: 8390
-    cipher: "chacha20-ietf-poly1305"
-    password: "BKoK3EPN2TwJUf0IBOPQSA"
-    udp: true
-  - name: "hysteria2-1046909555-12"
+    sni: "google.com"
+  - name: "hysteria2-1046909555-20"
     type: "hysteria2"
     server: "13.212.76.106"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
-  - name: "hysteria2-1209758488-14"
+  - name: "hysteria2-1209758488-22"
     type: "hysteria2"
     server: "nl01ntrhy01.tcp-reset-club.net"
     port: 443
     password: "4fb82973-a7f1-4fc2-9958-cb21f5162f06"
     skip-cert-verify: true
     sni: "nl01ntrhy01.tcp-reset-club.net"
-  - name: "vless-1226554660-106"
-    type: "vless"
-    server: "45.144.28.39"
-    port: 2096
-    network: "ws"
-    udp: true
-    uuid: "70e20b2e-3b1f-4c25-9a3d-9240570391bb"
-  - name: "shadowsocks-211-158"
+  - name: "shadowsocks-1235504188-36"
     type: "ss"
-    server: "149.22.87.241"
+    server: "16.52.165.74"
     port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
     udp: true
-  - name: "vless-1224465524-908"
-    type: "vless"
-    server: "184.107.106.68"
+  - name: "shadowsocks-696780678-452"
+    type: "ss"
+    server: "149.102.132.184"
     port: 443
-    network: "tcp"
-    servername: ""
-    skip-cert-verify: true
-    tls: true
+    cipher: "aes-256-gcm"
+    password: "g5h5jleTRSyO3Rk4"
     udp: true
-    uuid: "716426fa-bcb7-4eb9-b460-36399ebf740d"
-  - name: "vmess-974446965-110"
+  - name: "shadowsocks-212-156"
+    type: "ss"
+    server: "108.181.126.122"
+    port: 8388
+    cipher: "chacha20-ietf-poly1305"
+    password: "CJmTCCx7Ltud"
+    udp: true
+  - name: "shadowsocks-189-32"
+    type: "ss"
+    server: "82.38.31.184"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-16136-444"
+    type: "ss"
+    server: "82.38.31.181"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-130088-440"
+    type: "ss"
+    server: "82.38.31.9"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "oZIoA69Q8yhcQV8ka3Pa3A"
+    udp: true
+  - name: "shadowsocks-482887639-166"
+    type: "ss"
+    server: "82.38.31.164"
+    port: 443
+    cipher: "chacha20-ietf-poly1305"
+    password: "oZIoA69Q8yhcQV8ka3Pa3A"
+    udp: true
+  - name: "shadowsocks-11027-34"
+    type: "ss"
+    server: "82.38.31.206"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-11030-162"
+    type: "ss"
+    server: "82.38.31.212"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "vmess-1015414223-82"
     type: "vmess"
     server: "155.248.176.44"
     port: 55216
     alterId: 0
     cipher: "auto"
-    network: "raw"
+    network: "tcp"
     udp: true
     uuid: "154dbc39-0921-cf11-29bd-156c5000d763"
-  - name: "hysteria2-1219061973-20"
-    type: "hysteria2"
-    server: "46.247.41.120"
-    port: 443
-    password: "8fb328f0-d8e0-4b11-a6db-3dadfc4f02a3"
-    skip-cert-verify: true
-    sni: "kz03hy01.tcp-reset-club.net"
-  - name: "hysteria2-1235887697-4"
+  - name: "shadowsocks-183-158"
+    type: "ss"
+    server: "82.38.31.179"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-182-442"
+    type: "ss"
+    server: "82.38.31.218"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-1235384031-450"
+    type: "ss"
+    server: "132.243.255.3"
+    port: 30111
+    cipher: "aes-256-gcm"
+    password: "78235e7dc55e9ad1"
+    udp: true
+  - name: "hysteria2-1235887697-2"
     type: "hysteria2"
     server: "47.129.0.20"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "www.bing.com"
-  - name: "hysteria2-892012196-652"
+  - name: "hysteria2-892012196-130"
     type: "hysteria2"
     server: "13.250.120.9"
     port: 443
     password: "qQe1z5kU8kN6SlKnDt9Ru3Qp"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
-  - name: "vmess-468166904-112"
+  - name: "vmess-96606-764"
     type: "vmess"
     server: "149.88.23.202"
     port: 18000
@@ -456,37 +485,37 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
-  - name: "hysteria2-682318866-646"
+  - name: "hysteria2-682318866-788"
     type: "hysteria2"
     server: "150-230-252-217.liao.kdns.fr"
     port: 50160
     password: "9cfc9458e48c028ec03ff86ebc71c744"
     skip-cert-verify: false
     sni: "150-230-252-217.liao.kdns.fr"
-  - name: "vmess-1235599294-582"
-    type: "vmess"
-    server: "oc.imfun.fun"
-    port: 18112
-    alterId: 0
-    cipher: "auto"
-    network: "tcp"
-    udp: true
-    uuid: "ad45f8f6-0f0a-4cc4-b907-c4582407dc94"
-  - name: "shadowsocks-696780669-154"
+  - name: "shadowsocks-696780669-448"
     type: "ss"
     server: "84.247.155.196"
     port: 80
     cipher: "aes-256-gcm"
     password: "3eOFeNssde7PYYMv"
     udp: true
-  - name: "shadowsocks-126340-26"
+  - name: "vmess-1221185995-314"
+    type: "vmess"
+    server: "ww11.levikogjgfdd.ir"
+    port: 18000
+    alterId: 0
+    cipher: "auto"
+    network: "raw"
+    udp: true
+    uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
+  - name: "shadowsocks-126340-28"
     type: "ss"
     server: "167.150.100.115"
     port: 27755
     cipher: "2022-blake3-aes-256-gcm"
     password: "fnvo82p9y4AKykZXyIFtnodFy6fQmWnVlI2SvGleOB0="
     udp: true
-  - name: "vmess-1231007886-118"
+  - name: "vmess-1224865296-86"
     type: "vmess"
     server: "149.88.23.207"
     port: 18000
@@ -495,14 +524,36 @@ proxies:
     network: "tcp"
     udp: true
     uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
-  - name: "hysteria2-1162353391-362"
+  - name: "trojan-123134632-460"
+    type: "trojan"
+    server: "154.90.62.70"
+    port: 56127
+    password: "p5jTPcffLgi4gaNOJd2KUTb9YEPBBD5B"
+    skip-cert-verify: true
+    sni: "154.90.62.70"
+    udp: true
+  - name: "shadowsocks-246-160"
+    type: "ss"
+    server: "102.133.165.160"
+    port: 16233
+    cipher: "chacha20-ietf-poly1305"
+    password: "Xsy8Ox4yOV3xLlpxtjzs3X"
+    udp: true
+  - name: "hysteria2-1009480027-428"
+    type: "hysteria2"
+    server: "85.204.107.178"
+    port: 8443
+    password: "Jz40_mIJ934vK0_k9D3jz92_Vx48q_GHa1_sz0"
+    skip-cert-verify: true
+    sni: "hopp-romania-new.roxa.org"
+  - name: "hysteria2-1111846076-108"
     type: "hysteria2"
     server: "152.67.200.82"
     port: 50160
     password: "3d7634af8cb2c6cb4bac1c0efad8b43d"
     skip-cert-verify: true
-    sni: ""
-  - name: "trojan-133769367-176"
+    sni: "speedtest.tinkoff.ru"
+  - name: "trojan-133769367-464"
     type: "trojan"
     server: "119.246.1.143"
     port: 443
@@ -510,28 +561,39 @@ proxies:
     skip-cert-verify: true
     sni: "t.me%2fripaojiedian"
     udp: true
-  - name: "vless-663902649-190"
+  - name: "vmess-2387898-768"
+    type: "vmess"
+    server: "67.220.72.237"
+    port: 22324
+    alterId: 0
+    cipher: "auto"
+    network: "tcp"
+    udp: true
+    uuid: "04621bae-ab36-11ec-b909-0242ac120002"
+  - name: "vless-1038685483-62"
     type: "vless"
     server: "137.220.221.179"
     port: 443
     network: "tcp"
     udp: true
     uuid: "a16a3336-c9ab-489f-9b85-c973f5e2cfa4"
-  - name: "shadowsocks-11026-706"
-    type: "ss"
-    server: "82.38.31.200"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "vless-663902650-792"
-    type: "vless"
-    server: "134.122.154.210"
-    port: 443
+  - name: "vmess-468166886-746"
+    type: "vmess"
+    server: "134.195.196.211"
+    port: 18000
+    alterId: 0
+    cipher: "auto"
     network: "tcp"
     udp: true
-    uuid: "7f549a50-4655-46b6-962d-183cfc532fc9"
-  - name: "vmess-1138304671-602"
+    uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
+  - name: "shadowsocks-174-446"
+    type: "ss"
+    server: "82.38.31.155"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "oZIoA69Q8yhcQV8ka3Pa3A"
+    udp: true
+  - name: "vmess-1138304671-316"
     type: "vmess"
     server: "156.226.183.181"
     port: 54321
@@ -544,155 +606,171 @@ proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
-      - shadowsocks-195-690
-      - shadowsocks-193-696
-      - vmess-2387880-642
-      - shadowsocks-809724024-698
-      - shadowsocks-415242973-396
-      - shadowsocks-496614106-692
-      - vless-1229122846-734
-      - vmess-2387849-334
-      - hysteria2-1047737341-150
-      - shadowsocks-166-30
-      - shadowsocks-468218613-160
-      - hysteria2-1210298803-18
-      - hysteria2-1208885879-16
-      - hysteria2-1005126986-386
-      - trojan-635823137-718
-      - vmess-2383023-128
-      - vmess-1163296155-130
-      - vmess-2382969-124
-      - shadowsocks-1235531867-22
-      - shadowsocks-468218514-24
-      - hysteria2-1048913651-388
-      - vmess-652375205-120
-      - shadowsocks-156-156
-      - hysteria2-1058393303-684
-      - hysteria2-858183556-688
-      - hysteria2-1108719512-686
-      - shadowsocks-11012-700
-      - hysteria2-13527647-678
-      - shadowsocks-11022-168
-      - shadowsocks-11032-400
-      - shadowsocks-198822224-704
-      - shadowsocks-188-394
-      - shadowsocks-273-694
-      - shadowsocks-11031-390
-      - shadowsocks-172-398
-      - shadowsocks-217-162
-      - shadowsocks-200379481-402
-      - shadowsocks-268-702
-      - hysteria2-1121839551-656
-      - hysteria2-207301017-380
-      - hysteria2-1237100937-378
-      - shadowsocks-114874950-392
-      - hysteria2-468898830-148
-      - hysteria2-1063751359-650
-      - hysteria2-483633865-146
-      - hysteria2-1066924718-2
-      - hysteria2-1180048411-6
-      - hysteria2-307174592-10
-      - hysteria2-655837404-0
-      - hysteria2-722298606-136
-      - shadowsocks-1237383182-32
-      - hysteria2-1046909555-12
-      - hysteria2-1209758488-14
-      - vless-1226554660-106
-      - shadowsocks-211-158
-      - vless-1224465524-908
-      - vmess-974446965-110
-      - hysteria2-1219061973-20
-      - hysteria2-1235887697-4
-      - hysteria2-892012196-652
-      - vmess-468166904-112
-      - hysteria2-682318866-646
-      - vmess-1235599294-582
-      - shadowsocks-696780669-154
-      - shadowsocks-126340-26
-      - vmess-1231007886-118
-      - hysteria2-1162353391-362
-      - trojan-133769367-176
-      - vless-663902649-190
-      - shadowsocks-11026-706
-      - vless-663902650-792
-      - vmess-1138304671-602
+      - vmess-650629581-774
+      - vmess-655845751-372
+      - hysteria2-153592298-404
+      - hysteria2-918220920-398
+      - hysteria2-652726872-6
+      - vmess-655845749-744
+      - hysteria2-1058393291-118
+      - hysteria2-1016364146-128
+      - hysteria2-722298619-406
+      - hysteria2-468892449-126
+      - vmess-5258767-726
+      - vmess-717847176-366
+      - vmess-655843968-88
+      - vmess-814613029-92
+      - shadowsocks-1235531867-30
+      - shadowsocks-468218514-164
+      - shadowsocks-1211880885-432
+      - vmess-145155-90
+      - vmess-655845748-374
+      - shadowsocks-196-434
+      - shadowsocks-156-154
+      - hysteria2-1227273038-24
+      - hysteria2-468883282-146
+      - hysteria2-720834172-136
+      - hysteria2-813371785-132
+      - hysteria2-934929268-426
+      - hysteria2-796133334-408
+      - hysteria2-591436862-142
+      - hysteria2-819785927-412
+      - shadowsocks-1212526365-430
+      - hysteria2-896855658-806
+      - hysteria2-589844090-424
+      - hysteria2-657042644-392
+      - vmess-1130434817-84
+      - shadowsocks-188-438
+      - hysteria2-651117976-418
+      - hysteria2-907349609-420
+      - hysteria2-1237100937-794
+      - shadowsocks-114874950-436
+      - hysteria2-920243845-8
+      - hysteria2-1063751359-790
+      - hysteria2-705682240-10
+      - hysteria2-1066924718-114
+      - hysteria2-1180048411-0
+      - hysteria2-722298650-106
+      - hysteria2-737135161-4
+      - hysteria2-722298531-140
+      - hysteria2-1046909555-20
+      - hysteria2-1209758488-22
+      - shadowsocks-1235504188-36
+      - shadowsocks-696780678-452
+      - shadowsocks-212-156
+      - shadowsocks-189-32
+      - shadowsocks-16136-444
+      - shadowsocks-130088-440
+      - shadowsocks-482887639-166
+      - shadowsocks-11027-34
+      - shadowsocks-11030-162
+      - vmess-1015414223-82
+      - shadowsocks-183-158
+      - shadowsocks-182-442
+      - shadowsocks-1235384031-450
+      - hysteria2-1235887697-2
+      - hysteria2-892012196-130
+      - vmess-96606-764
+      - hysteria2-682318866-788
+      - shadowsocks-696780669-448
+      - vmess-1221185995-314
+      - shadowsocks-126340-28
+      - vmess-1224865296-86
+      - trojan-123134632-460
+      - shadowsocks-246-160
+      - hysteria2-1009480027-428
+      - hysteria2-1111846076-108
+      - trojan-133769367-464
+      - vmess-2387898-768
+      - vless-1038685483-62
+      - vmess-468166886-746
+      - shadowsocks-174-446
+      - vmess-1138304671-316
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - shadowsocks-195-690
-      - shadowsocks-193-696
-      - vmess-2387880-642
-      - shadowsocks-809724024-698
-      - shadowsocks-415242973-396
-      - shadowsocks-496614106-692
-      - vless-1229122846-734
-      - vmess-2387849-334
-      - hysteria2-1047737341-150
-      - shadowsocks-166-30
-      - shadowsocks-468218613-160
-      - hysteria2-1210298803-18
-      - hysteria2-1208885879-16
-      - hysteria2-1005126986-386
-      - trojan-635823137-718
-      - vmess-2383023-128
-      - vmess-1163296155-130
-      - vmess-2382969-124
-      - shadowsocks-1235531867-22
-      - shadowsocks-468218514-24
-      - hysteria2-1048913651-388
-      - vmess-652375205-120
-      - shadowsocks-156-156
-      - hysteria2-1058393303-684
-      - hysteria2-858183556-688
-      - hysteria2-1108719512-686
-      - shadowsocks-11012-700
-      - hysteria2-13527647-678
-      - shadowsocks-11022-168
-      - shadowsocks-11032-400
-      - shadowsocks-198822224-704
-      - shadowsocks-188-394
-      - shadowsocks-273-694
-      - shadowsocks-11031-390
-      - shadowsocks-172-398
-      - shadowsocks-217-162
-      - shadowsocks-200379481-402
-      - shadowsocks-268-702
-      - hysteria2-1121839551-656
-      - hysteria2-207301017-380
-      - hysteria2-1237100937-378
-      - shadowsocks-114874950-392
-      - hysteria2-468898830-148
-      - hysteria2-1063751359-650
-      - hysteria2-483633865-146
-      - hysteria2-1066924718-2
-      - hysteria2-1180048411-6
-      - hysteria2-307174592-10
-      - hysteria2-655837404-0
-      - hysteria2-722298606-136
-      - shadowsocks-1237383182-32
-      - hysteria2-1046909555-12
-      - hysteria2-1209758488-14
-      - vless-1226554660-106
-      - shadowsocks-211-158
-      - vless-1224465524-908
-      - vmess-974446965-110
-      - hysteria2-1219061973-20
-      - hysteria2-1235887697-4
-      - hysteria2-892012196-652
-      - vmess-468166904-112
-      - hysteria2-682318866-646
-      - vmess-1235599294-582
-      - shadowsocks-696780669-154
-      - shadowsocks-126340-26
-      - vmess-1231007886-118
-      - hysteria2-1162353391-362
-      - trojan-133769367-176
-      - vless-663902649-190
-      - shadowsocks-11026-706
-      - vless-663902650-792
-      - vmess-1138304671-602
+      - vmess-650629581-774
+      - vmess-655845751-372
+      - hysteria2-153592298-404
+      - hysteria2-918220920-398
+      - hysteria2-652726872-6
+      - vmess-655845749-744
+      - hysteria2-1058393291-118
+      - hysteria2-1016364146-128
+      - hysteria2-722298619-406
+      - hysteria2-468892449-126
+      - vmess-5258767-726
+      - vmess-717847176-366
+      - vmess-655843968-88
+      - vmess-814613029-92
+      - shadowsocks-1235531867-30
+      - shadowsocks-468218514-164
+      - shadowsocks-1211880885-432
+      - vmess-145155-90
+      - vmess-655845748-374
+      - shadowsocks-196-434
+      - shadowsocks-156-154
+      - hysteria2-1227273038-24
+      - hysteria2-468883282-146
+      - hysteria2-720834172-136
+      - hysteria2-813371785-132
+      - hysteria2-934929268-426
+      - hysteria2-796133334-408
+      - hysteria2-591436862-142
+      - hysteria2-819785927-412
+      - shadowsocks-1212526365-430
+      - hysteria2-896855658-806
+      - hysteria2-589844090-424
+      - hysteria2-657042644-392
+      - vmess-1130434817-84
+      - shadowsocks-188-438
+      - hysteria2-651117976-418
+      - hysteria2-907349609-420
+      - hysteria2-1237100937-794
+      - shadowsocks-114874950-436
+      - hysteria2-920243845-8
+      - hysteria2-1063751359-790
+      - hysteria2-705682240-10
+      - hysteria2-1066924718-114
+      - hysteria2-1180048411-0
+      - hysteria2-722298650-106
+      - hysteria2-737135161-4
+      - hysteria2-722298531-140
+      - hysteria2-1046909555-20
+      - hysteria2-1209758488-22
+      - shadowsocks-1235504188-36
+      - shadowsocks-696780678-452
+      - shadowsocks-212-156
+      - shadowsocks-189-32
+      - shadowsocks-16136-444
+      - shadowsocks-130088-440
+      - shadowsocks-482887639-166
+      - shadowsocks-11027-34
+      - shadowsocks-11030-162
+      - vmess-1015414223-82
+      - shadowsocks-183-158
+      - shadowsocks-182-442
+      - shadowsocks-1235384031-450
+      - hysteria2-1235887697-2
+      - hysteria2-892012196-130
+      - vmess-96606-764
+      - hysteria2-682318866-788
+      - shadowsocks-696780669-448
+      - vmess-1221185995-314
+      - shadowsocks-126340-28
+      - vmess-1224865296-86
+      - trojan-123134632-460
+      - shadowsocks-246-160
+      - hysteria2-1009480027-428
+      - hysteria2-1111846076-108
+      - trojan-133769367-464
+      - vmess-2387898-768
+      - vless-1038685483-62
+      - vmess-468166886-746
+      - shadowsocks-174-446
+      - vmess-1138304671-316
 rules:
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
