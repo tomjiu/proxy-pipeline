@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-09-17T08:49:59.679754+00:00
+# updated: 2026-09-17T12:03:42.766182+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -724,6 +724,13 @@ proxies:
     tls: true
     udp: true
     uuid: "d90e4077-bc7e-414d-a650-70bf1baae4d6"
+  - name: "shadowsocks-1344243210-32"
+    type: "ss"
+    server: "130.61.181.238"
+    port: 59924
+    cipher: "2022-blake3-chacha20-poly1305"
+    password: "BKhCEwmAD2//ZNQ9Ej8GshMBc3/L4nGZ0SODkR77HLo="
+    udp: true
   - name: "shadowsocks-1343148954-454"
     type: "ss"
     server: "134.65.63.79"
@@ -738,6 +745,14 @@ proxies:
     password: "3d7634af8cb2c6cb4bac1c0efad8b43d"
     skip-cert-verify: true
     sni: "speedtest.tinkoff.ru"
+  - name: "trojan-1336665337-160"
+    type: "trojan"
+    server: "cloud.lakshan.us"
+    port: 119
+    password: "skynet"
+    skip-cert-verify: true
+    sni: "cloud.lakshan.us"
+    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -839,8 +854,10 @@ proxy-groups:
       - vless-663902649-162
       - vmess-331222962-218
       - vmess-1344563986-368
+      - shadowsocks-1344243210-32
       - shadowsocks-1343148954-454
       - hysteria2-1111846076-400
+      - trojan-1336665337-160
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -943,8 +960,10 @@ proxy-groups:
       - vless-663902649-162
       - vmess-331222962-218
       - vmess-1344563986-368
+      - shadowsocks-1344243210-32
       - shadowsocks-1343148954-454
       - hysteria2-1111846076-400
+      - trojan-1336665337-160
 rules:
   - GEOIP,CN,DIRECT
   - MATCH,PROXY
