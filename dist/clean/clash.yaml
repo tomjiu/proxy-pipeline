@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-09-19T08:15:13.735578+00:00
+# updated: 2026-09-19T11:31:29.301127+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -13,6 +13,15 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
+  - name: "vmess-244981236-80"
+    type: "vmess"
+    server: "82.198.246.37"
+    port: 180
+    alterId: 0
+    cipher: "auto"
+    network: "tcp"
+    udp: true
+    uuid: "d13fc2f5-3e05-4795-81eb-44143a09e552"
   - name: "shadowsocks-11012-128"
     type: "ss"
     server: "198.98.53.130"
@@ -654,6 +663,14 @@ proxies:
     network: "raw"
     udp: true
     uuid: "f8c8dc3d-0d37-46b0-8b34-a7232882fcfe"
+  - name: "trojan-1101785648-152"
+    type: "trojan"
+    server: "119.246.1.143"
+    port: 443
+    password: "BxceQaOe"
+    skip-cert-verify: true
+    sni: "t.me"
+    udp: true
   - name: "hysteria2-963402032-548"
     type: "hysteria2"
     server: "31.57.248.176"
@@ -736,6 +753,21 @@ proxies:
     password: "s0_sdK93x9wer_D02Lz9cvK3_Sa014Oakl_C2z"
     skip-cert-verify: false
     sni: "grape-turbo-fr.roxa.org"
+  - name: "hysteria2-1388302690-862"
+    type: "hysteria2"
+    server: "84.23.54.203"
+    port: 1935
+    password: "hysteria2_fastlane_cfm7kzssa:OHDpvCARUv5xvE07caQIrVo6IpqRkgkq"
+    skip-cert-verify: false
+    sni: "ru2.h.smartaisupport.ru"
+  - name: "trojan-1336620977-338"
+    type: "trojan"
+    server: "cloud.lakshan.us"
+    port: 119
+    password: "skynet"
+    skip-cert-verify: false
+    sni: "cloud.lakshan.us"
+    udp: true
   - name: "trojan-702030317-150"
     type: "trojan"
     server: "161.34.39.108"
@@ -756,6 +788,7 @@ proxy-groups:
     type: select
     proxies:
       - shadowsocks-192-882
+      - vmess-244981236-80
       - shadowsocks-11012-128
       - vmess-650629578-802
       - vmess-655845752-274
@@ -843,6 +876,7 @@ proxy-groups:
       - shadowsocks-1385010732-878
       - vmess-1224865296-70
       - vmess-1216197041-76
+      - trojan-1101785648-152
       - hysteria2-963402032-548
       - hysteria2-1111846211-294
       - vless-663902649-168
@@ -854,6 +888,8 @@ proxy-groups:
       - hysteria2-1210298803-526
       - shadowsocks-1368540611-142
       - hysteria2-1386918130-26
+      - hysteria2-1388302690-862
+      - trojan-1336620977-338
       - trojan-702030317-150
       - hysteria2-841934536-530
   - name: "AUTO"
@@ -862,6 +898,7 @@ proxy-groups:
     interval: 300
     proxies:
       - shadowsocks-192-882
+      - vmess-244981236-80
       - shadowsocks-11012-128
       - vmess-650629578-802
       - vmess-655845752-274
@@ -949,6 +986,7 @@ proxy-groups:
       - shadowsocks-1385010732-878
       - vmess-1224865296-70
       - vmess-1216197041-76
+      - trojan-1101785648-152
       - hysteria2-963402032-548
       - hysteria2-1111846211-294
       - vless-663902649-168
@@ -960,6 +998,8 @@ proxy-groups:
       - hysteria2-1210298803-526
       - shadowsocks-1368540611-142
       - hysteria2-1386918130-26
+      - hysteria2-1388302690-862
+      - trojan-1336620977-338
       - trojan-702030317-150
       - hysteria2-841934536-530
 rules:
