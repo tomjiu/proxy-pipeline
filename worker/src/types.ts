@@ -36,6 +36,10 @@ export interface SubConfig {
   rename: boolean;            // 是否重命名节点
   min_tier: "all" | "A" | "S"; // 质量过滤
   probe: boolean;             // 是否测活（剔除失效节点）
+  /** 是否启用评分筛选（剔除 http/socks/anytls + 控制总量） */
+  filter: boolean;
+  /** 目标节点数上限（默认 300） */
+  target_nodes: number;
   rules_mode: "builtin" | "custom"; // 规则来源
   rules?: string;             // 自定义规则 YAML
   updated_at: string;

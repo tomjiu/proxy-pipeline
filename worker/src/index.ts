@@ -42,6 +42,7 @@ import {
 import { loginPage, dashboardPage } from "./ui";
 import { DEFAULT_TEMPLATE } from "./default-template";
 import { probeCFNodes, filterCFAlive, isCFNode, type CFProbeResult } from "./cf-probe";
+import { filterByScore, DEFAULT_FILTER, type FilterOptions } from "./scoring";
 
 const CACHE_TTL = 120;
 const GEN_CACHE_TTL = 300;   // 生成的订阅缓存 5 分钟
@@ -287,7 +288,11 @@ async function createSub(req: Request, env: Env): Promise<Response> {
     sources,
     rename: body.rename !== false,
     min_tier: ["all", "A", "S"].includes(body.min_tier) ? body.min_tier : "all",
-    probe: body.probe !== false,
+    probe: body.probe === true,
+    filter: body.filter !== false,
+    target_nodes: Number.isFinite(body.target_nodes)
+      ? Math.min(1000, Math.max(10, Number(body.target_nodes)))
+      : 300,
     rules_mode: body.rules_mode === "custom" ? "custom" : "builtin",
     updated_at: new Date().toISOString(),
     hits: 0,
@@ -314,6 +319,10 @@ async function handleSubApi(req: Request, env: Env, token: string,
       if (typeof b.name === "string") cfg.name = b.name.slice(0, 60);
       if (typeof b.rename === "boolean") cfg.rename = b.rename;
       if (typeof b.probe === "boolean") cfg.probe = b.probe;
+      if (typeof b.filter === "boolean") cfg.filter = b.filter;
+      if (Number.isFinite(b.target_nodes)) {
+        cfg.target_nodes = Math.min(1000, Math.max(10, Number(b.target_nodes)));
+      }
       if (["all", "A", "S"].includes(b.min_tier)) cfg.min_tier = b.min_tier;
       if (["builtin", "custom"].includes(b.rules_mode)) cfg.rules_mode = b.rules_mode;
       if (typeof b.rules === "string") cfg.rules = b.rules.slice(0, 20000);
@@ -478,7 +487,32 @@ async function serveSubscription(env: Env, token: string, ext: string,
     } catch { /* 过滤失败则不过滤 */ }
   }
 
-  // ── 5. 重命名 ──
+  // ── 5. 评分筛选（剔除代理池协议 + 优选高质量节点 + 控制总量）──
+  // 需求：
+  //   - 剔除 http / socks4 / socks5 / anytls（客户端用不上或支持差）
+  //   - 按评分优选，总量 ≤ target（默认 300）
+  //   - vless 设上限、hysteria2 保底，平衡协议分布
+  let filterStats: {
+    input: number; droppedByType: number; kept: number;
+    byProto: Record<string, number>; scoreRange: [number, number];
+  } | null = null;
+  if (cfg.filter !== false && nodes.length) {
+    try {
+      const opts: FilterOptions = {
+        ...DEFAULT_FILTER,
+        target: cfg.target_nodes || DEFAULT_FILTER.target,
+      };
+      const fr = filterByScore(nodes, opts);
+      filterStats = fr.stats;
+      nodes = fr.kept;
+      console.log(`[filter] ${fr.stats.input} -> ${fr.stats.kept} ` +
+        `(dropped ${fr.stats.droppedByType} by type) ${JSON.stringify(fr.stats.byProto)}`);
+    } catch (e) {
+      console.error("[filter] failed:", e);
+    }
+  }
+
+  // ── 6. 重命名 ──
   if (cfg.rename) nodes = renameSimple(nodes);
 
   // ── 5. 输出 ──
@@ -488,6 +522,8 @@ async function serveSubscription(env: Env, token: string, ext: string,
     return json({
       token, name: cfg.name, nodes: nodes.length,
       probe: probeStats,
+      filter: filterStats,
+      filter_config: { enabled: cfg.filter !== false, target: cfg.target_nodes || 300 },
       probe_method: "CF-node WebSocket/HTTP (only network:ws + CF IP)",
       probe_samples: probeDetail.slice(0, 40).map(r => ({
         name: r.name, server: r.server, port: r.port, type: r.type,
