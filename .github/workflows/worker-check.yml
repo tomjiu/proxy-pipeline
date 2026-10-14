@@ -32,11 +32,11 @@ jobs:
 
       - name: TypeScript check
         working-directory: worker
-        run: npx tsc --noEmit
+        run: npm run typecheck
 
       - name: Dry-run build
         working-directory: worker
-        run: npx wrangler deploy --dry-run --outdir=dist-check 2>&1 | tail -30
+        run: npx --no-install wrangler deploy --dry-run --outdir=dist-check 2>&1 | tail -30
 
       - name: Report
         if: always()
