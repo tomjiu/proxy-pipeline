@@ -1,0 +1,180 @@
+/**
+ * 类型定义与 KV 存储层
+ */
+
+export interface Env {
+  RAW_BASE: string;
+  API_TOKEN?: string;
+  ADMIN_PASSWORD?: string;
+  SESSION_SECRET?: string;
+  KV?: KVNamespace;
+  BUCKET?: R2Bucket;
+}
+
+/** 一个订阅源 */
+export interface SubSource {
+  id: string;           // 内部 id
+  url: string;          // 订阅 URL
+  label?: string;       // 备注名
+  enabled: boolean;
+  added_at: string;
+}
+
+/** 订阅配置（存在 KV） */
+export interface SubConfig {
+  token: string;              // URL 里的 token
+  name: string;               // 订阅名称
+  sources: SubSource[];       // 聚合源
+  rename: boolean;            // 是否重命名节点
+  min_tier: "all" | "A" | "S"; // 质量过滤
+  rules_mode: "builtin" | "custom"; // 规则来源
+  rules?: string;             // 自定义规则 YAML
+  updated_at: string;
+  hits: number;               // 访问次数
+}
+
+/** 全局设置 */
+export interface GlobalConfig {
+  default_rules: string;      // 默认规则 YAML
+  updated_at: string;
+}
+
+const KV_PREFIX = {
+  sub: "sub:",          // sub:<token> → SubConfig
+  global: "global:",    // global:<key> → value
+  cache: "cache:",      // cache:<token> → 生成的订阅（带 TTL）
+  session: "session:",  // session:<id> → 过期时间
+};
+
+// ── KV 操作封装 ──
+
+export async function kvGetJSON<T>(env: Env, key: string): Promise<T | null> {
+  if (!env.KV) return null;
+  try {
+    const raw = await env.KV.get(key, "text");
+    if (!raw) return null;
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+export async function kvPutJSON(env: Env, key: string, value: unknown,
+                                 ttl?: number): Promise<void> {
+  if (!env.KV) throw new Error("KV not bound");
+  const opts = ttl ? { expirationTtl: ttl } : undefined;
+  await env.KV.put(key, JSON.stringify(value), opts);
+}
+
+export async function kvDelete(env: Env, key: string): Promise<void> {
+  if (!env.KV) return;
+  await env.KV.delete(key);
+}
+
+export async function kvList(env: Env, prefix: string): Promise<string[]> {
+  if (!env.KV) return [];
+  const out: string[] = [];
+  let cursor: string | undefined;
+  do {
+    const res = await env.KV.list({ prefix, cursor });
+    for (const k of res.keys) out.push(k.name);
+    cursor = res.list_complete ? undefined : res.cursor;
+  } while (cursor);
+  return out;
+}
+
+// ── 业务操作 ──
+
+export function subKey(token: string): string {
+  return KV_PREFIX.sub + token;
+}
+
+export async function getSub(env: Env, token: string): Promise<SubConfig | null> {
+  return kvGetJSON<SubConfig>(env, subKey(token));
+}
+
+export async function putSub(env: Env, cfg: SubConfig): Promise<void> {
+  cfg.updated_at = new Date().toISOString();
+  await kvPutJSON(env, subKey(cfg.token), cfg);
+}
+
+export async function deleteSub(env: Env, token: string): Promise<void> {
+  await kvDelete(env, subKey(token));
+  await kvDelete(env, KV_PREFIX.cache + token);
+}
+
+export async function listSubs(env: Env): Promise<SubConfig[]> {
+  const keys = await kvList(env, KV_PREFIX.sub);
+  const out: SubConfig[] = [];
+  for (const k of keys) {
+    const v = await kvGetJSON<SubConfig>(env, k);
+    if (v) out.push(v);
+  }
+  return out.sort((a, b) => (b.updated_at || "").localeCompare(a.updated_at || ""));
+}
+
+export async function getGlobal(env: Env): Promise<GlobalConfig> {
+  const g = await kvGetJSON<GlobalConfig>(env, KV_PREFIX.global + "config");
+  if (g) return g;
+  return { default_rules: DEFAULT_RULES, updated_at: new Date().toISOString() };
+}
+
+export async function putGlobal(env: Env, g: GlobalConfig): Promise<void> {
+  g.updated_at = new Date().toISOString();
+  await kvPutJSON(env, KV_PREFIX.global + "config", g);
+}
+
+/** 缓存生成的订阅内容（默认 5 分钟） */
+export async function cacheGet(env: Env, token: string): Promise<string | null> {
+  if (!env.KV) return null;
+  return env.KV.get(KV_PREFIX.cache + token, "text");
+}
+
+export async function cachePut(env: Env, token: string, content: string,
+                               ttl = 300): Promise<void> {
+  if (!env.KV) return;
+  await env.KV.put(KV_PREFIX.cache + token, content, { expirationTtl: ttl });
+}
+
+export async function cacheClear(env: Env, token: string): Promise<void> {
+  await kvDelete(env, KV_PREFIX.cache + token);
+}
+
+// ── 默认规则 ──
+
+export const DEFAULT_RULES = `# ── 默认分流规则 ──
+# 可按需修改；语法同 Clash/Mihomo
+
+rules:
+  # 局域网直连
+  - GEOIP,LAN,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+
+  # 广告拦截
+  - DOMAIN-SUFFIX,doubleclick.net,REJECT
+  - DOMAIN-SUFFIX,googleadservices.com,REJECT
+  - DOMAIN-KEYWORD,analytics,REJECT
+
+  # 国内直连
+  - GEOIP,CN,DIRECT
+  - DOMAIN-SUFFIX,cn,DIRECT
+
+  # 其余走代理
+  - MATCH,PROXY
+`;
+
+/** 生成随机 token */
+export function randomToken(len = 16): string {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const bytes = new Uint8Array(len);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes).map(b => chars[b % chars.length]).join("");
+}
+
+/** 生成随机 id */
+export function randomId(len = 8): string {
+  return randomToken(len);
+}

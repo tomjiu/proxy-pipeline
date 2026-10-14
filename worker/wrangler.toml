@@ -2,18 +2,23 @@ name = "proxy-pipeline-api"
 main = "src/index.ts"
 compatibility_date = "2024-11-01"
 
-# Set after you push the repo:
-#   RAW_BASE = "https://raw.githubusercontent.com/<USER>/<REPO>/main/dist"
-# Optional:
-#   API_TOKEN = "change-me"
-
+# ── 环境变量 ──
+# 在 Cloudflare Dashboard → Workers → Settings → Variables 里配置：
+#   ADMIN_PASSWORD   必填，登录密码
+#   SESSION_SECRET   必填，Cookie 签名密钥（随机字符串）
+#   RAW_BASE         可选，默认指向本仓库 dist
 [vars]
 RAW_BASE = "https://raw.githubusercontent.com/tomjiu/proxy-pipeline/main/dist"
-# API_TOKEN = ""
 
-# R2 not yet enabled on this account (needs payment method). To activate the
-# R2 data layer later: enable R2 in the dashboard, create bucket, uncomment below.
+# ── KV 命名空间 ──
+# 创建：wrangler kv namespace create PROXY_KV
+# 然后替换下面的 id
+[[kv_namespaces]]
+binding = "KV"
+id = "REPLACE_WITH_YOUR_KV_ID"
+preview_id = "REPLACE_WITH_YOUR_KV_ID"
+
+# ── R2（可选，未开通时忽略）──
 # [[r2_buckets]]
 # binding = "BUCKET"
 # bucket_name = "proxy-pipeline-dist"
-# preview_bucket_name = "proxy-pipeline-dist"

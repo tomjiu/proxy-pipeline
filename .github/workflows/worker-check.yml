@@ -1,0 +1,49 @@
+name: worker-check
+
+# Worker 代码检查 —— 在 CI 里跑，避免本地折腾
+# 检查项：TypeScript 编译、类型错误
+
+on:
+  push:
+    paths:
+      - "worker/**"
+      - ".github/workflows/worker-check.yml"
+  pull_request:
+    paths:
+      - "worker/**"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: worker
+        run: npm install --no-audit --no-fund
+
+      - name: TypeScript check
+        working-directory: worker
+        run: npx tsc --noEmit
+
+      - name: Dry-run build
+        working-directory: worker
+        run: npx wrangler deploy --dry-run --outdir=dist-check 2>&1 | tail -30
+
+      - name: Report
+        if: always()
+        working-directory: worker
+        run: |
+          echo "=== files ==="
+          ls -la src/
+          echo
+          echo "=== line counts ==="
+          wc -l src/*.ts
