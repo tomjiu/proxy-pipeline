@@ -85,10 +85,7 @@ jobs:
           # 创建无历史分支，保留全部文件
           git checkout --orphan _squash
           git add -A
-          git commit -m "chore: monthly history squash ($(date -u +%Y-%m-%d))
-
-自动压缩历史提交。Worker 只读最新版，历史版本无功能价值。
-压缩前: ${{ steps.before.outputs.commits }} 个提交 / ${{ steps.before.outputs.size_mb }} MB"
+          git commit -m "chore: monthly history squash ($(date -u +%Y-%m-%d))"
 
           git branch -D main
           git branch -m main
