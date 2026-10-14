@@ -46,23 +46,39 @@ export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
   const endM = rest.match(/^proxy-groups:\s*$/m);
   if (endM && endM.index !== undefined) rest = rest.slice(0, endM.index);
 
+  // 自动检测缩进：找到第一个 "- name:" 前的空格数
+  const firstItem = rest.match(/^([ \t]*)-[ \t]*name:/m);
+  if (!firstItem) return [];
+  const itemIndent = firstItem[1];              // 列表项的缩进
+  const fieldIndent = itemIndent + "  ";        // 字段缩进（比列表项多 2）
+
   const out: ParsedNode[] = [];
-  // 按 "  - name:" 切分（2 空格缩进）
-  const chunks = rest.split(/^ {2}- name:\s*/m);
+
+  // 用动态缩进切分节点块
+  const splitRe = new RegExp(`^${escapeRe(itemIndent)}-[ \\t]*name:[ \\t]*`, "m");
+  const chunks = rest.split(splitRe);
+
   for (let i = 1; i < chunks.length; i++) {
     const ch = chunks[i];
-    const raw = "  - name: " + ch.replace(/\s+$/, "") + "\n";
-
     const firstLine = ch.split("\n", 1)[0].trim();
     const name = firstLine.replace(/^"(.*)"$/, "$1");
 
+    // 字段用动态缩进匹配（也兼容固定 4 空格）
     const field = (key: string): string => {
-      const re = new RegExp(`^ {4}${key}:\\s*(.+?)\\s*$`, "m");
-      const mm = ch.match(re);
-      if (!mm) return "";
-      let v = mm[1];
-      if (v.length >= 2 && v[0] === '"' && v[v.length - 1] === '"') v = v.slice(1, -1);
-      return v;
+      const res = [
+        new RegExp(`^${escapeRe(fieldIndent)}${key}:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {2}${key}:\\s*(.+?)\\s*$`, "m"),   // 兜底
+        new RegExp(`^ {4}${key}:\\s*(.+?)\\s*$`, "m"),   // 兜底
+      ];
+      for (const re of res) {
+        const mm = ch.match(re);
+        if (mm) {
+          let v = mm[1].trim();
+          if (v.length >= 2 && v[0] === '"' && v[v.length - 1] === '"') v = v.slice(1, -1);
+          return v;
+        }
+      }
+      return "";
     };
 
     const type = field("type");
@@ -70,10 +86,36 @@ export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
     const port = field("port");
 
     if (name && type && server) {
+      // 重建规范化的 YAML 块（统一 2/4 缩进）
+      const raw = normalizeBlock(ch, name, fieldIndent);
       out.push({ name, type, server, port, raw, origin });
     }
   }
   return out;
+}
+
+/** 把节点块规范化为标准的 2/4 缩进格式 */
+function normalizeBlock(ch: string, name: string, fieldIndent: string): string {
+  const lines = ch.replace(/\s+$/, "").split("\n");
+  const out: string[] = [`  - name: ${yamlQuote(name)}`];
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    // 去掉原有的 fieldIndent 前缀，统一改为 4 空格
+    let body = line;
+    if (body.startsWith(fieldIndent)) {
+      body = body.slice(fieldIndent.length);
+    } else {
+      body = body.replace(/^\s{1,6}/, "");
+    }
+    out.push("    " + body);
+  }
+  return out.join("\n") + "\n";
+}
+
+function escapeRe(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 // ── 解析节点 URI 列表 ──
@@ -430,29 +472,214 @@ export interface BuildOptions {
   title?: string;
 }
 
-/** 简单的地理重命名（基于节点名里的国旗/国家码） */
+/** 简单的地理重命名（从节点名解析国家/城市） */
 export function renameSimple(nodes: ParsedNode[]): ParsedNode[] {
   const counter = new Map<string, number>();
   return nodes.map(n => {
-    // 尝试从名字提取国旗
-    const flagMatch = n.name.match(/[\u{1F1E6}-\u{1F1FF}]{2}/u);
-    let code = "XX";
-    if (flagMatch) {
-      code = Array.from(flagMatch[0]).map(c =>
-        String.fromCharCode(c.codePointAt(0)! - 0x1F1E6 + 65)).join("");
-    } else {
-      const ccMatch = n.name.match(/\b(US|JP|KR|SG|HK|TW|DE|NL|GB|FR|CA|AU|RU|IT|SE|FI|PL|EE|CH|TR|IN|ID|MY|TH|VN|PH|BR|AR|MX|ZA|AE|IL)\b/);
-      if (ccMatch) code = ccMatch[1];
-    }
-    const key = code;
+    const parsed = parseRegionFromName(n.name);
+    const code = parsed.code;
+    const city = parsed.city;
+
+    const key = city ? `${code}-${city}` : code;
     const idx = (counter.get(key) || 0) + 1;
     counter.set(key, idx);
+
     const flag = code === "XX" ? "🏴" :
       String.fromCodePoint(...Array.from(code).map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
-    const newName = `${flag} ${code} ${String(idx).padStart(2, "0")}`;
+    const cityPart = city ? ` ${city}` : "";
+    const newName = `${flag} ${code}${cityPart} ${String(idx).padStart(2, "0")}`;
+
     const raw = n.raw.replace(/^ {2}- name:\s*.+$/m, `  - name: ${yamlQuote(newName)}`);
     return { ...n, name: newName, raw };
   });
+}
+
+/** 国家名映射（英→标准码） */
+const COUNTRY_ALIAS: Record<string, string> = {
+  "united states": "US", "usa": "US", "america": "US",
+  "japan": "JP", "korea": "KR", "south korea": "KR",
+  "singapore": "SG", "hongkong": "HK", "hong kong": "HK",
+  "taiwan": "TW", "germany": "DE", "netherlands": "NL",
+  "holland": "NL", "britain": "GB", "uk": "GB", "england": "GB",
+  "france": "FR", "canada": "CA", "australia": "AU",
+  "russia": "RU", "italy": "IT", "sweden": "SE", "finland": "FI",
+  "poland": "PL", "switzerland": "CH", "turkey": "TR",
+  "india": "IN", "indonesia": "ID", "malaysia": "MY",
+  "thailand": "TH", "vietnam": "VN", "philippines": "PH",
+  "brazil": "BR", "argentina": "AR", "mexico": "MX",
+  "south africa": "ZA", "emirates": "AE", "uae": "AE",
+  "israel": "IL", "ukraine": "UA", "czech": "CZ",
+  "romania": "RO", "hungary": "HU", "bulgaria": "BG",
+  "lithuania": "LT", "latvia": "LV", "moldova": "MD",
+  "serbia": "RS", "china": "CN", "macau": "MO",
+  "new zealand": "NZ", "iceland": "IS", "austria": "AT",
+  "belgium": "BE", "denmark": "DK", "norway": "NO",
+  "ireland": "IE", "spain": "ES", "portugal": "PT",
+};
+
+/** 协议/技术关键词 —— 不是国家码，必须排除 */
+const TECH_WORDS = new Set([
+  "WS", "GRPC", "TLS", "TCP", "UDP", "CDN", "CF", "IP", "VPS", "SS", "SSR",
+  "VM", "VL", "HY", "H2", "HTTP", "HTTPS", "SNI", "DNS", "ISP", "IDC",
+  "API", "URL", "CDN", "BGP", "NAT", "GIA", "IEPL", "IPLC", "BGP",
+  "XTLS", "REALITY", "VLESS", "TROJAN", "HYSTERIA", "SHADOWSOCKS",
+  "PRO", "MAX", "PLUS", "VIP", "SVIP", "FREE", "FAST", "AUTO",
+  "MB", "GB", "TB", "MS", "IO", "CN2", "GCP", "AWS", "AZ", "OVH",
+]);
+
+/** 合法国家码白名单（ISO 3166-1 alpha-2 常用子集 + 常见代理地区） */
+const VALID_CC = new Set([
+  "US", "JP", "KR", "SG", "HK", "TW", "DE", "NL", "GB", "FR", "CA", "AU",
+  "RU", "IT", "SE", "FI", "PL", "EE", "CH", "TR", "IN", "ID", "MY", "TH",
+  "VN", "PH", "BR", "AR", "MX", "ZA", "AE", "IL", "UA", "CZ", "RO", "HU",
+  "BG", "LT", "LV", "MD", "RS", "CN", "MO", "NZ", "IS", "AT", "BE", "DK",
+  "NO", "IE", "ES", "PT", "BA", "HR", "SI", "SK", "GR", "EG", "NG", "KE",
+  "SA", "QA", "KW", "OM", "BH", "JO", "LB", "PK", "BD", "LK", "NP", "MM",
+  "KH", "LA", "MN", "KZ", "UZ", "GE", "AM", "AZ", "BY", "PR", "DO", "GT",
+  "CR", "PA", "PE", "CO", "VE", "EC", "UY", "PY", "BO", "CU", "TT", "JM",
+  "MT", "CY", "LU", "MC", "LI", "SM", "AD", "GI", "IM", "JE", "GG",
+  "AL", "MK", "ME", "BY", "AX", "FO", "GL", "NC", "PF", "FJ", "PG",
+  "BN", "TL", "MV", "AF", "IQ", "IR", "SY", "YE", "SD", "ET", "TZ",
+  "UG", "GH", "CI", "SN", "CM", "AO", "MZ", "ZM", "ZW", "BW", "NA",
+  "MU", "MG", "TN", "MA", "DZ", "LY", "CV", "SN",
+]);
+
+function isValidCC(code: string): boolean {
+  return VALID_CC.has(code.toUpperCase()) && !isTechWord(code);
+}
+
+function isTechWord(s: string): boolean {
+  return TECH_WORDS.has(s.toUpperCase());
+}
+
+/** IATA 机场码 → (国家码, 城市) —— 节点名常用三字码 */
+const IATA_CODE: Record<string, [string, string]> = {
+  SEA: ["US", "Seattle"], LAX: ["US", "Los Angeles"], SJC: ["US", "San Jose"],
+  SFO: ["US", "San Francisco"], JFK: ["US", "New York"], EWR: ["US", "Newark"],
+  ORD: ["US", "Chicago"], DFW: ["US", "Dallas"], IAD: ["US", "Washington"],
+  ATL: ["US", "Atlanta"], MIA: ["US", "Miami"], PHX: ["US", "Phoenix"],
+  DEN: ["US", "Denver"], BOS: ["US", "Boston"], LAS: ["US", "Las Vegas"],
+  HKG: ["HK", "Hong Kong"], TPE: ["TW", "Taipei"], NRT: ["JP", "Tokyo"],
+  HND: ["JP", "Tokyo"], KIX: ["JP", "Osaka"], ICN: ["KR", "Seoul"],
+  SIN: ["SG", "Singapore"], BKK: ["TH", "Bangkok"], KUL: ["MY", "Kuala Lumpur"],
+  CGK: ["ID", "Jakarta"], MNL: ["PH", "Manila"], SGN: ["VN", "Ho Chi Minh"],
+  HAN: ["VN", "Hanoi"], DEL: ["IN", "Delhi"], BOM: ["IN", "Mumbai"],
+  DXB: ["AE", "Dubai"], LHR: ["GB", "London"], CDG: ["FR", "Paris"],
+  FRA: ["DE", "Frankfurt"], AMS: ["NL", "Amsterdam"], MAD: ["ES", "Madrid"],
+  FCO: ["IT", "Rome"], MXP: ["IT", "Milan"], ZRH: ["CH", "Zurich"],
+  VIE: ["AT", "Vienna"], ARN: ["SE", "Stockholm"], HEL: ["FI", "Helsinki"],
+  OSL: ["NO", "Oslo"], CPH: ["DK", "Copenhagen"], WAW: ["PL", "Warsaw"],
+  PRG: ["CZ", "Prague"], BUD: ["HU", "Budapest"], IST: ["TR", "Istanbul"],
+  SVO: ["RU", "Moscow"], LED: ["RU", "St Petersburg"], KBP: ["UA", "Kyiv"],
+  YYZ: ["CA", "Toronto"], YVR: ["CA", "Vancouver"], YUL: ["CA", "Montreal"],
+  SYD: ["AU", "Sydney"], MEL: ["AU", "Melbourne"], AKL: ["NZ", "Auckland"],
+  GRU: ["BR", "Sao Paulo"], EZE: ["AR", "Buenos Aires"], MEX: ["MX", "Mexico City"],
+  JNB: ["ZA", "Johannesburg"], CPT: ["ZA", "Cape Town"], CAI: ["EG", "Cairo"],
+};
+
+/** 中文地区名 → 国家码 (+可选城市) */
+const CN_REGION: Record<string, [string, string?]> = {
+  "美国": ["US"], "日本": ["JP"], "韩国": ["KR"], "新加坡": ["SG"],
+  "香港": ["HK"], "台湾": ["TW"], "德国": ["DE"], "荷兰": ["NL"],
+  "英国": ["GB"], "法国": ["FR"], "加拿大": ["CA"], "澳大利亚": ["AU"],
+  "澳洲": ["AU"], "俄罗斯": ["RU"], "意大利": ["IT"], "瑞典": ["SE"],
+  "芬兰": ["FI"], "波兰": ["PL"], "瑞士": ["CH"], "土耳其": ["TR"],
+  "印度": ["IN"], "印尼": ["ID"], "马来西亚": ["MY"], "泰国": ["TH"],
+  "越南": ["VN"], "菲律宾": ["PH"], "巴西": ["BR"], "阿根廷": ["AR"],
+  "墨西哥": ["MX"], "南非": ["ZA"], "阿联酋": ["AE"], "以色列": ["IL"],
+  "乌克兰": ["UA"], "捷克": ["CZ"], "罗马尼亚": ["RO"], "保加利亚": ["BG"],
+  "立陶宛": ["LT"], "拉脱维亚": ["LV"], "塞尔维亚": ["RS"], "澳门": ["MO"],
+  "新西兰": ["NZ"], "奥地利": ["AT"], "比利时": ["BE"], "丹麦": ["DK"],
+  "挪威": ["NO"], "爱尔兰": ["IE"], "西班牙": ["ES"], "葡萄牙": ["PT"],
+  // 城市 → 国家
+  "洛杉矶": ["US", "Los Angeles"], "圣何塞": ["US", "San Jose"],
+  "西雅图": ["US", "Seattle"], "纽约": ["US", "New York"],
+  "达拉斯": ["US", "Dallas"], "芝加哥": ["US", "Chicago"],
+  "东京": ["JP", "Tokyo"], "大阪": ["JP", "Osaka"],
+  "首尔": ["KR", "Seoul"], "伦敦": ["GB", "London"],
+  "法兰克福": ["DE", "Frankfurt"], "阿姆斯特丹": ["NL", "Amsterdam"],
+  "巴黎": ["FR", "Paris"], "莫斯科": ["RU", "Moscow"],
+  "悉尼": ["AU", "Sydney"], "圣保罗": ["BR", "Sao Paulo"],
+  "孟买": ["IN", "Mumbai"], "迪拜": ["AE", "Dubai"],
+};
+
+/** 从节点名解析 (国家码, 城市) */
+export function parseRegionFromName(name: string): { code: string; city: string } {
+  // 清理：去掉引号、多余空格
+  const clean = name.replace(/^["'\s]+|["'\s]+$/g, "");
+  if (!clean) return { code: "XX", city: "" };
+
+  // ── 0. IATA 机场码（节点名常用，如 "移动-SEA-443-WS"）──
+  const iataMatches = clean.match(/\b(SEA|LAX|SJC|SFO|JFK|EWR|ORD|DFW|IAD|ATL|MIA|PHX|DEN|BOS|LAS|HKG|TPE|NRT|HND|KIX|ICN|SIN|BKK|KUL|CGK|MNL|SGN|HAN|DEL|BOM|DXB|LHR|CDG|FRA|AMS|MAD|FCO|MXP|ZRH|VIE|ARN|HEL|OSL|CPH|WAW|PRG|BUD|IST|SVO|LED|KBP|YYZ|YVR|YUL|SYD|MEL|AKL|GRU|EZE|MEX|JNB|CPT|CAI)\b/g);
+  if (iataMatches && iataMatches.length) {
+    const hit = IATA_CODE[iataMatches[0]];
+    if (hit) return { code: hit[0], city: hit[1] };
+  }
+
+  // ── 1. 国旗 emoji（最强信号）──
+  const flagMatch = clean.match(/[\u{1F1E6}-\u{1F1FF}]{2}/u);
+  if (flagMatch) {
+    const code = Array.from(flagMatch[0])
+      .map(c => String.fromCharCode(c.codePointAt(0)! - 0x1F1E6 + 65)).join("");
+    if (/^[A-Z]{2}$/.test(code) && isValidCC(code)) {
+      const after = clean.slice(clean.indexOf(flagMatch[0]) + flagMatch[0].length);
+      return { code, city: extractCity(after) };
+    }
+  }
+
+  // ── 2. "NL-Alkmaar-7311" / "US-West Wendover-49684" / "SG-auto ──
+  const m1 = clean.match(/(?:^|[\s|])?([A-Z]{2})[-_]+([A-Za-z][A-Za-z\s]{1,20}?)(?:[-_]|\s*\d|$)/);
+  if (m1 && isValidCC(m1[1])) {
+    const city = cleanCity(m1[2]);
+    const junk = /^(auto|fiber|test|cellular|allowlist|only|node|proxy|vip|free|fast|tls|ws|grpc|tcp|h2|http|cdn|relay|direct)$/i;
+    return { code: m1[1], city: junk.test(city) ? "" : city };
+  }
+
+  // ── 3. 中文地区名（含城市）──
+  for (const [cn, [code, city]] of Object.entries(CN_REGION)) {
+    if (clean.includes(cn)) {
+      return { code, city: city || "" };
+    }
+  }
+
+  // ── 4. 英文国家名 ──
+  const lower = clean.toLowerCase();
+  for (const [alias, code] of Object.entries(COUNTRY_ALIAS)) {
+    if (alias.length >= 3 && lower.includes(alias)) {
+      return { code, city: "" };
+    }
+  }
+
+  // ── 5. 独立国家码（必须是合法国家码）──
+  const m2 = clean.match(/\b([A-Z]{2})\b/g);
+  if (m2) {
+    for (const cand of m2) {
+      if (isValidCC(cand)) {
+        return { code: cand, city: "" };
+      }
+    }
+  }
+
+  return { code: "XX", city: "" };
+}
+
+function isCountryName(s: string): boolean {
+  return ["美国", "日本", "韩国", "新加坡", "香港", "台湾", "德国", "荷兰",
+          "英国", "法国", "加拿大", "澳大利亚", "俄罗斯", "意大利", "瑞典",
+          "芬兰", "波兰", "瑞士", "土耳其", "印度", "印尼", "马来西亚",
+          "泰国", "越南", "菲律宾", "巴西", "阿根廷", "墨西哥", "南非"].includes(s);
+}
+
+function extractCity(s: string): string {
+  // 形如 "-Alkmaar-7311-ezrr" 或 " Amsterdam 01"
+  const m = s.match(/^[-_\s]*([A-Za-z][A-Za-z\s]{1,20}?)(?:[-_]|\s*\d|$)/);
+  return m ? cleanCity(m[1]) : "";
+}
+
+function cleanCity(s: string): string {
+  const t = s.trim().replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+  // 标题化
+  return t.split(" ").map(w => w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : "").join(" ").slice(0, 18);
 }
 
 export function buildClash(nodes: ParsedNode[], opts: BuildOptions): string {

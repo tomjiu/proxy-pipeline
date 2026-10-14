@@ -1,0 +1,89 @@
+name: sub-refresh
+
+# 订阅缓存预热 + 源可用性监控
+#
+# 目的：
+#   1. 定时触发 Worker 重新聚合，让用户访问时命中热缓存（快）
+#   2. 监控各源可用性，源失效时及时发现
+#   3. 短效源（如 lqzz.io）需要更高频刷新 → 可配多档频率
+#
+# 用法：把下面的 TOKEN 换成你的订阅 token
+
+on:
+  schedule:
+    # 高频档：每 30 分钟（短效源用）
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "强制忽略缓存（加 cache-buster）"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Warm subscription cache
+        env:
+          # ⚠️ 换成你的订阅 token（或设为仓库 secret SUB_TOKENS，逗号分隔多个）
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS || '49t7os9sqfyb4mcx' }}
+          WORKER_BASE: ${{ vars.WORKER_BASE || 'https://proxy-pipeline-api.d05j86dzd.workers.dev' }}
+          FORCE: ${{ inputs.force || 'true' }}
+        run: |
+          set -e
+          CB=$(date +%s)
+          echo "worker: $WORKER_BASE"
+          echo "tokens: $SUB_TOKENS"
+          echo
+
+          FAIL=0
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── token: $TOKEN ──"
+
+            for EXT in yaml txt; do
+              URL="$WORKER_BASE/sub/$TOKEN.$EXT"
+              [ "$FORCE" = "true" ] && URL="$URL?cb=$CB"
+
+              # 带重试（Worker 聚合 6 个源可能需要 10-20 秒）
+              CODE=""
+              for TRY in 1 2 3; do
+                CODE=$(curl -s -o /tmp/out.$EXT -w '%{http_code}' -m 90 "$URL" || echo "000")
+                [ "$CODE" = "200" ] && break
+                echo "    $EXT: HTTP $CODE (try $TRY), retrying…"
+                sleep 5
+              done
+
+              SIZE=$(wc -c < /tmp/out.$EXT 2>/dev/null || echo 0)
+              if [ "$CODE" = "200" ] && [ "$SIZE" -gt 500 ]; then
+                NODES=$(grep -c '^  - name:' /tmp/out.$EXT 2>/dev/null || echo "?")
+                echo "    ✅ $EXT: HTTP 200, ${SIZE} bytes, ${NODES} nodes"
+              else
+                echo "    ❌ $EXT: HTTP $CODE, ${SIZE} bytes"
+                FAIL=$((FAIL+1))
+              fi
+            done
+
+            # JSON 统计（看各源状态）
+            STAT=$(curl -s -m 120 "$WORKER_BASE/sub/$TOKEN.json?cb=$CB" || echo "{}")
+            echo "    srcs: $(echo "$STAT" | head -c 400)"
+            echo
+          done
+
+          if [ "$FAIL" -gt 0 ]; then
+            echo "::warning::$FAIL refresh attempt(s) failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### 订阅预热" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
+          echo "- worker: ${{ vars.WORKER_BASE || 'https://proxy-pipeline-api.d05j86dzd.workers.dev' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- token: \`${{ secrets.SUB_TOKENS || '49t7os9sqfyb4mcx' }}\`" >> $GITHUB_STEP_SUMMARY
