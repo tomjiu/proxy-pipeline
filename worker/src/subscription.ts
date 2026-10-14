@@ -470,6 +470,85 @@ export interface BuildOptions {
   rename: boolean;
   rules: string;
   title?: string;
+  /** 模板内容（含 {{PROXY}} 占位符）；提供时用它生成，否则用内置精简版 */
+  template?: string;
+}
+
+/**
+ * 用模板合成订阅：把节点注入模板，替换 {{PROXY}} 占位符
+ *
+ * 模板结构：[DNS / 嗅探 / rule-providers / rules] + 运行时注入 [proxies / proxy-groups]
+ */
+export function buildFromTemplate(
+  nodes: ParsedNode[],
+  template: string,
+  groupName = "🚀 节点选择",
+  autoGroup = "⚡ 自动选择",
+): string {
+  const now = new Date().toISOString();
+  const names = nodes.map(n => n.name);
+  const q = (s: string) => '"' + s.replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"';
+
+  // 要注入的两个段
+  const inject: string[] = [];
+
+  inject.push("proxies:");
+  for (const n of nodes) inject.push(n.raw.replace(/\s+$/, ""));
+
+  inject.push("");
+  inject.push("proxy-groups:");
+
+  // 入口组（规则里的 {{PROXY}} 指向它）
+  inject.push(`  - name: ${q(groupName)}`);
+  inject.push(`    type: select`);
+  inject.push(`    proxies:`);
+  inject.push(`      - ${q(autoGroup)}`);
+  inject.push(`      - DIRECT`);
+  inject.push(`      - REJECT`);
+  for (const nm of names) inject.push(`      - ${q(nm)}`);
+
+  // 自动测速组
+  inject.push(`  - name: ${q(autoGroup)}`);
+  inject.push(`    type: url-test`);
+  inject.push(`    url: "http://www.gstatic.com/generate_204"`);
+  inject.push(`    interval: 300`);
+  inject.push(`    tolerance: 50`);
+  inject.push(`    proxies:`);
+  for (const nm of names) inject.push(`      - ${q(nm)}`);
+
+  // 在 rule-providers / rules 之前插入
+  const lines = template.split("\n");
+  const out: string[] = [];
+  let inserted = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    if (!inserted && i > 0 && (/^rule-providers:\s*$/.test(l) || /^rules:\s*$/.test(l))) {
+      out.push("");
+      out.push(...inject);
+      out.push("");
+      inserted = true;
+    }
+    // 替换占位符
+    // ⚠️ 规则里是 CSV 格式，组名**不能加引号**（否则引号会成为组名的一部分）
+    //    这与 proxy-groups 里的 YAML 引号不同
+    const line = l.replace(/\{\{PROXY\}\}/g, groupName);
+    out.push(line);
+  }
+
+  if (!inserted) {
+    out.push("");
+    out.push(...inject);
+  }
+
+  const header = [
+    "# Proxy Pipeline — 合成订阅（模板 + 节点）",
+    `# generated: ${now}`,
+    `# nodes: ${nodes.length}`,
+    "",
+  ].join("\n");
+
+  return header + out.join("\n").replace(/^\n+/, "") + "\n";
 }
 
 /** 简单的地理重命名（从节点名解析国家/城市） */
@@ -683,6 +762,11 @@ function cleanCity(s: string): string {
 }
 
 export function buildClash(nodes: ParsedNode[], opts: BuildOptions): string {
+  // 有模板 → 用模板合成（保留用户的 DNS/规则/规则集）
+  if (opts.template && opts.template.trim().length > 100) {
+    return buildFromTemplate(nodes, opts.template);
+  }
+
   const now = new Date().toISOString();
   const names = nodes.map(n => n.name);
 

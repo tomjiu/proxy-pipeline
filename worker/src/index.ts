@@ -40,6 +40,8 @@ import {
   type ParsedNode,
 } from "./subscription";
 import { loginPage, dashboardPage } from "./ui";
+import { DEFAULT_TEMPLATE } from "./default-template";
+import { probeCFNodes, filterCFAlive, isCFNode, type CFProbeResult } from "./cf-probe";
 
 const CACHE_TTL = 120;
 const GEN_CACHE_TTL = 300;   // 生成的订阅缓存 5 分钟
@@ -127,6 +129,11 @@ export default {
         return await handleSubApi(req, env, subApi[1], subApi[2] || "");
       }
 
+      // ── API：流量 ──
+      if (path === "/api/traffic" && method === "GET") {
+        return json(await trafficSummary(env));
+      }
+
       // ── API：规则 ──
       if (path === "/api/rules") {
         const g = await getGlobal(env);
@@ -206,6 +213,7 @@ async function createSub(req: Request, env: Env): Promise<Response> {
     sources,
     rename: body.rename !== false,
     min_tier: ["all", "A", "S"].includes(body.min_tier) ? body.min_tier : "all",
+    probe: body.probe !== false,
     rules_mode: body.rules_mode === "custom" ? "custom" : "builtin",
     updated_at: new Date().toISOString(),
     hits: 0,
@@ -231,6 +239,7 @@ async function handleSubApi(req: Request, env: Env, token: string,
       const b = await readJson(req);
       if (typeof b.name === "string") cfg.name = b.name.slice(0, 60);
       if (typeof b.rename === "boolean") cfg.rename = b.rename;
+      if (typeof b.probe === "boolean") cfg.probe = b.probe;
       if (["all", "A", "S"].includes(b.min_tier)) cfg.min_tier = b.min_tier;
       if (["builtin", "custom"].includes(b.rules_mode)) cfg.rules_mode = b.rules_mode;
       if (typeof b.rules === "string") cfg.rules = b.rules.slice(0, 20000);
@@ -312,20 +321,55 @@ async function serveSubscription(env: Env, token: string, ext: string,
   }
 
   const isJson = ext === "json";
+  const cb = new URL(req.url).searchParams.get("cb");
+  // 测活开关：?probe=0 跳过，?probe=1 强制
+  const probeParam = new URL(req.url).searchParams.get("probe");
+  const doProbe = probeParam === "1" || (probeParam !== "0" && cfg.probe !== false);
 
-  // 缓存命中
-  if (!isJson) {
-    const cached = await cacheGet(env, token + "." + ext);
-    if (cached) return subResponse(cached, ext, true);
+  // 缓存 key 带 probe 标记（不同结果分开缓存）
+  const cacheKey = `${token}.${ext}${doProbe ? ".p" : ""}`;
+
+  // 缓存命中（仍要带流量头，所以先取流量）
+  if (!isJson && !cb) {
+    const cached = await cacheGet(env, cacheKey);
+    if (cached) {
+      const t = await getTraffic(env);
+      return subResponse(cached, ext, true, null, t);
+    }
   }
 
-  // 聚合
+  // ── 1. 聚合 ──
   const agg = await aggregate(cfg.sources);
   let nodes: ParsedNode[] = agg.nodes;
 
+  // ── 2. 测活（默认关闭）──
+  // 实测结论（2026-10）：
+  //   ❌ CF Worker 无 TCP socket API → 无法探测 hy2/vless 直连节点
+  //   ⚠️ 指向域名的 ws 节点可 fetch（101），但指向 CF 任播 IP 的会被自己边缘拦（403）
+  //   ⚠️ 大规模测活会耗尽免费版 10ms CPU 配额（Error 1102）
+  //
+  // 策略：**不测活，改为勤更新**；客户端用 url-test 组自动选优。
+  // 如需临时开启：?probe=1
+  let probeStats: { total: number; probeable: number; alive: number; dead: number; skipped: number } | null = null;
+  let probeDetail: CFProbeResult[] = [];
+  if (doProbe && nodes.length) {
+    try {
+      const r = await probeCFNodes(nodes, { concurrency: 6, maxProbe: 40, timeoutMs: 5000 });
+      probeStats = r.stats;
+      probeDetail = r.results;
+      const before = nodes.length;
+      nodes = filterCFAlive(nodes, r.results);
+      console.log(`[probe] ${before} -> ${nodes.length} (probeable=${r.stats.probeable} alive=${r.stats.alive} dead=${r.stats.dead})`);
+    } catch (e) {
+      console.error("[probe] failed:", e);
+      probeStats = null;
+    }
+  }
+
+  // ── 3. 重命名 ──
   if (cfg.rename) nodes = renameSimple(nodes);
 
-  // tier 过滤（用节点名匹配 quality_tiers.json）
+  // ── 4. tier 过滤 ──
   if (cfg.min_tier !== "all") {
     try {
       const tierRes = await fetchDist(env, "clean/quality_tiers.json");
@@ -334,17 +378,29 @@ async function serveSubscription(env: Env, token: string, ext: string,
         const want = cfg.min_tier === "S" ? new Set(t.tier_S || [])
                                           : new Set([...(t.tier_S || []), ...(t.tier_A || [])]);
         const before = nodes.length;
-        nodes = nodes.filter(n => want.has(n.name) || want.has(n.origin ? n.name : n.name));
-        // 名字已被重命名时无法匹配 → 保留全部并提示
-        if (nodes.length === 0 && before > 0) nodes = agg.nodes;
-        if (cfg.rename) nodes = renameSimple(nodes);
+        nodes = nodes.filter(n => want.has(n.name));
+        // 重命名后名字变了 → 无匹配则回退到不过滤（避免空订阅）
+        if (nodes.length === 0 && before > 0) {
+          nodes = cfg.rename ? renameSimple(agg.nodes) : agg.nodes;
+        }
       }
     } catch { /* 过滤失败则不过滤 */ }
   }
 
+  // ── 5. 输出 ──
+  const traffic = await getTraffic(env);
+
   if (isJson) {
     return json({
       token, name: cfg.name, nodes: nodes.length,
+      probe: probeStats,
+      probe_method: "CF-node WebSocket/HTTP (only network:ws + CF IP)",
+      probe_samples: probeDetail.slice(0, 40).map(r => ({
+        name: r.name, server: r.server, port: r.port, type: r.type,
+        network: r.network, method: r.method, alive: r.alive,
+        ms: r.ms, status: r.status, error: r.error,
+      })),
+      traffic: await trafficSummary(env),
       sources: agg.results.map(r => ({
         url: r.url, ok: r.ok, format: r.format, nodes: r.nodes.length,
         bytes: r.bytes, error: r.error,
@@ -358,38 +414,149 @@ async function serveSubscription(env: Env, token: string, ext: string,
     content = buildBase64(nodes);
   } else {
     const g = await getGlobal(env);
+    // 规则来源：自定义 > 全局 > 内置模板
+    const template = cfg.rules_mode === "custom" && cfg.rules
+      ? undefined                       // 自定义规则 → 不用模板，走精简生成
+      : (g.default_rules && g.default_rules.length > 100 ? undefined : DEFAULT_TEMPLATE);
     const rules = cfg.rules_mode === "custom" && cfg.rules ? cfg.rules : g.default_rules;
     content = buildClash(nodes, {
       rename: cfg.rename,
       rules,
       title: cfg.name,
+      template,
     });
   }
 
-  await cachePut(env, token + "." + ext, content, GEN_CACHE_TTL);
+  await cachePut(env, cacheKey, content, GEN_CACHE_TTL);
 
-  // 计数（异步，不阻塞响应）
   cfg.hits = (cfg.hits || 0) + 1;
   putSub(env, cfg).catch(() => {});
 
-  return subResponse(content, ext, false);
+  return subResponse(content, ext, false, probeStats, traffic);
 }
 
-function subResponse(content: string, ext: string, cached: boolean): Response {
+
+// ══════════ 流量统计 ══════════
+
+/**
+ * 查询流量用量。
+ *
+ * 环境变量（可选）：
+ *   TRAFFIC_API     服务端流量接口，如 https://san.example.com/traffic
+ *   TRAFFIC_SECRET  接口密钥（Authorization 头）
+ *   QUOTA_TOTAL     总量上限（字节），默认 2.5 TB
+ *   QUOTA_PER_USER  每人上限（字节），默认 1 TB
+ *
+ * 未配置 TRAFFIC_API 时返回 0/默认上限（不影响订阅可用）。
+ */
+const DEFAULT_TOTAL_BYTES = 2560 * 1024 ** 3;      // 2.5 TB
+const DEFAULT_PER_USER_BYTES = 1024 * 1024 ** 3;   // 1 TB
+
+interface TrafficInfo {
+  used: number;
+  total: number;
+  source: string;
+  perUser: Record<string, { used: number; total: number }>;
+}
+
+let trafficCache: { at: number; data: TrafficInfo } | null = null;
+const TRAFFIC_CACHE_TTL = 60_000;
+
+async function getTraffic(env: Env): Promise<TrafficInfo> {
+  const total = parseInt((env as any).QUOTA_TOTAL || "", 10) || DEFAULT_TOTAL_BYTES;
+  const perUserLimit = parseInt((env as any).QUOTA_PER_USER || "", 10) || DEFAULT_PER_USER_BYTES;
+
+  if (trafficCache && Date.now() - trafficCache.at < TRAFFIC_CACHE_TTL) {
+    return trafficCache.data;
+  }
+
+  const empty: TrafficInfo = { used: 0, total, source: "none", perUser: {} };
+  const api = (env as any).TRAFFIC_API;
+  const secret = (env as any).TRAFFIC_SECRET;
+  if (!api) {
+    trafficCache = { at: Date.now(), data: empty };
+    return empty;
+  }
+
+  try {
+    const res = await fetch(api, {
+      headers: secret ? { Authorization: secret } : {},
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json() as Record<string, any>;
+
+    let sum = 0;
+    const perUser: Record<string, { used: number; total: number }> = {};
+    for (const [k, v] of Object.entries(data)) {
+      if (k === "acme" || !v || typeof v !== "object") continue;
+      const bytes = (Number(v.tx) || 0) + (Number(v.rx) || 0);
+      sum += bytes;
+      perUser[k] = { used: bytes, total: perUserLimit };
+    }
+    if (sum === 0 && typeof data.total === "number") sum = data.total;
+
+    const info: TrafficInfo = { used: sum, total, source: "trafficStats", perUser };
+    trafficCache = { at: Date.now(), data: info };
+    return info;
+  } catch {
+    trafficCache = { at: Date.now(), data: empty };
+    return empty;
+  }
+}
+
+/** 供 UI 显示：总量 + 剩余 */
+async function trafficSummary(env: Env): Promise<{
+  used: number; total: number; remain: number; pct: number;
+  used_gb: number; total_gb: number; remain_gb: number; source: string;
+  per_user: Record<string, { used_gb: number; total_gb: number; remain_gb: number; pct: number }>;
+}> {
+  const t = await getTraffic(env);
+  const GB = 1024 ** 3;
+  const perUser: Record<string, any> = {};
+  for (const [k, v] of Object.entries(t.perUser)) {
+    perUser[k] = {
+      used_gb: +(v.used / GB).toFixed(2),
+      total_gb: +(v.total / GB).toFixed(2),
+      remain_gb: +((v.total - v.used) / GB).toFixed(2),
+      pct: +(v.used * 100 / v.total).toFixed(2),
+    };
+  }
+  return {
+    used: t.used, total: t.total,
+    remain: Math.max(0, t.total - t.used),
+    pct: +(t.used * 100 / t.total).toFixed(2),
+    used_gb: +(t.used / GB).toFixed(2),
+    total_gb: +(t.total / GB).toFixed(2),
+    remain_gb: +((t.total - t.used) / GB).toFixed(2),
+    source: t.source,
+    per_user: perUser,
+  };
+}
+
+
+function subResponse(content: string, ext: string, cached: boolean,
+                     probe: { total: number; probeable: number; alive: number; dead: number; skipped: number } | null,
+                     traffic: TrafficInfo | null): Response {
   const ct = ext === "txt" ? "text/plain; charset=utf-8"
            : ext === "json" ? "application/json; charset=utf-8"
            : "text/yaml; charset=utf-8";
-  return new Response(content, {
-    headers: {
-      "content-type": ct,
-      "cache-control": "public, max-age=60",
-      "access-control-allow-origin": "*",
-      "x-cached": cached ? "hit" : "miss",
-      "profile-update-interval": "6",
-      // Clash 会解析这个头显示流量
-      "subscription-userinfo": "upload=0; download=0; total=0; expire=0",
-    },
-  });
+  const headers: Record<string, string> = {
+    "content-type": ct,
+    "cache-control": "public, max-age=60",
+    "access-control-allow-origin": "*",
+    "x-cached": cached ? "hit" : "miss",
+    "profile-update-interval": "6",
+  };
+  if (traffic) {
+    headers["subscription-userinfo"] =
+      `upload=0; download=${traffic.used}; total=${traffic.total}; expire=0`;
+    headers["x-traffic"] =
+      `used=${traffic.used};total=${traffic.total};remain=${Math.max(0, traffic.total - traffic.used)};src=${traffic.source}`;
+  }
+  if (probe) {
+    headers["x-probe"] = `total=${probe.total};probeable=${probe.probeable};alive=${probe.alive};dead=${probe.dead};skip=${probe.skipped}`;
+  }
+  return new Response(content, { headers });
 }
 
 // ══════════ 公开只读 API ══════════

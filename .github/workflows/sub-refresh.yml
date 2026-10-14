@@ -1,28 +1,35 @@
 name: sub-refresh
 
-# 订阅缓存预热 + 源可用性监控
+# 订阅缓存预热 —— 勤更新，不测活
 #
-# 目的：
-#   1. 定时触发 Worker 重新聚合，让用户访问时命中热缓存（快）
-#   2. 监控各源可用性，源失效时及时发现
-#   3. 短效源（如 lqzz.io）需要更高频刷新 → 可配多档频率
+# 设计原则（2026-10 定稿）：
+#   1. 不测活 —— CF Worker 无 TCP API 测不准；Actions 测活需拉节点进仓库（会泄露）
+#      → 改为「勤更新 + 客户端 url-test 自动选优」
+#   2. 只预热缓存，不落任何节点数据到仓库
+#   3. 源失效时能及时发现
 #
-# 用法：把下面的 TOKEN 换成你的订阅 token
+# 触发频率：
+#   - 每 15 分钟（短效源如 lw.234.qzz.io 变化快）
+#   - 也可手动触发
 
 on:
   schedule:
-    # 高频档：每 30 分钟（短效源用）
-    - cron: "*/30 * * * *"
+    # 每 15 分钟（GitHub Actions 免费额度对公开仓库无限制）
+    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       force:
-        description: "强制忽略缓存（加 cache-buster）"
+        description: "强制忽略缓存"
         required: false
         default: "true"
         type: choice
         options:
           - "true"
           - "false"
+
+concurrency:
+  group: sub-refresh
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -31,8 +38,7 @@ jobs:
     steps:
       - name: Warm subscription cache
         env:
-          # ⚠️ 订阅 token 存在仓库 secret SUB_TOKENS（多个用逗号分隔）
-          #    未配置时跳过，不会泄露任何凭据
+          # 从 secrets 读，不落明文
           SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
           WORKER_BASE: ${{ vars.WORKER_BASE }}
           FORCE: ${{ inputs.force || 'true' }}
@@ -40,59 +46,66 @@ jobs:
           set -e
 
           if [ -z "$SUB_TOKENS" ] || [ -z "$WORKER_BASE" ]; then
-            echo "::notice::SUB_TOKENS / WORKER_BASE 未配置，跳过预热"
+            echo "::notice::SUB_TOKENS / WORKER_BASE 未配置，跳过"
+            echo ""
             echo "配置方法："
-            echo "  Repository secrets: SUB_TOKENS=<你的token>[,<token2>]"
-            echo "  Repository variables: WORKER_BASE=https://<worker>.workers.dev"
+            echo "  Settings → Secrets and variables → Actions"
+            echo "    Secrets:   SUB_TOKENS = <token>[,<token2>]"
+            echo "    Variables: WORKER_BASE = https://<worker>.workers.dev"
             exit 0
           fi
 
           CB=$(date +%s)
           echo "worker: $WORKER_BASE"
-          echo "token count: $(echo "$SUB_TOKENS" | tr ',' '\n' | wc -l)"
+          echo "time:   $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           echo
 
           FAIL=0
           for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
             echo "── token: ${TOKEN:0:6}… ──"
 
-            for EXT in yaml txt; do
-              URL="$WORKER_BASE/sub/$TOKEN.$EXT"
-              [ "$FORCE" = "true" ] && URL="$URL?cb=$CB"
+            # 只预热 yaml（会员用最多的）；txt 按需生成
+            URL="$WORKER_BASE/sub/$TOKEN.yaml"
+            [ "$FORCE" = "true" ] && URL="$URL?cb=$CB"
 
-              # 带重试（Worker 聚合 6 个源可能需要 10-20 秒）
-              CODE=""
-              for TRY in 1 2 3; do
-                CODE=$(curl -s -o /tmp/out.$EXT -w '%{http_code}' -m 90 "$URL" || echo "000")
-                [ "$CODE" = "200" ] && break
-                echo "    $EXT: HTTP $CODE (try $TRY), retrying…"
-                sleep 5
-              done
-
-              SIZE=$(wc -c < /tmp/out.$EXT 2>/dev/null || echo 0)
-              if [ "$CODE" = "200" ] && [ "$SIZE" -gt 500 ]; then
-                NODES=$(grep -c '^  - name:' /tmp/out.$EXT 2>/dev/null || echo "?")
-                echo "    ✅ $EXT: HTTP 200, ${SIZE} bytes, ${NODES} nodes"
-              else
-                echo "    ❌ $EXT: HTTP $CODE, ${SIZE} bytes"
-                FAIL=$((FAIL+1))
-              fi
+            CODE=""
+            for TRY in 1 2 3; do
+              CODE=$(curl -s -o /tmp/out.yaml -w '%{http_code}' -m 90 "$URL" || echo "000")
+              [ "$CODE" = "200" ] && break
+              echo "    try $TRY: HTTP $CODE"
+              sleep 4
             done
 
-            # JSON 统计（各源状态）
+            SIZE=$(wc -c < /tmp/out.yaml 2>/dev/null || echo 0)
+            if [ "$CODE" = "200" ] && [ "$SIZE" -gt 500 ]; then
+              NODES=$(grep -c '^  - name:' /tmp/out.yaml 2>/dev/null || echo "?")
+              echo "    ✅ HTTP 200, ${SIZE} bytes, ${NODES} nodes"
+            else
+              echo "    ❌ HTTP $CODE, ${SIZE} bytes"
+              FAIL=$((FAIL+1))
+            fi
+
+            # 源状态
             JSON=$(curl -s -m 120 "$WORKER_BASE/sub/$TOKEN.json?cb=$CB" || echo "{}")
             echo "$JSON" | python3 -c "
 import sys, json
 try:
     d = json.load(sys.stdin)
-    print('    nodes:', d.get('nodes'), ' duplicates:', d.get('duplicates'))
-    for r in (d.get('sources') or []):
-        mark = '✅' if r.get('ok') else '❌'
-        print('      %s %-14s %-8s %5s nodes  %s' % (
-            mark, (r.get('url') or '')[:40].split('//')[-1][:40],
-            r.get('format'), r.get('nodes'), r.get('error') or ''))
+    t = d.get('traffic') or {}
+    print('    nodes: %s  dups: %s' % (d.get('nodes'), d.get('duplicates')))
+    if t:
+        print('    traffic: %.2f / %.0f GB (%.3f%%)  remain %.2f GB'
+              % (t.get('used_gb', 0), t.get('total_gb', 0),
+                 t.get('pct', 0), t.get('remain_gb', 0)))
+    bad = [s for s in (d.get('sources') or []) if not s.get('ok')]
+    if bad:
+        print('    ⚠️ failed sources:')
+        for s in bad:
+            print('       %s  %s' % ((s.get('url') or '')[:50], s.get('error') or ''))
+    else:
+        print('    sources: all ok (%d)' % len(d.get('sources') or []))
 except Exception as e:
-    print('    (json parse failed:', e, ')')
+    print('    (parse failed:', e, ')')
 " 2>/dev/null || echo "    (no stats)"
             echo
           done
@@ -104,8 +117,10 @@ except Exception as e:
       - name: Summary
         if: always()
         run: |
-          echo "### 订阅预热" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
-          echo "- worker: ${{ vars.WORKER_BASE }}" >> $GITHUB_STEP_SUMMARY
-          echo "- 配置来源: repository variables / secrets（不含明文凭据）" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "### 订阅预热"
+            echo ""
+            echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- worker: ${{ vars.WORKER_BASE }}"
+            echo "- 模式: 勤更新（不测活）"
+          } >> $GITHUB_STEP_SUMMARY

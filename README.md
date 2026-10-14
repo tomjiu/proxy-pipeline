@@ -88,7 +88,7 @@ npx wrangler deploy
 客户端订阅（测活后）：
 
 ```text
-https://proxy-pipeline-api.d05j86dzd.workers.dev/sub/clash-live
+https://<你的-worker-域名>/sub/clash
 ```
 
 额度：GitHub 免费 Actions 对**公开仓**一般够用；几百节点全量大约数分钟～十几分钟，一天 1 次全量 + 几次增量通常远低于限额。

@@ -7,6 +7,14 @@ export interface Env {
   API_TOKEN?: string;
   ADMIN_PASSWORD?: string;
   SESSION_SECRET?: string;
+  /** 流量统计接口（服务端 /api/traffic） */
+  TRAFFIC_API?: string;
+  /** 流量接口密钥 */
+  TRAFFIC_SECRET?: string;
+  /** 总量上限（字节），默认 2.5TB */
+  QUOTA_TOTAL?: string;
+  /** 每人上限（字节），默认 1TB */
+  QUOTA_PER_USER?: string;
   KV?: KVNamespace;
   BUCKET?: R2Bucket;
 }
@@ -27,6 +35,7 @@ export interface SubConfig {
   sources: SubSource[];       // 聚合源
   rename: boolean;            // 是否重命名节点
   min_tier: "all" | "A" | "S"; // 质量过滤
+  probe: boolean;             // 是否测活（剔除失效节点）
   rules_mode: "builtin" | "custom"; // 规则来源
   rules?: string;             // 自定义规则 YAML
   updated_at: string;
@@ -116,7 +125,8 @@ export async function listSubs(env: Env): Promise<SubConfig[]> {
 export async function getGlobal(env: Env): Promise<GlobalConfig> {
   const g = await kvGetJSON<GlobalConfig>(env, KV_PREFIX.global + "config");
   if (g) return g;
-  return { default_rules: DEFAULT_RULES, updated_at: new Date().toISOString() };
+  // 默认使用用户预设模板（DNS + 分流规则 + 39 个 rule-providers）
+  return { default_rules: "", updated_at: new Date().toISOString() };
 }
 
 export async function putGlobal(env: Env, g: GlobalConfig): Promise<void> {

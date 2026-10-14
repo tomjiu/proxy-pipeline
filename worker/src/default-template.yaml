@@ -1,0 +1,544 @@
+# ═══════════════════════════════════════════════════════════
+#  Proxy Pipeline — 订阅模板
+# ═══════════════════════════════════════════════════════════
+#
+#  本文件由 Proxy Pipeline Worker 自动合成：
+#    [本模板：DNS / 分流规则 / 嗅探 / 规则集]
+#         +
+#    [你的节点：运行时注入]
+#
+#  模板来源：用户本地配置（已移除全部节点与凭据）
+#  占位符：{{PROXY}} = 策略组入口名（Worker 注入）
+#
+#  ⚠️ 本文件不含任何节点信息或凭据
+# ═══════════════════════════════════════════════════════════
+
+mixed-port: 7897
+allow-lan: true
+mode: rule
+log-level: info
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: strict
+
+dns:
+  enable: true
+  listen: "127.0.0.1:5335"
+  use-system-hosts: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver: [180.76.76.76, 182.254.118.118, 8.8.8.8, 180.184.2.2]
+  nameserver:
+    [
+      180.76.76.76,
+      119.29.29.29,
+      180.184.1.1,
+      223.5.5.5,
+      8.8.8.8,
+      "https://223.6.6.6/dns-query#h3=true",
+      "https://dns.alidns.com/dns-query",
+      "https://cloudflare-dns.com/dns-query",
+      "https://doh.pub/dns-query",
+    ]
+  fallback:
+    [
+      "https://000000.dns.nextdns.io/dns-query#h3=true",
+      "https://dns.alidns.com/dns-query",
+      "https://doh.pub/dns-query",
+      "https://public.dns.iij.jp/dns-query",
+      "https://101.101.101.101/dns-query",
+      "https://208.67.220.220/dns-query",
+      "tls://8.8.4.4",
+      "tls://1.0.0.1:853",
+      "https://cloudflare-dns.com/dns-query",
+      "https://dns.google/dns-query",
+    ]
+  fallback-filter:
+    {
+      geoip: true,
+      ipcidr: [240.0.0.0/4, 0.0.0.0/32, 127.0.0.1/32],
+      domain:
+        [
+          "+.google.com",
+          "+.facebook.com",
+          "+.twitter.com",
+          "+.youtube.com",
+          "+.xn--ngstr-lra8j.com",
+          "+.google.cn",
+          "+.googleapis.cn",
+          "+.googleapis.com",
+          "+.gvt1.com",
+        ],
+    }
+  fake-ip-filter:
+    [
+      # --- dsh / DeepSeek API: 必须走真实 DNS，否则 Node fetch 拿 fake-IP 连不上 ---
+      "api.deepseek.com",
+      "*.deepseek.com",
+      "*.lan",
+      "stun.*.*.*",
+      "stun.*.*",
+      time.windows.com,
+      time.nist.gov,
+      time.apple.com,
+      time.asia.apple.com,
+      "*.ntp.org.cn",
+      "*.openwrt.pool.ntp.org",
+      time1.cloud.tencent.com,
+      time.ustc.edu.cn,
+      pool.ntp.org,
+      ntp.ubuntu.com,
+      ntp.aliyun.com,
+      ntp1.aliyun.com,
+      ntp2.aliyun.com,
+      ntp3.aliyun.com,
+      ntp4.aliyun.com,
+      ntp5.aliyun.com,
+      ntp6.aliyun.com,
+      ntp7.aliyun.com,
+      time1.aliyun.com,
+      time2.aliyun.com,
+      time3.aliyun.com,
+      time4.aliyun.com,
+      time5.aliyun.com,
+      time6.aliyun.com,
+      time7.aliyun.com,
+      "*.time.edu.cn",
+      time1.apple.com,
+      time2.apple.com,
+      time3.apple.com,
+      time4.apple.com,
+      time5.apple.com,
+      time6.apple.com,
+      time7.apple.com,
+      time1.google.com,
+      time2.google.com,
+      time3.google.com,
+      time4.google.com,
+      music.163.com,
+      "*.music.163.com",
+      "*.126.net",
+      musicapi.taihe.com,
+      music.taihe.com,
+      songsearch.kugou.com,
+      trackercdn.kugou.com,
+      "*.kuwo.cn",
+      api-jooxtt.sanook.com,
+      api.joox.com,
+      joox.com,
+      y.qq.com,
+      "*.y.qq.com",
+      streamoc.music.tc.qq.com,
+      mobileoc.music.tc.qq.com,
+      isure.stream.qqmusic.qq.com,
+      dl.stream.qqmusic.qq.com,
+      aqqmusic.tc.qq.com,
+      amobile.music.tc.qq.com,
+      "*.xiami.com",
+      "*.music.migu.cn",
+      music.migu.cn,
+      "*.msftconnecttest.com",
+      "*.msftncsi.com",
+      localhost.ptlogin2.qq.com,
+      "*.*.*.srv.nintendo.net",
+      "*.*.stun.playstation.net",
+      "xbox.*.*.microsoft.com",
+      "*.ipv6.microsoft.com",
+      "*.*.xboxlive.com",
+      speedtest.cros.wr.pvp.net,
+    ]
+
+profile:
+  store-selected: true
+  store-fake-ip: false
+
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  sniff:
+    HTTP: { ports: [80, 8080-8880], override-destination: true }
+    QUIC: { ports: [443, 8443] }
+    TLS: { ports: [443, 8443] }
+
+geodata-mode: true
+geo-auto-update: true
+geodata-loader: standard
+geo-update-interval: 24
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+  asn: https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb
+
+rule-providers:
+  category-ads-all:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ads-all.mrs,
+      path: ./ruleset/category-ads-all.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  private:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.mrs,
+      path: ./ruleset/private.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  private-ip:
+    {
+      type: http,
+      behavior: ipcidr,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.mrs,
+      path: ./ruleset/private-ip.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  geolocation-cn:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-cn.mrs,
+      path: ./ruleset/geolocation-cn.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  cn-ip:
+    {
+      type: http,
+      behavior: ipcidr,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs,
+      path: ./ruleset/cn-ip.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  geolocation-!cn:
+    {
+      type: http,
+      behavior: domain,
+      url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.mrs",
+      path: "./ruleset/geolocation-!cn.mrs",
+      interval: 86400,
+      format: mrs,
+    }
+  category-ai-chat-!cn:
+    {
+      type: http,
+      behavior: domain,
+      url: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.mrs",
+      path: "./ruleset/category-ai-chat-!cn.mrs",
+      interval: 86400,
+      format: mrs,
+    }
+  openai:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/openai.mrs,
+      path: ./ruleset/openai.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  anthropic:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/anthropic.mrs,
+      path: ./ruleset/anthropic.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  youtube:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs,
+      path: ./ruleset/youtube.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  google:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs,
+      path: ./ruleset/google.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  google-ip:
+    {
+      type: http,
+      behavior: ipcidr,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs,
+      path: ./ruleset/google-ip.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  microsoft:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs,
+      path: ./ruleset/microsoft.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  onedrive:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/onedrive.mrs,
+      path: ./ruleset/onedrive.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  apple:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.mrs,
+      path: ./ruleset/apple.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  icloud:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/icloud.mrs,
+      path: ./ruleset/icloud.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  telegram:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs,
+      path: ./ruleset/telegram.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  telegram-ip:
+    {
+      type: http,
+      behavior: ipcidr,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs,
+      path: ./ruleset/telegram-ip.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  github:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs,
+      path: ./ruleset/github.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  gitlab:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gitlab.mrs,
+      path: ./ruleset/gitlab.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  atlassian:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/atlassian.mrs,
+      path: ./ruleset/atlassian.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+  cn:
+    {
+      type: http,
+      behavior: domain,
+      url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs,
+      path: ./ruleset/cn.mrs,
+      interval: 86400,
+      format: mrs,
+    }
+
+rules:
+  # ==========================================
+  # 广告拦截
+  # ==========================================
+  - RULE-SET,category-ads-all,{{PROXY}}
+  - DOMAIN-KEYWORD,admaster,{{PROXY}}
+  - DOMAIN-KEYWORD,adsage,{{PROXY}}
+  - DOMAIN-KEYWORD,adwords,{{PROXY}}
+  - DOMAIN-KEYWORD,adservice,{{PROXY}}
+  - DOMAIN-SUFFIX,appsflyer.com,{{PROXY}}
+  - DOMAIN-SUFFIX,doubleclick.net,{{PROXY}}
+  - DOMAIN-SUFFIX,umeng.com,{{PROXY}}
+  - DOMAIN-SUFFIX,talkingdata.net,{{PROXY}}
+  - DOMAIN-KEYWORD,analytics,{{PROXY}}
+
+  # ==========================================
+  # 公益站直连
+  # ==========================================
+  - DOMAIN-SUFFIX,hxi.me,DIRECT
+  - DOMAIN-SUFFIX,edu.kg,DIRECT
+  - DOMAIN-SUFFIX,teamorouter.com,DIRECT
+  - DOMAIN-SUFFIX,mofas.one,DIRECT
+  - DOMAIN-SUFFIX,pp.ua,DIRECT
+  - DOMAIN-SUFFIX,x666.me,DIRECT
+  - DOMAIN-SUFFIX,venlacy.com,DIRECT
+  - DOMAIN-SUFFIX,42w.shop,DIRECT
+  - DOMAIN-SUFFIX,dev88.tech,DIRECT
+  - DOMAIN-SUFFIX,abrdns.com,DIRECT
+  - DOMAIN-SUFFIX,tumuer.me,DIRECT
+  - DOMAIN-SUFFIX,lilililwan.xyz,DIRECT
+  - DOMAIN-SUFFIX,opencode.ai,DIRECT
+  - DOMAIN-SUFFIX,muyuan.do,DIRECT
+  - DOMAIN-SUFFIX,windhub.cc,DIRECT
+
+  # ==========================================
+  # Steam 规则 (社区代理，下载直连)
+  # ==========================================
+  # 需要代理的内容 (社区、商店、API)
+  - DOMAIN-SUFFIX,steamcommunity.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steampowered.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steam-chat.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steamgames.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steamusercontent.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steam-api.com,{{PROXY}}
+  # 需要直连的内容 (下载 CDN)
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+
+  # ==========================================
+  # 卡巴斯基安全网络 (KSN) 直连
+  # ==========================================
+  - DOMAIN-SUFFIX,kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,kaspersky.ru,DIRECT
+  - DOMAIN-SUFFIX,kasperskyclub.ru,DIRECT
+  - DOMAIN-SUFFIX,ksn.kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,activation-v2.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,touch.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,gc.kis.v2.scr.kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,cm.k.kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,wmi.kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,ds.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,dnl-01.geo.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,dnl-02.geo.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,dnl-03.geo.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,dnl-04.geo.kaspersky.com,DIRECT
+  - DOMAIN-SUFFIX,downloads.kaspersky-labs.com,DIRECT
+  - DOMAIN-SUFFIX,liveupdate.kaspersky.com,DIRECT
+  - DOMAIN-KEYWORD,kaspersky,DIRECT
+
+  # ==========================================
+  # Spotify 直连
+  # ==========================================
+  - DOMAIN-SUFFIX,spotify.com,DIRECT
+  - DOMAIN-SUFFIX,spotifycdn.com,DIRECT
+  - DOMAIN-SUFFIX,scdn.co,DIRECT
+  - DOMAIN-SUFFIX,spotify.map.fastly.net,DIRECT
+
+  # ==========================================
+  # 社交媒体
+  # ==========================================
+  - DOMAIN-SUFFIX,x.com,{{PROXY}}
+  - DOMAIN-SUFFIX,discord.com,{{PROXY}}
+  - DOMAIN-SUFFIX,discordapp.com,{{PROXY}}
+  - DOMAIN-SUFFIX,discord.gg,{{PROXY}}
+
+  # ==========================================
+  # 游戏进程与 P2P (直连)
+  # ==========================================
+  - PROCESS-NAME,r5apex.exe,DIRECT
+  - PROCESS-NAME,EasyAntiCheat_launcher.exe,DIRECT
+  - PROCESS-NAME,Darktide.exe,DIRECT
+  - PROCESS-NAME,Darktide_Launcher.exe,DIRECT
+  - PROCESS-NAME,qbittorrent.exe,DIRECT
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - DOMAIN-KEYWORD,torrent,DIRECT
+  - DOMAIN-KEYWORD,peer_id=,DIRECT
+
+  # ==========================================
+  # 哔哩哔哩
+  # ==========================================
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,biliapi.net,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,bilivideo.com,DIRECT
+  - DOMAIN-SUFFIX,bilivideo.cn,DIRECT
+
+  # ==========================================
+  # 阿里云：国内站直连 / 国际站走代理
+  # ==========================================
+  - DOMAIN-SUFFIX,swasnext.console.aliyun.com,DIRECT
+  - DOMAIN,swasnext.console.aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,console.aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,alibabacloud.com,{{PROXY}}
+  - DOMAIN-KEYWORD,alibabacloud,{{PROXY}}
+
+  # ==========================================
+  # DeepSeek 直连
+  # ==========================================
+  - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,deepseekapi.com,DIRECT
+  - DOMAIN-KEYWORD,deepseek,DIRECT
+
+  # ==========================================
+  # AI 服务（z.ai 走代理）
+  # ==========================================
+  - DOMAIN-SUFFIX,z.ai,{{PROXY}}
+  - DOMAIN-SUFFIX,zhipuai.cn,{{PROXY}}
+  - DOMAIN-SUFFIX,bigmodel.cn,{{PROXY}}
+  - DOMAIN-KEYWORD,zhipu,{{PROXY}}
+  - RULE-SET,category-ai-chat-!cn,{{PROXY}}
+  - RULE-SET,openai,{{PROXY}}
+  - RULE-SET,anthropic,{{PROXY}}
+  - DOMAIN-KEYWORD,openai,{{PROXY}}
+  - DOMAIN-KEYWORD,chatgpt,{{PROXY}}
+  - DOMAIN-SUFFIX,claude.ai,{{PROXY}}
+  - DOMAIN-SUFFIX,gemini.google.com,{{PROXY}}
+
+  # ==========================================
+  # 小米 / Mimo 服务（代理）
+  # ==========================================
+  - DOMAIN-SUFFIX,xiaomimimo.com,{{PROXY}}
+
+  # ==========================================
+  # 各类服务
+  # ==========================================
+  - RULE-SET,youtube,{{PROXY}}
+  - RULE-SET,google,{{PROXY}}
+  - RULE-SET,google-ip,{{PROXY}},no-resolve
+  - RULE-SET,private,{{PROXY}}
+  - RULE-SET,private-ip,{{PROXY}},no-resolve
+  - RULE-SET,geolocation-cn,{{PROXY}}
+  - RULE-SET,cn-ip,{{PROXY}},no-resolve
+  - RULE-SET,telegram,{{PROXY}}
+  - RULE-SET,telegram-ip,{{PROXY}},no-resolve
+  - IP-CIDR,91.108.4.0/22,{{PROXY}},no-resolve
+  - IP-CIDR,149.154.160.0/20,{{PROXY}},no-resolve
+  - RULE-SET,github,{{PROXY}}
+  - RULE-SET,gitlab,{{PROXY}}
+  - RULE-SET,atlassian,{{PROXY}}
+  - DOMAIN-SUFFIX,docker.io,{{PROXY}}
+  - RULE-SET,microsoft,{{PROXY}}
+  - RULE-SET,onedrive,{{PROXY}}
+  - RULE-SET,apple,{{PROXY}}
+  - RULE-SET,icloud,{{PROXY}}
+  - RULE-SET,geolocation-!cn,{{PROXY}}
+  - RULE-SET,cn,{{PROXY}}
+  - GEOIP,CN,DIRECT
+  - MATCH,{{PROXY}}
