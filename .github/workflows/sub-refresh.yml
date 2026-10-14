@@ -31,20 +31,30 @@ jobs:
     steps:
       - name: Warm subscription cache
         env:
-          # ⚠️ 换成你的订阅 token（或设为仓库 secret SUB_TOKENS，逗号分隔多个）
-          SUB_TOKENS: ${{ secrets.SUB_TOKENS || '49t7os9sqfyb4mcx' }}
-          WORKER_BASE: ${{ vars.WORKER_BASE || 'https://proxy-pipeline-api.d05j86dzd.workers.dev' }}
+          # ⚠️ 订阅 token 存在仓库 secret SUB_TOKENS（多个用逗号分隔）
+          #    未配置时跳过，不会泄露任何凭据
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
           FORCE: ${{ inputs.force || 'true' }}
         run: |
           set -e
+
+          if [ -z "$SUB_TOKENS" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::SUB_TOKENS / WORKER_BASE 未配置，跳过预热"
+            echo "配置方法："
+            echo "  Repository secrets: SUB_TOKENS=<你的token>[,<token2>]"
+            echo "  Repository variables: WORKER_BASE=https://<worker>.workers.dev"
+            exit 0
+          fi
+
           CB=$(date +%s)
           echo "worker: $WORKER_BASE"
-          echo "tokens: $SUB_TOKENS"
+          echo "token count: $(echo "$SUB_TOKENS" | tr ',' '\n' | wc -l)"
           echo
 
           FAIL=0
           for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
-            echo "── token: $TOKEN ──"
+            echo "── token: ${TOKEN:0:6}… ──"
 
             for EXT in yaml txt; do
               URL="$WORKER_BASE/sub/$TOKEN.$EXT"
@@ -69,9 +79,21 @@ jobs:
               fi
             done
 
-            # JSON 统计（看各源状态）
-            STAT=$(curl -s -m 120 "$WORKER_BASE/sub/$TOKEN.json?cb=$CB" || echo "{}")
-            echo "    srcs: $(echo "$STAT" | head -c 400)"
+            # JSON 统计（各源状态）
+            JSON=$(curl -s -m 120 "$WORKER_BASE/sub/$TOKEN.json?cb=$CB" || echo "{}")
+            echo "$JSON" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    print('    nodes:', d.get('nodes'), ' duplicates:', d.get('duplicates'))
+    for r in (d.get('sources') or []):
+        mark = '✅' if r.get('ok') else '❌'
+        print('      %s %-14s %-8s %5s nodes  %s' % (
+            mark, (r.get('url') or '')[:40].split('//')[-1][:40],
+            r.get('format'), r.get('nodes'), r.get('error') or ''))
+except Exception as e:
+    print('    (json parse failed:', e, ')')
+" 2>/dev/null || echo "    (no stats)"
             echo
           done
 
@@ -85,5 +107,5 @@ jobs:
           echo "### 订阅预热" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_STEP_SUMMARY
-          echo "- worker: ${{ vars.WORKER_BASE || 'https://proxy-pipeline-api.d05j86dzd.workers.dev' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- token: \`${{ secrets.SUB_TOKENS || '49t7os9sqfyb4mcx' }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- worker: ${{ vars.WORKER_BASE }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 配置来源: repository variables / secrets（不含明文凭据）" >> $GITHUB_STEP_SUMMARY
