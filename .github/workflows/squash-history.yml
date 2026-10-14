@@ -1,0 +1,116 @@
+name: squash-history
+
+# 历史压缩 —— 防止 .git 无限制增长
+#
+# 背景：
+#   每次运行都提交 dist/ 快照，而 dist/online/nodes.txt 等文件每次都变，
+#   导致每个版本都是新 blob，无法去重。
+#   实测 78 天累积 921 个提交、.git 达 117.9 MB。
+#
+#   但 Worker 只读 main 分支的最新版（RAW_BASE/.../main/dist），
+#   历史版本没有任何功能价值。
+#
+# 策略：
+#   每月 1 号自动压缩为单提交，保留完整工作区内容。
+#   也可手动触发。
+#
+# 注意：
+#   - 这是 force push，会重写历史
+#   - 不影响当前文件内容，只丢弃历史版本
+
+on:
+  schedule:
+    - cron: "0 4 1 * *"     # 每月 1 号 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "只检查大小，不实际压缩"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+concurrency:
+  group: squash-history
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  squash:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Report current size
+        id: before
+        run: |
+          SIZE=$(du -sm .git | cut -f1)
+          COUNT=$(git rev-list --count HEAD)
+          echo "size_mb=$SIZE" >> "$GITHUB_OUTPUT"
+          echo "commits=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "压缩前: ${SIZE} MB / ${COUNT} 个提交"
+
+      - name: Dry run check
+        if: ${{ inputs.dry_run == 'true' }}
+        run: |
+          echo "=== DRY RUN ==="
+          echo "当前 .git: ${{ steps.before.outputs.size_mb }} MB"
+          echo "提交数: ${{ steps.before.outputs.commits }}"
+          echo ""
+          echo "最占空间的文件（历史版本数）:"
+          for f in dist/online/nodes.txt dist/online/nodes.base64.txt dist/online/all.txt; do
+            [ -f "$f" ] || continue
+            n=$(git log --oneline --follow -- "$f" 2>/dev/null | wc -l)
+            echo "  $f : $n 个版本"
+          done
+          echo ""
+          echo "跳过压缩（dry_run=true）"
+
+      - name: Squash history
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 创建无历史分支，保留全部文件
+          git checkout --orphan _squash
+          git add -A
+          git commit -m "chore: monthly history squash ($(date -u +%Y-%m-%d))
+
+自动压缩历史提交。Worker 只读最新版，历史版本无功能价值。
+压缩前: ${{ steps.before.outputs.commits }} 个提交 / ${{ steps.before.outputs.size_mb }} MB"
+
+          git branch -D main
+          git branch -m main
+
+          # 清理所有旧引用，否则 pack 无法回收
+          git for-each-ref --format='%(refname)' refs/remotes \
+            | xargs -r -n1 git update-ref -d || true
+          git reflog expire --expire=now --all
+          git gc --prune=now --aggressive
+
+          git push --force origin main
+
+      - name: Report result
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          SIZE=$(du -sm .git | cut -f1)
+          echo "压缩后: ${SIZE} MB (原 ${{ steps.before.outputs.size_mb }} MB)"
+          echo "提交数: $(git rev-list --count HEAD) (原 ${{ steps.before.outputs.commits }})"
+          echo ""
+          echo "### 历史压缩完成" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 项 | 压缩前 | 压缩后 |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| .git 大小 | ${{ steps.before.outputs.size_mb }} MB | ${SIZE} MB |" >> $GITHUB_STEP_SUMMARY
+          echo "| 提交数 | ${{ steps.before.outputs.commits }} | $(git rev-list --count HEAD) |" >> $GITHUB_STEP_SUMMARY
