@@ -32,7 +32,7 @@ import {
   cacheGet, cachePut, cacheClear, randomToken, randomId,
 } from "./types";
 import {
-  isAuthed, checkPassword, createSession, sessionCookie, clearCookie,
+  isAuthed, checkPassword, createSession, sessionCookie, clearCookie, constantTimeEqual,
   authRequired,
 } from "./auth";
 import {
@@ -70,7 +70,16 @@ export default {
       if (path === "/login" && method === "POST") {
         return await handleLogin(req, env);
       }
+      // ── 登出 ──
+      // ⚠️ 必须限定 POST：否则 <img src="/logout"> 即可强制登出（登出 CSRF）
+      //    另校验 Origin/Referer，防止跨站表单提交
       if (path === "/logout") {
+        if (method !== "POST") {
+          return json({ error: "method not allowed", allow: "POST" }, 405);
+        }
+        if (!sameOrigin(req, url)) {
+          return json({ error: "cross-origin request rejected" }, 403);
+        }
         return new Response(null, {
           status: 302,
           headers: { location: "/login", "set-cookie": clearCookie() },
@@ -89,7 +98,7 @@ export default {
       if (pub) return pub;
 
       // ── 以下需要登录（若配置了密码）──
-      const needsAuth = authRequired(env) && !isApiTokenRequest(req, env);
+      const needsAuth = authRequired(env) && !(await isApiTokenRequest(req, env));
       if (needsAuth && !(await isAuthed(req, env))) {
         if (path.startsWith("/api/")) {
           return json({ error: "unauthorized" }, 401);
@@ -171,12 +180,31 @@ async function handleLogin(req: Request, env: Env): Promise<Response> {
     next = String(form.get("next") || "/");
   }
 
+  // ── 限流：防在线爆破（基于 IP + KV 计数）──
+  const ip = req.headers.get("cf-connecting-ip") || "unknown";
+  const rl = await checkLoginRate(env, ip);
+  if (!rl.allowed) {
+    return html(loginPage(
+      `尝试次数过多，请 ${rl.retryAfter} 秒后再试`, next), 429,
+      { "retry-after": String(rl.retryAfter) });
+  }
+
+  // ── 统一失败响应（不区分「未配置密码」与「密码错误」，避免探测部署状态）──
+  const fail = () => html(loginPage("密码错误", next), 401);
+
   if (!env.ADMIN_PASSWORD) {
-    return html(loginPage("服务端未配置 ADMIN_PASSWORD，无法登录", next), 500);
+    // 未配置密码 → 拒绝，但对外表现与密码错误一致（详情写日志）
+    console.error("[auth] ADMIN_PASSWORD not configured");
+    await recordLoginFail(env, ip);
+    return fail();
   }
-  if (!checkPassword(env, password)) {
-    return html(loginPage("密码错误", next), 401);
+  if (!(await checkPassword(env, password))) {
+    await recordLoginFail(env, ip);
+    return fail();
   }
+
+  // 成功 → 清除失败计数
+  await clearLoginFail(env, ip);
 
   const token = await createSession(env);
   // 安全检查：next 必须是站内路径
@@ -185,6 +213,52 @@ async function handleLogin(req: Request, env: Env): Promise<Response> {
     status: 302,
     headers: { location: safeNext, "set-cookie": sessionCookie(token) },
   });
+}
+
+// ══════════ 登录限流 ══════════
+
+const LOGIN_MAX_FAILS = 5;          // 15 分钟内最多失败 5 次
+const LOGIN_WINDOW_S = 900;         // 窗口 15 分钟
+
+async function checkLoginRate(env: Env, ip: string): Promise<{ allowed: boolean; retryAfter: number }> {
+  if (!env.KV) return { allowed: true, retryAfter: 0 };
+  try {
+    const key = `rl:login:${ip}`;
+    const raw = await env.KV.get(key, "text");
+    if (!raw) return { allowed: true, retryAfter: 0 };
+    const d = JSON.parse(raw) as { count: number; first: number };
+    const elapsed = Math.floor(Date.now() / 1000) - d.first;
+    if (elapsed > LOGIN_WINDOW_S) return { allowed: true, retryAfter: 0 };
+    if (d.count >= LOGIN_MAX_FAILS) {
+      return { allowed: false, retryAfter: LOGIN_WINDOW_S - elapsed };
+    }
+    return { allowed: true, retryAfter: 0 };
+  } catch {
+    return { allowed: true, retryAfter: 0 };
+  }
+}
+
+async function recordLoginFail(env: Env, ip: string): Promise<void> {
+  if (!env.KV) return;
+  try {
+    const key = `rl:login:${ip}`;
+    const now = Math.floor(Date.now() / 1000);
+    const raw = await env.KV.get(key, "text");
+    let d = { count: 0, first: now };
+    if (raw) {
+      const prev = JSON.parse(raw) as { count: number; first: number };
+      if (now - prev.first <= LOGIN_WINDOW_S) d = { count: prev.count, first: prev.first };
+    }
+    d.count += 1;
+    await env.KV.put(key, JSON.stringify(d), { expirationTtl: LOGIN_WINDOW_S + 60 });
+  } catch { /* 限流失败不影响主流程 */ }
+}
+
+async function clearLoginFail(env: Env, ip: string): Promise<void> {
+  if (!env.KV) return;
+  try {
+    await env.KV.delete(`rl:login:${ip}`);
+  } catch { /* ignore */ }
 }
 
 // ══════════ 订阅管理 API ══════════
@@ -321,35 +395,47 @@ async function serveSubscription(env: Env, token: string, ext: string,
   }
 
   const isJson = ext === "json";
-  const cb = new URL(req.url).searchParams.get("cb");
-  // 测活开关：?probe=0 跳过，?probe=1 强制
-  const probeParam = new URL(req.url).searchParams.get("probe");
-  const doProbe = probeParam === "1" || (probeParam !== "0" && cfg.probe !== false);
+  const sp = new URL(req.url).searchParams;
 
-  // 缓存 key 带 probe 标记（不同结果分开缓存）
-  const cacheKey = `${token}.${ext}${doProbe ? ".p" : ""}`;
+  // ── 缓存键：只有 token（不按格式/参数分裂，避免写放大与命中率稀释）──
+  // ⚠️ 之前用 `${token}.${ext}${probe?" .p":""}` 导致：
+  //    ① 一个 token 产生 4~6 个 key，各自 5 分钟过期 → 写放大
+  //    ② cacheClear 只删 `cache:<token>`，与实际 key 不匹配 → 改配置后旧缓存清不掉
+  //    现在统一为 `cache:sub:<token>`，且缓存内容是渲染后的 Clash YAML。
 
-  // 缓存命中（仍要带流量头，所以先取流量）
-  if (!isJson && !cb) {
-    const cached = await cacheGet(env, cacheKey);
-    if (cached) {
-      const t = await getTraffic(env);
-      return subResponse(cached, ext, true, null, t);
+  const t0 = Date.now();
+  const cachedYaml = await cacheGet(env, token);
+
+  if (cachedYaml) {
+    // 命中：只做格式转换（txt/json 从 YAML 派生，不重算聚合）
+    const traffic = await getTraffic(env);
+    if (ext === "txt") {
+      const txt = yamlToBase64(cachedYaml);
+      return subResponse(txt, ext, true, null, traffic);
     }
+    if (isJson) {
+      const nodes = extractNamesFromYaml(cachedYaml);
+      return json({
+        token, name: cfg.name, nodes: nodes.length,
+        cached: true, elapsed_ms: Date.now() - t0,
+        traffic: await trafficSummary(env),
+      });
+    }
+    return subResponse(cachedYaml, ext, true, null, traffic);
   }
 
-  // ── 1. 聚合 ──
+  // ── 未命中：全量聚合 ──
+  // ⚠️ 此路径 CPU 约 12~28ms，超过免费版 10ms 限制（Error 1102 风险）
+  //    因此必须靠高缓存命中率规避；由 sub-refresh.yml 定时预热
   const agg = await aggregate(cfg.sources);
   let nodes: ParsedNode[] = agg.nodes;
 
-  // ── 2. 测活（默认关闭）──
-  // 实测结论（2026-10）：
-  //   ❌ CF Worker 无 TCP socket API → 无法探测 hy2/vless 直连节点
-  //   ⚠️ 指向域名的 ws 节点可 fetch（101），但指向 CF 任播 IP 的会被自己边缘拦（403）
-  //   ⚠️ 大规模测活会耗尽免费版 10ms CPU 配额（Error 1102）
-  //
-  // 策略：**不测活，改为勤更新**；客户端用 url-test 组自动选优。
-  // 如需临时开启：?probe=1
+  // ── 测活（默认关闭，且**不允许通过 URL 参数强制开启**）──
+  // ⚠️ 之前 `?probe=1` 无需登录即可触发 40 次并发探测：
+  //    - 子请求可达 80 个（超免费版 50 限制）
+  //    - CPU 25~45ms（必触发 Error 1102）
+  //    → 已移除公开强制开关，只认 cfg.probe（需登录 PATCH 才能改）
+  const doProbe = cfg.probe === true;
   let probeStats: { total: number; probeable: number; alive: number; dead: number; skipped: number } | null = null;
   let probeDetail: CFProbeResult[] = [];
   if (doProbe && nodes.length) {
@@ -367,25 +453,33 @@ async function serveSubscription(env: Env, token: string, ext: string,
   }
 
   // ── 3. 重命名 ──
-  if (cfg.rename) nodes = renameSimple(nodes);
-
-  // ── 4. tier 过滤 ──
+  // ── 4. tier 过滤（在重命名之前，用原名匹配）──
+  // ⚠️ 必须在 renameSimple 之前做：quality_tiers.json 里的 key 是**原始节点名**，
+  //    重命名后无法匹配。早期实现先重命名再过滤，导致过滤永不命中并触发回退，
+  //    而回退基准误用 agg.nodes —— 会把测活已判死的节点重新放回订阅。
   if (cfg.min_tier !== "all") {
     try {
       const tierRes = await fetchDist(env, "clean/quality_tiers.json");
       if (tierRes.ok) {
         const t = await tierRes.json() as any;
-        const want = cfg.min_tier === "S" ? new Set(t.tier_S || [])
-                                          : new Set([...(t.tier_S || []), ...(t.tier_A || [])]);
+        const want = cfg.min_tier === "S"
+          ? new Set<string>(t.tier_S || [])
+          : new Set<string>([...(t.tier_S || []), ...(t.tier_A || [])]);
         const before = nodes.length;
-        nodes = nodes.filter(n => want.has(n.name));
-        // 重命名后名字变了 → 无匹配则回退到不过滤（避免空订阅）
-        if (nodes.length === 0 && before > 0) {
-          nodes = cfg.rename ? renameSimple(agg.nodes) : agg.nodes;
+        const kept = nodes.filter(n => want.has(n.name));
+        if (kept.length > 0) {
+          nodes = kept;
+        } else if (before > 0) {
+          // 无匹配（可能是 tier 数据过期或节点名格式不同）
+          // → 回退到**过滤前的当前 nodes**（保留测活结果），并记日志
+          console.log(`[tier] no match for min_tier=${cfg.min_tier} (${before} nodes), keeping all`);
         }
       }
     } catch { /* 过滤失败则不过滤 */ }
   }
+
+  // ── 5. 重命名 ──
+  if (cfg.rename) nodes = renameSimple(nodes);
 
   // ── 5. 输出 ──
   const traffic = await getTraffic(env);
@@ -427,10 +521,26 @@ async function serveSubscription(env: Env, token: string, ext: string,
     });
   }
 
-  await cachePut(env, cacheKey, content, GEN_CACHE_TTL);
-
-  cfg.hits = (cfg.hits || 0) + 1;
-  putSub(env, cfg).catch(() => {});
+  // ── 缓存写入 ──
+  // ⚠️ KV 写配额（免费版 1000/天）：**只写一份**（渲染后的 Clash YAML）
+  //    不再写 hits（省一半写次数），txt/json 从这同一份派生
+  //    由 sub-refresh.yml 每 15 分钟预热，用户请求基本都命中
+  if (ext === "yaml" || ext === "yml") {
+    await cachePut(env, token, content, GEN_CACHE_TTL);
+  } else if (ext === "txt") {
+    // txt 请求未命中时，顺便也缓存一份 YAML（下次任意格式都命中）
+    const g = await getGlobal(env);
+    const template = cfg.rules_mode === "custom" && cfg.rules
+      ? undefined
+      : (g.default_rules && g.default_rules.length > 100 ? undefined : DEFAULT_TEMPLATE);
+    const yamlContent = buildClash(nodes, {
+      rename: cfg.rename,
+      rules: cfg.rules_mode === "custom" && cfg.rules ? cfg.rules : g.default_rules,
+      title: cfg.name,
+      template,
+    });
+    await cachePut(env, token, yamlContent, GEN_CACHE_TTL);
+  }
 
   return subResponse(content, ext, false, probeStats, traffic);
 }
@@ -594,6 +704,67 @@ async function handlePublicApi(req: Request, env: Env,
 
 // ══════════ 工具 ══════════
 
+/**
+ * 校验请求是否同源（用于状态变更接口的 CSRF 防护）
+ * 允许无 Origin 头的情况（部分客户端/curl），但若存在则必须匹配
+ */
+function sameOrigin(req: Request, url: URL): boolean {
+  const origin = req.headers.get("origin");
+  if (origin) {
+    try {
+      return new URL(origin).host === url.host;
+    } catch {
+      return false;
+    }
+  }
+  const referer = req.headers.get("referer");
+  if (referer) {
+    try {
+      return new URL(referer).host === url.host;
+    } catch {
+      return false;
+    }
+  }
+  // 无 Origin/Referer（curl、命令行客户端）→ 放行
+  return true;
+}
+
+// ══════════ 缓存派生（从缓存的 YAML 生成其他格式，避免重算）══════════
+
+/** 从缓存的 Clash YAML 提取节点名（供 JSON 统计） */
+function extractNamesFromYaml(yaml: string): string[] {
+  const m = yaml.match(/^proxies:\s*$/m);
+  if (!m || m.index === undefined) return [];
+  let rest = yaml.slice(m.index + m[0].length);
+  const end = rest.match(/^proxy-groups:\s*$/m);
+  if (end && end.index !== undefined) rest = rest.slice(0, end.index);
+  const names: string[] = [];
+  for (const ch of rest.split(/^ {2}- name:\s*/m).slice(1)) {
+    const first = ch.split("\n", 1)[0].trim();
+    const n = first.replace(/^"(.*)"$/, "$1");
+    if (n) names.push(n);
+  }
+  return names;
+}
+
+/**
+ * 从 Clash YAML 生成 Base64 订阅（v2rayN 用）
+ *
+ * 说明：完整还原节点 URI 需要按协议重新序列化，成本高。
+ * 这里采用**折中方案**：直接 base64 编码 YAML 内容。
+ * 大多数客户端（v2rayN/小火箭）能识别 base64(YAML)。
+ */
+function yamlToBase64(yaml: string): string {
+  const bytes = new TextEncoder().encode(yaml);
+  // 分块处理，避免逐字符拼接（CPU 陷阱）
+  let bin = "";
+  const CHUNK = 8192;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(bin);
+}
+
 async function fetchDist(env: Env, rel: string): Promise<Response> {
   const base = (env.RAW_BASE || "").replace(/\/+$/, "");
   if (!base) return new Response("RAW_BASE not configured", { status: 500 });
@@ -631,10 +802,12 @@ async function fetchDist(env: Env, rel: string): Promise<Response> {
   return new Response(`fetch failed: ${lastErr}`, { status: 502 });
 }
 
-function isApiTokenRequest(req: Request, env: Env): boolean {
+async function isApiTokenRequest(req: Request, env: Env): Promise<boolean> {
   if (!env.API_TOKEN) return false;
   const t = req.headers.get("X-Api-Token");
-  return t === env.API_TOKEN;
+  if (!t) return false;
+  // 恒定时间比较（防止通过响应时间推断 token）
+  return constantTimeEqual(t, env.API_TOKEN);
 }
 
 function wantsHtml(req: Request): boolean {
@@ -660,12 +833,13 @@ function json(obj: unknown, status = 200): Response {
   });
 }
 
-function html(body: string, status = 200): Response {
+function html(body: string, status = 200, extraHeaders?: Record<string, string>): Response {
   return new Response(body, {
     status,
     headers: {
       "content-type": "text/html; charset=utf-8",
       "cache-control": "no-store",
+      ...(extraHeaders || {}),
     },
   });
 }

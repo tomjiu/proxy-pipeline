@@ -134,20 +134,43 @@ export async function putGlobal(env: Env, g: GlobalConfig): Promise<void> {
   await kvPutJSON(env, KV_PREFIX.global + "config", g);
 }
 
-/** 缓存生成的订阅内容（默认 5 分钟） */
+/**
+ * 订阅结果缓存
+ *
+ * 设计要点（KV 免费版仅 1000 写/天）：
+ *   1. **只用一个 key**：`cache:sub:<token>`，不按格式/参数分裂（避免写放大 + 命中率稀释）
+ *   2. 缓存的是**渲染后的 YAML**，txt/json 由同一份内容派生，不单独写
+ *   3. 清除时必须用同一个 key（此前的 bug：cacheClear 删的 key 与实际写入的不一致）
+ *   4. 内容变更（改源/改规则）→ 立即清除
+ */
+function subCacheKey(token: string): string {
+  return KV_PREFIX.cache + "sub:" + token;
+}
+
 export async function cacheGet(env: Env, token: string): Promise<string | null> {
   if (!env.KV) return null;
-  return env.KV.get(KV_PREFIX.cache + token, "text");
+  return env.KV.get(subCacheKey(token), "text");
 }
 
 export async function cachePut(env: Env, token: string, content: string,
-                               ttl = 300): Promise<void> {
+                               ttl = 600): Promise<void> {
   if (!env.KV) return;
-  await env.KV.put(KV_PREFIX.cache + token, content, { expirationTtl: ttl });
+  await env.KV.put(subCacheKey(token), content, { expirationTtl: ttl });
 }
 
 export async function cacheClear(env: Env, token: string): Promise<void> {
-  await kvDelete(env, KV_PREFIX.cache + token);
+  if (!env.KV) return;
+  // 同时清理历史遗留 key（旧版本用过多种命名）
+  const keys = [
+    subCacheKey(token),
+    KV_PREFIX.cache + token,
+    KV_PREFIX.cache + token + ".yaml",
+    KV_PREFIX.cache + token + ".yml",
+    KV_PREFIX.cache + token + ".yaml.p",
+    KV_PREFIX.cache + token + ".txt",
+    KV_PREFIX.cache + token + ".txt.p",
+  ];
+  await Promise.all(keys.map(k => env.KV!.delete(k).catch(() => {})));
 }
 
 // ── 默认规则 ──

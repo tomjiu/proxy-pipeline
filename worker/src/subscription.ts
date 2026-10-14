@@ -36,14 +36,25 @@ export interface FetchResult {
 
 const UA = "Mozilla/5.0 (compatible; proxy-pipeline-worker/1.0)";
 
+/**
+ * 正则缓存 —— 避免在循环里反复 new RegExp（CPU 陷阱）
+ * key = fieldIndent，value = [type, server, port] × 3 种缩进
+ */
+const FIELD_RE_CACHE = new Map<string, RegExp[]>();
+
 // ── 解析 Clash YAML 的 proxies 段 ──
 
 export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
-  const m = text.match(/^proxies:\s*$/m);
+  // 放宽：允许行内注释（`proxies:  # nodes`）
+  const m = text.match(/^\s*proxies:\s*(?:#.*)?$/m);
   if (!m || m.index === undefined) return [];
 
   let rest = text.slice(m.index + m[0].length);
-  const endM = rest.match(/^proxy-groups:\s*$/m);
+
+  // ⚠️ 结束标记必须是「任意列 0 的顶层键」，不能只找 `proxy-groups:`
+  //    否则源里若没有 proxy-groups（或它出现在 dns/rules 之后），
+  //    最后一个节点块会吞并 dns:/rules: 等后续内容 → 产出损坏 YAML
+  const endM = rest.match(/^[A-Za-z][\w-]*:/m);
   if (endM && endM.index !== undefined) rest = rest.slice(0, endM.index);
 
   // 自动检测缩进：找到第一个 "- name:" 前的空格数
@@ -63,15 +74,28 @@ export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
     const firstLine = ch.split("\n", 1)[0].trim();
     const name = firstLine.replace(/^"(.*)"$/, "$1");
 
-    // 字段用动态缩进匹配（也兼容固定 4 空格）
-    const field = (key: string): string => {
-      const res = [
-        new RegExp(`^${escapeRe(fieldIndent)}${key}:\\s*(.+?)\\s*$`, "m"),
-        new RegExp(`^ {2}${key}:\\s*(.+?)\\s*$`, "m"),   // 兜底
-        new RegExp(`^ {4}${key}:\\s*(.+?)\\s*$`, "m"),   // 兜底
-      ];
-      for (const re of res) {
-        const mm = ch.match(re);
+    // 字段用动态缩进匹配（正则**预编译**，避免每节点每字段 new RegExp）
+    const fieldRes = FIELD_RE_CACHE.get(fieldIndent) || (() => {
+      const m = new Map<string, RegExp[]>();
+      m.set(fieldIndent, [
+        new RegExp(`^${escapeRe(fieldIndent)}type:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^${escapeRe(fieldIndent)}server:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^${escapeRe(fieldIndent)}port:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {2}type:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {2}server:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {2}port:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {4}type:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {4}server:\\s*(.+?)\\s*$`, "m"),
+        new RegExp(`^ {4}port:\\s*(.+?)\\s*$`, "m"),
+      ]);
+      FIELD_RE_CACHE.set(fieldIndent, m.get(fieldIndent)!);
+      return m.get(fieldIndent)!;
+    })();
+
+    const rawField = (key: "type" | "server" | "port"): string => {
+      const idx = key === "type" ? 0 : key === "server" ? 1 : 2;
+      for (const offset of [0, 3, 6]) {
+        const mm = ch.match(fieldRes[idx + offset]);
         if (mm) {
           let v = mm[1].trim();
           if (v.length >= 2 && v[0] === '"' && v[v.length - 1] === '"') v = v.slice(1, -1);
@@ -81,9 +105,9 @@ export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
       return "";
     };
 
-    const type = field("type");
-    const server = field("server");
-    const port = field("port");
+    const type = rawField("type");
+    const server = rawField("server");
+    const port = rawField("port");
 
     if (name && type && server) {
       // 重建规范化的 YAML 块（统一 2/4 缩进）
@@ -94,22 +118,27 @@ export function parseClashNodes(text: string, origin = ""): ParsedNode[] {
   return out;
 }
 
-/** 把节点块规范化为标准的 2/4 缩进格式 */
+/**
+ * 把节点块规范化为标准的 2/4 缩进格式
+ *
+ * 按原块的基准缩进做**相对重排**，保留嵌套层级（不能简单截断 N 个空格）
+ */
 function normalizeBlock(ch: string, name: string, fieldIndent: string): string {
   const lines = ch.replace(/\s+$/, "").split("\n");
   const out: string[] = [`  - name: ${yamlQuote(name)}`];
+  const base = fieldIndent.length;
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     if (!line.trim()) continue;
-    // 去掉原有的 fieldIndent 前缀，统一改为 4 空格
-    let body = line;
-    if (body.startsWith(fieldIndent)) {
-      body = body.slice(fieldIndent.length);
-    } else {
-      body = body.replace(/^\s{1,6}/, "");
-    }
-    out.push("    " + body);
+
+    // 计算该行相对原基准的额外缩进
+    const leading = (line.match(/^[ \t]*/) || [""])[0].length;
+    const extra = Math.max(0, leading - base);
+    const body = line.trimStart();
+
+    // 新基准 4 空格 + 保留的相对层级
+    out.push("    " + " ".repeat(extra) + body);
   }
   return out.join("\n") + "\n";
 }
@@ -159,14 +188,40 @@ function parseShareURI(uri: string, idx: number): URINode | null {
         `    cipher: ${json.scy || "auto"}`,
         `    udp: true`,
       ];
-      if (json.tls === "tls") {
-        lines.push(`    tls: true`);
-        if (json.sni) lines.push(`    servername: ${yamlQuote(String(json.sni))}`);
-        if (json.host) lines.push(`    ws-opts: {path: ${yamlQuote(String(json.path || "/"))}, headers: {Host: ${yamlQuote(String(json.host))}}}`);
-      } else if (json.net === "ws") {
+
+      // ⚠️ 传输层与 TLS 是**独立**维度，必须分别处理
+      //    早期用 else if 导致 tls+ws 组合丢失 network: ws（节点连不上）
+      const net = String(json.net || "tcp").toLowerCase();
+      if (net === "ws") {
         lines.push(`    network: ws`);
-        lines.push(`    ws-opts: {path: ${yamlQuote(String(json.path || "/"))}}`);
+        const path = String(json.path || "/");
+        const host = String(json.host || "");
+        if (host) {
+          lines.push(`    ws-opts: {path: ${yamlQuote(path)}, headers: {Host: ${yamlQuote(host)}}}`);
+        } else {
+          lines.push(`    ws-opts: {path: ${yamlQuote(path)}}`);
+        }
+      } else if (net === "grpc") {
+        lines.push(`    network: grpc`);
+        lines.push(`    grpc-opts: {grpc-service-name: ${yamlQuote(String(json.path || ""))}}`);
+      } else if (net === "h2" || net === "http") {
+        lines.push(`    network: h2`);
+        const host = String(json.host || "");
+        if (host) lines.push(`    h2-opts: {host: [${yamlQuote(host)}], path: ${yamlQuote(String(json.path || "/"))}}`);
+      } else if (net === "tcp" && String(json.type || "") === "http") {
+        lines.push(`    network: tcp`);
+        const host = String(json.host || "");
+        if (host) lines.push(`    http-opts: {path: [${yamlQuote(String(json.path || "/"))}], headers: {Host: [${yamlQuote(host)}]}}`);
       }
+
+      // TLS 独立判断
+      if (String(json.tls || "").toLowerCase() === "tls") {
+        lines.push(`    tls: true`);
+        const sni = String(json.sni || json.host || "");
+        if (sni) lines.push(`    servername: ${yamlQuote(sni)}`);
+        if (json.skipCertVerify) lines.push(`    skip-cert-verify: true`);
+      }
+
       return { name, type, server, port, raw: lines.join("\n") + "\n" };
     }
 
@@ -242,12 +297,13 @@ function parseShareURI(uri: string, idx: number): URINode | null {
       const [server, port] = splitHostPort(hp);
       const params = parseQuery(body);
       if (!server) return null;
+      // ⚠️ 畸形 % 编码不能抛异常（否则整条 URI 被丢弃、节点静默消失）
       const lines = [
         `  - name: ${yamlQuote(name || `hysteria2-${server}`)}`,
         `    type: hysteria2`,
         `    server: ${yamlQuote(server)}`,
         `    port: ${port}`,
-        `    password: ${yamlQuote(decodeURIComponent(auth))}`,
+        `    password: ${yamlQuote(safeDecode(auth))}`,
         `    skip-cert-verify: true`,
       ];
       if (params.get("sni")) lines.push(`    sni: ${yamlQuote(params.get("sni")!)}`);
@@ -340,6 +396,15 @@ function yamlQuote(s: string): string {
   return s;
 }
 
+/** 容错解码：畸形 % 编码时返回原串，不抛异常 */
+function safeDecode(s: string): string {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
 function b64Decode(s: string): string {
   let t = s.trim().replace(/-/g, "+").replace(/_/g, "/");
   while (t.length % 4) t += "=";
@@ -400,7 +465,10 @@ export function parseAny(text: string, origin = ""): { format: FetchResult["form
 
 // ── 拉取一个源 ──
 
-export async function fetchSource(src: SubSource, timeoutMs = 15000): Promise<FetchResult> {
+/** 单个源最大响应体积（防止超大响应打爆 128MB Worker 内存） */
+const MAX_SOURCE_BYTES = 8 * 1024 * 1024;   // 8 MB
+
+export async function fetchSource(src: SubSource, timeoutMs = 8000): Promise<FetchResult> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -414,16 +482,63 @@ export async function fetchSource(src: SubSource, timeoutMs = 15000): Promise<Fe
       return { url: src.url, ok: false, status: res.status,
                error: `HTTP ${res.status}`, format: "empty", nodes: [], bytes: 0 };
     }
-    const text = await res.text();
+
+    // ⚠️ 体积上限：先看 content-length，超限直接拒绝
+    const cl = parseInt(res.headers.get("content-length") || "", 10);
+    if (Number.isFinite(cl) && cl > MAX_SOURCE_BYTES) {
+      ctrl.abort();
+      return { url: src.url, ok: false, status: res.status,
+               error: `body too large: ${cl} bytes`, format: "empty", nodes: [], bytes: 0 };
+    }
+
+    // 流式读取并累计，超限即中止（防止无 content-length 的超大响应）
+    const text = await readLimited(res, MAX_SOURCE_BYTES);
+    if (text === null) {
+      ctrl.abort();
+      return { url: src.url, ok: false, status: res.status,
+               error: `body exceeded ${MAX_SOURCE_BYTES} bytes`, format: "empty", nodes: [], bytes: 0 };
+    }
+
     const { format, nodes } = parseAny(text, src.url);
     return { url: src.url, ok: true, status: res.status, format,
-             nodes: nodes.map(n => ({ ...n, name: n.name })), bytes: text.length };
+             nodes, bytes: new TextEncoder().encode(text).length };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     return { url: src.url, ok: false, error: msg, format: "empty", nodes: [], bytes: 0 };
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** 限制读取体积；超限返回 null */
+async function readLimited(res: Response, limit: number): Promise<string | null> {
+  if (!res.body) {
+    const t = await res.text();
+    return new TextEncoder().encode(t).length > limit ? null : t;
+  }
+  const reader = res.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (!value) continue;
+      total += value.length;
+      if (total > limit) {
+        await reader.cancel().catch(() => {});
+        return null;
+      }
+      chunks.push(value);
+    }
+  } catch {
+    await reader.cancel().catch(() => {});
+    return null;
+  }
+  const merged = new Uint8Array(total);
+  let off = 0;
+  for (const c of chunks) { merged.set(c, off); off += c.length; }
+  return new TextDecoder("utf-8", { fatal: false, ignoreBOM: false }).decode(merged);
 }
 
 // ── 聚合多个源 ──
@@ -435,11 +550,73 @@ export interface AggregateResult {
   total_fetched: number;
 }
 
+/**
+ * 节点指纹 —— 用于去重
+ *
+ * ⚠️ 早期版本只用 `type|server|port|cred`，会**误合并**真正不同的节点：
+ *    - vmess 同 uuid 但 ws path 不同
+ *    - ss 同密码但 cipher 不同
+ *    - vless 同 uuid 但 reality public-key 不同
+ *    → 合并后用户拿到连不上的节点
+ *
+ * 现在纳入**协议决定性字段**，字段缺失时退回整块哈希（避免凭据为空时全部塌缩）
+ */
 export function fingerprint(n: ParsedNode): string {
-  // 提取凭据做指纹
-  const cred = n.raw.match(/^ {4}(uuid|password):\s*(.+?)\s*$/m);
-  const credVal = cred ? cred[2].replace(/"/g, "") : "";
-  return `${n.type}|${n.server}|${n.port}|${credVal}`;
+  const raw = n.raw;
+
+  /** 按 2~8 空格缩进提取字段（兼容不同来源的缩进） */
+  const f = (key: string): string => {
+    const re = new RegExp(`^ {1,8}${key}:\\s*(.+?)\\s*$`, "m");
+    const m = raw.match(re);
+    if (!m) return "";
+    return m[1].trim().replace(/^"(.*)"$/, "$1").trim();
+  };
+
+  const base = `${n.type}|${n.server}|${n.port}`;
+  const parts: string[] = [base];
+
+  switch (n.type.toLowerCase()) {
+    case "vless":
+      parts.push(f("uuid"), f("network"), f("flow"), f("servername") || f("sni"));
+      // reality 的 public-key / short-id 是决定性的
+      parts.push(f("public-key"), f("short-id"));
+      break;
+    case "vmess":
+      parts.push(f("uuid"), f("network"), f("path"), f("servername"));
+      break;
+    case "trojan":
+      parts.push(f("password"), f("sni"), f("network"));
+      break;
+    case "hysteria2":
+    case "hysteria":
+      parts.push(f("password"), f("sni"));
+      break;
+    case "ss":
+      // cipher 是决定性的（同密码不同加密方式无法互通）
+      parts.push(f("cipher"), f("password"));
+      break;
+    default:
+      parts.push(f("uuid") || f("password"));
+  }
+
+  const fp = parts.join("|").toLowerCase();
+
+  // 凭据段全空 → 用整块内容的哈希兜底，避免不同节点塌缩成同一个
+  const credPart = parts.slice(1).join("");
+  if (credPart.replace(/\|/g, "").length === 0) {
+    return `${base}|raw:${simpleHash(raw)}`;
+  }
+  return fp;
+}
+
+/** 简易字符串哈希（FNV-1a 变体），用于指纹兜底 */
+function simpleHash(s: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(36);
 }
 
 export async function aggregate(sources: SubSource[]): Promise<AggregateResult> {
@@ -492,48 +669,61 @@ export function buildFromTemplate(
   // 要注入的两个段
   const inject: string[] = [];
 
-  inject.push("proxies:");
-  for (const n of nodes) inject.push(n.raw.replace(/\s+$/, ""));
+  // ⚠️ 空节点列表必须输出 `proxies: []`，否则 YAML 里 `proxies:` 值为 null，
+  //    Clash 会报配置错误
+  if (nodes.length === 0) {
+    inject.push("proxies: []");
+    inject.push("");
+    inject.push("proxy-groups:");
+    inject.push(`  - name: ${q(groupName)}`);
+    inject.push(`    type: select`);
+    inject.push(`    proxies: [DIRECT, REJECT]`);
+    inject.push(`  - name: ${q(autoGroup)}`);
+    inject.push(`    type: select`);
+    inject.push(`    proxies: [DIRECT]`);
+  } else {
+    inject.push("proxies:");
+    for (const n of nodes) inject.push(n.raw.replace(/\s+$/, ""));
 
-  inject.push("");
-  inject.push("proxy-groups:");
+    inject.push("");
+    inject.push("proxy-groups:");
 
-  // 入口组（规则里的 {{PROXY}} 指向它）
-  inject.push(`  - name: ${q(groupName)}`);
-  inject.push(`    type: select`);
-  inject.push(`    proxies:`);
-  inject.push(`      - ${q(autoGroup)}`);
-  inject.push(`      - DIRECT`);
-  inject.push(`      - REJECT`);
-  for (const nm of names) inject.push(`      - ${q(nm)}`);
+    // 入口组（规则里的 {{PROXY}} 指向它）
+    inject.push(`  - name: ${q(groupName)}`);
+    inject.push(`    type: select`);
+    inject.push(`    proxies:`);
+    inject.push(`      - ${q(autoGroup)}`);
+    inject.push(`      - DIRECT`);
+    inject.push(`      - REJECT`);
+    for (const nm of names) inject.push(`      - ${q(nm)}`);
 
-  // 自动测速组
-  inject.push(`  - name: ${q(autoGroup)}`);
-  inject.push(`    type: url-test`);
-  inject.push(`    url: "http://www.gstatic.com/generate_204"`);
-  inject.push(`    interval: 300`);
-  inject.push(`    tolerance: 50`);
-  inject.push(`    proxies:`);
-  for (const nm of names) inject.push(`      - ${q(nm)}`);
+    // 自动测速组
+    inject.push(`  - name: ${q(autoGroup)}`);
+    inject.push(`    type: url-test`);
+    inject.push(`    url: "http://www.gstatic.com/generate_204"`);
+    inject.push(`    interval: 300`);
+    inject.push(`    tolerance: 50`);
+    inject.push(`    proxies:`);
+    for (const nm of names) inject.push(`      - ${q(nm)}`);
+  }
 
-  // 在 rule-providers / rules 之前插入
-  const lines = template.split("\n");
+  // ── 在 rule-providers / rules 之前插入（先剥离模板里已有的节点段）──
+  // ⚠️ 模板可能自带 proxies:/proxy-groups:（如从完整配置提取时遗漏），
+  //    直接追加会产出**重复顶层键** → Clash 报错。这里先移除它们。
+  const cleaned = stripNodeSections(template);
+  const lines = cleaned.split("\n");
   const out: string[] = [];
   let inserted = false;
 
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
-    if (!inserted && i > 0 && (/^rule-providers:\s*$/.test(l) || /^rules:\s*$/.test(l))) {
+    if (!inserted && (/^rule-providers:\s*(?:#.*)?$/.test(l) || /^rules:\s*(?:#.*)?$/.test(l))) {
       out.push("");
       out.push(...inject);
       out.push("");
       inserted = true;
     }
-    // 替换占位符
-    // ⚠️ 规则里是 CSV 格式，组名**不能加引号**（否则引号会成为组名的一部分）
-    //    这与 proxy-groups 里的 YAML 引号不同
-    const line = l.replace(/\{\{PROXY\}\}/g, groupName);
-    out.push(line);
+    out.push(l.replace(/\{\{PROXY\}\}/g, groupName));
   }
 
   if (!inserted) {
@@ -549,6 +739,34 @@ export function buildFromTemplate(
   ].join("\n");
 
   return header + out.join("\n").replace(/^\n+/, "") + "\n";
+}
+
+/** 剥离模板里的 proxies / proxy-groups 段（避免注入后出现重复顶层键） */
+function stripNodeSections(template: string): string {
+  const lines = template.split("\n");
+  const topKeys: Array<[number, string]> = [];
+  lines.forEach((l, i) => {
+    const m = l.match(/^([A-Za-z][\w-]*):/);
+    if (m) topKeys.push([i, m[1]]);
+  });
+  const sectionEnd = (start: number): number => {
+    for (const [i] of topKeys) if (i > start) return i;
+    return lines.length;
+  };
+
+  const REMOVE = new Set(["proxies", "proxy-providers", "proxy-groups"]);
+  const keep: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const m = lines[i].match(/^([A-Za-z][\w-]*):/);
+    if (m && REMOVE.has(m[1])) {
+      i = sectionEnd(i);
+      continue;
+    }
+    keep.push(lines[i]);
+    i++;
+  }
+  return keep.join("\n");
 }
 
 /** 简单的地理重命名（从节点名解析国家/城市） */
@@ -568,7 +786,9 @@ export function renameSimple(nodes: ParsedNode[]): ParsedNode[] {
     const cityPart = city ? ` ${city}` : "";
     const newName = `${flag} ${code}${cityPart} ${String(idx).padStart(2, "0")}`;
 
-    const raw = n.raw.replace(/^ {2}- name:\s*.+$/m, `  - name: ${yamlQuote(newName)}`);
+    // ⚠️ 缩进不能硬编码 2 空格：如果 raw 的 name 行缩进不同，
+    //    替换不生效 → name 对象已改而 raw 里仍是旧名 → Clash 报 proxy not found
+    const raw = n.raw.replace(/^(\s*)- name:\s*.+$/m, `$1- name: ${yamlQuote(newName)}`);
     return { ...n, name: newName, raw };
   });
 }
@@ -857,9 +1077,12 @@ export function buildBase64(nodes: ParsedNode[]): string {
     }
   }
   const joined = uris.join("\n");
-  // UTF-8 安全的 base64
+  // UTF-8 安全 base64（分块转换，避免逐字符 += 拼接）
   const bytes = new TextEncoder().encode(joined);
   let bin = "";
-  for (const b of bytes) bin += String.fromCharCode(b);
+  const CHUNK = 8192;
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    bin += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+  }
   return btoa(bin);
 }
