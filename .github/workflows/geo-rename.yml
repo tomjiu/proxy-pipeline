@@ -1,0 +1,102 @@
+name: geo-rename
+
+# IP 地理定位 + 节点重命名
+#
+# 依赖链：check-nodes → ai-probe → geo-rename
+#   dist/clean/clash.yaml        （已测活）
+#   dist/clean/quality_tiers.json（质量分档，可选）
+#        ↓
+#   dist/clean/clash-renamed.yaml（🇯🇵 JP Tokyo 01 格式 + 按国家分组）
+#
+# geo 缓存持久化在 dist/geo-cache.json（IP 归属不变，命中即零请求）
+
+on:
+  schedule:
+    - cron: "30 5 * * *"     # 每天 05:30（在 ai-probe 之后）
+  workflow_dispatch:
+    inputs:
+      min_tier:
+        description: "只保留该档及以上：S | A | all"
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - A
+          - S
+
+concurrency:
+  group: geo-rename
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check prerequisites
+        run: |
+          test -f dist/clean/clash.yaml || { echo "::error::clash.yaml missing"; exit 1; }
+          echo "nodes: $(grep -c '^  - name:' dist/clean/clash.yaml || echo 0)"
+
+      - name: Resolve min_tier
+        id: tier
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.min_tier }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=all" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Geographic lookup (cached)
+        run: |
+          python scripts/online/geo_lookup.py \
+            --input dist/clean/clash.yaml \
+            --workers 8 \
+            --out dist/clean/geo.json
+
+      - name: Rename + group
+        run: |
+          python scripts/online/rename_nodes.py \
+            --input dist/clean/clash.yaml \
+            --geo dist/clean/geo.json \
+            --quality dist/clean/quality_tiers.json \
+            --min-tier "${{ steps.tier.outputs.value }}" \
+            --out dist/clean/clash-renamed.yaml
+
+      - name: Show summary
+        if: always()
+        run: |
+          echo "=== rename_report.json ==="
+          cat dist/clean/rename_report.json 2>/dev/null || echo "(none)"
+          echo
+          echo "=== output head ==="
+          head -20 dist/clean/clash-renamed.yaml 2>/dev/null || true
+          echo
+          echo "=== node name samples ==="
+          grep '^  - name:' dist/clean/clash-renamed.yaml 2>/dev/null | head -15 || true
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean dist/geo-cache.json
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore(geo): rename nodes with country/city $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git fetch origin
+            git rebase origin/main
+            git push
+          fi
