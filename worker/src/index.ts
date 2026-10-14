@@ -81,6 +81,11 @@ export default {
         return await serveSubscription(env, subMatch[1], subMatch[2], req);
       }
 
+      // ── 公开只读 API（数据来自公开仓库，无需登录）──
+      // 注意：必须在认证检查之前处理
+      const pub = await handlePublicApi(req, env, path);
+      if (pub) return pub;
+
       // ── 以下需要登录（若配置了密码）──
       const needsAuth = authRequired(env) && !isApiTokenRequest(req, env);
       if (needsAuth && !(await isAuthed(req, env))) {
@@ -133,10 +138,6 @@ export default {
           return json({ ok: true });
         }
       }
-
-      // ── 原有只读 API ──
-      const legacy = await handleLegacy(req, env, path, url);
-      if (legacy) return legacy;
 
       return json({ error: "not found", path }, 404);
     } catch (e) {
@@ -391,10 +392,11 @@ function subResponse(content: string, ext: string, cached: boolean): Response {
   });
 }
 
-// ══════════ 原有只读 API ══════════
+// ══════════ 公开只读 API ══════════
+// 数据源是公开 GitHub 仓库，本身不敏感；开放访问便于客户端直接使用。
 
-async function handleLegacy(req: Request, env: Env, path: string,
-                            url: URL): Promise<Response | null> {
+async function handlePublicApi(req: Request, env: Env,
+                               path: string): Promise<Response | null> {
   if (path === "/health") {
     return json({ ok: true, service: "proxy-pipeline-worker",
                   kv: !!env.KV, auth: authRequired(env) });
@@ -406,7 +408,9 @@ async function handleLegacy(req: Request, env: Env, path: string,
   if (path === "/pool/all") return withCors(await fetchDist(env, "online/all.txt"));
   if (path === "/sub/nodes") return withCors(await fetchDist(env, "online/nodes.txt"));
   if (path === "/sub/base64") return withCors(await fetchDist(env, "online/nodes.base64.txt"));
-  if (path === "/sub/clash" || path === "/clash.yaml") {
+
+  // 现成的 Clash 订阅（来自 Actions 产物）
+  if (path === "/sub/clash" || path === "/clash.yaml" || path === "/sub/clash-live") {
     const r = await fetchDist(env, "clean/clash.yaml");
     if (r.ok) return withCors(r);
     return withCors(await fetchDist(env, "online/clash.yaml"));
