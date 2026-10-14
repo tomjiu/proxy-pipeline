@@ -1,0 +1,110 @@
+name: online-scan
+
+# 节点源扫描 —— 聚焦高质量协议节点（vless / hysteria2）
+#
+# 【战略调整 2026-10】
+#   主流程只处理「用户订阅节点」：vless / vmess / trojan / hysteria2
+#   HTTP/SOCKS 代理池不再进主流程（客户端不支持导入，对用户无意义）
+#
+#   代码保留：
+#     - scripts/online/scrape.py      仍抓 pool-urls.txt（受 SCOPE 开关控制）
+#     - scripts/online/light_check.py 仍可用（受 SCOPE 开关控制）
+#   若将来要恢复代理池流程，把 SCOPE 切回 "all" 即可。
+
+on:
+  schedule:
+    # every 2 hours — Actions cron is UTC, may delay
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "nodes = 只处理订阅节点 | all = 兼顾 HTTP/SOCKS 池"
+        required: true
+        default: nodes
+        type: choice
+        options:
+          - nodes
+          - all
+  push:
+    paths:
+      - "sources/**"
+      - "scripts/online/**"
+      - ".github/workflows/online-scan.yml"
+
+concurrency:
+  group: online-scan
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve scope
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.scope }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=nodes" >> "$GITHUB_OUTPUT"   # 定时任务默认只跑节点
+          fi
+
+      - name: Mirror node sources + dedupe + TG previews
+        env:
+          SCOPE: ${{ steps.scope.outputs.value }}
+        run: |
+          echo "scope=$SCOPE"
+          # SCOPE=nodes 时，scrape.py 通过环境变量跳过 pool 抓取
+          python scripts/online/scrape.py
+
+      - name: Build Clash feed from node sources
+        run: |
+          if [ -f scripts/online/build_clash_from_feeds.py ]; then
+            python scripts/online/build_clash_from_feeds.py || echo "build_clash skipped/failed"
+          fi
+
+      - name: Light HTTP sample check (pool only — skipped in nodes scope)
+        if: ${{ steps.scope.outputs.value == 'all' }}
+        run: python scripts/online/light_check.py --sample 400 --workers 50 --timeout 6
+        continue-on-error: true
+
+      - name: Commit dist/online
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p dist/online
+          git add dist/online
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore(online): refresh scrape [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
+            git fetch origin
+            git rebase origin/main
+            git push
+          fi
+
+      - name: Sync dist/online to R2
+        if: ${{ success() }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "R2 secrets not configured — skipping sync"
+            exit 0
+          fi
+          aws s3 sync dist/online/ "s3://proxy-pipeline-dist/online/" \
+            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --region auto --delete --quiet

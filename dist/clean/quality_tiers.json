@@ -1,0 +1,95 @@
+{
+  "updated_at": "2026-10-14T13:48:08.693350+00:00",
+  "counts": {
+    "S": 39,
+    "A": 0,
+    "B": 1,
+    "X": 0,
+    "select_failed": 0
+  },
+  "criteria": {
+    "S": "≥2 个高权重服务无挑战直接通过（或 Grok 通过）",
+    "A": "1 个通过，或存在挑战页（IP 未被硬封）",
+    "B": "全部失败",
+    "X": "被明确地区封锁（451 等）"
+  },
+  "services": {
+    "grok": {
+      "url": "https://grok.com/",
+      "weight": 3,
+      "note": "无挑战=IP质量好"
+    },
+    "chatgpt": {
+      "url": "https://chatgpt.com/",
+      "weight": 3,
+      "note": "200=极佳 / 挑战=中性(CF对机房默认) / 451=差"
+    },
+    "netflix": {
+      "url": "https://www.netflix.com/",
+      "weight": 2,
+      "note": "对机房IP敏感"
+    },
+    "youtube": {
+      "url": "https://www.youtube.com/",
+      "weight": 2,
+      "note": "Google系风控"
+    },
+    "gemini": {
+      "url": "https://gemini.google.com/",
+      "weight": 2,
+      "note": "Google 不太拦"
+    },
+    "google": {
+      "url": "https://www.google.com/",
+      "weight": 1,
+      "note": "基础连通"
+    },
+    "claude": {
+      "url": "https://claude.ai/",
+      "weight": 3,
+      "note": "风控严格"
+    }
+  },
+  "tier_S": [
+    "hysteria2-652726872-658",
+    "shadowsocks-208-184",
+    "hysteria2-468898830-12",
+    "vmess-145236-604",
+    "vmess-475023668-602",
+    "hysteria2-1420323645-10",
+    "shadowsocks-194-64",
+    "shadowsocks-159-56",
+    "hysteria2-674602384-662",
+    "shadowsocks-195-58",
+    "shadowsocks-192-182",
+    "shadowsocks-860758286-62",
+    "shadowsocks-166-70",
+    "shadowsocks-193-60",
+    "shadowsocks-468218613-68",
+    "vmess-656230758-352",
+    "shadowsocks-27291-50",
+    "shadowsocks-155-670",
+    "shadowsocks-468218487-66",
+    "vmess-5259763-590",
+    "hysteria2-1671853509-2",
+    "hysteria2-1059661404-20",
+    "hysteria2-1529392538-400",
+    "hysteria2-1749857014-666",
+    "hysteria2-1561765064-664",
+    "hysteria2-1701030222-8",
+    "hysteria2-956723733-24",
+    "shadowsocks-717969008-74",
+    "vmess-2387890-350",
+    "shadowsocks-1211880885-186",
+    "shadowsocks-687923666-408",
+    "shadowsocks-468218514-402",
+    "shadowsocks-27276-54",
+    "shadowsocks-27271-52",
+    "hysteria2-1769683861-4",
+    "hysteria2-918221107-30",
+    "hysteria2-655713431-160",
+    "hysteria2-1649531969-174",
+    "hysteria2-328918461-168"
+  ],
+  "tier_A": []
+}

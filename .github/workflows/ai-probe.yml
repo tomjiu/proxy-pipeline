@@ -1,0 +1,137 @@
+name: ai-probe
+
+# 节点质量探测 —— 多维连通性画像
+#
+# 判据来源（实测 + 经验）：
+#   - Grok 不跳挑战页   → IP 质量好（xAI 风控认可）
+#   - ChatGPT 挑战页    → 中性（Cloudflare 对机房 IP 的默认行为，不代表差）
+#   - ChatGPT 451/硬封  → IP 差
+#   - Netflix/YouTube   → 对机房 IP 敏感，是有效判据
+#
+# 分档：
+#   S — ≥2 个高权重服务无挑战直接通过
+#   A — 1 个通过，或存在挑战页（IP 未被硬封）
+#   B — 全部失败
+#   X — 被明确地区封锁（451）
+#
+# 策略：每天 1 次全量 + 每 6 小时增量（只测新增节点）
+
+on:
+  schedule:
+    - cron: "10 5 * * *"     # daily full
+    - cron: "25 */6 * * *"   # incremental
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: full or incremental
+        required: true
+        default: incremental
+        type: choice
+        options:
+          - incremental
+          - full
+      limit:
+        description: max nodes to probe this run
+        required: false
+        default: "150"
+
+concurrency:
+  group: ai-probe
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mihomo
+        run: |
+          set -e
+          mkdir -p bin
+          TAG=$(curl -fsSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
+                | python -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
+          echo "mihomo $TAG"
+          URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
+          curl -fsSL "$URL" -o /tmp/mihomo.gz
+          gunzip -c /tmp/mihomo.gz > bin/mihomo
+          chmod +x bin/mihomo
+          ./bin/mihomo -v || true
+
+      - name: Resolve mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "limit=${{ inputs.limit }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "10 5 * * *" ]; then
+            echo "value=full" >> "$GITHUB_OUTPUT"
+            echo "limit=400" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=incremental" >> "$GITHUB_OUTPUT"
+            echo "limit=150" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check prerequisites
+        run: |
+          if [ ! -f dist/clean/clash.yaml ]; then
+            echo "::error::dist/clean/clash.yaml missing — run check-nodes first"
+            exit 1
+          fi
+          echo "nodes: $(grep -c '^  - name:' dist/clean/clash.yaml || echo 0)"
+
+      - name: Quality probe
+        run: |
+          # deadline 留出充足余量（job timeout 50min，脚本预算 20min）
+          # 脚本超时会优雅停止并保存已测结果，不会丢数据
+          python scripts/online/ai_probe.py \
+            --input dist/clean/clash.yaml \
+            --mode "${{ steps.mode.outputs.value }}" \
+            --limit "${{ steps.mode.outputs.limit }}" \
+            --timeout 10 \
+            --deadline-s 1200 \
+            --out-clash dist/clean/clash-tier-s.yaml \
+            --min-tier S
+
+      - name: Show tier summary
+        if: always()
+        run: |
+          echo "=== quality_report.json ==="
+          cat dist/clean/quality_report.json 2>/dev/null || echo "(none)"
+          echo
+          echo "=== tier counts ==="
+          python - <<'PY' 2>/dev/null || true
+          import json
+          try:
+              d = json.load(open("dist/clean/quality_tiers.json", encoding="utf-8"))
+              print("counts:", d.get("counts"))
+              print("tier_S (top 20):")
+              for n in (d.get("tier_S") or [])[:20]:
+                  print("  ", n)
+          except Exception as e:
+              print("no tiers:", e)
+          PY
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore(quality): tier probe ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git fetch origin
+            git rebase origin/main
+            git push
+          fi
