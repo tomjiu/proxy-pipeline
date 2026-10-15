@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-15T12:10:23.743325+00:00
+# updated: 2026-10-15T17:25:22.125042+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,9 +7,9 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-15T17:10:01.399286+00:00
-# kept 174 / dropped 516
-  - name: "vmess-1827160934-284"
+# updated: 2026-10-15T17:25:58.292692+00:00
+# kept 77 / dropped 633
+  - name: "vmess-1827160934-264"
     type: "vmess"
     server: "129.146.77.248"
     port: 39495
@@ -22,22 +22,22 @@ proxies:
       path: "/cctv13.m3u8"
       headers:
         Host: "129.146.77.248"
-  - name: "vmess-1827161032-274"
-    type: "vmess"
-    server: "129.146.143.80"
-    port: 48111
-    uuid: "d4603cc2-e0ee-4651-83f5-1db5b7168177"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "raw"
-  - name: "shadowsocks-1828124789-2242"
+  - name: "shadowsocks-1828124789-2303"
     type: "ss"
     server: "64.110.25.6"
     port: 14993
     cipher: "aes-128-gcm"
     password: "5212bfef4cf2a6aaeda755d85c1aa744"
     udp: true
+  - name: "vless-1828405282-2182"
+    type: "vless"
+    server: "45.138.100.248"
+    port: 10443
+    uuid: "ae908ff5-f749-402c-af25-e6e9aef4d6bb"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "45.138.100.248"
   - name: "vmess-1827158010-374"
     type: "vmess"
     server: "154.64.239.22"
@@ -47,34 +47,49 @@ proxies:
     cipher: "auto"
     udp: true
     network: "none"
-  - name: "vless-1828139001-1611"
+  - name: "🇺🇸 美国 | USA 18-2186"
     type: "vless"
-    server: "216.234.140.15"
-    port: 47832
-    uuid: "6b042879-f382-46ce-8965-866186eb7e33"
+    server: "45.138.100.248"
+    port: 14430
+    uuid: "ae908ff5-f749-402c-af25-e6e9aef4d6bb"
     udp: true
-    tls: true
+    tls: false
     client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "hDRm-rHVu-ClNhBhPfp-JUGtFM91NGjlhVf-JjnPCnI"
-      short-id: "058ea2b1"
-    servername: "www.amd.com"
-  - name: "hysteria2-1827145259-315"
+    servername: "45.138.100.248"
+    network: "ws"
+    ws-opts:
+      path: "/vless"
+      headers:
+        Host: "45.138.100.248"
+  - name: "🇸🇬 新加坡 | SGP 2-2942"
+    type: "vless"
+    server: "104.18.35.86"
+    port: 8080
+    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "hhlfy.twiladaphne.ndjp.net"
+    network: "ws"
+    ws-opts:
+      path: "/sg-melbi"
+      headers:
+        Host: "hhlfy.twiladaphne.ndjp.net"
+  - name: "hysteria2-1827145259-420"
     type: "hysteria2"
     server: "142.249.37.90"
     port: 44356
     password: "dongtaiwang.com"
     sni: "hy2.561891.xyz"
     skip-cert-verify: false
-  - name: "shadowsocks-1828227588-3030"
+  - name: "shadowsocks-1828227588-2989"
     type: "ss"
     server: "79.110.53.169"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "vless-1828141631-2471"
+  - name: "vless-1828141631-2496"
     type: "vless"
     server: "154.29.159.211"
     port: 26763
@@ -87,69 +102,48 @@ proxies:
       public-key: "9tgCHwsQFN0j6FaMsAeJN8TSD2qQFnX6JdTaEdp8TRU"
       short-id: "b72b5eed"
     servername: "apple.com"
-  - name: "vless-1827967636-2895"
-    type: "vless"
-    server: "172.67.71.187"
+  - name: "shadowsocks-1827969041-2979"
+    type: "ss"
+    server: "23.251.121.242"
     port: 8080
-    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
+    cipher: "rc4-md5"
+    password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-    tls: false
-    client-fingerprint: "unsafe"
-    servername: "hhlfy.twiladaphne.ndjp.net"
-    network: "ws"
-    ws-opts:
-      path: "/sg-melbi"
-      headers:
-        Host: "hhlfy.twiladaphne.ndjp.net"
-  - name: "vless-1827155009-2433"
+  - name: "vless-1828293977-2460"
     type: "vless"
     server: "195.123.240.65"
     port: 443
     uuid: "ce18d0eb-5c71-41f9-96e5-1632e22456e4"
     udp: true
     tls: true
-    client-fingerprint: "chrome"
+    client-fingerprint: "ios"
     flow: "xtls-rprx-vision"
     reality-opts:
       public-key: "StPbcmBuzpuYUfa4oZ5SI3Bq1OSF_-oU1vp2AcyvQVE"
       short-id: "19296c9f1bf9c7b1"
     servername: "www.cloudflare.com"
-  - name: "vless-1827155613-2887"
-    type: "vless"
-    server: "104.18.0.181"
-    port: 8080
-    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
-    udp: true
-    tls: false
-    client-fingerprint: "unsafe"
-    servername: "hhlfy.twiladaphne.ndjp.net"
-    network: "ws"
-    ws-opts:
-      path: "/sg-melbi"
-      headers:
-        Host: "hhlfy.twiladaphne.ndjp.net"
-  - name: "hysteria2-1827145632-290"
+  - name: "hysteria2-1828372350-390"
     type: "hysteria2"
     server: "155.248.209.237"
     port: 33333
     password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
-    sni: "155.248.209.237"
+    sni: "155.248.209.2"
     skip-cert-verify: true
-  - name: "shadowsocks-1827146375-2290"
+  - name: "shadowsocks-1827146375-2351"
     type: "ss"
     server: "173.244.56.6"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146667-2292"
+  - name: "shadowsocks-1827146667-2353"
     type: "ss"
     server: "173.244.56.9"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1827155284-2915"
+  - name: "vless-1827155284-2956"
     type: "vless"
     server: "172.64.144.82"
     port: 443
@@ -163,7 +157,21 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1827662288-2903"
+  - name: "🇨🇦 加拿大 | CAN 2-2401"
+    type: "ss"
+    server: "15.223.182.197"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "🇨🇦 加拿大 | CAN 1-2399"
+    type: "ss"
+    server: "15.175.213.130"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "vless-1827662288-2950"
     type: "vless"
     server: "104.18.43.174"
     port: 443
@@ -177,14 +185,14 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "shadowsocks-1827146556-2278"
+  - name: "shadowsocks-1827146556-2339"
     type: "ss"
     server: "156.146.38.167"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1828142544-2921"
+  - name: "vless-1828142544-2964"
     type: "vless"
     server: "172.67.155.65"
     port: 8443
@@ -198,21 +206,21 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "hysteria2-1827145754-0"
+  - name: "hysteria2-1828373435-0"
     type: "hysteria2"
     server: "163.192.14.135"
     port: 50160
     password: "099830134df5ac3a04a4b21d39b8c395"
-    sni: "vk.com"
+    sni: "css.rbxcdn.com"
     skip-cert-verify: true
-  - name: "shadowsocks-1827146549-2284"
+  - name: "shadowsocks-1827146549-2345"
     type: "ss"
     server: "156.146.38.170"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1828142572-2899"
+  - name: "vless-1828142572-2948"
     type: "vless"
     server: "104.18.35.15"
     port: 443
@@ -226,47 +234,21 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1828139017-1743"
-    type: "vless"
-    server: "us3.oh-node.com"
-    port: 443
-    uuid: "7cfd34ae-edad-4cc5-9d6f-066f7add7829"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "dvXaj6cjjCxv1btRo7vHk93VR0BCQTF_xQClCjVZ1mM"
-      short-id: "5cfd1c"
-    servername: "download-porter.hoyoverse.com"
-  - name: "shadowsocks-1827146815-2280"
+  - name: "shadowsocks-1827146815-2341"
     type: "ss"
     server: "156.146.38.168"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146131-2282"
+  - name: "shadowsocks-1827146131-2343"
     type: "ss"
     server: "156.146.38.169"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1828139041-1745"
-    type: "vless"
-    server: "us4.oh-node.com"
-    port: 443
-    uuid: "7cfd34ae-edad-4cc5-9d6f-066f7add7829"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "zyuUbkfNG5nWHUVIVjGCCYIs85gKcxho6vmHKXVMIWA"
-      short-id: "2ad0cb03eb3fa5"
-    servername: "download-porter.hoyoverse.com"
-  - name: "vmess-1827160914-414"
+  - name: "vmess-1827160914-424"
     type: "vmess"
     server: "169.197.142.22"
     port: 18000
@@ -274,7 +256,7 @@ proxies:
     alterId: 0
     cipher: "auto"
     udp: true
-  - name: "vless-1827155553-2919"
+  - name: "vless-1827155553-2962"
     type: "vless"
     server: "172.67.155.65"
     port: 2053
@@ -288,14 +270,14 @@ proxies:
       path: "/cart/docs/www/proxyip"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "hysteria2-1827187993-295"
+  - name: "hysteria2-1827187993-400"
     type: "hysteria2"
     server: "hy2.123266.xyz"
     port: 33333
     password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
     sni: "hy2.123266.xyz"
     skip-cert-verify: true
-  - name: "vmess-1827158900-239"
+  - name: "vmess-1827158900-224"
     type: "vmess"
     server: "84.17.41.2"
     port: 18000
@@ -303,21 +285,21 @@ proxies:
     alterId: 0
     cipher: "auto"
     udp: true
-  - name: "shadowsocks-1827963904-3010"
+  - name: "shadowsocks-1827963904-2969"
     type: "ss"
     server: "138.199.43.159"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "shadowsocks-1827146224-2276"
+  - name: "shadowsocks-1827146224-2337"
     type: "ss"
     server: "149.22.95.183"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vmess-1827158680-519"
+  - name: "vmess-1827158680-534"
     type: "vmess"
     server: "us16-4.998998.best"
     port: 443
@@ -332,7 +314,20 @@ proxies:
       path: "/efrsdioy98wert"
       headers:
         Host: "server1.9966338.xyz"
-  - name: "🇺🇸 美国 | USA 9-787"
+  - name: "vless-1827151238-909"
+    type: "vless"
+    server: "23.95.222.127"
+    port: 8443
+    uuid: "352ff568-f971-4613-bf48-92997a5d44ed"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "ribQDOlZ69PzvZ1EDF0EcmMvbq_T5RQrVRBSGUU2riU"
+      short-id: "35cd899f8de04801"
+    servername: "www.apple.com"
+  - name: "🇺🇸 美国 | USA 11-794"
     type: "trojan"
     server: "66.23.203.21"
     port: 59689
@@ -340,7 +335,7 @@ proxies:
     udp: true
     sni: "66.23.203.21"
     skip-cert-verify: true
-  - name: "vmess-1827158788-464"
+  - name: "vmess-1827158788-479"
     type: "vmess"
     server: "38.91.107.49"
     port: 18000
@@ -348,14 +343,14 @@ proxies:
     alterId: 0
     cipher: "auto"
     udp: true
-  - name: "shadowsocks-1827147700-3008"
+  - name: "shadowsocks-1827147700-2967"
     type: "ss"
     server: "138.199.42.68"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "vless-1827533126-2911"
+  - name: "vless-1827533126-2954"
     type: "vless"
     server: "104.21.91.244"
     port: 443
@@ -369,7 +364,7 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vmess-1827158946-494"
+  - name: "vmess-1827158946-514"
     type: "vmess"
     server: "38.110.1.246"
     port: 18000
@@ -378,35 +373,35 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
-  - name: "shadowsocks-1827146248-2294"
+  - name: "shadowsocks-1827146248-2355"
     type: "ss"
     server: "37.19.198.160"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146742-2300"
+  - name: "shadowsocks-1827146742-2361"
     type: "ss"
     server: "37.19.198.244"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146122-2296"
+  - name: "shadowsocks-1827146122-2357"
     type: "ss"
     server: "37.19.198.236"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146051-2298"
+  - name: "shadowsocks-1827146051-2359"
     type: "ss"
     server: "37.19.198.243"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1827151191-899"
+  - name: "vless-1828294004-939"
     type: "vless"
     server: "44.248.233.99"
     port: 443
@@ -419,7 +414,7 @@ proxies:
       public-key: "p8VhFzvFOBAhWAEAeWmwDxT3xBSRsGYixqi0qnLFnBM"
       short-id: "21270a66"
     servername: "aws.amazon.com"
-  - name: "vmess-1827158341-309"
+  - name: "vmess-1827158341-289"
     type: "vmess"
     server: "134.195.196.211"
     port: 18000
@@ -427,20 +422,7 @@ proxies:
     alterId: 0
     cipher: "auto"
     udp: true
-  - name: "vless-1827153006-1789"
-    type: "vless"
-    server: "67.220.73.204"
-    port: 16016
-    uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "k2hPp0tTW0Da-HK94wYpSCLbuK44LfGqC2MSJIM1Ti0"
-      short-id: "48050fab"
-    servername: "www.apple.com"
-  - name: "vless-1827156461-3181"
+  - name: "vless-1827156461-3208"
     type: "vless"
     server: "147.45.60.160"
     port: 8444
@@ -455,54 +437,41 @@ proxies:
     network: "grpc"
     grpc-opts:
       grpc-service-name: "GunService"
-  - name: "hysteria2-1827145638-55"
+  - name: "hysteria2-1827145638-95"
     type: "hysteria2"
     server: "129.213.91.185"
     port: 35013
     password: "4291c983-c520-46ac-82cc-48f14bef573f"
     sni: "www.bing.com"
     skip-cert-verify: true
-  - name: "shadowsocks-1827147479-3004"
+  - name: "shadowsocks-1827147479-2963"
     type: "ss"
     server: "137.184.174.93"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "hysteria2-1827145278-325"
+  - name: "hysteria2-1828372556-430"
     type: "hysteria2"
     server: "hy2.561891.xyz"
     port: 44356
     password: "dongtaiwang.com"
     sni: "hy2.561891.xyz"
-    skip-cert-verify: false
-  - name: "vless-1827533223-2373"
+    skip-cert-verify: true
+  - name: "vless-1828293798-2414"
     type: "vless"
-    server: "95.181.173.68"
-    port: 9443
-    uuid: "c3db7657-88ce-42a6-b998-1e0364b277ac"
+    server: "131.143.180.87"
+    port: 443
+    uuid: "c7282af7-a52f-4a65-af60-ae5852f2bf36"
     udp: true
     tls: true
     client-fingerprint: "chrome"
     flow: "xtls-rprx-vision"
     reality-opts:
-      public-key: "ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g"
-      short-id: "649ab61e575fdbc9"
-    servername: "usa.edgeses.org"
-  - name: "vless-1827533146-2357"
-    type: "vless"
-    server: "213.165.50.44"
-    port: 9443
-    uuid: "c3db7657-88ce-42a6-b998-1e0364b277ac"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g"
-      short-id: "649ab61e575fdbc9"
-    servername: "usa.edgeses.org"
-  - name: "vless-1827150021-468"
+      public-key: "ZxdYEReKF-M_vIMpZWVMHf7ixDZmzIg-6Xt7IzstgwE"
+      short-id: "16e300b06a6a7413"
+    servername: "www.logitech.com"
+  - name: "vless-1827150021-488"
     type: "vless"
     server: "195.211.98.43"
     port: 443
@@ -515,7 +484,7 @@ proxies:
       public-key: "xPnpkXu5qfwIArlHKvJsqKJnGdGbJK1tT2GzWMyLohA"
       short-id: "9c56fddf237e8eaf"
     servername: "www.cloudflare.com"
-  - name: "vmess-1827741481-630"
+  - name: "vmess-1827741481-629"
     type: "vmess"
     server: "cf.0sm.com"
     port: 443
@@ -530,14 +499,27 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "shadowsocks-1827964140-3006"
+  - name: "shadowsocks-1827964140-2965"
     type: "ss"
     server: "138.197.141.58"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "vless-1827149864-348"
+  - name: "vless-1827155230-2424"
+    type: "vless"
+    server: "137.184.218.169"
+    port: 36925
+    uuid: "c9fd0fb1-8251-4106-b09a-f4b426736f67"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "lJ9INPpO4rdnm2Tek_yg0PGFyUrBB6MoKyvqt_Mfqm0"
+      short-id: ""
+    servername: "www.cloudflare.com"
+  - name: "vless-1827149864-363"
     type: "vless"
     server: "193.233.130.119"
     port: 10443
@@ -546,7 +528,7 @@ proxies:
     tls: false
     client-fingerprint: "chrome"
     servername: "193.233.130.119"
-  - name: "vless-1827149751-568"
+  - name: "vless-1827149751-613"
     type: "vless"
     server: "185.95.231.156"
     port: 443
@@ -559,7 +541,7 @@ proxies:
       public-key: "8eXftARun6KH38UZhuqIfPR1VF2DLS9RMBZEnF5k6To"
       short-id: "a3a578ab"
     servername: "www.apple.com"
-  - name: "trojan-1827955817-1255"
+  - name: "trojan-1827955817-1268"
     type: "trojan"
     server: "69.164.240.85"
     port: 50875
@@ -567,7 +549,7 @@ proxies:
     udp: true
     sni: "69.164.240.85"
     skip-cert-verify: true
-  - name: "vless-1827150175-328"
+  - name: "vless-1827150175-343"
     type: "vless"
     server: "159.89.87.21"
     port: 28190
@@ -580,7 +562,7 @@ proxies:
       public-key: "ZJRnFU-1s1JOnO8E9uZ7b00l1fPEh63fGRbdBANFRno"
       short-id: ""
     servername: "aws.amazon.com"
-  - name: "vless-1827533195-2501"
+  - name: "vless-1827533195-2520"
     type: "vless"
     server: "169.40.42.104"
     port: 443
@@ -593,33 +575,7 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1827155297-2407"
-    type: "vless"
-    server: "ww9.levikogjgfdd.ir"
-    port: 36925
-    uuid: "c9fd0fb1-8251-4106-b09a-f4b426736f67"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "lJ9INPpO4rdnm2Tek_yg0PGFyUrBB6MoKyvqt_Mfqm0"
-      short-id: ""
-    servername: "www.cloudflare.com"
-  - name: "vless-1827267301-2705"
-    type: "vless"
-    server: "169.40.42.90"
-    port: 443
-    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
-      short-id: "c39cc7310a"
-    servername: "yahoo.com"
-  - name: "vless-1827147111-2581"
+  - name: "vless-1827147111-2618"
     type: "vless"
     server: "169.40.42.182"
     port: 443
@@ -632,20 +588,20 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1827154784-2353"
+  - name: "vless-1827267301-2756"
     type: "vless"
-    server: "193.233.202.250"
-    port: 9443
-    uuid: "c3db7657-88ce-42a6-b998-1e0364b277ac"
+    server: "169.40.42.90"
+    port: 443
+    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
     udp: true
     tls: true
     client-fingerprint: "chrome"
     flow: "xtls-rprx-vision"
     reality-opts:
-      public-key: "ELJzJkc4SiCeCn6OF-8V9oeoJqXcD1y9WUntP3It53g"
-      short-id: "649ab61e575fdbc9"
-    servername: "usa.edgeses.org"
-  - name: "vless-1827154079-2337"
+      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
+      short-id: "c39cc7310a"
+    servername: "yahoo.com"
+  - name: "vless-1827154079-2368"
     type: "vless"
     server: "195.123.235.183"
     port: 443
@@ -671,7 +627,7 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "vless-1827147211-2679"
+  - name: "vless-1828372617-2728"
     type: "vless"
     server: "169.40.42.52"
     port: 443
@@ -697,7 +653,7 @@ proxies:
       public-key: "ALT8hIGeZEhi0sQFbXP_ntBg8Xo-v7i0YCLrqTnBxRk"
       short-id: "0990d22f"
     servername: "www.cloudflare.com"
-  - name: "vless-1827155453-2597"
+  - name: "vless-1827155453-2638"
     type: "vless"
     server: "169.40.42.202"
     port: 443
@@ -710,28 +666,28 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "hysteria2-1827145205-400"
+  - name: "hysteria2-1827145205-490"
     type: "hysteria2"
     server: "starlink-ft.251313.xyz"
     port: 443
     password: "https://xship.best"
     sni: "xship.top"
     skip-cert-verify: true
-  - name: "shadowsocks-1827146197-2270"
+  - name: "shadowsocks-1827146197-2331"
     type: "ss"
     server: "149.22.87.204"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146270-2272"
+  - name: "shadowsocks-1827146270-2333"
     type: "ss"
     server: "149.22.87.240"
     port: 443
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "shadowsocks-1827146287-2274"
+  - name: "shadowsocks-1827146287-2335"
     type: "ss"
     server: "149.22.87.241"
     port: 443
@@ -765,7 +721,7 @@ proxies:
       path: "/usserver"
       headers:
         Host: "uspanel.unixzone.us"
-  - name: "vless-1827533233-2589"
+  - name: "vless-1827533233-2628"
     type: "vless"
     server: "169.40.42.184"
     port: 443
@@ -778,7 +734,7 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1827149718-358"
+  - name: "vless-1827149718-388"
     type: "vless"
     server: "193.233.130.119"
     port: 14430
@@ -792,7 +748,7 @@ proxies:
       path: "/vless"
       headers:
         Host: "193.233.130.119"
-  - name: "vless-1827147237-2621"
+  - name: "vless-1827147237-2660"
     type: "vless"
     server: "169.40.42.224"
     port: 443
@@ -805,14 +761,14 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "shadowsocks-1827963919-3014"
+  - name: "shadowsocks-1827963919-2973"
     type: "ss"
     server: "146.70.61.18"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "vless-1827150121-621"
+  - name: "vless-1827150121-678"
     type: "vless"
     server: "216.227.161.95"
     port: 7443
@@ -827,799 +783,16 @@ proxies:
     network: "grpc"
     grpc-opts:
       grpc-service-name: "grpc"
-  - name: "shadowsocks-1827146829-2286"
-    type: "ss"
-    server: "158.173.20.171"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
-  - name: "shadowsocks-1827147777-3016"
-    type: "ss"
-    server: "146.70.61.37"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "vless-1827147250-2555"
+  - name: "vless-1827153691-1948"
     type: "vless"
-    server: "169.40.42.16"
+    server: "5.34.178.120"
     port: 443
-    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
+    uuid: "9063f9fb-e88a-4ee0-b4a4-a92ca7316a9f"
     udp: true
     tls: true
     client-fingerprint: "chrome"
     flow: "xtls-rprx-vision"
     reality-opts:
-      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
-      short-id: "c39cc7310a"
-    servername: "yahoo.com"
-  - name: "shadowsocks-1828124792-2362"
-    type: "ss"
-    server: "13.40.23.138"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
-  - name: "shadowsocks-1827145130-1972"
-    type: "ss"
-    server: "209.46.102.22"
-    port: 8388
-    cipher: "chacha20-ietf-poly1305"
-    password: "1hhrqrokj3ag"
-    udp: true
-  - name: "vless-1828129523-533"
-    type: "vless"
-    server: "77.221.157.213"
-    port: 10443
-    uuid: "1d006ad5-1de1-4520-a5f4-875dae1b0a5d"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "77.221.157.213"
-  - name: "shadowsocks-1827146478-2288"
-    type: "ss"
-    server: "158.173.20.208"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
-  - name: "vless-1827150894-905"
-    type: "vless"
-    server: "tk1.high-speed-test-56424.me"
-    port: 443
-    uuid: "37615d66-5467-44a3-bc23-f2c3bef7f761"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "p8VhFzvFOBAhWAEAeWmwDxT3xBSRsGYixqi0qnLFnBM"
-      short-id: "21270a66"
-    servername: "aws.amazon.com"
-  - name: "vless-1828138087-1103"
-    type: "vless"
-    server: "zuoan.tranyoo888.com"
-    port: 443
-    uuid: "435feec2-0421-44b9-a8b0-60da252556c0"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "_XNcU39HOvqF8GXyfA8OAG-dp6ZMl9L10r6K646npHc"
-      short-id: "ce3dccc84e5bac0c"
-    servername: "www.mozilla.org"
-  - name: "shadowsocks-1827146559-2158"
-    type: "ss"
-    server: "82.38.31.159"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146500-2076"
-    type: "ss"
-    server: "82.38.31.194"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146441-2078"
-    type: "ss"
-    server: "82.38.31.195"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146783-2198"
-    type: "ss"
-    server: "82.38.31.42"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1827162765-2659"
-    type: "vless"
-    server: "169.40.42.235"
-    port: 443
-    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
-      short-id: "c39cc7310a"
-    servername: "yahoo.com"
-  - name: "vless-1828138090-1265"
-    type: "vless"
-    server: "154.44.0.40"
-    port: 18319
-    uuid: "4dc796cb-5617-42e0-8003-187afd83fa13"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "JO-5AKvbFUlZieDWC8oIVsUzUhFNvG7dt8o3MkN7IT8"
-      short-id: "57d6e1335cc506b9"
-    servername: "www.apple.com"
-  - name: "shadowsocks-1827146684-2206"
-    type: "ss"
-    server: "82.38.31.49"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146367-2194"
-    type: "ss"
-    server: "82.38.31.39"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1828123864-681"
-    type: "vless"
-    server: "xray2-direct-mci1-fs-ce.freesocks.work"
-    port: 443
-    uuid: "28b30e86-e005-4fc5-9bad-f7660c201d64"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "7j3hmlHrEDk3Kjx-dFG3E3jf0c6PZF45trIPFsuKWmI"
-      short-id: ""
-    servername: "dl.google.com"
-  - name: "🇩🇪 www.v2nodes.com vless-DE-1... 1-866"
-    type: "vless"
-    server: "2.28.232.213"
-    port: 2125
-    uuid: "3430793e-837c-47f2-8c8c-a3520d4217c2"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-  - name: "hysteria2-1828123865-105"
-    type: "hysteria2"
-    server: "104.168.6.236"
-    port: 44443
-    password: "64c05afc-ce81-4ba0-b697-afa04da1427e"
-    sni: "bing.com"
-    skip-cert-verify: true
-  - name: "shadowsocks-1827146569-2084"
-    type: "ss"
-    server: "82.38.31.200"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146176-2124"
-    type: "ss"
-    server: "193.29.139.151"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146792-2140"
-    type: "ss"
-    server: "193.29.139.235"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146852-1992"
-    type: "ss"
-    server: "193.29.139.168"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "QCXDxuDlTTMD7jtgHUjIoj"
-    udp: true
-  - name: "shadowsocks-1827146486-2174"
-    type: "ss"
-    server: "82.38.31.175"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146695-2180"
-    type: "ss"
-    server: "82.38.31.18"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146004-2196"
-    type: "ss"
-    server: "82.38.31.3"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146769-2214"
-    type: "ss"
-    server: "82.38.31.66"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146674-2064"
-    type: "ss"
-    server: "82.38.31.187"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146065-2182"
-    type: "ss"
-    server: "82.38.31.26"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146805-2192"
-    type: "ss"
-    server: "82.38.31.36"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146535-2112"
-    type: "ss"
-    server: "82.38.31.215"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146335-2152"
-    type: "ss"
-    server: "82.38.31.155"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146391-2160"
-    type: "ss"
-    server: "82.38.31.162"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1828177365-2253"
-    type: "vless"
-    server: "can1.ragnarok-it.xyz"
-    port: 8449
-    uuid: "b7df9363-087b-48f7-a4ca-6e988ebf7f35"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "l_qSSfZDQDjpodjZ80CiFCyXY6xssS0IHWxu6n_HN3c"
-      short-id: "dee4ffbdbe515f0d"
-    servername: "amd.com"
-  - name: "shadowsocks-1827146763-2134"
-    type: "ss"
-    server: "193.29.139.204"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146083-2178"
-    type: "ss"
-    server: "82.38.31.17"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146514-2204"
-    type: "ss"
-    server: "82.38.31.48"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145954-2088"
-    type: "ss"
-    server: "82.38.31.202"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146144-2126"
-    type: "ss"
-    server: "193.29.139.179"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146078-2132"
-    type: "ss"
-    server: "193.29.139.202"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146067-2156"
-    type: "ss"
-    server: "82.38.31.157"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146475-2212"
-    type: "ss"
-    server: "82.38.31.62"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145970-2218"
-    type: "ss"
-    server: "82.38.31.7"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145931-2220"
-    type: "ss"
-    server: "82.38.31.82"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145928-2082"
-    type: "ss"
-    server: "82.38.31.199"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146467-2116"
-    type: "ss"
-    server: "82.38.31.217"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827145909-2208"
-    type: "ss"
-    server: "82.38.31.54"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145964-2210"
-    type: "ss"
-    server: "82.38.31.61"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827964319-3012"
-    type: "ss"
-    server: "146.70.23.32"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "shadowsocks-1827146845-2172"
-    type: "ss"
-    server: "82.38.31.174"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827145955-2114"
-    type: "ss"
-    server: "82.38.31.216"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146229-2154"
-    type: "ss"
-    server: "82.38.31.156"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146697-2162"
-    type: "ss"
-    server: "82.38.31.16"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146453-2176"
-    type: "ss"
-    server: "82.38.31.175"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146314-2062"
-    type: "ss"
-    server: "82.38.31.186"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146273-2136"
-    type: "ss"
-    server: "193.29.139.225"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146264-2184"
-    type: "ss"
-    server: "82.38.31.28"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146557-2060"
-    type: "ss"
-    server: "82.38.31.185"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827145981-2086"
-    type: "ss"
-    server: "82.38.31.201"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146766-2222"
-    type: "ss"
-    server: "82.38.31.9"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146306-2068"
-    type: "ss"
-    server: "82.38.31.190"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146026-2188"
-    type: "ss"
-    server: "82.38.31.34"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146630-2190"
-    type: "ss"
-    server: "82.38.31.35"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "shadowsocks-1827146143-2268"
-    type: "ss"
-    server: "141.98.101.181"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1597-2460"
-    type: "ss"
-    server: "185.164.175.81"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "shadowsocks-1827966278-3018"
-    type: "ss"
-    server: "169.150.210.233"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "shadowsocks-1827146590-2066"
-    type: "ss"
-    server: "82.38.31.189"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146693-2110"
-    type: "ss"
-    server: "82.38.31.214"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "vless-1827153500-1947"
-    type: "vless"
-    server: "136.67.16.72"
-    port: 443
-    uuid: "9d0395c0-016f-453e-b0be-fc66f1ee1d80"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    reality-opts:
-      public-key: "aGm3egxU7SVqVw-oxqXbJ0u4ctldnmTjwaDh4Mao2EE"
-      short-id: "bd4aa541e5306ba2"
+      public-key: "EVhq2BxKuw2Cody1DmF_HPvUYKwzdXbHP47blUv-eRM"
+      short-id: "55ab5559e3a6d10a"
     servername: "www.cloudflare.com"
-  - name: "shadowsocks-1827146277-2138"
-    type: "ss"
-    server: "193.29.139.235"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1827153722-1899"
-    type: "vless"
-    server: "95.111.212.241"
-    port: 443
-    uuid: "924fe46b-b6e0-479e-ae7f-a3661680e706"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "BSTnEthBXhb_UyuWpLBDxg82-C-wcpU2_kOD5ohS12g"
-      short-id: "3a697adb4c58d495"
-    servername: "www.samsung.com"
-  - name: "vmess-1827158935-524"
-    type: "vmess"
-    server: "us5-1.998998.best"
-    port: 443
-    uuid: "5504eaa8-1395-402f-8e0e-75ecd762e627"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "ws"
-    tls: true
-    servername: "server4.9966338.xyz"
-    ws-opts:
-      path: "/androirfdsreoightrjh"
-      headers:
-        Host: "server4.9966338.xyz"
-  - name: "shadowsocks-1827146683-2090"
-    type: "ss"
-    server: "82.38.31.203"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146735-2226"
-    type: "ss"
-    server: "109.201.152.181"
-    port: 443
-    cipher: "aes-128-cfb"
-    password: "shadowsocks"
-    udp: true
-  - name: "shadowsocks-1827146202-2200"
-    type: "ss"
-    server: "82.38.31.46"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1827147394-2385"
-    type: "vless"
-    server: "162.159.192.125"
-    port: 443
-    uuid: "c4edb87e-8544-4fa4-bd1c-b0cda9a34b46"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "a.cwvps.eu.org"
-    network: "ws"
-    ws-opts:
-      path: "/ws"
-      headers:
-        Host: "a.cwvps.eu.org"
-  - name: "shadowsocks-1827145755-1930"
-    type: "ss"
-    server: "103.11.76.248"
-    port: 28679
-    cipher: "2022-blake3-aes-128-gcm"
-    password: "NzJlOTQ5NWYtM2ZkYi00Cg=="
-    udp: true
-  - name: "vmess-1827158035-319"
-    type: "vmess"
-    server: "140.238.2.250"
-    port: 443
-    uuid: "41a7089a-040b-4538-8b8d-010902405bde"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-  - name: "vless-1827155547-2417"
-    type: "vless"
-    server: "209.200.246.148"
-    port: 443
-    uuid: "ca52e2b6-fb9f-4dac-b6dc-49da9923f251"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "uTmb-ytXsx8p0fkBz7A76SHpWk7_oVutIA4LGTE8BQk"
-      short-id: "f98843107912e782"
-    servername: "www.cloudflare.com"
-  - name: "vless-1827735105-1573"
-    type: "vless"
-    server: "198.23.169.170"
-    port: 443
-    uuid: "64c05afc-ce81-4ba0-b697-afa04da1427e"
-    udp: true
-    tls: true
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "FOl1qibUWpTggolWp30DD7VQ9_xKHZPEPVQs0sQs3gI"
-      short-id: "2128e27b"
-    servername: "download-porter.hoyoverse.com"
-  - name: "shadowsocks-1827146579-2046"
-    type: "ss"
-    server: "82.38.31.178"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "shadowsocks-1827146801-2080"
-    type: "ss"
-    server: "82.38.31.198"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "vmess-1827161074-394"
-    type: "vmess"
-    server: "165.154.195.38"
-    port: 35034
-    uuid: "959a8caf-4cea-43d0-a548-3628e7ddfafc"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "raw"
-  - name: "trojan-1827148532-242"
-    type: "trojan"
-    server: "108.61.186.37"
-    port: 443
-    password: "Trojan@82164024"
-    udp: true
-    sni: "jp.tronsg.com"
-    skip-cert-verify: true
-  - name: "trojan-1827149654-805"
-    type: "trojan"
-    server: "45.32.52.173"
-    port: 8886
-    password: "e26a229d-e8f2-4ff9-8c7d-58a9d83ee437"
-    udp: true
-    sni: "45.32.52.173"
-    skip-cert-verify: true
-  - name: "shadowsocks-1827146542-2052"
-    type: "ss"
-    server: "82.38.31.181"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "vless-1827155678-3013"
-    type: "vless"
-    server: "cf.877774.xyz"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "lucasjow.us.ci"
-  - name: "🇦🇹 www.v2nodes.com ss-AT-1595-2464"
-    type: "ss"
-    server: "82.110.60.9"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vless-1827151678-1541"
-    type: "vless"
-    server: "freeus.aiage.work"
-    port: 443
-    uuid: "6338c01a-310e-42c3-bf4f-2a20e161054b"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "pxLk0ocXqKYYqUFyALvH2BVXaswI-6NE00posKNayy0"
-      short-id: "ccaf7283610c6fa8"
-    servername: "freeus.aiage.work"
-  - name: "shadowsocks-1827146828-2170"
-    type: "ss"
-    server: "82.38.31.174"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "oZIoA69Q8yhcQV8ka3Pa3A"
-    udp: true
-  - name: "vless-1827150214-298"
-    type: "vless"
-    server: "43.167.232.174"
-    port: 443
-    uuid: "0fd46529-707f-4d33-899b-598f5f4acffa"
-    udp: true
-    tls: true
-    client-fingerprint: "random"
-    reality-opts:
-      public-key: "hJIfTUp7nQckx08yoBSkaaEsPdZmM054HmbYNKK4sBI"
-      short-id: "b51e057820d3e14c"
-    servername: "www.microsoft.com"
-  - name: "shadowsocks-1827145990-2092"
-    type: "ss"
-    server: "82.38.31.204"
-    port: 8080
-    cipher: "chacha20-ietf-poly1305"
-    password: "k1dBOmOB4oqi7Ump37a1bQ"
-    udp: true
-  - name: "vless-1827152979-1781"
-    type: "vless"
-    server: "3.114.220.22"
-    port: 18007
-    uuid: "814bd064-544d-4255-a070-5705c03f6da9"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "k2hPp0tTW0Da-HK94wYpSCLbuK44LfGqC2MSJIM1Ti0"
-      short-id: "48050fab"
-    servername: "www.apple.com"
-  - name: "vless-1828139003-1565"
-    type: "vless"
-    server: "43.206.91.175"
-    port: 443
-    uuid: "638d9b71-941d-45d7-a11b-4e012b6259b8"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "DAgqTSuxmGE7fP-upyw4qCoM1fqQIDC7Im5K2pL5UXs"
-      short-id: "9ebc0931"
-    servername: "www.samsung.com"
-  - name: "vless-1827661711-2561"
-    type: "vless"
-    server: "169.40.42.173"
-    port: 443
-    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
-      short-id: "c39cc7310a"
-    servername: "yahoo.com"
