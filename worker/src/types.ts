@@ -167,6 +167,7 @@ export async function cacheClear(env: Env, token: string): Promise<void> {
   // 同时清理历史遗留 key（旧版本用过多种命名）
   const keys = [
     subCacheKey(token),
+    subCacheKey(token) + ":stats",
     KV_PREFIX.cache + token,
     KV_PREFIX.cache + token + ".yaml",
     KV_PREFIX.cache + token + ".yml",

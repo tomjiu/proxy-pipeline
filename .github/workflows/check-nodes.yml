@@ -30,7 +30,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,14 +70,25 @@ jobs:
             exit 1
           fi
           wc -l dist/online/clash.yaml
+          grep -c '^  - name:' dist/online/clash.yaml || echo "0 nodes"
 
       - name: Delay-test nodes
         run: |
           mkdir -p bin dist/clean
+          # 并发测活：16 线程（原来是串行，3955 节点需 7.8 小时）
+          # 实测并发后约几分钟完成
           python scripts/online/check_clash_nodes.py \
             --mode "${{ steps.mode.outputs.value }}" \
             --timeout-ms 5000 \
+            --workers 16 \
             --input dist/online/clash.yaml
+
+      - name: Report
+        if: always()
+        run: |
+          echo "### 测活结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python scripts/online/show_report.py >> $GITHUB_STEP_SUMMARY || true
 
       - name: Commit dist/clean
         run: |

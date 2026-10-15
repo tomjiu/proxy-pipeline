@@ -124,7 +124,10 @@ def rebuild_yaml(alive_blocks: list[str], names: list[str]) -> str:
     for n in names[: min(150, len(names))]:
         lines.append(f"      - {q(n)}")
     lines.append("rules:")
-    lines.append("  - GEOIP,CN,DIRECT")
+    # ⚠️ 不要用 GEOIP,CN —— 它依赖 MMDB 文件，
+    #    CI 环境或首次运行时若无法下载 MMDB（网络受限），mihomo 会直接 fatal 退出，
+    #    导致**全部节点被误判为死**。
+    #    测活只需要能建立连接，用 MATCH 即可。
     lines.append("  - MATCH,PROXY")
     return "\n".join(lines) + "\n"
 
@@ -238,6 +241,83 @@ def clean_probe(name: str, timeout_ms: int) -> tuple[bool, str]:
     return False, "unexpected_body"
 
 
+def force_test_dns(text: str) -> str:
+    """
+    把配置里的 DNS 段替换成「测试专用」
+
+    为什么必须做：
+      - 订阅模板常用 fake-ip（198.18.0.1/16），会把节点域名解析成假 IP
+        → 所有用域名的节点测活必然失败
+      - 完全没有 dns 段时，mihomo 用内置默认，在国内网络下解析节点域名
+        会被污染/超时 → 同样全部失败
+
+    测试要求：真实解析 + 国内可达的 DNS
+    """
+    lines = text.split("\n")
+    out: list[str] = []
+    i = 0
+    replaced = False
+
+    while i < len(lines):
+        line = lines[i]
+
+        # 替换/删除原 dns 段
+        if re.match(r"^dns:\s*$", line):
+            i += 1
+            while i < len(lines) and (lines[i].startswith((" ", "\t")) or not lines[i].strip()):
+                i += 1
+            if not replaced:
+                out.extend(TEST_DNS_BLOCK)
+                replaced = True
+            continue
+
+        # 删除 sniffer（避免干扰）
+        if re.match(r"^sniffer:\s*$", line):
+            i += 1
+            while i < len(lines) and (lines[i].startswith((" ", "\t")) or not lines[i].strip()):
+                i += 1
+            continue
+
+        # 删除依赖 MMDB 的段
+        if re.match(r"^geox-url:\s*$", line):
+            i += 1
+            while i < len(lines) and (lines[i].startswith((" ", "\t")) or not lines[i].strip()):
+                i += 1
+            continue
+
+        out.append(line)
+        i += 1
+
+    if not replaced:
+        # 插到 mixed-port 之后（或开头）
+        ins = 0
+        for idx, l in enumerate(out):
+            if l.startswith("mixed-port:") or l.startswith("port:"):
+                ins = idx + 1
+                break
+        out[ins:ins] = TEST_DNS_BLOCK
+
+    return "\n".join(out)
+
+
+TEST_DNS_BLOCK = [
+    "dns:",
+    "  enable: true",
+    "  ipv6: false",
+    "  enhanced-mode: normal",       # 关键：不用 fake-ip
+    "  nameserver:",
+    "    - 223.5.5.5",               # 阿里 DNS
+    "    - 119.29.29.29",            # DNSPod
+    "  fallback:",
+    "    - 8.8.8.8",
+    "    - 1.1.1.1",
+    "  fallback-filter:",
+    "    geoip: false",              # 避免依赖 MMDB
+    "    ipcidr:",
+    "      - 240.0.0.0/4",
+]
+
+
 def main() -> int:
     global CLEAN_JUDGE
     ap = argparse.ArgumentParser()
@@ -245,6 +325,8 @@ def main() -> int:
     ap.add_argument("--timeout-ms", type=int, default=5000)
     ap.add_argument("--input", type=Path, default=DIST_ONLINE / "clash.yaml")
     ap.add_argument("--pause", type=float, default=0.03)
+    ap.add_argument("--workers", type=int, default=16,
+                    help="并发测活线程数（串行时 3955 节点需 7.8 小时，16 并发约几分钟）")
     ap.add_argument("--skip-clean", action="store_true", help="skip content cleanliness probe")
     ap.add_argument("--clean-timeout-ms", type=int, default=5000)
     ap.add_argument("--clean-judge", default=CLEAN_JUDGE, help="judge URL for cleanliness probe")
@@ -304,6 +386,13 @@ def main() -> int:
         text = re.sub(r"(?m)^mixed-port:.*$", f"mixed-port: {MIXED_PORT}", text)
     else:
         text = f"mixed-port: {MIXED_PORT}\n" + text
+
+    # ⚠️ 关键：注入测试专用 DNS
+    #    没有 dns 段时 mihomo 用内置默认，在国内网络下解析节点域名会失败
+    #    （DNS 污染/超时）→ 所有域名型节点被误判为死。
+    #    必须用 enhanced-mode: normal + 国内可达的 DNS。
+    text = force_test_dns(text)
+
     # disable geodata auto-update noise in CI if present
     cfg.write_text(text, encoding="utf-8")
 
@@ -333,28 +422,51 @@ def main() -> int:
             raise
         alive_rows: list[tuple[str, str, str, int]] = list(keep)
         ok = fail = 0
-        for i, (name, fp, raw) in enumerate(to_test):
+
+        # ── 并发测活 ──
+        # 原来串行：3955 节点需 7.8 小时（每节点等 timeout + pause）
+        # 改为并发后，实测可压到几分钟
+        #
+        # 注意：mihomo 的 /proxies/<name>/delay 是独立的 HTTP 请求，
+        #       mihomo 内部会并发发起，所以并发调用是安全的（只是排队）。
+        workers = max(1, getattr(args, "workers", 16))
+        print(f"[check] 并发 {workers}，待测 {len(to_test)} 个")
+
+        done_count = 0
+
+        def probe_one(item):
+            name, fp, raw = item
             d = delay_test(name, args.timeout_ms)
-            if d is not None:
-                ok += 1
-                alive_rows.append((name, fp, raw, d))
-                nodes_db[fp] = {
-                    "alive": True,
-                    "delay": d,
-                    "name": name,
-                    "checked_at": now,
-                }
-            else:
-                fail += 1
-                nodes_db[fp] = {
-                    "alive": False,
-                    "delay": None,
-                    "name": name,
-                    "checked_at": now,
-                }
-            if (i + 1) % 40 == 0:
-                print(f"  … {i+1}/{len(to_test)} ok={ok} fail={fail}")
-            time.sleep(args.pause)
+            return item, d
+
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futs = [ex.submit(probe_one, it) for it in to_test]
+            for fut in as_completed(futs):
+                (name, fp, raw), d = fut.result()
+                if d is not None:
+                    ok += 1
+                    alive_rows.append((name, fp, raw, d))
+                    nodes_db[fp] = {
+                        "alive": True,
+                        "delay": d,
+                        "name": name,
+                        "checked_at": now,
+                    }
+                else:
+                    fail += 1
+                    nodes_db[fp] = {
+                        "alive": False,
+                        "delay": None,
+                        "name": name,
+                        "checked_at": now,
+                    }
+                done_count += 1
+                if done_count % 100 == 0:
+                    print(f"  … {done_count}/{len(to_test)} ok={ok} fail={fail}")
+                if args.pause:
+                    time.sleep(args.pause / workers)
 
         # cleanliness phase: content-verify each alive node through mihomo
         clean_rows: list[tuple[str, str, str, int]] = []

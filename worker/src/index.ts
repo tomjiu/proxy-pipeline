@@ -424,9 +424,18 @@ async function serveSubscription(env: Env, token: string, ext: string,
     }
     if (isJson) {
       const nodes = extractNamesFromYaml(cachedYaml);
+      // 缓存里存了上次的统计（避免 JSON 请求触发全量重算）
+      const stats = await cacheGet(env, token + ":stats");
+      let parsed: any = null;
+      try { parsed = stats ? JSON.parse(stats) : null; } catch { /* ignore */ }
       return json({
         token, name: cfg.name, nodes: nodes.length,
         cached: true, elapsed_ms: Date.now() - t0,
+        filter: parsed?.filter ?? null,
+        filter_config: { enabled: cfg.filter !== false, target: cfg.target_nodes || 300 },
+        sources: parsed?.sources ?? null,
+        duplicates: parsed?.duplicates ?? null,
+        total_fetched: parsed?.total_fetched ?? null,
         traffic: await trafficSummary(env),
       });
     }
@@ -559,23 +568,35 @@ async function serveSubscription(env: Env, token: string, ext: string,
 
   // ── 缓存写入 ──
   // ⚠️ KV 写配额（免费版 1000/天）：**只写一份**（渲染后的 Clash YAML）
-  //    不再写 hits（省一半写次数），txt/json 从这同一份派生
+  //    统计信息随 YAML 一起写（同一 key 后缀，成本可忽略）
   //    由 sub-refresh.yml 每 15 分钟预热，用户请求基本都命中
-  if (ext === "yaml" || ext === "yml") {
-    await cachePut(env, token, content, GEN_CACHE_TTL);
-  } else if (ext === "txt") {
-    // txt 请求未命中时，顺便也缓存一份 YAML（下次任意格式都命中）
-    const g = await getGlobal(env);
-    const template = cfg.rules_mode === "custom" && cfg.rules
-      ? undefined
-      : (g.default_rules && g.default_rules.length > 100 ? undefined : DEFAULT_TEMPLATE);
-    const yamlContent = buildClash(nodes, {
-      rename: cfg.rename,
-      rules: cfg.rules_mode === "custom" && cfg.rules ? cfg.rules : g.default_rules,
-      title: cfg.name,
-      template,
-    });
-    await cachePut(env, token, yamlContent, GEN_CACHE_TTL);
+  if (ext === "yaml" || ext === "yml" || ext === "txt") {
+    let yamlContent = content;
+    if (ext === "txt") {
+      const g = await getGlobal(env);
+      const template = cfg.rules_mode === "custom" && cfg.rules
+        ? undefined
+        : (g.default_rules && g.default_rules.length > 100 ? undefined : DEFAULT_TEMPLATE);
+      yamlContent = buildClash(nodes, {
+        rename: cfg.rename,
+        rules: cfg.rules_mode === "custom" && cfg.rules ? cfg.rules : g.default_rules,
+        title: cfg.name,
+        template,
+      });
+    }
+    await Promise.all([
+      cachePut(env, token, yamlContent, GEN_CACHE_TTL),
+      cachePut(env, token + ":stats", JSON.stringify({
+        filter: filterStats,
+        sources: agg.results.map(r => ({
+          url: r.url, ok: r.ok, format: r.format,
+          nodes: r.nodes.length, error: r.error,
+        })),
+        duplicates: agg.duplicates,
+        total_fetched: agg.total_fetched,
+        at: new Date().toISOString(),
+      }), GEN_CACHE_TTL),
+    ]);
   }
 
   return subResponse(content, ext, false, probeStats, traffic);
