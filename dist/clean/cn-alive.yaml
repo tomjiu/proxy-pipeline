@@ -1,12 +1,12 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T04:03:44.491329+00:00
-# count: 4
+# updated: 2026-10-15T04:41:47.738518+00:00
+# count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "trojan-1827148746-302"
+  - name: "trojan-1827148746-318"
     type: "trojan"
     server: "66.23.203.21"
     port: 59689
@@ -14,17 +14,7 @@ proxies:
     skip-cert-verify: true
     sni: ""
     udp: true
-  - name: "vless-1827613953-328"
-    type: "vless"
-    server: "cf-vless-4cf55824.aimall.fr"
-    port: 443
-    network: "ws"
-    servername: ""
-    skip-cert-verify: false
-    tls: true
-    udp: true
-    uuid: "ea50b1a3-3a98-4c5e-a150-48ada40d68d7"
-  - name: "vless-1827619967-324"
+  - name: "vless-1827619967-340"
     type: "vless"
     server: "web-tomcat.pages.dev"
     port: 443
@@ -34,32 +24,20 @@ proxies:
     tls: true
     udp: true
     uuid: "2cf94f4d-9d5b-49ca-81a3-ddc0529a2dac"
-  - name: "trojan-1827148420-466"
-    type: "trojan"
-    server: "in.tronsg.com"
-    port: 443
-    password: "Trojan@82164024"
-    skip-cert-verify: true
-    sni: "in.tronsg.com"
-    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - trojan-1827148746-302
-      - vless-1827613953-328
-      - vless-1827619967-324
-      - trojan-1827148420-466
+      - trojan-1827148746-318
+      - vless-1827619967-340
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - trojan-1827148746-302
-      - vless-1827613953-328
-      - vless-1827619967-324
-      - trojan-1827148420-466
+      - trojan-1827148746-318
+      - vless-1827619967-340
 rules:
   - MATCH,PROXY
