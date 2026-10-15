@@ -1,11 +1,19 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T03:45:17.861376+00:00
-# count: 3
+# updated: 2026-10-15T04:03:44.491329+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
+  - name: "trojan-1827148746-302"
+    type: "trojan"
+    server: "66.23.203.21"
+    port: 59689
+    password: "ae7eb4dwyaz25pxwgq59"
+    skip-cert-verify: true
+    sni: ""
+    udp: true
   - name: "vless-1827613953-328"
     type: "vless"
     server: "cf-vless-4cf55824.aimall.fr"
@@ -40,6 +48,7 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
+      - trojan-1827148746-302
       - vless-1827613953-328
       - vless-1827619967-324
       - trojan-1827148420-466
@@ -48,6 +57,7 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
+      - trojan-1827148746-302
       - vless-1827613953-328
       - vless-1827619967-324
       - trojan-1827148420-466
