@@ -18,17 +18,20 @@ name: cn-check
 #   · ip112 无混淆、无验证码、无限次，且专做国内外对比
 
 on:
+  # ⚠️ 流程位置：全链路的最后一环
+  #    online-scan → check-nodes → ai-probe → 【cn-check】
+  #    cn-check 读 ai-probe 产出的 clash-tier-s.yaml（已过质量筛选）
   workflow_run:
-    workflows: ["check-nodes"]
+    workflows: ["ai-probe"]
     types: [completed]
   schedule:
     - cron: "25 */2 * * *"
   workflow_dispatch:
     inputs:
       source:
-        description: "输入文件"
+        description: "输入文件（留空=自动选 tier-s > clash > online）"
         required: false
-        default: "dist/clean/clash.yaml"
+        default: ""
       workers:
         description: "并发数"
         required: false
@@ -69,13 +72,23 @@ jobs:
         id: src
         run: |
           SRC="${{ inputs.source }}"
-          [ -z "$SRC" ] && SRC="dist/clean/clash.yaml"
 
-          if [ ! -f "$SRC" ]; then
-            echo "::warning::$SRC 不存在，尝试 dist/online/clash.yaml"
-            SRC="dist/online/clash.yaml"
+          if [ -z "$SRC" ]; then
+            # ⚠️ 按流程：CN 测活的对象应该是【已过 AI 质量筛选】的节点
+            #    优先级：tier-s（AI 高质量）> clash（仅连通性）> online（原始）
+            for CAND in dist/clean/clash-tier-s.yaml dist/clean/clash.yaml dist/online/clash.yaml; do
+              if [ -f "$CAND" ]; then
+                N=$(grep -c '^  - name:' "$CAND" 2>/dev/null || echo 0)
+                if [ "$N" -gt 0 ]; then
+                  SRC="$CAND"
+                  echo "选定输入: $CAND ($N 个节点)"
+                  break
+                fi
+              fi
+            done
           fi
-          if [ ! -f "$SRC" ]; then
+
+          if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
             echo "::error::找不到输入文件"
             exit 1
           fi
@@ -83,6 +96,8 @@ jobs:
           N=$(grep -c '^  - name:' "$SRC" || echo 0)
           echo "value=$SRC" >> "$GITHUB_OUTPUT"
           echo "输入: $SRC ($N 个节点)"
+          echo "input_file=$SRC" >> "$GITHUB_STEP_SUMMARY"
+          echo "input_nodes=$N" >> "$GITHUB_STEP_SUMMARY"
 
       - name: CN 连通性测活
         run: |
