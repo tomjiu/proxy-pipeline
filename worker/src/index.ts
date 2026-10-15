@@ -514,15 +514,16 @@ async function serveSubscription(env: Env, token: string, ext: string,
       const needVerify = nodes.filter(n => !allowed.has(`${n.server}:${n.port}`));
 
       let liveAlive = new Set<string>();
-      let vr: { probed: number; cached: number; blocked: number } | null = null;
+      let vr: { probed: number; cached: number; blocked: number; unknown: number } | null = null;
 
       if (needVerify.length) {
-        // ③ Worker 内部验证（优先用 KV 缓存；首次会实时探测一部分）
-        const r = await verifyCN(needVerify, env, {
-          maxProbe: needVerify.length <= 20 ? needVerify.length : 10,
-        });
+        // ③ Worker 内部验证
+        //   · 缓存命中的不消耗探测配额
+        //   · 未缓存的实时探测（上限 CN_MAX_PER_REQUEST=40）
+        //   · 未验证的当「未知」剔除 → 靠 sub-refresh 预热填满缓存
+        const r = await verifyCN(needVerify, env, { maxProbe: 40 });
         liveAlive = r.alive;
-        vr = { probed: r.probed, cached: r.cached, blocked: r.blocked };
+        vr = { probed: r.probed, cached: r.cached, blocked: r.blocked, unknown: r.unknown };
       }
 
       const kept = [
