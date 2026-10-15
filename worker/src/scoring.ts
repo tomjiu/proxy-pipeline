@@ -49,6 +49,45 @@ const CDN_PORTS = new Set(["80", "8080", "8880", "2052", "2082", "2086", "2095"]
 
 const CF_IP_RE = /^(104\.(1[6-9]|2[0-7])\.|172\.(6[4-9]|7[0-1])\.|162\.15[89]\.|188\.114\.|190\.93\.|19[0-8]\.41\.|141\.101\.|108\.162\.|173\.245\.|103\.2[12]\.|103\.31\.)/;
 
+/**
+ * 城市/机房描述关键词
+ *
+ * ⚠️ 实测依据（2026-10-15，85 个节点）：
+ *    带这类描述的节点可用率 75%，纯编号的只有 31%
+ *    例：🇯🇵 JP Tokyo 01 / 🇭🇰 HK Lau Fau Shan 01 / 🇩🇪 DE Frankfurt Am Main 01
+ */
+const CITY_RE = new RegExp(
+  [
+    // 城市名
+    "Tokyo", "Osaka", "Hong\\s*Kong", "Singapore", "Kuala\\s*Lumpur",
+    "Frankfurt", "Berlin", "Amsterdam", "London", "Manchester", "Paris",
+    "Los\\s*Angeles", "San\\s*Jose", "Seattle", "New\\s*York", "Dallas",
+    "Chicago", "Miami", "Phoenix", "Ashburn", "Silicon\\s*Valley",
+    "Seoul", "Incheon", "Busan", "Taipei", "Bangkok", "Jakarta",
+    "Manila", "Hanoi", "Ho\\s*Chi", "Mumbai", "Delhi", "Dubai",
+    "Sydney", "Melbourne", "Toronto", "Warsaw", "Prague", "Vienna",
+    "Zurich", "Milan", "Madrid", "Lisbon", "Stockholm", "Helsinki",
+    "Moscow", "Istanbul", "Sao\\s*Paulo", "Lau\\s*Fau\\s*Shan",
+    // 机房/线路描述
+    "fiber", "Fiber", "IEPL", "IPLC", "BGP", "CN2", "GIA", "Premium",
+    "Unlimited", "Direct", "Native", "Streaming", "GPT", "Netflix",
+    // 中文
+    "东京", "大阪", "香港", "新加坡", "吉隆坡", "法兰克福", "阿姆斯特丹",
+    "伦敦", "洛杉矶", "圣何塞", "西雅图", "纽约", "首尔", "仁川",
+    "台北", "曼谷", "雅加达", "孟买", "迪拜", "悉尼", "多伦多",
+    "直连", "原生", "专线", "中转",
+  ].join("|"),
+  "i",
+);
+
+/**
+ * 纯编号命名（无描述）
+ * 例：US 01 / XX 03 / SG-12 / JP_05
+ *
+ * ⚠️ 实测：可用率仅 31%，多为批量分发的短效节点
+ */
+const PLAIN_NUMBER_RE = /^[\s\u{1F1E6}-\u{1F1FF}]*[A-Za-z]{2,4}[\s\-_]*\d{1,3}\s*$/u;
+
 /** 给单个节点打分 */
 export function scoreNode(node: {
   name: string; type: string; server: string; port: string; raw: string;
@@ -112,6 +151,31 @@ export function scoreNode(node: {
       || /(美国|日本|韩国|新加坡|香港|台湾|德国|荷兰|英国|法国|加拿大|澳大利亚)/.test(node.name)) {
     score += 4;
     reasons.push("named+4");
+  }
+
+  // ── 7. 名称含【城市/机房描述】──
+  // ⚠️ 实测依据（2026-10-15，用户 5 个源的 85 个节点）：
+  //    带城市名的节点可用率 75%（15/20）
+  //    纯编号的节点可用率 31%（20/65）
+  //    差距 2.4 倍 —— 带描述名的多是自建/长期维护的机器
+  if (CITY_RE.test(node.name)) {
+    score += 12;
+    reasons.push("city+12");
+  }
+
+  // ── 8. 纯编号节点（US 01 / XX 03）──
+  // ⚠️ 实测：可用率仅 31%，多为批量分发的短效节点
+  //    形如 "<地区> <数字>" 或 "<地区>-<数字>"，且无其他描述
+  if (PLAIN_NUMBER_RE.test(node.name) && !CITY_RE.test(node.name)) {
+    score -= 10;
+    reasons.push("plain-num-10");
+  }
+
+  // ── 9. 隐藏地区（XX / 未知 / Unknown）──
+  // ⚠️ 实测：XX 01-09 全部失败（9/9）
+  if (/\b(XX|ZZ|Unknown|未知)\b/i.test(node.name)) {
+    score -= 15;
+    reasons.push("hidden-region-15");
   }
 
   return { ...node, score, reasons };
