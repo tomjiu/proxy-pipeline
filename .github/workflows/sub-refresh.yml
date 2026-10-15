@@ -71,6 +71,35 @@ jobs:
             "$WORKER_BASE/admin/reset-cn" || true
           echo "已请求清空 CN 验证结果"
 
+      # ── ⓪ 预热 dist 缓存（关键：让订阅请求不碰 GitHub）──
+      - name: ⓪ Warm dist cache
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::未配置 API_TOKEN，跳过 dist 预热"
+            exit 0
+          fi
+
+          # 把 GitHub 上的 dist 文件预拉进 D1，订阅请求直接读本地缓存
+          # 不预热的话，用户每次「更新订阅」都要现去 GitHub 拉（6-41 秒 → 超时）
+          echo "── 预热 dist ──"
+          RESP=$(curl -s -m 180 -H "X-Api-Token: $API_TOKEN" \
+            "$WORKER_BASE/admin/warm-dist" || echo '{}')
+
+          echo "$RESP" | python3 -c "
+          import sys, json
+          try:
+              d = json.load(sys.stdin)
+              print(f\"  缓存: {d.get('warmed',0)}/{d.get('total',0)} 个文件\")
+              for k, v in (d.get('files') or {}).items():
+                  print(f'    {k:<32} {v}')
+          except Exception as e:
+              print('  解析失败:', e)
+          " || echo "$RESP" | head -c 300
+
       # ── ① 刷新源（关键：先拉最新的）──
       - name: ① Refresh sources
         env:
