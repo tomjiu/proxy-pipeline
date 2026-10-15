@@ -42,7 +42,7 @@ import {
 import { loginPage, dashboardPage } from "./ui";
 import { DEFAULT_TEMPLATE } from "./default-template";
 import { probeCFNodes, filterCFAlive, isCFNode, type CFProbeResult } from "./cf-probe";
-import { filterByScore, DEFAULT_FILTER, type FilterOptions } from "./scoring";
+import { filterByScore, scoreNode, DEFAULT_FILTER, type FilterOptions } from "./scoring";
 import { verifyCN, warmCNCache } from "./cn-verify";
 
 const CACHE_TTL = 120;
@@ -160,7 +160,10 @@ export default {
       return json({ error: "not found", path }, 404);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      return json({ error: "internal", message: msg }, 500);
+      // ⚠️ 不把内部错误原文回显（泄露实现细节 + 配额状态）
+      //    详情只写日志
+      console.error("[error]", msg);
+      return json({ error: "internal" }, 500);
     }
   },
 };
@@ -291,6 +294,7 @@ async function createSub(req: Request, env: Env): Promise<Response> {
     min_tier: ["all", "A", "S"].includes(body.min_tier) ? body.min_tier : "all",
     probe: body.probe === true,
     cn_only: body.cn_only === true,
+    dedup_server: body.dedup_server !== false,
     filter: body.filter !== false,
     target_nodes: Number.isFinite(body.target_nodes)
       ? Math.min(1000, Math.max(10, Number(body.target_nodes)))
@@ -322,6 +326,7 @@ async function handleSubApi(req: Request, env: Env, token: string,
       if (typeof b.rename === "boolean") cfg.rename = b.rename;
       if (typeof b.probe === "boolean") cfg.probe = b.probe;
       if (typeof b.cn_only === "boolean") cfg.cn_only = b.cn_only;
+      if (typeof b.dedup_server === "boolean") cfg.dedup_server = b.dedup_server;
       if (typeof b.filter === "boolean") cfg.filter = b.filter;
       if (Number.isFinite(b.target_nodes)) {
         cfg.target_nodes = Math.min(1000, Math.max(10, Number(b.target_nodes)));
@@ -555,6 +560,26 @@ async function serveSubscription(env: Env, token: string, ext: string,
     }
   }
 
+  // ── 3.6 同服务器去重（可选）──
+  // 问题：同一 server:port 可能有多个节点（不同 UUID / 参数），
+  //       例如 v.toe.qd.je:443 出现 16 次 —— 对用户是浪费。
+  // 策略：同一 server:port 只保留「评分最高」的一个。
+  //       cfg.dedup_server = true 时启用（默认开）
+  if (cfg.dedup_server !== false && nodes.length > 1) {
+    const best = new Map<string, { node: ParsedNode; score: number }>();
+    for (const n of nodes) {
+      const k = `${n.server}:${n.port}`;
+      const s = scoreNode(n).score;
+      const cur = best.get(k);
+      if (!cur || s > cur.score) best.set(k, { node: n, score: s });
+    }
+    const before = nodes.length;
+    if (best.size < before) {
+      nodes = Array.from(best.values()).map(v => v.node);
+      console.log(`[dedup] same-server: ${before} -> ${nodes.length}`);
+    }
+  }
+
   // ── 4. tier 过滤（在重命名之前，用原名匹配）──
   // ⚠️ 必须在 renameSimple 之前做：quality_tiers.json 里的 key 是**原始节点名**，
   //    重命名后无法匹配。早期实现先重命名再过滤，导致过滤永不命中并触发回退，
@@ -670,12 +695,16 @@ async function serveSubscription(env: Env, token: string, ext: string,
         template,
       });
     }
-    await Promise.all([
+    // ⚠️ 关键：缓存写入失败【绝不能】导致订阅 500
+    //    KV 写配额耗尽时会抛 "KV put() limit exceeded for the day"
+    //    原来用 await Promise.all 会让整个请求失败
+    //    现在：并发写 + 逐个 catch，失败只记日志
+    const writes = [
       cachePut(env, token, yamlContent, GEN_CACHE_TTL),
       cachePut(env, token + ":stats", JSON.stringify({
         cn: cnStats,
-      cn_config: { enabled: cfg.cn_only === true },
-      filter: filterStats,
+        cn_config: { enabled: cfg.cn_only === true },
+        filter: filterStats,
         sources: agg.results.map(r => ({
           url: r.url, ok: r.ok, format: r.format,
           nodes: r.nodes.length, error: r.error,
@@ -684,7 +713,14 @@ async function serveSubscription(env: Env, token: string, ext: string,
         total_fetched: agg.total_fetched,
         at: new Date().toISOString(),
       }), GEN_CACHE_TTL),
-    ]);
+    ];
+    await Promise.all(writes.map(p =>
+      p.catch(e => {
+        // 配额耗尽 / 临时故障 → 不阻塞响应
+        console.error("[cache] write failed (non-fatal):",
+                      e instanceof Error ? e.message : String(e));
+      }),
+    ));
   }
 
   return subResponse(content, ext, false, probeStats, traffic);
