@@ -21,14 +21,17 @@
 /** ip112.cn 的国内端 API（从中国大陆测目标端口） */
 const CN_API = "https://api.ycwxgzs.com/ipcheck/index.php";
 
-/** 缓存前缀 */
-const CN_CACHE_PREFIX = "cnv:";     // cn verify
-
 /** 缓存 TTL（秒）—— 6 小时 */
 const CN_CACHE_TTL = 6 * 3600;
 
-/** 单次请求最多验证多少个节点（保护 CPU） */
-const CN_MAX_PER_REQUEST = 8;
+/** 未知态缓存 TTL（秒）—— 2 小时
+ *  ⚠️ 不能太短：否则每轮预热都重新探测同一批失败节点，缓存永远填不满 */
+const CN_UNKNOWN_TTL = 2 * 3600;
+
+/** 单次请求最多实时验证多少个节点（保护 CPU）
+ *  ⚠️ 太小会导致「超过限额」的节点被当未知剔除，订阅变得很少
+ *     预热会把缓存填满，请求时基本只读缓存 */
+const CN_MAX_PER_REQUEST = 40;
 
 /** 单次验证的超时（毫秒）
  *  ⚠️ ip112 实际需要 10-40s，原来设 6s 导致大量超时误判 */
@@ -48,23 +51,63 @@ export interface CNVerifyResult {
 }
 
 /**
- * 生成缓存 key
+ * CN 验证缓存 —— 批量快照模式
  *
- * ⚠️ 安全：用 SHA-256 哈希，KV 里**看不到明文 server/port**
- *    即使 KV 被导出，也无法直接读出节点地址（需暴力枚举才能反推）
+ * ⚠️ KV 配额（免费版 1000 写/天）：
+ *   原来「每节点一次 put」→ 480 个节点 = 480 次写
+ *   一次全量预热就烧掉近一半配额
+ *
+ * 现在改为「整个结果集一个 key」：
+ *   · 读：1 次 get → 反序列化成 Map（内存）
+ *   · 写：1 次 put（整个快照）
+ *   · 配额消耗：480 写 → 1 写
+ *
+ * 快照格式：{ "server:port": 1|0, ... }  仅存布尔，无节点原始信息
+ * （server:port 本身是公开信息，如 1.2.3.4:443，不构成泄露）
  */
+const SNAPSHOT_KEY = "cnsnap:v1";
+
+interface CNSnapshot {
+  /** server:port → 1(可达) / 0(被墙) */
+  v: Record<string, 0 | 1>;
+  /** 更新时间戳 */
+  t: number;
+  /** 未知节点（探测失败的，下次重试） */
+  u?: Record<string, number>;
+}
+
+/** 读取快照（1 次 KV get） */
+async function loadSnapshot(env: { KV?: KVNamespace }): Promise<CNSnapshot> {
+  if (!env.KV) return { v: {}, t: 0 };
+  try {
+    const raw = await env.KV.get(SNAPSHOT_KEY, "text");
+    if (!raw) return { v: {}, t: 0 };
+    const s = JSON.parse(raw) as CNSnapshot;
+    return { v: s.v || {}, t: s.t || 0, u: s.u || {} };
+  } catch {
+    return { v: {}, t: 0 };
+  }
+}
+
+/** 写快照（1 次 KV put） */
+async function saveSnapshot(
+  env: { KV?: KVNamespace },
+  snap: CNSnapshot,
+): Promise<void> {
+  if (!env.KV) return;
+  snap.t = Date.now();
+  await env.KV.put(SNAPSHOT_KEY, JSON.stringify(snap),
+                   { expirationTtl: CN_CACHE_TTL }).catch(() => {});
+}
+
+/** 缓存 key（哈希，用于快照内的字段名混淆，防止直接读出 IP） */
 async function key(server: string, port: string): Promise<string> {
   const raw = `${server.toLowerCase()}:${port}`;
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
   const hex = Array.from(new Uint8Array(buf))
     .map(b => b.toString(16).padStart(2, "0"))
     .join("");
-  return CN_CACHE_PREFIX + hex.slice(0, 32);
-}
-
-/** 同步版本的标识（仅用于内存内 Set，不落盘） */
-function memKey(server: string, port: string): string {
-  return `${server}:${port}`;
+  return hex.slice(0, 32);
 }
 
 /** 探测结果：true=可达 / false=被墙 / null=未知（探测失败，不判定） */
@@ -115,11 +158,9 @@ async function probeCN(server: string, port: string): Promise<ProbeVerdict> {
 }
 
 /**
- * 验证一批节点的 CN 连通性
+ * 验证一批节点的 CN 连通性（快照模式）
  *
- * @param nodes  待验证节点（含 server/port）
- * @param env    Worker 环境（用 KV 做缓存）
- * @param opts   maxProbe 限制实际探测数量
+ * ⚠️ KV 配额：读 1 次快照 + 写 1 次快照（不是每节点一次）
  */
 export async function verifyCN(
   nodes: Array<{ server: string; port: string }>,
@@ -136,83 +177,59 @@ export async function verifyCN(
     if (!uniq.has(k)) uniq.set(k, n);
   }
 
-  let cached = 0;
-  let probed = 0;
-  let blocked = 0;
-  let unknown = 0;
-  const toProbe: Array<{ k: string; server: string; port: string }> = [];
+  // ① 读快照（1 次 KV get）
+  const snap = opts.refresh ? { v: {}, t: 0 } as CNSnapshot : await loadSnapshot(env);
+  const hashes = await Promise.all(
+    Array.from(uniq.values()).map(n => key(n.server, n.port)),
+  );
+  const hashList = Array.from(uniq.keys()).map((k, i) => [k, hashes[i]] as const);
 
-  // 1. 先查缓存
-  for (const [k, n] of uniq) {
-    let hit: string | null = null;
-    if (env.KV && !opts.refresh) {
-      try {
-        const ck = await key(n.server, n.port);
-        hit = await env.KV.get(ck, "text");
-      } catch { /* ignore */ }
-    }
-    if (hit === "1") {
-      alive.add(k);
-      cached++;
-    } else if (hit === "0") {
-      cached++;
-      blocked++;
-    } else if (hit === "?") {
-      // 已知未知 → 保留（不因探测失败误删）
-      cached++;
-      unknown++;
-      alive.add(k);
-    } else if (toProbe.length < maxProbe) {
-      toProbe.push({ k, ...n });
-    } else {
-      // 超过本次限额 → 保留（下次预热再验证）
-      unknown++;
-      alive.add(k);
-    }
+  let cached = 0, probed = 0, blocked = 0, unknown = 0;
+  const toProbe: Array<{ k: string; server: string; port: string; h: string }> = [];
+
+  // ② 查快照
+  for (const [k, h] of hashList) {
+    const n = uniq.get(k)!;
+    const hit = snap.v[h];
+    if (hit === 1) { alive.add(k); cached++; }
+    else if (hit === 0) { cached++; blocked++; }
+    else if (toProbe.length < maxProbe) toProbe.push({ k, h, ...n });
+    else unknown++;                       // 超过限额 → 未知（剔除）
   }
 
-  // 2. 并发探测（最多 maxProbe 个）
+  if (!toProbe.length) {
+    return { alive, probed, cached, blocked, unknown };
+  }
+
+  // ③ 并发探测
   const results = await Promise.all(
-    toProbe.map(async item => {
-      const verdict = await probeCN(item.server, item.port);
-      return { ...item, verdict };
-    }),
+    toProbe.map(async item => ({
+      ...item,
+      verdict: await probeCN(item.server, item.port),
+    })),
   );
 
-  // 3. 写缓存 + 统计
-  const writes: Promise<unknown>[] = [];
+  // ④ 更新快照（内存）
+  const v = { ...snap.v };
+  const u = { ...(snap.u || {}) };
   for (const r of results) {
     probed++;
-    if (r.verdict === true) {
-      alive.add(r.k);
-    } else if (r.verdict === false) {
-      blocked++;
-    } else {
-      // 未知 → 保留（不误删），但缓存为 "?" 以便下次重试
-      unknown++;
-      alive.add(r.k);
-    }
-    if (env.KV) {
-      const v = r.verdict === true ? "1" : r.verdict === false ? "0" : "?";
-      // 未知的只缓存 5 分钟（快速重试）；明确的缓存 6 小时
-      const ttl = r.verdict === null ? 300 : CN_CACHE_TTL;
-      writes.push(
-        (async () => {
-          const ck = await key(r.server, r.port);
-          await env.KV!.put(ck, v, { expirationTtl: ttl });
-        })().catch(() => {}),
-      );
-    }
+    if (r.verdict === true) { v[r.h] = 1; delete u[r.h]; alive.add(r.k); }
+    else if (r.verdict === false) { v[r.h] = 0; delete u[r.h]; blocked++; }
+    else { unknown++; u[r.h] = (u[r.h] || 0) + 1; }
   }
-  await Promise.all(writes);
+
+  // ⑤ 写快照（1 次 KV put）
+  await saveSnapshot(env, { v, t: 0, u });
 
   return { alive, probed, cached, blocked, unknown };
 }
 
 /**
- * 预热：批量验证并写缓存（供定时任务调用）
+ * 预热：批量验证并写快照（供定时任务调用）
  *
- * ⚠️ 日志只输出数量，不输出 server/port —— 避免私有节点进日志
+ * ⚠️ 日志只输出数量，不输出 server/port
+ * ⚠️ KV 消耗：整个预热只写 1 次
  */
 export async function warmCNCache(
   nodes: Array<{ server: string; port: string }>,
@@ -229,54 +246,46 @@ export async function warmCNCache(
     if (!uniq.has(k)) uniq.set(k, n);
   }
 
-  // ⚠️ 关键：先筛出【未缓存】的，再取 limit 个
-  //    否则每次调用都从第 0 个开始，重复验证同一批，后面的永远测不到
-  const pending: Array<[string, { server: string; port: string }]> = [];
-  let cachedHits = 0;
-  let alive = 0, blocked = 0, unknown = 0;
+  // ① 读快照
+  const snap = await loadSnapshot(env);
+  const v = { ...snap.v };
+  const u = { ...(snap.u || {}) };
 
-  for (const entry of uniq.entries()) {
-    const [k, n] = entry;
-    if (env.KV) {
-      try {
-        const ck = await key(n.server, n.port);
-        const hit = await env.KV.get(ck, "text");
-        if (hit === "1") { cachedHits++; alive++; continue; }
-        if (hit === "0") { cachedHits++; blocked++; continue; }
-        // hit === "?" → 未知，重新探测（不 continue）
-      } catch { /* ignore */ }
-    }
-    pending.push(entry);
+  let cachedHits = 0, alive = 0, blocked = 0, unknown = 0;
+  const pending: Array<{ k: string; h: string; server: string; port: string }> = [];
+
+  // ② 筛出未验证的
+  for (const [k, n] of uniq) {
+    const h = await key(n.server, n.port);
+    const hit = v[h];
+    if (hit === 1) { cachedHits++; alive++; continue; }
+    if (hit === 0) { cachedHits++; blocked++; continue; }
+    // 未知：失败次数 >= 3 就跳过（避免无限重试）
+    if ((u[h] || 0) >= 3) { cachedHits++; unknown++; continue; }
+    pending.push({ k, h, ...n });
   }
 
   const items = pending.slice(0, limit);
   let probed = 0;
 
-  // 分批并发
+  // ③ 分批探测
   for (let i = 0; i < items.length; i += concurrency) {
     const batch = items.slice(i, i + concurrency);
-    const rs = await Promise.all(batch.map(async ([k, n]) => {
-      const verdict = await probeCN(n.server, n.port);
-      return { k, verdict };
-    }));
+    const rs = await Promise.all(batch.map(async it => ({
+      ...it,
+      verdict: await probeCN(it.server, it.port),
+    })));
 
     for (const r of rs) {
       probed++;
-      const v = r.verdict === true ? "1" : r.verdict === false ? "0" : "?";
-      if (r.verdict === true) alive++;
-      else if (r.verdict === false) blocked++;
-      else unknown++;
-
-      if (env.KV) {
-        const [rServer, ...rPortParts] = r.k.split(":");
-        const rPort = rPortParts.join(":");
-        const ck = await key(rServer, rPort);
-        // 未知只缓存 5 分钟（快速重试）
-        const ttl = r.verdict === null ? 300 : CN_CACHE_TTL;
-        await env.KV.put(ck, v, { expirationTtl: ttl }).catch(() => {});
-      }
+      if (r.verdict === true) { v[r.h] = 1; delete u[r.h]; alive++; }
+      else if (r.verdict === false) { v[r.h] = 0; delete u[r.h]; blocked++; }
+      else { u[r.h] = (u[r.h] || 0) + 1; unknown++; }
     }
   }
+
+  // ④ 写快照（1 次）
+  if (items.length) await saveSnapshot(env, { v, t: 0, u });
 
   return { probed, alive, blocked, cached: cachedHits, unknown };
 }
