@@ -43,7 +43,7 @@ import { loginPage, dashboardPage } from "./ui";
 import { DEFAULT_TEMPLATE } from "./default-template";
 import { probeCFNodes, filterCFAlive, isCFNode, type CFProbeResult } from "./cf-probe";
 import { filterByScore, scoreNode, DEFAULT_FILTER, type FilterOptions } from "./scoring";
-import { verifyCN, warmCNCache } from "./cn-verify";
+import { verifyCN, warmCNCache, resetCN } from "./cn-verify";
 
 const CACHE_TTL = 120;
 const GEN_CACHE_TTL = 300;   // 生成的订阅缓存 5 分钟
@@ -860,7 +860,69 @@ async function handlePublicApi(req: Request, env: Env,
                   kv: !!env.KV, auth: authRequired(env) });
   }
 
-  // ── KV 健康检查（诊断配额/权限）──
+  // ── 刷新源（从上游重新拉取，建立最新节点快照）──
+  // 用途：用户源是短效的，测之前必须先拉最新的
+  // ⚠️ 安全：只返回统计，不返回节点内容
+  if (path === "/admin/refresh-sources") {
+    if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
+    const token = new URL(req.url).searchParams.get("token") || "";
+    if (!token) return json({ error: "missing ?token=" }, 400);
+
+    try {
+      const cfg = await getSub(env, token);
+      if (!cfg) return json({ error: "subscription not found" }, 404);
+
+      // 清掉订阅缓存，强制下次请求重新聚合
+      await cacheClear(env, token).catch(() => {});
+
+      const t0 = Date.now();
+      const agg = await aggregate(cfg.sources);
+      const byType: Record<string, number> = {};
+      for (const n of agg.nodes) {
+        byType[n.type] = (byType[n.type] || 0) + 1;
+      }
+
+      // ⚠️ 只记数量
+      console.log(`[refresh] sources=${agg.results.length} nodes=${agg.nodes.length}`);
+
+      return json({
+        ok: true,
+        sources: agg.results.length,
+        sources_ok: agg.results.filter(r => r.ok).length,
+        total_fetched: agg.total_fetched,
+        duplicates: agg.duplicates,
+        nodes: agg.nodes.length,
+        by_type: byType,
+        elapsed_ms: Date.now() - t0,
+      });
+    } catch (e) {
+      console.error("[refresh] failed:", e);
+      return json({ error: "refresh failed" }, 500);
+    }
+  }
+
+  // ── 清空 CN 验证结果（节点大换代时用）──
+  if (path === "/admin/reset-cn") {
+    if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+    try {
+      const r = await resetCN(env);
+      return json({ ok: true, ...r });
+    } catch (e) {
+      console.error("[reset-cn] failed:", e);
+      return json({ error: "reset failed" }, 500);
+    }
+  }
+
+  // ── KV / D1 健康检查（诊断配额）──
   if (path === "/admin/kv-check") {
     if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
     const provided = req.headers.get("X-Api-Token") || "";
