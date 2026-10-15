@@ -30,8 +30,9 @@ const CN_CACHE_TTL = 6 * 3600;
 /** 单次请求最多验证多少个节点（保护 CPU） */
 const CN_MAX_PER_REQUEST = 8;
 
-/** 单次验证的超时（毫秒） */
-const CN_TIMEOUT_MS = 6000;
+/** 单次验证的超时（毫秒）
+ *  ⚠️ ip112 实际需要 10-40s，原来设 6s 导致大量超时误判 */
+const CN_TIMEOUT_MS = 45000;
 
 export interface CNVerifyResult {
   /** server:port → 是否 CN 可达 */
@@ -40,8 +41,10 @@ export interface CNVerifyResult {
   probed: number;
   /** 命中缓存数量 */
   cached: number;
-  /** 不可达数量 */
+  /** 确认被墙数量 */
   blocked: number;
+  /** 未知数量（探测失败，保留但不算确认可达） */
+  unknown: number;
 }
 
 /**
@@ -64,8 +67,23 @@ function memKey(server: string, port: string): string {
   return `${server}:${port}`;
 }
 
-/** 调用 ip112 国内端，判断端口是否可达 */
-async function probeCN(server: string, port: string): Promise<boolean> {
+/** 探测结果：true=可达 / false=被墙 / null=未知（探测失败，不判定） */
+export type ProbeVerdict = boolean | null;
+
+/**
+ * 调用 ip112 国内端，判断端口是否可达
+ *
+ * ⚠️ 关键修正（2026-10-15）：
+ *   原来 catch 分支 `return true`（把探测失败当「可达」）+
+ *   超时只有 6s（ip112 实际需要 10-40s）
+ *   → 大量超时被误判为「可达」→ 订阅里混入 50% 不可用节点
+ *
+ *   现在：
+ *     · 超时提到 45s（匹配 ip112 的真实耗时）
+ *     · 探测失败返回 null（未知），不再当「可达」
+ *     · 只有拿到明确响应才判定 true/false
+ */
+async function probeCN(server: string, port: string): Promise<ProbeVerdict> {
   try {
     const body = new URLSearchParams({ ip: server, port }).toString();
     const res = await fetch(CN_API, {
@@ -79,14 +97,20 @@ async function probeCN(server: string, port: string): Promise<boolean> {
       body,
       signal: AbortSignal.timeout(CN_TIMEOUT_MS),
     });
-    if (!res.ok) return false;
+    // 非 200 → 未知（不判定）
+    if (!res.ok) return null;
+
     const data = await res.json() as { tcp?: string };
     const tcp = String(data.tcp || "").replace(/<[^>]+>/g, "").trim();
+    if (!tcp) return null;                       // 空响应 → 未知
+
     // "端口可用" = 通；"端口不可用" = 被墙
-    return tcp.includes("可用") && !tcp.includes("不可用");
+    if (tcp.includes("不可用")) return false;
+    if (tcp.includes("可用")) return true;
+    return null;                                 // 无法识别 → 未知
   } catch {
-    // 探测服务异常 → 保守起见当「可达」（不因服务故障误删节点）
-    return true;
+    // 超时/网络错误 → 未知（**不再**当可达）
+    return null;
   }
 }
 
@@ -115,6 +139,7 @@ export async function verifyCN(
   let cached = 0;
   let probed = 0;
   let blocked = 0;
+  let unknown = 0;
   const toProbe: Array<{ k: string; server: string; port: string }> = [];
 
   // 1. 先查缓存
@@ -132,10 +157,16 @@ export async function verifyCN(
     } else if (hit === "0") {
       cached++;
       blocked++;
+    } else if (hit === "?") {
+      // 已知未知 → 保留（不因探测失败误删）
+      cached++;
+      unknown++;
+      alive.add(k);
     } else if (toProbe.length < maxProbe) {
       toProbe.push({ k, ...n });
     } else {
-      // 超过本次限额 → 先当可达（避免误删），下次预热再验证
+      // 超过本次限额 → 保留（下次预热再验证）
+      unknown++;
       alive.add(k);
     }
   }
@@ -143,8 +174,8 @@ export async function verifyCN(
   // 2. 并发探测（最多 maxProbe 个）
   const results = await Promise.all(
     toProbe.map(async item => {
-      const ok = await probeCN(item.server, item.port);
-      return { ...item, ok };
+      const verdict = await probeCN(item.server, item.port);
+      return { ...item, verdict };
     }),
   );
 
@@ -152,23 +183,30 @@ export async function verifyCN(
   const writes: Promise<unknown>[] = [];
   for (const r of results) {
     probed++;
-    if (r.ok) {
+    if (r.verdict === true) {
       alive.add(r.k);
-    } else {
+    } else if (r.verdict === false) {
       blocked++;
+    } else {
+      // 未知 → 保留（不误删），但缓存为 "?" 以便下次重试
+      unknown++;
+      alive.add(r.k);
     }
     if (env.KV) {
+      const v = r.verdict === true ? "1" : r.verdict === false ? "0" : "?";
+      // 未知的只缓存 5 分钟（快速重试）；明确的缓存 6 小时
+      const ttl = r.verdict === null ? 300 : CN_CACHE_TTL;
       writes.push(
         (async () => {
           const ck = await key(r.server, r.port);
-          await env.KV!.put(ck, r.ok ? "1" : "0", { expirationTtl: CN_CACHE_TTL });
+          await env.KV!.put(ck, v, { expirationTtl: ttl });
         })().catch(() => {}),
       );
     }
   }
   await Promise.all(writes);
 
-  return { alive, probed, cached, blocked };
+  return { alive, probed, cached, blocked, unknown };
 }
 
 /**
@@ -180,7 +218,7 @@ export async function warmCNCache(
   nodes: Array<{ server: string; port: string }>,
   env: { KV?: KVNamespace },
   opts: { limit?: number; concurrency?: number } = {},
-): Promise<{ probed: number; alive: number; blocked: number; cached: number }> {
+): Promise<{ probed: number; alive: number; blocked: number; cached: number; unknown: number }> {
   const limit = opts.limit ?? 200;
   const concurrency = opts.concurrency ?? 4;
 
@@ -195,7 +233,7 @@ export async function warmCNCache(
   //    否则每次调用都从第 0 个开始，重复验证同一批，后面的永远测不到
   const pending: Array<[string, { server: string; port: string }]> = [];
   let cachedHits = 0;
-  let alive = 0, blocked = 0;
+  let alive = 0, blocked = 0, unknown = 0;
 
   for (const entry of uniq.entries()) {
     const [k, n] = entry;
@@ -203,11 +241,9 @@ export async function warmCNCache(
       try {
         const ck = await key(n.server, n.port);
         const hit = await env.KV.get(ck, "text");
-        if (hit !== null) {
-          cachedHits++;
-          if (hit === "1") alive++; else blocked++;
-          continue;
-        }
+        if (hit === "1") { cachedHits++; alive++; continue; }
+        if (hit === "0") { cachedHits++; blocked++; continue; }
+        // hit === "?" → 未知，重新探测（不 continue）
       } catch { /* ignore */ }
     }
     pending.push(entry);
@@ -220,22 +256,27 @@ export async function warmCNCache(
   for (let i = 0; i < items.length; i += concurrency) {
     const batch = items.slice(i, i + concurrency);
     const rs = await Promise.all(batch.map(async ([k, n]) => {
-      const ok = await probeCN(n.server, n.port);
-      return { k, ok, skipped: false };
+      const verdict = await probeCN(n.server, n.port);
+      return { k, verdict };
     }));
 
     for (const r of rs) {
       probed++;
-      if (r.ok) alive++; else blocked++;
+      const v = r.verdict === true ? "1" : r.verdict === false ? "0" : "?";
+      if (r.verdict === true) alive++;
+      else if (r.verdict === false) blocked++;
+      else unknown++;
+
       if (env.KV) {
         const [rServer, ...rPortParts] = r.k.split(":");
         const rPort = rPortParts.join(":");
         const ck = await key(rServer, rPort);
-        await env.KV.put(ck, r.ok ? "1" : "0", { expirationTtl: CN_CACHE_TTL })
-          .catch(() => {});
+        // 未知只缓存 5 分钟（快速重试）
+        const ttl = r.verdict === null ? 300 : CN_CACHE_TTL;
+        await env.KV.put(ck, v, { expirationTtl: ttl }).catch(() => {});
       }
     }
   }
 
-  return { probed, alive, blocked, cached: cachedHits };
+  return { probed, alive, blocked, cached: cachedHits, unknown };
 }
