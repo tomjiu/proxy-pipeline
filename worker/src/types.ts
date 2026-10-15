@@ -40,6 +40,8 @@ export interface SubConfig {
   probe: boolean;             // 是否测活（剔除失效节点）
   /** 是否只保留 CN（中国）实测可达的节点 */
   cn_only: boolean;
+  /** 同 server:port 只保留评分最高的一个（默认 true，避免同一服务器重复出现） */
+  dedup_server: boolean;
   /** 是否启用评分筛选（剔除 http/socks/anytls + 控制总量） */
   filter: boolean;
   /** 目标节点数上限（默认 300） */
@@ -163,7 +165,14 @@ export async function cacheGet(env: Env, token: string): Promise<string | null> 
 export async function cachePut(env: Env, token: string, content: string,
                                ttl = 600): Promise<void> {
   if (!env.KV) return;
-  await env.KV.put(subCacheKey(token), content, { expirationTtl: ttl });
+  // ⚠️ 不让配额错误冒泡（否则整个订阅请求 500）
+  //    KV 免费版写配额 1,000/天，耗尽时 put() 会抛错
+  try {
+    await env.KV.put(subCacheKey(token), content, { expirationTtl: ttl });
+  } catch (e) {
+    console.error("[cache] put failed (non-fatal):",
+                  e instanceof Error ? e.message : String(e));
+  }
 }
 
 export async function cacheClear(env: Env, token: string): Promise<void> {
