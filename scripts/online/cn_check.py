@@ -82,9 +82,19 @@ def parse_nodes(text: str):
     if not m:
         return []
     rest = text[m.end():]
+    # ⚠️ 结束标记 =「任意列 0 的顶层键」
+    #    不能只找 proxy-groups（输入可能没有它）
     end = re.search(r"(?m)^[A-Za-z][\w-]*:", rest)
     if end:
         rest = rest[: end.start()]
+
+    # ⚠️ 合法协议白名单
+    #    防止把 proxy-groups 的 type（select/url-test/fallback）误当节点
+    #    之前 cn-alive.yaml 里混入了 "select" 和 "url" 两个假节点
+    VALID_TYPES = {
+        "vless", "vmess", "trojan", "ss", "ssr", "hysteria", "hysteria2",
+        "hy2", "tuic", "socks5", "http", "snell", "wireguard", "anytls",
+    }
 
     out = []
     for ch in re.split(r"(?m)^  - ", rest)[1:]:
@@ -92,14 +102,18 @@ def parse_nodes(text: str):
         tp = re.search(r"(?m)^\s*type:\s*\"?(\w+)\"?", ch)
         sv = re.search(r"(?m)^\s*server:\s*\"?([^\"\s,}]+)\"?", ch)
         pt = re.search(r"(?m)^\s*port:\s*\"?(\d+)\"?", ch)
-        if nm and tp and sv and pt:
-            out.append({
-                "name": nm.group(1).strip(),
-                "type": tp.group(1).lower(),
-                "server": sv.group(1),
-                "port": pt.group(1),
-                "raw": "  - " + ch.rstrip(),
-            })
+        if not (nm and tp and sv and pt):
+            continue
+        t = tp.group(1).lower()
+        if t not in VALID_TYPES:
+            continue          # 跳过 select / url-test / 等非节点类型
+        out.append({
+            "name": nm.group(1).strip(),
+            "type": t,
+            "server": sv.group(1),
+            "port": pt.group(1),
+            "raw": "  - " + ch.rstrip(),
+        })
     return out
 
 
