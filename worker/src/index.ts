@@ -922,6 +922,79 @@ async function handlePublicApi(req: Request, env: Env,
     }
   }
 
+  // ── dist 缓存预热（需 API_TOKEN）──
+  // 把 GitHub 上的 dist 文件预拉进 D1，让订阅请求命中本地缓存
+  // ⚠️ 这是解决「更新订阅超时」的关键：请求路径不再碰 GitHub
+  if (path === "/admin/warm-dist") {
+    if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
+    const FILES = [
+      "online/clash.yaml",
+      "online/nodes.txt",
+      "online/meta.json",
+      "clean/clash.yaml",
+      "clean/clash-tier-s.yaml",
+      "clean/cn-alive.yaml",
+      "clean/proxy-alive.yaml",
+      "clean/proxy-verified.json",
+    ];
+
+    const results: Record<string, string> = {};
+    let ok = 0;
+
+    await Promise.all(FILES.map(async rel => {
+      try {
+        const res = await fetchDist(env, rel);
+        if (res.ok) {
+          const text = await res.text();
+          await distCachePut(env, rel, text);
+          results[rel] = `ok ${text.length}B`;
+          ok++;
+        } else {
+          results[rel] = `HTTP ${res.status}`;
+        }
+      } catch (e) {
+        results[rel] = e instanceof Error ? e.message.slice(0, 40) : "error";
+      }
+    }));
+
+    return json({ ok: true, warmed: ok, total: FILES.length, files: results });
+  }
+
+  // ── dist 缓存状态 ──
+  if (path === "/admin/dist-cache") {
+    if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+    if (!env.DB) return json({ error: "no DB" }, 503);
+
+    try {
+      const rs = await env.DB.prepare(
+        `SELECT path, length(body) as size, ts FROM dist_cache ORDER BY path`,
+      ).all();
+      const rows = (rs.results || []) as Array<{ path: string; size: number; ts: number }>;
+      return json({
+        count: rows.length,
+        now: Date.now(),
+        ttl_s: DIST_CACHE_TTL,
+        files: rows.map(r => ({
+          path: r.path,
+          size: r.size,
+          age_s: Math.round((Date.now() - r.ts) / 1000),
+          fresh: (Date.now() - r.ts) / 1000 < DIST_CACHE_TTL,
+        })),
+      });
+    } catch (e) {
+      return json({ error: String(e).slice(0, 120) }, 500);
+    }
+  }
+
   // ── KV / D1 健康检查（诊断配额）──
   if (path === "/admin/kv-check") {
     if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
@@ -1110,41 +1183,142 @@ function yamlToBase64(yaml: string): string {
   return btoa(bin);
 }
 
+/**
+ * 读取 dist 文件 —— D1 缓存优先，网络回源兜底
+ *
+ * ⚠️ 性能设计（2026-10-15 重写）：
+ *   原来每次都去 fetch GitHub raw（跨境），实测 6-41 秒波动，
+ *   导致客户端「更新订阅」超时。
+ *
+ *   现在：
+ *     ① D1 缓存命中 → 直接返回（<100ms）
+ *     ② 未命中 → 并发竞速多个源（谁先成功用谁）
+ *     ③ 结果写回 D1（下次命中）
+ *
+ *   缓存 TTL：6 小时
+ *     dist 由 Actions 每 2 小时更新一次，6 小时 TTL 足够新鲜；
+ *     同时由 sub-refresh 每 15 分钟调 /admin/warm-dist 主动刷新，
+ *     保证用户请求永远命中缓存，不会去 GitHub 现拉。
+ */
+const DIST_CACHE_TTL = 6 * 3600;   // 秒（6 小时）
+let distTableEnsured = false;
+
+async function ensureDistTable(env: Env): Promise<boolean> {
+  if (!env.DB) return false;
+  if (distTableEnsured) return true;
+  try {
+    await env.DB.prepare(
+      `CREATE TABLE IF NOT EXISTS dist_cache (
+         path TEXT PRIMARY KEY,
+         body TEXT NOT NULL,
+         ts   INTEGER NOT NULL
+       )`,
+    ).run();
+    distTableEnsured = true;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** 从 D1 读缓存 */
+async function distCacheGet(env: Env, rel: string): Promise<string | null> {
+  if (!env.DB || !(await ensureDistTable(env))) return null;
+  try {
+    const row = await env.DB.prepare(
+      `SELECT body, ts FROM dist_cache WHERE path = ?`,
+    ).bind(rel).first() as { body?: string; ts?: number } | null;
+    if (row?.body) {
+      const age = (Date.now() - (row.ts || 0)) / 1000;
+      if (age < DIST_CACHE_TTL) return row.body;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+/** 写回 D1 缓存（不阻塞响应） */
+function distCachePut(env: Env, rel: string, body: string): Promise<void> {
+  if (!env.DB) return Promise.resolve();
+  return (async () => {
+    if (!(await ensureDistTable(env))) return;
+    await env.DB!.prepare(
+      `INSERT INTO dist_cache (path, body, ts) VALUES (?, ?, ?)
+       ON CONFLICT(path) DO UPDATE SET body=excluded.body, ts=excluded.ts`,
+    ).bind(rel, body, Date.now()).run();
+  })().catch(() => {});
+}
+
 async function fetchDist(env: Env, rel: string): Promise<Response> {
+  // ── ① D1 缓存命中 ──
+  const cached = await distCacheGet(env, rel);
+  if (cached !== null) {
+    return new Response(cached, {
+      status: 200,
+      headers: {
+        "content-type": guessType(rel),
+        "access-control-allow-origin": "*",
+        "cache-control": `public, max-age=${CACHE_TTL}`,
+        "x-source": "d1",
+      },
+    });
+  }
+
   const base = (env.RAW_BASE || "").replace(/\/+$/, "");
   if (!base) return new Response("RAW_BASE not configured", { status: 500 });
 
-  // 多 CDN 回退
+  // ── ② 回源：并发竞速（谁先成功用谁，避免串行等待慢 CDN）──
   const urls: string[] = [`${base}/${rel}`];
   const ghMatch = base.match(/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)/);
   if (ghMatch) {
     const [, user, repo, branch] = ghMatch;
-    urls.push(`https://cdn.jsdelivr.net/gh/${user}/${repo}@${branch}/${rel}`);
+    // ⚠️ 只用 fastly（jsdelivr 国内 30s 超时，已从竞速中移除）
     urls.push(`https://fastly.jsdelivr.net/gh/${user}/${repo}@${branch}/${rel}`);
   }
 
-  let lastErr = "";
-  for (const u of urls) {
+  const attempts = urls.map(async (u) => {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 8000);   // 8s 硬超时
     try {
-      const r = await fetch(u, { cf: { cacheTtl: CACHE_TTL } });
-      if (r.ok) {
-        const text = await r.text();
-        return new Response(text, {
-          status: 200,
-          headers: {
-            "content-type": r.headers.get("content-type") || "text/plain; charset=utf-8",
-            "access-control-allow-origin": "*",
-            "cache-control": `public, max-age=${CACHE_TTL}`,
-            "x-source": u.includes("jsdelivr") ? "cdn" : "raw",
-          },
-        });
-      }
-      lastErr = `HTTP ${r.status}`;
-    } catch (e) {
-      lastErr = e instanceof Error ? e.message : String(e);
+      const r = await fetch(u, {
+        cf: { cacheTtl: CACHE_TTL },
+        signal: ctl.signal,
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const text = await r.text();
+      if (!text) throw new Error("empty");
+      return { u, text };
+    } finally {
+      clearTimeout(timer);
     }
+  });
+
+  try {
+    // Promise.any：第一个成功的胜出
+    const win = await Promise.any(attempts);
+    // ③ 写回 D1（不阻塞）
+    void distCachePut(env, rel, win.text);
+    return new Response(win.text, {
+      status: 200,
+      headers: {
+        "content-type": guessType(rel),
+        "access-control-allow-origin": "*",
+        "cache-control": `public, max-age=${CACHE_TTL}`,
+        "x-source": win.u.includes("jsdelivr") ? "cdn" : "raw",
+      },
+    });
+  } catch (e) {
+    const msg = e instanceof AggregateError
+      ? e.errors.map(x => x?.message).join("; ")
+      : (e instanceof Error ? e.message : String(e));
+    return new Response(`fetch failed: ${msg}`, { status: 502 });
   }
-  return new Response(`fetch failed: ${lastErr}`, { status: 502 });
+}
+
+/** 按扩展名猜 content-type */
+function guessType(rel: string): string {
+  if (rel.endsWith(".json")) return "application/json; charset=utf-8";
+  if (rel.endsWith(".yaml") || rel.endsWith(".yml")) return "text/yaml; charset=utf-8";
+  return "text/plain; charset=utf-8";
 }
 
 async function isApiTokenRequest(req: Request, env: Env): Promise<boolean> {
