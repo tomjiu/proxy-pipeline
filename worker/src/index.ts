@@ -43,6 +43,7 @@ import { loginPage, dashboardPage } from "./ui";
 import { DEFAULT_TEMPLATE } from "./default-template";
 import { probeCFNodes, filterCFAlive, isCFNode, type CFProbeResult } from "./cf-probe";
 import { filterByScore, DEFAULT_FILTER, type FilterOptions } from "./scoring";
+import { verifyCN, warmCNCache } from "./cn-verify";
 
 const CACHE_TTL = 120;
 const GEN_CACHE_TTL = 300;   // 生成的订阅缓存 5 分钟
@@ -473,42 +474,80 @@ async function serveSubscription(env: Env, token: string, ext: string,
   }
 
   // ── 3.5 CN 连通性过滤（只保留中国实测可达的节点）──
-  // 数据来源：GitHub Actions 用 ip112.cn 双端 API 测出的 cn-alive.yaml
-  //   · 国内端 api.ycwxgzs.com + 国外端 api.52bwg.com 对比
-  //   · 判定规则：国内端口不可达 = 被墙，剔除
   //
-  // ⚠️ 用 server:port 匹配（不依赖节点名，因为订阅里的名字可能被重命名）
-  // ⚠️ 数据过期或为空时**不过滤**（避免全空）
-  let cnStats: { loaded: number; before: number; after: number } | null = null;
+  // ⚠️ 安全设计（关键）：
+  //   用户的私有节点【绝不离开 Worker】—— 不写文件、不上传仓库、不进日志。
+  //   只有「GitHub 抓取的公开节点」才会走 cn-alive.yaml 白名单。
+  //   用户源的节点用 Worker 内部实时验证（结果只缓存 server:port 的布尔值）。
+  //
+  // 三级策略：
+  //   ① KV 缓存命中      → 直接用（最快，0 网络请求）
+  //   ② 公开白名单命中    → 保留（GitHub 节点，Actions 已测）
+  //   ③ 都没命中         → Worker 内部调 ip112 实时验证（有数量上限）
+  let cnStats: {
+    loaded: number; before: number; after: number;
+    source: "whitelist" | "live" | "mixed";
+    probed?: number; cached?: number; blocked?: number;
+  } | null = null;
+
   if (cfg.cn_only === true && nodes.length) {
     try {
-      const res = await fetchDist(env, "clean/cn-alive.yaml");
-      if (res.ok) {
-        const yaml = await res.text();
-        const allowed = new Set<string>();
-        // 按块提取 server:port（不依赖节点名，避免重命名导致匹配失败）
-        const body = yaml.split(/^proxies:\s*$/m)[1] || "";
-        for (const ch of body.split(/^\s*- /m).slice(1)) {
-          const sv = ch.match(/^\s*server:\s*"?([^"\s,}]+)"?/m);
-          const pt = ch.match(/^\s*port:\s*"?(\d+)"?/m);
-          if (sv && pt) allowed.add(`${sv[1]}:${pt[1]}`);
-        }
-
-        if (allowed.size > 0) {
-          const before = nodes.length;
-          const kept = nodes.filter(n => allowed.has(`${n.server}:${n.port}`));
-          if (kept.length > 0) {
-            nodes = kept;
-            cnStats = { loaded: allowed.size, before, after: kept.length };
-            console.log(`[cn] ${before} -> ${kept.length} (CN whitelist ${allowed.size})`);
-          } else {
-            console.log(`[cn] no match (whitelist ${allowed.size}, nodes ${before}), keeping all`);
+      // ① 读公开白名单（GitHub 节点，Actions 测出的）
+      const allowed = new Set<string>();
+      try {
+        const res = await fetchDist(env, "clean/cn-alive.yaml");
+        if (res.ok) {
+          const yaml = await res.text();
+          const body = yaml.split(/^proxies:\s*$/m)[1] || "";
+          for (const ch of body.split(/^\s*- /m).slice(1)) {
+            const sv = ch.match(/^\s*server:\s*"?([^"\s,}]+)"?/m);
+            const pt = ch.match(/^\s*port:\s*"?(\d+)"?/m);
+            if (sv && pt) allowed.add(`${sv[1]}:${pt[1]}`);
           }
-        } else {
-          console.log("[cn] whitelist empty, skipping filter");
         }
+      } catch { /* 白名单不可用则只靠实时验证 */ }
+
+      const before = nodes.length;
+
+      // ② 白名单命中的直接保留，其余走 Worker 内部验证
+      const inWhitelist = nodes.filter(n => allowed.has(`${n.server}:${n.port}`));
+      const needVerify = nodes.filter(n => !allowed.has(`${n.server}:${n.port}`));
+
+      let liveAlive = new Set<string>();
+      let vr: { probed: number; cached: number; blocked: number } | null = null;
+
+      if (needVerify.length) {
+        // ③ Worker 内部验证（优先用 KV 缓存；首次会实时探测一部分）
+        const r = await verifyCN(needVerify, env, {
+          maxProbe: needVerify.length <= 20 ? needVerify.length : 10,
+        });
+        liveAlive = r.alive;
+        vr = { probed: r.probed, cached: r.cached, blocked: r.blocked };
+      }
+
+      const kept = [
+        ...inWhitelist,
+        ...needVerify.filter(n => liveAlive.has(`${n.server}:${n.port}`)),
+      ];
+
+      if (kept.length > 0) {
+        nodes = kept;
+        cnStats = {
+          loaded: allowed.size,
+          before,
+          after: kept.length,
+          source: inWhitelist.length && needVerify.length ? "mixed"
+                : inWhitelist.length ? "whitelist" : "live",
+          ...(vr || {}),
+        };
+        // ⚠️ 日志只记数量，不记 server/port（避免私有节点进公开日志）
+        console.log(
+          `[cn] ${before} -> ${kept.length} ` +
+          `(whitelist ${allowed.size}, live probed ${vr?.probed ?? 0}, ` +
+          `cached ${vr?.cached ?? 0}, blocked ${vr?.blocked ?? 0})`,
+        );
       } else {
-        console.log(`[cn] cn-alive.yaml fetch failed: HTTP ${res.status}`);
+        console.log(`[cn] no match (whitelist ${allowed.size}, nodes ${before}), keeping all`);
       }
     } catch (e) {
       console.error("[cn] filter failed:", e);
@@ -783,6 +822,59 @@ async function handlePublicApi(req: Request, env: Env,
     return json({ ok: true, service: "proxy-pipeline-worker",
                   kv: !!env.KV, auth: authRequired(env) });
   }
+
+  // ── CN 缓存预热（需 API_TOKEN）──
+  // 用途：立即填充 CN 验证缓存，让用户请求只读缓存（避免 CPU 超限）
+  // ⚠️ 安全：不返回任何节点信息，只返回数量统计
+  // ⚠️ 日志只记数量，不记 server/port
+  if (path === "/admin/warm-cn") {
+    if (!env.API_TOKEN) {
+      return json({ error: "API_TOKEN not configured" }, 503);
+    }
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+
+    const limit = Math.min(300, parseInt(new URL(req.url).searchParams.get("limit") || "100", 10) || 100);
+    // ⚠️ 不硬编码 token（会被提交到公开仓库）
+    //    必须通过 ?token= 传入，或用 SUB_TOKENS 环境变量
+    const token = new URL(req.url).searchParams.get("token")
+      || (env as any).WARM_TOKEN
+      || "";
+    if (!token) {
+      return json({ error: "missing ?token= parameter" }, 400);
+    }
+
+    try {
+      const cfg = await getSub(env, token);
+      if (!cfg) return json({ error: "subscription not found" }, 404);
+
+      const agg = await aggregate(cfg.sources);
+      // 只保留 TCP 协议（UDP 端口测不了）
+      const tcpNodes = agg.nodes.filter(
+        n => !["hysteria2", "hy2", "tuic"].includes(n.type.toLowerCase()),
+      );
+
+      const r = await warmCNCache(tcpNodes, env, { limit, concurrency: 4 });
+
+      // 只返回统计
+      return json({
+        ok: true,
+        sources: agg.results.length,
+        nodes_total: agg.nodes.length,
+        nodes_tcp: tcpNodes.length,
+        probed: r.probed,
+        alive: r.alive,
+        blocked: r.blocked,
+        cached_hits: r.cached,
+      });
+    } catch (e) {
+      console.error("[warm] failed:", e);
+      return json({ error: "warm failed" }, 500);
+    }
+  }
+
   if (path === "/meta") return withCors(await fetchDist(env, "online/meta.json"));
   if (path === "/pool/http") return withCors(await fetchDist(env, "online/http.txt"));
   if (path === "/pool/socks5") return withCors(await fetchDist(env, "online/socks5.txt"));
