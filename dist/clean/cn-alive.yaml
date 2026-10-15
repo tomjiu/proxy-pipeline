@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T09:15:26.818725+00:00
+# updated: 2026-10-15T09:56:10.890953+00:00
 # count: 12
 mixed-port: 7890
 allow-lan: false
@@ -145,15 +145,6 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1828129523-543"
-    type: "vless"
-    server: "77.221.157.213"
-    port: 10443
-    uuid: "1d006ad5-1de1-4520-a5f4-875dae1b0a5d"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "77.221.157.213"
   - name: "vmess-1827158699-661"
     type: "vmess"
     server: "cf.0sm.com"
@@ -167,6 +158,15 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1828129523-543"
+    type: "vless"
+    server: "77.221.157.213"
+    port: 10443
+    uuid: "1d006ad5-1de1-4520-a5f4-875dae1b0a5d"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "77.221.157.213"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -183,8 +183,8 @@ proxy-groups:
       - vless-1827622567-1853
       - vless-1828139041-1759
       - vless-1827533126-3017
-      - vless-1828129523-543
       - vmess-1827158699-661
+      - vless-1828129523-543
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -200,7 +200,7 @@ proxy-groups:
       - vless-1827622567-1853
       - vless-1828139041-1759
       - vless-1827533126-3017
-      - vless-1828129523-543
       - vmess-1827158699-661
+      - vless-1828129523-543
 rules:
   - MATCH,PROXY
