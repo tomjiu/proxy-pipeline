@@ -129,21 +129,30 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dist/clean
+
           if git diff --staged --quiet; then
             echo "No clean changes"
-          else
-            git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            for i in 1 2 3 4 5; do
-            echo "── push 尝试 $i ──"
+            exit 0
+          fi
+
+          git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          # dist/ 是机器生成数据，冲突时以本次为准
+          for i in 1 2 3 4 5; do
+            echo "push 尝试 $i"
             git fetch origin main
             if git rebase -X theirs origin/main 2>/dev/null; then
-              git push origin HEAD:main && { echo "✅ 推送成功"; exit 0; }
+              if git push origin HEAD:main; then
+                echo "推送成功"
+                exit 0
+              fi
             else
               git rebase --abort 2>/dev/null || true
             fi
             sleep 5
           done
-          echo "::warning::推送失败，下次补上"
+
+          echo "::warning::推送失败，等待下次运行"
           exit 0
 
       - name: Sync dist/clean to R2
