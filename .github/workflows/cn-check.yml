@@ -1,0 +1,100 @@
+name: cn-check
+
+# CN 连通性测活 —— 用 ip112.cn 的国内/国外双端 API
+#
+# 原理：
+#   国外端（api.52bwg.com）测目标端口
+#   国内端（api.ycwxgzs.com）测目标端口
+#   两者对比 → 判断是否被墙
+#
+# 为什么用这个而不是 ping.pe：
+#   ping.pe 需要浏览器 cookie + 有反爬，且只能测 TCP
+#   本 API 无混淆、无验证码、无限次，且专门做国内外对比
+#
+# 产出：dist/clean/cn-alive.yaml（仅 CN 可达节点）
+
+on:
+  schedule:
+    # 每 2 小时（GitHub 节点变化快）
+    - cron: "15 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "输入文件"
+        required: false
+        default: "dist/clean/clash.yaml"
+      workers:
+        description: "并发数"
+        required: false
+        default: "4"
+
+concurrency:
+  group: cn-check
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cn-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: CN 连通性测活
+        run: |
+          set -e
+          SRC="${{ inputs.source }}"
+          [ -z "$SRC" ] && SRC="dist/clean/clash.yaml"
+          if [ ! -f "$SRC" ]; then
+            echo "::error::输入文件不存在: $SRC"
+            exit 1
+          fi
+          echo "输入: $SRC"
+          grep -c '^  - name:' "$SRC" || echo 0
+
+          WORKERS="${{ inputs.workers }}"
+          [ -z "$WORKERS" ] && WORKERS=4
+
+          python scripts/online/cn_check.py \
+            --input "$SRC" \
+            --out dist/clean/cn-result.json \
+            --out-yaml dist/clean/cn-alive.yaml \
+            --workers "$WORKERS" \
+            --skip-udp
+
+      - name: Report
+        if: always()
+        run: |
+          echo "### CN 连通性测活" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python scripts/online/cn_report.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+          if git diff --staged --quiet; then
+            echo "无变化"
+          else
+            git commit -m "chore(cn): CN connectivity $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git fetch origin
+            git rebase origin/main || true
+            git push || echo "push failed (will retry next run)"
+          fi
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cn-result
+          path: dist/clean/cn-result.json
+          retention-days: 7

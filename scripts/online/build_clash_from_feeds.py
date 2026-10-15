@@ -6,6 +6,7 @@ Handles both `  - name:` and `    - name:` indent styles.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -16,7 +17,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import DIST_ONLINE, SOURCES, read_lines, write_text  # noqa: E402
 
 UA = "Mozilla/5.0 (compatible; proxy-pipeline-feeds/1.0)"
-MAX_PROXIES = 180
+
+# 上限（可用环境变量 MAX_PROXIES 覆盖；0 = 不限）
+#   默认 180：「少而精」，用于直接给客户端的 feeds
+#   全量场景：设为 0，把 nodes.txt 的几千个都转出来交给测活
+MAX_PROXIES = int(os.environ.get("MAX_PROXIES", "180"))
+
 TIMEOUT = 45
 
 SS_CIPHERS = {
@@ -298,7 +304,7 @@ def main() -> int:
             b = re.sub(r'(?m)^  - name:\s*"[^"]+"', f'  - name: "{n}"', b, count=1)
         blocks.append(b)
         names.append(n)
-        if len(blocks) >= MAX_PROXIES:
+        if MAX_PROXIES and len(blocks) >= MAX_PROXIES:
             break
 
     write_text(DIST_ONLINE / "clash.yaml", rebuild(blocks, names) if blocks else "proxies: []\n")

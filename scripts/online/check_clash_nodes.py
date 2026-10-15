@@ -133,12 +133,18 @@ def rebuild_yaml(alive_blocks: list[str], names: list[str]) -> str:
 
 
 def find_mihomo() -> str:
-    for cand in ("mihomo", str(ROOT / "bin" / "mihomo")):
-        if cand == "mihomo":
-            p = shutil.which(cand)
-            if p:
-                return p
-        elif Path(cand).exists():
+    """查找 mihomo（兼容 Windows 的 .exe 后缀）"""
+    candidates = [
+        "mihomo",
+        "mihomo.exe",
+        str(ROOT / "bin" / "mihomo"),
+        str(ROOT / "bin" / "mihomo.exe"),
+    ]
+    for cand in candidates:
+        p = shutil.which(cand)
+        if p:
+            return p
+        if Path(cand).exists():
             return cand
     raise SystemExit("mihomo not found")
 

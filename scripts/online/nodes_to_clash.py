@@ -8,11 +8,14 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
+import os
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import DIST_ONLINE, read_lines, write_text  # noqa: E402
 
-MAX_PROXIES = 200  # fallback only; primary path is build_clash_from_feeds
+# 上限（环境变量 MAX_PROXIES 可覆盖；0 = 不限）
+# fallback 路径用；主路径是 build_clash_from_feeds
+MAX_PROXIES = int(os.environ.get("MAX_PROXIES", "200"))
 
 # Only emit SS with known ciphers — garbage "F" / uuid-as-method breaks mobile Clash.
 SS_CIPHERS = {
@@ -325,14 +328,14 @@ def to_yaml(proxies: list[dict]) -> str:
     lines.append('  - name: "PROXY"')
     lines.append("    type: select")
     lines.append("    proxies:")
-    for n in names[:MAX_PROXIES]:
+    for n in (names if not MAX_PROXIES else names[:MAX_PROXIES]):
         lines.append(f"      - {dump_val(n)}")
     lines.append('  - name: "AUTO"')
     lines.append("    type: url-test")
     lines.append('    url: "http://www.gstatic.com/generate_204"')
     lines.append("    interval: 300")
     lines.append("    proxies:")
-    for n in names[: min(200, len(names))]:
+    for n in (names if not MAX_PROXIES else names[:MAX_PROXIES]):
         lines.append(f"      - {dump_val(n)}")
     lines.append("rules:")
     lines.append("  - GEOIP,CN,DIRECT")
@@ -380,7 +383,7 @@ def main() -> int:
     used_ep: set[str] = set()
     for t in order:
         for p in per_type.get(t, [])[: quotas.get(t, 50)]:
-            if len(proxies) >= MAX_PROXIES:
+            if MAX_PROXIES and len(proxies) >= MAX_PROXIES:
                 break
             ep = f"{p['type']}|{p.get('server')}|{p.get('port')}"
             if ep in used_ep:
@@ -390,7 +393,7 @@ def main() -> int:
             pp["name"] = _uniq_name(p["name"], seen_names)
             proxies.append(pp)
     for p in parsed:
-        if len(proxies) >= MAX_PROXIES:
+        if MAX_PROXIES and len(proxies) >= MAX_PROXIES:
             break
         ep = f"{p['type']}|{p.get('server')}|{p.get('port')}"
         if ep in used_ep:
