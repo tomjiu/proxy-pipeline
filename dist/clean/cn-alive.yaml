@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T11:39:02.994443+00:00
-# count: 11
+# updated: 2026-10-15T11:52:54.648017+00:00
+# count: 15
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -147,6 +147,60 @@ proxies:
     tls: false
     client-fingerprint: "chrome"
     servername: "77.221.157.213"
+  - name: "vmess-1827158699-654"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vmess-1827741481-650"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1828138087-1092"
+    type: "vless"
+    server: "zuoan.tranyoo888.com"
+    port: 443
+    uuid: "435feec2-0421-44b9-a8b0-60da252556c0"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "_XNcU39HOvqF8GXyfA8OAG-dp6ZMl9L10r6K646npHc"
+      short-id: "ce3dccc84e5bac0c"
+    servername: "www.mozilla.org"
+  - name: "vless-1828139045-1727"
+    type: "vless"
+    server: "uk2.oh-node.com"
+    port: 443
+    uuid: "7cfd34ae-edad-4cc5-9d6f-066f7add7829"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "QdYs12kmf0mAXNOEPgMpLN5dbZUlgvRK2zCqynOmqBk"
+      short-id: "20"
+    servername: "www.bp.com"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -164,6 +218,10 @@ proxy-groups:
       - vless-1827155284-2959
       - vless-1827662288-2947
       - vless-1828129523-538
+      - vmess-1827158699-654
+      - vmess-1827741481-650
+      - vless-1828138087-1092
+      - vless-1828139045-1727
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -180,5 +238,9 @@ proxy-groups:
       - vless-1827155284-2959
       - vless-1827662288-2947
       - vless-1828129523-538
+      - vmess-1827158699-654
+      - vmess-1827741481-650
+      - vless-1828138087-1092
+      - vless-1828139045-1727
 rules:
   - MATCH,PROXY
