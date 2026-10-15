@@ -161,6 +161,28 @@ async function pruneOld(env: CNEnv): Promise<void> {
   } catch { /* ignore */ }
 }
 
+/**
+ * 清空所有 CN 验证结果
+ *
+ * ⚠️ 使用场景：用户源是短效的，节点大换代后
+ *    旧结果会把新节点误判为「被墙」
+ */
+export async function resetCN(env: CNEnv): Promise<{ deleted: number }> {
+  if (!env.DB) return { deleted: 0 };
+  if (!(await ensureTable(env))) return { deleted: 0 };
+  try {
+    const before = await env.DB.prepare(
+      `SELECT COUNT(*) as n FROM cn_verify`).first();
+    const n = (before as { n?: number })?.n || 0;
+    await env.DB.prepare(`DELETE FROM cn_verify`).run();
+    console.log(`[cn] reset: deleted ${n} rows`);
+    return { deleted: n };
+  } catch (e) {
+    console.error("[cn] reset failed:", e instanceof Error ? e.message : String(e));
+    return { deleted: 0 };
+  }
+}
+
 /** 缓存 key（哈希，用于快照内的字段名混淆，防止直接读出 IP） */
 async function key(server: string, port: string): Promise<string> {
   const raw = `${server.toLowerCase()}:${port}`;
