@@ -59,14 +59,22 @@ jobs:
         run: |
           set -e
           mkdir -p bin
-          TAG=$(curl -fsSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest \
-                | python -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
-          echo "mihomo $TAG"
-          URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
-          curl -fsSL "$URL" -o /tmp/mihomo.gz
-          gunzip -c /tmp/mihomo.gz > bin/mihomo
-          chmod +x bin/mihomo
-          ./bin/mihomo -v || true
+          # ⚠️ 不用 api.github.com（Actions 里常 403 限流）
+          for TAG in v1.19.32 v1.19.29 v1.19.19 v1.19.11; do
+            URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
+            echo "尝试 $TAG ..."
+            if curl -fsSL --retry 2 --retry-delay 2 "$URL" -o /tmp/mihomo.gz 2>/dev/null; then
+              gunzip -c /tmp/mihomo.gz > bin/mihomo
+              chmod +x bin/mihomo
+              if ./bin/mihomo -v >/dev/null 2>&1; then
+                echo "✅ $TAG"
+                ./bin/mihomo -v
+                exit 0
+              fi
+            fi
+          done
+          echo "::error::mihomo 下载失败"
+          exit 1
 
       - name: Resolve mode
         id: mode
