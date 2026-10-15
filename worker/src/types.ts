@@ -157,27 +157,101 @@ function subCacheKey(token: string): string {
   return KV_PREFIX.cache + "sub:" + token;
 }
 
+/**
+ * 订阅缓存 —— D1 优先，KV 兜底
+ *
+ * ⚠️ 为什么改 D1：
+ *   KV 免费版写配额只有 1,000/天，订阅缓存每次生成都要写 → 很快耗尽。
+ *   配额耗尽后缓存永远 miss → 每个请求都重新聚合 5 个源（6-13 秒）
+ *   → 客户端「更新订阅」超时失败。
+ *
+ *   D1 免费版写 100,000 行/天（宽 100 倍），实测稳定。
+ *
+ * 表结构：
+ *   CREATE TABLE sub_cache (token TEXT PRIMARY KEY, body TEXT, ts INTEGER);
+ */
+let subTableEnsured = false;
+
+async function ensureSubTable(env: Env): Promise<boolean> {
+  if (!env.DB) return false;
+  if (subTableEnsured) return true;
+  try {
+    await env.DB.prepare(
+      `CREATE TABLE IF NOT EXISTS sub_cache (
+         token TEXT PRIMARY KEY,
+         body  TEXT NOT NULL,
+         ts    INTEGER NOT NULL
+       )`,
+    ).run();
+    subTableEnsured = true;
+    return true;
+  } catch (e) {
+    console.error("[cache] ensureSubTable failed:",
+                  e instanceof Error ? e.message : String(e));
+    return false;
+  }
+}
+
 export async function cacheGet(env: Env, token: string): Promise<string | null> {
-  if (!env.KV) return null;
-  return env.KV.get(subCacheKey(token), "text");
+  // ① D1 优先
+  if (env.DB && (await ensureSubTable(env))) {
+    try {
+      const row = await env.DB.prepare(
+        `SELECT body, ts FROM sub_cache WHERE token = ?`,
+      ).bind(token).first() as { body?: string; ts?: number } | null;
+      if (row?.body) {
+        // 检查 TTL（30 分钟 —— sub-refresh 每 15 分钟重新预热）
+        const age = (Date.now() - (row.ts || 0)) / 1000;
+        if (age < 1800) return row.body;
+      }
+    } catch { /* 落到 KV */ }
+  }
+  // ② KV 兜底
+  if (env.KV) {
+    try {
+      return await env.KV.get(subCacheKey(token), "text");
+    } catch { /* ignore */ }
+  }
+  return null;
 }
 
 export async function cachePut(env: Env, token: string, content: string,
                                ttl = 600): Promise<void> {
-  if (!env.KV) return;
-  // ⚠️ 不让配额错误冒泡（否则整个订阅请求 500）
-  //    KV 免费版写配额 1,000/天，耗尽时 put() 会抛错
-  try {
-    await env.KV.put(subCacheKey(token), content, { expirationTtl: ttl });
-  } catch (e) {
-    console.error("[cache] put failed (non-fatal):",
-                  e instanceof Error ? e.message : String(e));
+  // ① D1（主）
+  if (env.DB && (await ensureSubTable(env))) {
+    try {
+      await env.DB.prepare(
+        `INSERT INTO sub_cache (token, body, ts) VALUES (?, ?, ?)
+         ON CONFLICT(token) DO UPDATE SET body=excluded.body, ts=excluded.ts`,
+      ).bind(token, content, Date.now()).run();
+      // 顺便清理过期记录（>1 天）
+      if (Math.random() < 0.1) {
+        env.DB.prepare(`DELETE FROM sub_cache WHERE ts < ?`)
+          .bind(Date.now() - 86400000).run().catch(() => {});
+      }
+    } catch (e) {
+      console.error("[cache] D1 put failed:",
+                    e instanceof Error ? e.message : String(e));
+    }
+  }
+  // ② KV（备份，失败不影响）
+  if (env.KV) {
+    try {
+      await env.KV.put(subCacheKey(token), content, { expirationTtl: ttl });
+    } catch { /* 配额耗尽是常态，忽略 */ }
   }
 }
 
 export async function cacheClear(env: Env, token: string): Promise<void> {
+  // D1
+  if (env.DB) {
+    try {
+      await env.DB.prepare(`DELETE FROM sub_cache WHERE token = ?`)
+        .bind(token).run();
+    } catch { /* ignore */ }
+  }
+  // KV（含历史遗留 key）
   if (!env.KV) return;
-  // 同时清理历史遗留 key（旧版本用过多种命名）
   const keys = [
     subCacheKey(token),
     subCacheKey(token) + ":stats",
