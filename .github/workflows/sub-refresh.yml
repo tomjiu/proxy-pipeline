@@ -1,20 +1,30 @@
 name: sub-refresh
 
-# 订阅缓存预热 —— 勤更新，不测活
+# ═══════════════════════════════════════════════════════════════════
+#  订阅刷新 —— 更新源 → 验证 → 预热缓存
+# ═══════════════════════════════════════════════════════════════════
 #
-# 设计原则（2026-10 定稿）：
-#   1. 不测活 —— CF Worker 无 TCP API 测不准；Actions 测活需拉节点进仓库（会泄露）
-#      → 改为「勤更新 + 客户端 url-test 自动选优」
-#   2. 只预热缓存，不落任何节点数据到仓库
-#   3. 源失效时能及时发现
+#  设计原则（2026-10 定稿）：
+#    1. 用户源是【短效的】—— 批量死掉后更新链接就能复活
+#       → 测之前必须先从源重新拉一遍（不能用旧快照）
+#    2. 只预热缓存，不落任何节点数据到仓库
+#    3. 全流程在 Worker 内部 + Actions 私有环境，节点不泄露
 #
-# 触发频率：
-#   - 每 15 分钟（短效源变化快）
-#   - 也可手动触发
+#  ⚠️ 关键顺序（用户明确要求）：
+#       ① 刷新源（从上游重新拉取）
+#       ② 再验证（CN 端口测活）
+#       ③ 最后预热订阅缓存
+#     不能反过来 —— 否则测的是过期节点
+#
+#  触发频率：
+#    - 每 15 分钟（短效源变化快）
+#    - 也可手动触发
+#
+# ═══════════════════════════════════════════════════════════════════
 
 on:
   schedule:
-    # 每 15 分钟（GitHub Actions 免费额度对公开仓库无限制）
+    # 每 15 分钟（公开仓库 Actions 分钟数无限制）
     - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
@@ -26,6 +36,14 @@ on:
         options:
           - "true"
           - "false"
+      reset_cn:
+        description: "清空 CN 验证结果（节点大换代时用）"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 concurrency:
   group: sub-refresh
@@ -34,11 +52,51 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
-      - name: Warm CN cache
+      # ── ⓪ 清空 CN 验证（可选，节点大换代时用）──
+      - name: Reset CN verification
+        if: ${{ inputs.reset_cn == 'true' }}
         env:
-          # CN 预热需要 API_TOKEN（Worker 的 X-Api-Token）
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::未配置 API_TOKEN，跳过"
+            exit 0
+          fi
+          # 源节点大换代时，旧的验证结果会误杀新节点
+          curl -s -m 60 -X POST -H "X-Api-Token: $API_TOKEN" \
+            "$WORKER_BASE/admin/reset-cn" || true
+          echo "已请求清空 CN 验证结果"
+
+      # ── ① 刷新源（关键：先拉最新的）──
+      - name: ① Refresh sources
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+        run: |
+          set -e
+          if [ -z "$WORKER_BASE" ] || [ -z "$SUB_TOKENS" ]; then
+            echo "::notice::WORKER_BASE / SUB_TOKENS 未配置，跳过"
+            exit 0
+          fi
+
+          # 让 Worker 从上游重新拉取 5 个源（不带缓存）
+          # 这一步保证后续验证的是【最新节点】，而不是 15 分钟前的旧数据
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── 刷新 token: ${TOKEN:0:6}… ──"
+            RESP=$(curl -s -m 180 -H "X-Api-Token: $API_TOKEN" \
+              "$WORKER_BASE/admin/refresh-sources?token=$TOKEN" || echo '{}')
+            echo "  $RESP" | head -c 400
+            echo
+          done
+
+      # ── ② 验证（CN 端口测活，基于刚刷新的节点）──
+      - name: ② Warm CN cache
+        env:
           API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
           WORKER_BASE: ${{ vars.WORKER_BASE }}
           SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
