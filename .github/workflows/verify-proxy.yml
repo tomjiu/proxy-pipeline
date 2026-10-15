@@ -80,9 +80,11 @@ jobs:
                 gunzip -f mihomo.gz
                 chmod +x mihomo
                 mv mihomo bin/mihomo
-                echo "MIHOMO=$(pwd)/bin/mihomo" >> "$GITHUB_ENV"
                 echo "✅ 已安装: $TAG ($ARCH)"
                 ./bin/mihomo -v | head -2
+                # ⚠️ 两个变量都设（脚本会依次尝试 MIHOMO_BIN / MIHOMO）
+                echo "MIHOMO_BIN=$(pwd)/bin/mihomo" >> "$GITHUB_ENV"
+                echo "MIHOMO=$(pwd)/bin/mihomo" >> "$GITHUB_ENV"
                 exit 0
               fi
             done
@@ -90,6 +92,12 @@ jobs:
 
           echo "::error::mihomo 下载失败（所有版本组合都试过）"
           exit 1
+
+      - name: 确认核心可用
+        run: |
+          echo "MIHOMO_BIN=$MIHOMO_BIN"
+          ls -la bin/ || true
+          "$MIHOMO_BIN" -v | head -3
 
       - name: 确定输入
         id: src
@@ -128,12 +136,23 @@ jobs:
           RETRIES="${{ inputs.retries }}"
           [ -z "$RETRIES" ] && RETRIES=2
 
-          echo "输入:     ${{ steps.src.outputs.value }}"
-          echo "超时:     ${TIMEOUT}ms × ${RETRIES}"
+          SRC="${{ steps.src.outputs.value }}"
+          N=$(grep -c '^  - name:' "$SRC" 2>/dev/null || echo 0)
+
+          echo "输入: $SRC ($N 个节点)"
+          echo "超时: ${TIMEOUT}ms × ${RETRIES}"
           echo
 
+          if [ "$N" -eq 0 ]; then
+            echo "::warning::输入没有节点，跳过验证"
+            mkdir -p dist/clean
+            echo '{"total":0,"ok":0,"fail":0,"alive_rate":0,"ok_nodes":[],"fail_nodes":[]}' \
+              > dist/clean/proxy-verified.json
+            exit 0
+          fi
+
           python scripts/online/verify_proxy.py \
-            "${{ steps.src.outputs.value }}" \
+            "$SRC" \
             "$TIMEOUT" \
             --retries "$RETRIES" \
             --out dist/clean/proxy-verified.json \
