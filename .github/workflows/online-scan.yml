@@ -28,6 +28,7 @@ on:
   push:
     paths:
       - "sources/**"
+  # 注意：本工作流本身就是链条起点，不需要 workflow_run 依赖
       - "scripts/online/**"
       - ".github/workflows/online-scan.yml"
 

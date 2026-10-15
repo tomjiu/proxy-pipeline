@@ -2,21 +2,27 @@ name: cn-check
 
 # CN 连通性测活 —— 用 ip112.cn 的国内/国外双端 API
 #
-# 原理：
-#   国外端（api.52bwg.com）测目标端口
-#   国内端（api.ycwxgzs.com）测目标端口
-#   两者对比 → 判断是否被墙
+# 数据流（重要）：
+#   online-scan  → dist/online/clash.yaml   （原始抓取 + 转 Clash）
+#   check-nodes  → dist/clean/clash.yaml    （国外测活，筛掉死节点）
+#   cn-check     → dist/clean/cn-alive.yaml （CN 连通性，最终白名单）
 #
-# 为什么用这个而不是 ping.pe：
-#   ping.pe 需要浏览器 cookie + 有反爬，且只能测 TCP
-#   本 API 无混淆、无验证码、无限次，且专门做国内外对比
+# 触发方式：
+#   ① workflow_run：check-nodes 成功后自动跑（保证数据新鲜）
+#   ② 定时：每 2 小时兜底
+#   ③ 手动
 #
-# 产出：dist/clean/cn-alive.yaml（仅 CN 可达节点）
+# 为什么用 ip112 而不是 ping.pe：
+#   · ping.pe 需浏览器 cookie + 反爬
+#   · itdog 有 JS 混淆 + 验证码
+#   · ip112 无混淆、无验证码、无限次，且专做国内外对比
 
 on:
+  workflow_run:
+    workflows: ["check-nodes"]
+    types: [completed]
   schedule:
-    # 每 2 小时（GitHub 节点变化快）
-    - cron: "15 */2 * * *"
+    - cron: "25 */2 * * *"
   workflow_dispatch:
     inputs:
       source:
@@ -37,34 +43,55 @@ permissions:
 
 jobs:
   cn-check:
+    # workflow_run 触发时，只有上游成功才继续
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时要拿最新的 main（含上游刚提交的 dist）
+          ref: main
+          fetch-depth: 1
+
+      - name: 拉取最新 dist
+        run: |
+          git pull --rebase origin main || true
+          echo "最新提交: $(git log -1 --format='%h %s')"
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      - name: 确定输入
+        id: src
+        run: |
+          SRC="${{ inputs.source }}"
+          [ -z "$SRC" ] && SRC="dist/clean/clash.yaml"
+
+          if [ ! -f "$SRC" ]; then
+            echo "::warning::$SRC 不存在，尝试 dist/online/clash.yaml"
+            SRC="dist/online/clash.yaml"
+          fi
+          if [ ! -f "$SRC" ]; then
+            echo "::error::找不到输入文件"
+            exit 1
+          fi
+
+          N=$(grep -c '^  - name:' "$SRC" || echo 0)
+          echo "value=$SRC" >> "$GITHUB_OUTPUT"
+          echo "输入: $SRC ($N 个节点)"
+
       - name: CN 连通性测活
         run: |
           set -e
-          SRC="${{ inputs.source }}"
-          [ -z "$SRC" ] && SRC="dist/clean/clash.yaml"
-          if [ ! -f "$SRC" ]; then
-            echo "::error::输入文件不存在: $SRC"
-            exit 1
-          fi
-          echo "输入: $SRC"
-          grep -c '^  - name:' "$SRC" || echo 0
-
           WORKERS="${{ inputs.workers }}"
           [ -z "$WORKERS" ] && WORKERS=4
 
           python scripts/online/cn_check.py \
-            --input "$SRC" \
+            --input "${{ steps.src.outputs.value }}" \
             --out dist/clean/cn-result.json \
             --out-yaml dist/clean/cn-alive.yaml \
             --workers "$WORKERS" \
@@ -74,6 +101,9 @@ jobs:
         if: always()
         run: |
           echo "### CN 连通性测活" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 输入: \`${{ steps.src.outputs.value }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 触发: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           python scripts/online/cn_report.py >> $GITHUB_STEP_SUMMARY || true
 
@@ -86,9 +116,12 @@ jobs:
             echo "无变化"
           else
             git commit -m "chore(cn): CN connectivity $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git fetch origin
-            git rebase origin/main || true
-            git push || echo "push failed (will retry next run)"
+            for i in 1 2 3; do
+              git fetch origin
+              git rebase origin/main && git push && break
+              echo "push 失败，重试 $i"
+              sleep 5
+            done
           fi
 
       - name: Upload artifact

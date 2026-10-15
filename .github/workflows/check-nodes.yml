@@ -1,14 +1,24 @@
 name: check-nodes
 
-# Free GitHub Actions: mihomo delay-test on clash.yaml (hundreds of nodes).
-# - Daily FULL retest (UTC 03:27)
-# - Every 6h INCREMENTAL (new + previously dead only)
-# No CF/Vercel — they cannot do real protocol probes.
+# 国外（Actions）测活 —— 用 mihomo delay-test 筛掉死节点
+#
+# 数据流位置：
+#   online-scan  → dist/online/clash.yaml   （抓取 + 转 Clash）
+#   check-nodes  → dist/clean/clash.yaml    ← 本工作流
+#   cn-check     → dist/clean/cn-alive.yaml （CN 白名单）
+#
+# 触发：
+#   ① workflow_run：online-scan 成功后自动跑（保证数据新鲜）
+#   ② 定时：每天 full 一次 + 每 6 小时增量
+#   ③ 手动
 
 on:
+  workflow_run:
+    workflows: ["online-scan"]
+    types: [completed]
   schedule:
     - cron: "27 3 * * *"      # daily full
-    - cron: "40 */6 * * *"    # incremental-ish; script mode chosen below
+    - cron: "40 */6 * * *"    # incremental
   workflow_dispatch:
     inputs:
       mode:
@@ -34,6 +44,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时拿最新 main（含上游刚提交的 dist）
+          ref: main
+          fetch-depth: 1
+
+      - name: 拉取最新 dist
+        run: |
+          git pull --rebase origin main || true
+          echo "最新: $(git log -1 --format='%h %s')"
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -68,11 +87,15 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # 上游 online-scan 完成后触发 → 用 full 保证筛干净
+            echo "value=full" >> "$GITHUB_OUTPUT"
           elif [ "${{ github.event.schedule }}" = "27 3 * * *" ]; then
             echo "value=full" >> "$GITHUB_OUTPUT"
           else
             echo "value=incremental" >> "$GITHUB_OUTPUT"
           fi
+          echo "触发方式: ${{ github.event_name }}"
 
       - name: Ensure clash.yaml exists
         run: |
