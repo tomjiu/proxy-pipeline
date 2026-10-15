@@ -51,53 +51,114 @@ export interface CNVerifyResult {
 }
 
 /**
- * CN 验证缓存 —— 批量快照模式
+ * CN 验证结果存储 —— 用 D1（不是 KV）
  *
- * ⚠️ KV 配额（免费版 1000 写/天）：
- *   原来「每节点一次 put」→ 480 个节点 = 480 次写
- *   一次全量预热就烧掉近一半配额
+ * ⚠️ 为什么换 D1：
+ *   KV 免费版写配额只有 1,000/天，而预热需要频繁写入。
+ *   即使改成「整快照 1 次写」，仍受限于 KV 的配额池。
+ *   D1 免费版写 **100,000 行/天**（宽 100 倍），且支持 SQL 查询。
  *
- * 现在改为「整个结果集一个 key」：
- *   · 读：1 次 get → 反序列化成 Map（内存）
- *   · 写：1 次 put（整个快照）
- *   · 配额消耗：480 写 → 1 写
+ * 表结构（单表，一行一条记录）：
+ *   CREATE TABLE cn_verify (
+ *     hash    TEXT PRIMARY KEY,   -- sha256(server:port) 前 32 位
+ *     ok      INTEGER NOT NULL,   -- 1=可达 / 0=被墙
+ *     ts      INTEGER NOT NULL,   -- 验证时间戳
+ *     fails   INTEGER DEFAULT 0   -- 连续探测失败次数
+ *   );
  *
- * 快照格式：{ "server:port": 1|0, ... }  仅存布尔，无节点原始信息
- * （server:port 本身是公开信息，如 1.2.3.4:443，不构成泄露）
+ * ⚠️ 安全：只存哈希，不存 server/port 明文
  */
-const SNAPSHOT_KEY = "cnsnap:v1";
 
-interface CNSnapshot {
-  /** server:port → 1(可达) / 0(被墙) */
-  v: Record<string, 0 | 1>;
-  /** 更新时间戳 */
-  t: number;
-  /** 未知节点（探测失败的，下次重试） */
-  u?: Record<string, number>;
+/** 环境（含 D1 绑定） */
+export interface CNEnv {
+  DB?: D1Database;
+  KV?: KVNamespace;
 }
 
-/** 读取快照（1 次 KV get） */
-async function loadSnapshot(env: { KV?: KVNamespace }): Promise<CNSnapshot> {
-  if (!env.KV) return { v: {}, t: 0 };
+/** 确保表存在（幂等，每次调用代价很低） */
+let tableEnsured = false;
+async function ensureTable(env: CNEnv): Promise<boolean> {
+  if (!env.DB) return false;
+  if (tableEnsured) return true;
   try {
-    const raw = await env.KV.get(SNAPSHOT_KEY, "text");
-    if (!raw) return { v: {}, t: 0 };
-    const s = JSON.parse(raw) as CNSnapshot;
-    return { v: s.v || {}, t: s.t || 0, u: s.u || {} };
-  } catch {
-    return { v: {}, t: 0 };
+    await env.DB.prepare(
+      `CREATE TABLE IF NOT EXISTS cn_verify (
+         hash  TEXT PRIMARY KEY,
+         ok    INTEGER NOT NULL,
+         ts    INTEGER NOT NULL,
+         fails INTEGER DEFAULT 0
+       )`,
+    ).run();
+    tableEnsured = true;
+    return true;
+  } catch (e) {
+    console.error("[cn] ensureTable failed:", e instanceof Error ? e.message : String(e));
+    return false;
   }
 }
 
-/** 写快照（1 次 KV put） */
-async function saveSnapshot(
-  env: { KV?: KVNamespace },
-  snap: CNSnapshot,
+/** 批量查询验证结果（1 次 SQL） */
+async function loadResults(
+  env: CNEnv,
+  hashes: string[],
+): Promise<Map<string, { ok: boolean; fails: number }>> {
+  const out = new Map<string, { ok: boolean; fails: number }>();
+  if (!env.DB || !hashes.length) return out;
+  if (!(await ensureTable(env))) return out;
+
+  try {
+    // 分批 IN 查询（D1 参数上限约 100）
+    const CHUNK = 90;
+    for (let i = 0; i < hashes.length; i += CHUNK) {
+      const batch = hashes.slice(i, i + CHUNK);
+      const ph = batch.map(() => "?").join(",");
+      const rs = await env.DB.prepare(
+        `SELECT hash, ok, fails FROM cn_verify WHERE hash IN (${ph})`,
+      ).bind(...batch).all();
+      for (const r of (rs.results || []) as Array<{ hash: string; ok: number; fails: number }>) {
+        out.set(r.hash, { ok: r.ok === 1, fails: r.fails || 0 });
+      }
+    }
+  } catch (e) {
+    console.error("[cn] loadResults failed:", e instanceof Error ? e.message : String(e));
+  }
+  return out;
+}
+
+/** 批量写入验证结果（D1 batch，1 次往返） */
+async function saveResults(
+  env: CNEnv,
+  rows: Array<{ hash: string; ok: boolean; fails: number }>,
 ): Promise<void> {
-  if (!env.KV) return;
-  snap.t = Date.now();
-  await env.KV.put(SNAPSHOT_KEY, JSON.stringify(snap),
-                   { expirationTtl: CN_CACHE_TTL }).catch(() => {});
+  if (!env.DB || !rows.length) return;
+  if (!(await ensureTable(env))) return;
+
+  try {
+    const now = Date.now();
+    const stmt = env.DB.prepare(
+      `INSERT INTO cn_verify (hash, ok, ts, fails) VALUES (?, ?, ?, ?)
+       ON CONFLICT(hash) DO UPDATE SET ok=excluded.ok, ts=excluded.ts, fails=excluded.fails`,
+    );
+    // batch 上限 100 条
+    const CHUNK = 90;
+    for (let i = 0; i < rows.length; i += CHUNK) {
+      const batch = rows.slice(i, i + CHUNK).map(r =>
+        stmt.bind(r.hash, r.ok ? 1 : 0, now, r.fails),
+      );
+      await env.DB.batch(batch);
+    }
+  } catch (e) {
+    console.error("[cn] saveResults failed:", e instanceof Error ? e.message : String(e));
+  }
+}
+
+/** 清理过期记录（>7 天） */
+async function pruneOld(env: CNEnv): Promise<void> {
+  if (!env.DB) return;
+  try {
+    const cutoff = Date.now() - 7 * 24 * 3600 * 1000;
+    await env.DB.prepare(`DELETE FROM cn_verify WHERE ts < ?`).bind(cutoff).run();
+  } catch { /* ignore */ }
 }
 
 /** 缓存 key（哈希，用于快照内的字段名混淆，防止直接读出 IP） */
@@ -158,13 +219,17 @@ async function probeCN(server: string, port: string): Promise<ProbeVerdict> {
 }
 
 /**
- * 验证一批节点的 CN 连通性（快照模式）
+ * 验证一批节点的 CN 连通性（D1 存储）
  *
- * ⚠️ KV 配额：读 1 次快照 + 写 1 次快照（不是每节点一次）
+ * 流程：
+ *   ① 批量查 D1（1 次 SQL）
+ *   ② 缓存命中的直接用
+ *   ③ 未命中的实时探测（受 maxProbe 限制）
+ *   ④ 批量写 D1（1 次 batch）
  */
 export async function verifyCN(
   nodes: Array<{ server: string; port: string }>,
-  env: { KV?: KVNamespace },
+  env: CNEnv,
   opts: { maxProbe?: number; refresh?: boolean } = {},
 ): Promise<CNVerifyResult> {
   const alive = new Set<string>();
@@ -176,64 +241,74 @@ export async function verifyCN(
     const k = `${n.server}:${n.port}`;
     if (!uniq.has(k)) uniq.set(k, n);
   }
+  if (!uniq.size) {
+    return { alive, probed: 0, cached: 0, blocked: 0, unknown: 0 };
+  }
 
-  // ① 读快照（1 次 KV get）
-  const snap = opts.refresh ? { v: {}, t: 0 } as CNSnapshot : await loadSnapshot(env);
-  const hashes = await Promise.all(
-    Array.from(uniq.values()).map(n => key(n.server, n.port)),
+  // 算哈希
+  const entries = await Promise.all(
+    Array.from(uniq.entries()).map(async ([k, n]) => ({ k, n, h: await key(n.server, n.port) })),
   );
-  const hashList = Array.from(uniq.keys()).map((k, i) => [k, hashes[i]] as const);
 
-  let cached = 0, probed = 0, blocked = 0, unknown = 0;
-  const toProbe: Array<{ k: string; server: string; port: string; h: string }> = [];
+  // ① 批量查（1 次 SQL）
+  const known = opts.refresh
+    ? new Map<string, { ok: boolean; fails: number }>()
+    : await loadResults(env, entries.map(e => e.h));
 
-  // ② 查快照
-  for (const [k, h] of hashList) {
-    const n = uniq.get(k)!;
-    const hit = snap.v[h];
-    if (hit === 1) { alive.add(k); cached++; }
-    else if (hit === 0) { cached++; blocked++; }
-    else if (toProbe.length < maxProbe) toProbe.push({ k, h, ...n });
-    else unknown++;                       // 超过限额 → 未知（剔除）
+  let cached = 0, blocked = 0, unknown = 0;
+  const toProbe: typeof entries = [];
+
+  for (const e of entries) {
+    const hit = known.get(e.h);
+    if (hit) {
+      cached++;
+      if (hit.ok) alive.add(e.k);
+      else blocked++;
+    } else if (toProbe.length < maxProbe) {
+      toProbe.push(e);
+    } else {
+      unknown++;                    // 超过限额 → 未知（剔除）
+    }
   }
 
   if (!toProbe.length) {
-    return { alive, probed, cached, blocked, unknown };
+    return { alive, probed: 0, cached, blocked, unknown };
   }
 
-  // ③ 并发探测
+  // ③ 实时探测
+  const probed: Array<{ hash: string; ok: boolean; fails: number }> = [];
   const results = await Promise.all(
-    toProbe.map(async item => ({
-      ...item,
-      verdict: await probeCN(item.server, item.port),
-    })),
+    toProbe.map(async e => ({ ...e, verdict: await probeCN(e.n.server, e.n.port) })),
   );
 
-  // ④ 更新快照（内存）
-  const v = { ...snap.v };
-  const u = { ...(snap.u || {}) };
   for (const r of results) {
-    probed++;
-    if (r.verdict === true) { v[r.h] = 1; delete u[r.h]; alive.add(r.k); }
-    else if (r.verdict === false) { v[r.h] = 0; delete u[r.h]; blocked++; }
-    else { unknown++; u[r.h] = (u[r.h] || 0) + 1; }
+    const prevFails = known.get(r.h)?.fails ?? 0;
+    if (r.verdict === true) {
+      alive.add(r.k);
+      probed.push({ hash: r.h, ok: true, fails: 0 });
+    } else if (r.verdict === false) {
+      blocked++;
+      probed.push({ hash: r.h, ok: false, fails: 0 });
+    } else {
+      unknown++;
+      probed.push({ hash: r.h, ok: false, fails: Math.min(prevFails + 1, 99) });
+    }
   }
 
-  // ⑤ 写快照（1 次 KV put）
-  await saveSnapshot(env, { v, t: 0, u });
+  // ④ 批量写（1 次 batch）
+  await saveResults(env, probed);
 
-  return { alive, probed, cached, blocked, unknown };
+  return { alive, probed: probed.length, cached, blocked, unknown };
 }
 
 /**
- * 预热：批量验证并写快照（供定时任务调用）
+ * 预热：批量验证并写 D1
  *
  * ⚠️ 日志只输出数量，不输出 server/port
- * ⚠️ KV 消耗：整个预热只写 1 次
  */
 export async function warmCNCache(
   nodes: Array<{ server: string; port: string }>,
-  env: { KV?: KVNamespace },
+  env: CNEnv,
   opts: { limit?: number; concurrency?: number } = {},
 ): Promise<{ probed: number; alive: number; blocked: number; cached: number; unknown: number }> {
   const limit = opts.limit ?? 200;
@@ -245,47 +320,63 @@ export async function warmCNCache(
     const k = `${n.server}:${n.port}`;
     if (!uniq.has(k)) uniq.set(k, n);
   }
+  if (!uniq.size) {
+    return { probed: 0, alive: 0, blocked: 0, cached: 0, unknown: 0 };
+  }
 
-  // ① 读快照
-  const snap = await loadSnapshot(env);
-  const v = { ...snap.v };
-  const u = { ...(snap.u || {}) };
+  // 算哈希
+  const entries = await Promise.all(
+    Array.from(uniq.entries()).map(async ([k, n]) => ({ k, n, h: await key(n.server, n.port) })),
+  );
+
+  // ① 批量查
+  const known = await loadResults(env, entries.map(e => e.h));
 
   let cachedHits = 0, alive = 0, blocked = 0, unknown = 0;
-  const pending: Array<{ k: string; h: string; server: string; port: string }> = [];
+  const pending: typeof entries = [];
 
-  // ② 筛出未验证的
-  for (const [k, n] of uniq) {
-    const h = await key(n.server, n.port);
-    const hit = v[h];
-    if (hit === 1) { cachedHits++; alive++; continue; }
-    if (hit === 0) { cachedHits++; blocked++; continue; }
-    // 未知：失败次数 >= 3 就跳过（避免无限重试）
-    if ((u[h] || 0) >= 3) { cachedHits++; unknown++; continue; }
-    pending.push({ k, h, ...n });
+  for (const e of entries) {
+    const hit = known.get(e.h);
+    if (hit) {
+      cachedHits++;
+      if (hit.ok) alive++; else blocked++;
+      continue;
+    }
+    pending.push(e);
   }
 
   const items = pending.slice(0, limit);
-  let probed = 0;
+  const rows: Array<{ hash: string; ok: boolean; fails: number }> = [];
 
-  // ③ 分批探测
+  // ② 分批探测
   for (let i = 0; i < items.length; i += concurrency) {
     const batch = items.slice(i, i + concurrency);
-    const rs = await Promise.all(batch.map(async it => ({
-      ...it,
-      verdict: await probeCN(it.server, it.port),
+    const rs = await Promise.all(batch.map(async e => ({
+      ...e,
+      verdict: await probeCN(e.n.server, e.n.port),
     })));
 
     for (const r of rs) {
-      probed++;
-      if (r.verdict === true) { v[r.h] = 1; delete u[r.h]; alive++; }
-      else if (r.verdict === false) { v[r.h] = 0; delete u[r.h]; blocked++; }
-      else { u[r.h] = (u[r.h] || 0) + 1; unknown++; }
+      const prevFails = known.get(r.h)?.fails ?? 0;
+      if (r.verdict === true) {
+        alive++;
+        rows.push({ hash: r.h, ok: true, fails: 0 });
+      } else if (r.verdict === false) {
+        blocked++;
+        rows.push({ hash: r.h, ok: false, fails: 0 });
+      } else {
+        unknown++;
+        rows.push({ hash: r.h, ok: false, fails: Math.min(prevFails + 1, 99) });
+      }
     }
   }
 
-  // ④ 写快照（1 次）
-  if (items.length) await saveSnapshot(env, { v, t: 0, u });
+  // ③ 批量写
+  if (rows.length) {
+    await saveResults(env, rows);
+    // 偶尔清理过期记录
+    if (Math.random() < 0.05) await pruneOld(env);
+  }
 
-  return { probed, alive, blocked, cached: cachedHits, unknown };
+  return { probed: rows.length, alive, blocked, cached: cachedHits, unknown };
 }
