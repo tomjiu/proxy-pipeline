@@ -1,5 +1,5 @@
 {
- "at": "2026-10-15T17:34:16.271170+00:00",
+ "at": "2026-10-15T19:57:27.226147+00:00",
  "input": 70,
  "tested": 70,
  "cn_ok": 15,
@@ -13,7 +13,7 @@
   "vmess": 3,
   "trojan": 1
  },
- "elapsed_s": 102.1,
+ "elapsed_s": 103.1,
  "nodes": [
   {
    "name": "vless-1828405282-2182",
@@ -26,20 +26,43 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 2.0
+   "elapsed": 5.0
   },
   {
-   "name": "🇺🇸 美国 | USA 18-2186",
-   "type": "vless",
-   "server": "45.138.100.248",
-   "port": "14430",
-   "raw": "  - name: \"🇺🇸 美国 | USA 18-2186\"\n    type: \"vless\"\n    server: \"45.138.100.248\"\n    port: 14430\n    uuid: \"ae908ff5-f749-402c-af25-e6e9aef4d6bb\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"\n    servername: \"45.138.100.248\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/vless\"\n      headers:\n        Host: \"45.138.100.248\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.7
+   "name": "shadowsocks-1828124789-2303",
+   "type": "ss",
+   "server": "64.110.25.6",
+   "port": "14993",
+   "raw": "  - name: \"shadowsocks-1828124789-2303\"\n    type: \"ss\"\n    server: \"64.110.25.6\"\n    port: 14993\n    cipher: \"aes-128-gcm\"\n    password: \"5212bfef4cf2a6aaeda755d85c1aa744\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 7.2
+  },
+  {
+   "name": "vmess-1827158010-374",
+   "type": "vmess",
+   "server": "154.64.239.22",
+   "port": "26421",
+   "raw": "  - name: \"vmess-1827158010-374\"\n    type: \"vmess\"\n    server: \"154.64.239.22\"\n    port: 26421\n    uuid: \"9fa732d6-dcd6-47bb-c255-094bad71765d\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"none\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 7.2
+  },
+  {
+   "name": "vmess-1827160934-264",
+   "type": "vmess",
+   "server": "129.146.77.248",
+   "port": "39495",
+   "raw": "  - name: \"vmess-1827160934-264\"\n    type: \"vmess\"\n    server: \"129.146.77.248\"\n    port: 39495\n    uuid: \"f836c736-87fc-4fde-aabc-00857ecdff3e\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"ws\"\n    ws-opts:\n      path: \"/cctv13.m3u8\"\n      headers:\n        Host: \"129.146.77.248\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 7.2
   },
   {
    "name": "🇸🇬 新加坡 | SGP 2-2942",
@@ -52,43 +75,32 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.5
+   "elapsed": 1.4
   },
   {
-   "name": "vmess-1827158010-374",
-   "type": "vmess",
-   "server": "154.64.239.22",
-   "port": "26421",
-   "raw": "  - name: \"vmess-1827158010-374\"\n    type: \"vmess\"\n    server: \"154.64.239.22\"\n    port: 26421\n    uuid: \"9fa732d6-dcd6-47bb-c255-094bad71765d\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"none\"",
+   "name": "🇺🇸 美国 | USA 18-2186",
+   "type": "vless",
+   "server": "45.138.100.248",
+   "port": "14430",
+   "raw": "  - name: \"🇺🇸 美国 | USA 18-2186\"\n    type: \"vless\"\n    server: \"45.138.100.248\"\n    port: 14430\n    uuid: \"ae908ff5-f749-402c-af25-e6e9aef4d6bb\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"\n    servername: \"45.138.100.248\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/vless\"\n      headers:\n        Host: \"45.138.100.248\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 5.1
+  },
+  {
+   "name": "vless-1828141631-2496",
+   "type": "vless",
+   "server": "154.29.159.211",
+   "port": "26763",
+   "raw": "  - name: \"vless-1828141631-2496\"\n    type: \"vless\"\n    server: \"154.29.159.211\"\n    port: 26763\n    uuid: \"d3f0d021-6a98-43c1-ba26-b75bd0d145f0\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"9tgCHwsQFN0j6FaMsAeJN8TSD2qQFnX6JdTaEdp8TRU\"\n      short-id: \"b72b5eed\"\n    servername: \"apple.com\"",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 7.0
-  },
-  {
-   "name": "vmess-1827160934-264",
-   "type": "vmess",
-   "server": "129.146.77.248",
-   "port": "39495",
-   "raw": "  - name: \"vmess-1827160934-264\"\n    type: \"vmess\"\n    server: \"129.146.77.248\"\n    port: 39495\n    uuid: \"f836c736-87fc-4fde-aabc-00857ecdff3e\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"ws\"\n    ws-opts:\n      path: \"/cctv13.m3u8\"\n      headers:\n        Host: \"129.146.77.248\"",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 7.0
-  },
-  {
-   "name": "shadowsocks-1828124789-2303",
-   "type": "ss",
-   "server": "64.110.25.6",
-   "port": "14993",
-   "raw": "  - name: \"shadowsocks-1828124789-2303\"\n    type: \"ss\"\n    server: \"64.110.25.6\"\n    port: 14993\n    cipher: \"aes-128-gcm\"\n    password: \"5212bfef4cf2a6aaeda755d85c1aa744\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 7.0
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1828227588-2989",
@@ -96,18 +108,6 @@
    "server": "79.110.53.169",
    "port": "8080",
    "raw": "  - name: \"shadowsocks-1828227588-2989\"\n    type: \"ss\"\n    server: \"79.110.53.169\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.9
-  },
-  {
-   "name": "vless-1828293977-2460",
-   "type": "vless",
-   "server": "195.123.240.65",
-   "port": "443",
-   "raw": "  - name: \"vless-1828293977-2460\"\n    type: \"vless\"\n    server: \"195.123.240.65\"\n    port: 443\n    uuid: \"ce18d0eb-5c71-41f9-96e5-1632e22456e4\"\n    udp: true\n    tls: true\n    client-fingerprint: \"ios\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"StPbcmBuzpuYUfa4oZ5SI3Bq1OSF_-oU1vp2AcyvQVE\"\n      short-id: \"19296c9f1bf9c7b1\"\n    servername: \"www.cloudflare.com\"",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -127,18 +127,6 @@
    "elapsed": 6.9
   },
   {
-   "name": "vless-1828141631-2496",
-   "type": "vless",
-   "server": "154.29.159.211",
-   "port": "26763",
-   "raw": "  - name: \"vless-1828141631-2496\"\n    type: \"vless\"\n    server: \"154.29.159.211\"\n    port: 26763\n    uuid: \"d3f0d021-6a98-43c1-ba26-b75bd0d145f0\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"9tgCHwsQFN0j6FaMsAeJN8TSD2qQFnX6JdTaEdp8TRU\"\n      short-id: \"b72b5eed\"\n    servername: \"apple.com\"",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.9
-  },
-  {
    "name": "vless-1827155284-2956",
    "type": "vless",
    "server": "172.64.144.82",
@@ -149,7 +137,19 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.5
+   "elapsed": 1.4
+  },
+  {
+   "name": "vless-1828293977-2460",
+   "type": "vless",
+   "server": "195.123.240.65",
+   "port": "443",
+   "raw": "  - name: \"vless-1828293977-2460\"\n    type: \"vless\"\n    server: \"195.123.240.65\"\n    port: 443\n    uuid: \"ce18d0eb-5c71-41f9-96e5-1632e22456e4\"\n    udp: true\n    tls: true\n    client-fingerprint: \"ios\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"StPbcmBuzpuYUfa4oZ5SI3Bq1OSF_-oU1vp2AcyvQVE\"\n      short-id: \"19296c9f1bf9c7b1\"\n    servername: \"www.cloudflare.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.9
   },
   {
    "name": "🇨🇦 加拿大 | CAN 2-2401",
@@ -162,20 +162,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.9
-  },
-  {
-   "name": "vless-1827662288-2950",
-   "type": "vless",
-   "server": "104.18.43.174",
-   "port": "443",
-   "raw": "  - name: \"vless-1827662288-2950\"\n    type: \"vless\"\n    server: \"104.18.43.174\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.2
+   "elapsed": 1.7
   },
   {
    "name": "🇨🇦 加拿大 | CAN 1-2399",
@@ -188,7 +175,44 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
+   "elapsed": 1.8
+  },
+  {
+   "name": "vless-1827662288-2950",
+   "type": "vless",
+   "server": "104.18.43.174",
+   "port": "443",
+   "raw": "  - name: \"vless-1827662288-2950\"\n    type: \"vless\"\n    server: \"104.18.43.174\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
    "elapsed": 1.7
+  },
+  {
+   "name": "shadowsocks-1827146375-2351",
+   "type": "ss",
+   "server": "173.244.56.6",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146375-2351\"\n    type: \"ss\"\n    server: \"173.244.56.6\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.8
+  },
+  {
+   "name": "shadowsocks-1827146667-2353",
+   "type": "ss",
+   "server": "173.244.56.9",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146667-2353\"\n    type: \"ss\"\n    server: \"173.244.56.9\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.8
   },
   {
    "name": "vless-1828142544-2964",
@@ -201,19 +225,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
-  },
-  {
-   "name": "shadowsocks-1827146375-2351",
-   "type": "ss",
-   "server": "173.244.56.6",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146375-2351\"\n    type: \"ss\"\n    server: \"173.244.56.6\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 1.8
   },
   {
    "name": "vless-1828142572-2948",
@@ -226,19 +238,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.8
-  },
-  {
-   "name": "shadowsocks-1827146667-2353",
-   "type": "ss",
-   "server": "173.244.56.9",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146667-2353\"\n    type: \"ss\"\n    server: \"173.244.56.9\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 1.7
   },
   {
    "name": "shadowsocks-1827146556-2339",
@@ -250,7 +250,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827146549-2345",
@@ -262,7 +262,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827155553-2962",
@@ -275,7 +275,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.8
+   "elapsed": 1.2
   },
   {
    "name": "shadowsocks-1827146815-2341",
@@ -287,7 +287,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.9
   },
   {
    "name": "shadowsocks-1827146131-2343",
@@ -299,7 +299,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.8
   },
   {
    "name": "vmess-1827160914-424",
@@ -311,7 +311,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.9
   },
   {
    "name": "vmess-1827158680-534",
@@ -336,7 +336,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827963904-2969",
@@ -348,7 +348,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 7.1
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1827146224-2337",
@@ -360,7 +360,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 7.1
+   "elapsed": 6.6
   },
   {
    "name": "🇺🇸 美国 | USA 11-794",
@@ -373,7 +373,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 1.5
   },
   {
    "name": "vless-1827533126-2954",
@@ -386,7 +386,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.9
+   "elapsed": 1.8
   },
   {
    "name": "vless-1827151238-909",
@@ -398,7 +398,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.8
   },
   {
    "name": "vmess-1827158788-479",
@@ -410,7 +410,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 7.1
   },
   {
    "name": "shadowsocks-1827147700-2967",
@@ -434,7 +434,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.9
   },
   {
    "name": "shadowsocks-1827146248-2355",
@@ -446,7 +446,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 7.2
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827146742-2361",
@@ -470,7 +470,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 7.2
   },
   {
    "name": "shadowsocks-1827146051-2359",
@@ -482,7 +482,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1828294004-939",
@@ -494,7 +494,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vmess-1827158341-289",
@@ -506,7 +506,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827156461-3208",
@@ -514,6 +514,18 @@
    "server": "147.45.60.160",
    "port": "8444",
    "raw": "  - name: \"vless-1827156461-3208\"\n    type: \"vless\"\n    server: \"147.45.60.160\"\n    port: 8444\n    uuid: \"f55e9aba-7b14-4f6f-b59a-d5b3d45c9309\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    reality-opts:\n      public-key: \"FWitre1jinQR7qz5HQ0q2Q4Gg9xA9B0SyizCziN7Ch0\"\n      short-id: \"\"\n    servername: \"github.com\"\n    network: \"grpc\"\n    grpc-opts:\n      grpc-service-name: \"GunService\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827147479-2963",
+   "type": "ss",
+   "server": "137.184.174.93",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827147479-2963\"\n    type: \"ss\"\n    server: \"137.184.174.93\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -531,19 +543,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.6
-  },
-  {
-   "name": "shadowsocks-1827147479-2963",
-   "type": "ss",
-   "server": "137.184.174.93",
-   "port": "8080",
-   "raw": "  - name: \"shadowsocks-1827147479-2963\"\n    type: \"ss\"\n    server: \"137.184.174.93\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 2.3
   },
   {
    "name": "vless-1828293798-2414",
@@ -555,7 +555,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827150021-488",
@@ -567,7 +567,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.9
   },
   {
    "name": "shadowsocks-1827964140-2965",
@@ -579,7 +579,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827155230-2424",
@@ -591,7 +591,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.8
   },
   {
    "name": "vless-1827149864-363",
@@ -603,7 +603,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827149751-613",
@@ -615,7 +615,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "trojan-1827955817-1268",
@@ -627,7 +627,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827150175-343",
@@ -639,7 +639,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827533195-2520",
@@ -664,7 +664,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.5
   },
   {
    "name": "vless-1827147111-2618",
@@ -676,7 +676,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 7.1
+   "elapsed": 7.0
   },
   {
    "name": "vless-1827267301-2756",
@@ -688,7 +688,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827154079-2368",
@@ -700,7 +700,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1828372617-2728",
@@ -712,7 +712,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827148772-3",
@@ -724,7 +724,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827155453-2638",
@@ -736,7 +736,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827146197-2331",
@@ -748,7 +748,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827146270-2333",
@@ -760,7 +760,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.9
   },
   {
    "name": "shadowsocks-1827146287-2335",
@@ -772,7 +772,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "vless-1827149662-48",
@@ -784,7 +784,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 7.1
   },
   {
    "name": "vless-1827148936-53",
@@ -796,7 +796,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.8
   },
   {
    "name": "vless-1827533233-2628",
@@ -820,7 +820,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827147237-2660",
@@ -832,7 +832,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827963919-2973",
@@ -856,7 +856,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827153691-1948",
@@ -868,7 +868,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.6
   }
  ]
 }
