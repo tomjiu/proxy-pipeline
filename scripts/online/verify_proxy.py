@@ -74,9 +74,11 @@ MIHOMO_RELEASES = [
 
 def find_core() -> str:
     """找 mihomo 核心"""
-    env = os.environ.get("MIHOMO_BIN")
-    if env and Path(env).exists():
-        return env
+    # 环境变量优先（CI 里用 MIHOMO_BIN 指向下载的核心）
+    for var in ("MIHOMO_BIN", "MIHOMO"):
+        env = os.environ.get(var)
+        if env and Path(env).exists():
+            return env
 
     if IS_WIN:
         cands = [
@@ -84,8 +86,12 @@ def find_core() -> str:
             r"C:\Program Files\Clash Verge\verge-mihomo-alpha.exe",
         ]
     else:
-        cands = ["/usr/local/bin/mihomo", "/usr/bin/mihomo",
-                 "./mihomo", str(Path.cwd() / "mihomo")]
+        cands = [
+            "/usr/local/bin/mihomo", "/usr/bin/mihomo",
+            "./mihomo", "./bin/mihomo",
+            str(Path.cwd() / "mihomo"),
+            str(Path.cwd() / "bin" / "mihomo"),
+        ]
 
     for c in cands:
         if Path(c).exists():
@@ -97,7 +103,7 @@ def find_core() -> str:
             return p
 
     raise SystemExit(
-        f"找不到 mihomo 核心。设置 MIHOMO_BIN，或用 install_mihomo() 下载。\n试过: {cands}")
+        f"找不到 mihomo 核心。设置 MIHOMO_BIN 环境变量。\n试过: {cands}")
 
 
 def install_mihomo(dest: Path) -> str:
