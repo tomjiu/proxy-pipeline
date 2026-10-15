@@ -405,19 +405,52 @@ rules:
   - DOMAIN-SUFFIX,windhub.cc,DIRECT
 
   # ==========================================
-  # Steam 规则 (社区代理，下载直连)
+  # Steam 规则
+  #   社区 / 商店 / 好友 / 聊天  → 代理（被墙）
+  #   游戏下载 / CDN / 更新      → 直连（国内有节点，直连更快）
   # ==========================================
-  # 需要代理的内容 (社区、商店、API)
+
+  # ── 下载 CDN 直连（必须放在代理规则之前）──
+  # 这些域名承载游戏本体、更新包、创意工坊内容
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com.cn,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,DIRECT
+  - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.tm,DIRECT
+  - DOMAIN-SUFFIX,edge.steam-dns.top,DIRECT
+  - DOMAIN-SUFFIX,csgo.wmsj.cn,DIRECT
+  - DOMAIN-SUFFIX,dota2.wmsj.cn,DIRECT
+  - DOMAIN-SUFFIX,dl.steam.clngaa.com,DIRECT
+  - DOMAIN-SUFFIX,steam.apac.qtlglb.com,DIRECT
+  - DOMAIN-SUFFIX,st.dl.eccdnx.com,DIRECT
+  - DOMAIN-SUFFIX,st.dl.bscstorage.net,DIRECT
+  - DOMAIN-KEYWORD,steamcontent,DIRECT
+  # 下载相关进程
+  - PROCESS-NAME,steam.exe,DIRECT
+  - PROCESS-NAME,steamwebhelper.exe,DIRECT
+
+  # ── 社区 / 商店 / API 走代理 ──
   - DOMAIN-SUFFIX,steamcommunity.com,{{PROXY}}
   - DOMAIN-SUFFIX,steampowered.com,{{PROXY}}
   - DOMAIN-SUFFIX,steam-chat.com,{{PROXY}}
   - DOMAIN-SUFFIX,steamgames.com,{{PROXY}}
   - DOMAIN-SUFFIX,steamusercontent.com,{{PROXY}}
   - DOMAIN-SUFFIX,steam-api.com,{{PROXY}}
-  # 需要直连的内容 (下载 CDN)
-  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
-  - DOMAIN-SUFFIX,steamserver.net,DIRECT
-  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,steam.tv,{{PROXY}}
+  - DOMAIN-SUFFIX,steamdeck.com,{{PROXY}}
+  - DOMAIN-SUFFIX,valvesoftware.com,{{PROXY}}
+  - DOMAIN-SUFFIX,s.team,{{PROXY}}
+  - DOMAIN-SUFFIX,cdn.steamstatic.com,{{PROXY}}
+  - DOMAIN-KEYWORD,steamcommunity,{{PROXY}}
+  - DOMAIN-KEYWORD,steampowered,{{PROXY}}
+  # Epic / 其他游戏平台商店（同样被墙）
+  - DOMAIN-SUFFIX,epicgames.com,{{PROXY}}
+  - DOMAIN-SUFFIX,epicgames.dev,{{PROXY}}
+  - DOMAIN-SUFFIX,unrealengine.com,{{PROXY}}
+  - DOMAIN-SUFFIX,gog.com,{{PROXY}}
+  - DOMAIN-SUFFIX,gogalaxy.com,{{PROXY}}
 
   # ==========================================
   # 卡巴斯基安全网络 (KSN) 直连
@@ -450,6 +483,301 @@ rules:
   - DOMAIN-SUFFIX,spotify.map.fastly.net,DIRECT
 
   # ==========================================
+  # 国内 IM / 办公协作 —— 全部直连
+  #   QQ / 微信 / 企业微信 / TIM
+  #   飞书 / Lark / 钉钉 / 腾讯会议
+  #   ⚠️ 这些服务国内有完整节点，走代理反而更慢且易触发风控
+  # ==========================================
+
+  # ── 腾讯系（QQ / 微信 / TIM）──
+  - DOMAIN-SUFFIX,qq.com,DIRECT
+  - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
+  - DOMAIN-SUFFIX,wechat.com,DIRECT
+  - DOMAIN-SUFFIX,wx.qq.com,DIRECT
+  - DOMAIN-SUFFIX,tenpay.com,DIRECT
+  - DOMAIN-SUFFIX,gtimg.com,DIRECT
+  - DOMAIN-SUFFIX,gtimg.cn,DIRECT
+  - DOMAIN-SUFFIX,idqqimg.com,DIRECT
+  - DOMAIN-SUFFIX,qpic.cn,DIRECT
+  - DOMAIN-SUFFIX,qlogo.cn,DIRECT
+  - DOMAIN-SUFFIX,qzonestyle.gtimg.cn,DIRECT
+  - DOMAIN-SUFFIX,url.cn,DIRECT
+  - DOMAIN-SUFFIX,weixinbridge.com,DIRECT
+  - DOMAIN-SUFFIX,wechatpay.cn,DIRECT
+  - DOMAIN-SUFFIX,tencent-cloud.net,DIRECT
+  - DOMAIN-SUFFIX,myqcloud.com,DIRECT
+  - DOMAIN-KEYWORD,wechat,DIRECT
+  - DOMAIN-KEYWORD,weixin,DIRECT
+  # 腾讯系进程
+  - PROCESS-NAME,QQ.exe,DIRECT
+  - PROCESS-NAME,QQProtect.exe,DIRECT
+  - PROCESS-NAME,QQMusic.exe,DIRECT
+  - PROCESS-NAME,TIM.exe,DIRECT
+  - PROCESS-NAME,WeChat.exe,DIRECT
+  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
+  - PROCESS-NAME,WeChatOCR.exe,DIRECT
+  - PROCESS-NAME,wxwork.exe,DIRECT
+  - PROCESS-NAME,WXWork.exe,DIRECT
+  # 腾讯系 IP 段
+  - IP-CIDR,119.28.0.0/15,DIRECT,no-resolve
+  - IP-CIDR,119.29.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,129.28.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,162.14.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,175.24.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,203.205.128.0/17,DIRECT,no-resolve
+
+  # ── 飞书 / Lark（字节跳动）──
+  - DOMAIN-SUFFIX,feishu.cn,DIRECT
+  - DOMAIN-SUFFIX,feishu.net,DIRECT
+  - DOMAIN-SUFFIX,larksuite.com,DIRECT
+  - DOMAIN-SUFFIX,larkoffice.com,DIRECT
+  - DOMAIN-SUFFIX,larkcloud.com,DIRECT
+  - DOMAIN-SUFFIX,feishucdn.com,DIRECT
+  - DOMAIN-SUFFIX,feishuapi.com,DIRECT
+  - DOMAIN-SUFFIX,bytedance.com,DIRECT
+  - DOMAIN-SUFFIX,bytednsdoc.com,DIRECT
+  - DOMAIN-SUFFIX,byteimg.com,DIRECT
+  - DOMAIN-SUFFIX,snssdk.com,DIRECT
+  - DOMAIN-SUFFIX,toutiao.com,DIRECT
+  - DOMAIN-SUFFIX,zijieapi.com,DIRECT
+  - DOMAIN-SUFFIX,volces.com,DIRECT
+  - DOMAIN-SUFFIX,volcengine.com,DIRECT
+  - DOMAIN-SUFFIX,pstatp.com,DIRECT
+  - DOMAIN-KEYWORD,feishu,DIRECT
+  - DOMAIN-KEYWORD,larksuite,DIRECT
+  # 飞书进程
+  - PROCESS-NAME,Feishu.exe,DIRECT
+  - PROCESS-NAME,Lark.exe,DIRECT
+  - PROCESS-NAME,bytedance.exe,DIRECT
+  # 字节 IP 段
+  - IP-CIDR,110.249.192.0/18,DIRECT,no-resolve
+  - IP-CIDR,111.225.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,118.184.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,180.184.0.0/16,DIRECT,no-resolve
+
+  # ── 钉钉（阿里系）──
+  - DOMAIN-SUFFIX,dingtalk.com,DIRECT
+  - DOMAIN-SUFFIX,dingtalk.cn,DIRECT
+  - DOMAIN-SUFFIX,dingtalkapps.com,DIRECT
+  - DOMAIN-SUFFIX,alibabadingtalk.com,DIRECT
+  - DOMAIN-SUFFIX,aliwork.com,DIRECT
+  - DOMAIN-SUFFIX,alipay.com,DIRECT
+  - DOMAIN-SUFFIX,alipayobjects.com,DIRECT
+  - DOMAIN-SUFFIX,aliyun.com,DIRECT
+  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
+  - DOMAIN-SUFFIX,alicdn.com,DIRECT
+  - DOMAIN-SUFFIX,alibaba.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+  - DOMAIN-KEYWORD,dingtalk,DIRECT
+  - DOMAIN-KEYWORD,alipay,DIRECT
+  # 钉钉进程
+  - PROCESS-NAME,DingTalk.exe,DIRECT
+  - PROCESS-NAME,AliWork.exe,DIRECT
+  - PROCESS-NAME,Alipay.exe,DIRECT
+  # 阿里 IP 段
+  - IP-CIDR,203.119.128.0/17,DIRECT,no-resolve
+  - IP-CIDR,42.120.0.0/15,DIRECT,no-resolve
+
+  # ── 腾讯会议 / 其他国内办公 ──
+  - DOMAIN-SUFFIX,meeting.tencent.com,DIRECT
+  - DOMAIN-SUFFIX,voovmeeting.com,DIRECT
+  - DOMAIN-SUFFIX,wemeet.com,DIRECT
+  - DOMAIN-SUFFIX,work.weixin.qq.com,DIRECT
+  - PROCESS-NAME,wemeetapp.exe,DIRECT
+
+  # ==========================================
+  # 国内视频 / 下载站 —— 全部直连
+  #   百度系（含网盘）/ 迅雷 / 爱奇艺 / 腾讯视频
+  #   优酷 / B站 / 芒果TV / 抖音 / 快手
+  #   ⚠️ 这些站点国内 CDN 完善，走代理不仅慢还会被风控
+  # ==========================================
+
+  # ── 百度系（含百度网盘）──
+  - DOMAIN-SUFFIX,baidu.com,DIRECT
+  - DOMAIN-SUFFIX,baidubce.com,DIRECT
+  - DOMAIN-SUFFIX,baidupcs.com,DIRECT
+  - DOMAIN-SUFFIX,baidustatic.com,DIRECT
+  - DOMAIN-SUFFIX,bcebos.com,DIRECT
+  - DOMAIN-SUFFIX,bdimg.com,DIRECT
+  - DOMAIN-SUFFIX,bdstatic.com,DIRECT
+  - DOMAIN-SUFFIX,bdurl.cn,DIRECT
+  - DOMAIN-SUFFIX,pan.baidu.com,DIRECT
+  - DOMAIN-SUFFIX,yun.baidu.com,DIRECT
+  - DOMAIN-SUFFIX,pan.bdurl.cn,DIRECT
+  - DOMAIN-SUFFIX,baiducontent.com,DIRECT
+  - DOMAIN-SUFFIX,baidupan.com,DIRECT
+  - DOMAIN-SUFFIX,hao123.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,iq.com,DIRECT
+  - DOMAIN-SUFFIX,qiyi.com,DIRECT
+  - DOMAIN-SUFFIX,pps.tv,DIRECT
+  - DOMAIN-SUFFIX,qiyipic.com,DIRECT
+  - DOMAIN-SUFFIX,71.am,DIRECT
+  - DOMAIN-KEYWORD,baidu,DIRECT
+  - DOMAIN-KEYWORD,baidupcs,DIRECT
+  # 百度进程
+  - PROCESS-NAME,BaiduNetdisk.exe,DIRECT
+  - PROCESS-NAME,BaiduNetdiskHost.exe,DIRECT
+  - PROCESS-NAME,baidunetdiskhost.exe,DIRECT
+  - PROCESS-NAME,BaiduAn.exe,DIRECT
+  - PROCESS-NAME,iQIYI.exe,DIRECT
+  - PROCESS-NAME,QiyiPlayer.exe,DIRECT
+
+  # ── 迅雷 ──
+  - DOMAIN-SUFFIX,xunlei.com,DIRECT
+  - DOMAIN-SUFFIX,xunlei.cn,DIRECT
+  - DOMAIN-SUFFIX,xlpan.com,DIRECT
+  - DOMAIN-SUFFIX,xunleixf.com,DIRECT
+  - DOMAIN-SUFFIX,thundercdn.com,DIRECT
+  - DOMAIN-KEYWORD,xunlei,DIRECT
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,ThunderPlatform.exe,DIRECT
+  - PROCESS-NAME,XLService.exe,DIRECT
+  - PROCESS-NAME,DownloadSDKServer.exe,DIRECT
+
+  # ── 腾讯视频 ──
+  - DOMAIN-SUFFIX,v.qq.com,DIRECT
+  - DOMAIN-SUFFIX,video.qq.com,DIRECT
+  - DOMAIN-SUFFIX,qqvideo.tc.qq.com,DIRECT
+  - DOMAIN-SUFFIX,vurl.qq.com,DIRECT
+  - DOMAIN-SUFFIX,tencentvideo.com,DIRECT
+  - DOMAIN-SUFFIX,tencentmusic.com,DIRECT
+  - DOMAIN-SUFFIX,y.qq.com,DIRECT
+  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,music.qq.com,DIRECT
+  - DOMAIN-KEYWORD,tencentvideo,DIRECT
+  - PROCESS-NAME,Tenvideo.exe,DIRECT
+
+  # ── 优酷 / 土豆 ──
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  - DOMAIN-SUFFIX,youku.tv,DIRECT
+  - DOMAIN-SUFFIX,ykimg.com,DIRECT
+  - DOMAIN-SUFFIX,tudou.com,DIRECT
+  - PROCESS-NAME,YoukuDesktop.exe,DIRECT
+  - PROCESS-NAME,YoukuClient.exe,DIRECT
+
+  # ── 芒果 TV ──
+  - DOMAIN-SUFFIX,mgtv.com,DIRECT
+  - DOMAIN-SUFFIX,hunantv.com,DIRECT
+  - DOMAIN-SUFFIX,hnlens.com,DIRECT
+
+  # ── 抖音 / 快手 / 小红书 ──
+  - DOMAIN-SUFFIX,douyin.com,DIRECT
+  - DOMAIN-SUFFIX,douyinpic.com,DIRECT
+  - DOMAIN-SUFFIX,douyincdn.com,DIRECT
+  - DOMAIN-SUFFIX,douyinstatic.com,DIRECT
+  - DOMAIN-SUFFIX,douyinliving.com,DIRECT
+  - DOMAIN-SUFFIX,iesdouyin.com,DIRECT
+  - DOMAIN-SUFFIX,kuaishou.com,DIRECT
+  - DOMAIN-SUFFIX,kwai.com,DIRECT
+  - DOMAIN-SUFFIX,kwaicdn.com,DIRECT
+  - DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
+  - DOMAIN-SUFFIX,xhscdn.com,DIRECT
+
+  # ── 网易云音乐 / QQ音乐 / 酷我 / 酷狗（全部直连）──
+  # ⚠️ 国内音乐平台有严格版权地域限制，走代理反而会触发"版权受限"
+  - DOMAIN-SUFFIX,music.163.com,DIRECT
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,126.net,DIRECT
+  - DOMAIN-SUFFIX,127.net,DIRECT
+  - DOMAIN-SUFFIX,netease.com,DIRECT
+  - DOMAIN-SUFFIX,126.com,DIRECT
+  - DOMAIN-SUFFIX,music.126.net,DIRECT
+  - DOMAIN-SUFFIX,musicapi.taihe.com,DIRECT
+  - DOMAIN-SUFFIX,music.taihe.com,DIRECT
+  - DOMAIN-SUFFIX,api-jooxtt.sanook.com,DIRECT
+  - DOMAIN-SUFFIX,api.joox.com,DIRECT
+  - DOMAIN-SUFFIX,joox.com,DIRECT
+  # QQ 音乐
+  - DOMAIN-SUFFIX,streamoc.music.tc.qq.com,DIRECT
+  - DOMAIN-SUFFIX,mobileoc.music.tc.qq.com,DIRECT
+  - DOMAIN-SUFFIX,isure.stream.qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,dl.stream.qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,aqqmusic.tc.qq.com,DIRECT
+  - DOMAIN-SUFFIX,amobile.music.tc.qq.com,DIRECT
+  # 酷狗
+  - DOMAIN-SUFFIX,kugou.com,DIRECT
+  - DOMAIN-SUFFIX,kglink.com,DIRECT
+  - DOMAIN-SUFFIX,kugou.net,DIRECT
+  - DOMAIN-SUFFIX,songsearch.kugou.com,DIRECT
+  - DOMAIN-SUFFIX,trackercdn.kugou.com,DIRECT
+  - DOMAIN-SUFFIX,mobilecdn.kugou.com,DIRECT
+  - DOMAIN-SUFFIX,cdn.kugou.com,DIRECT
+  # 酷我
+  - DOMAIN-SUFFIX,kuwo.cn,DIRECT
+  - DOMAIN-SUFFIX,kuwo.com,DIRECT
+  - DOMAIN-SUFFIX,kwcdn.net,DIRECT
+  - DOMAIN-SUFFIX,kuwo.cncdn.net,DIRECT
+  # 咪咕音乐
+  - DOMAIN-SUFFIX,migu.cn,DIRECT
+  - DOMAIN-SUFFIX,migu.com,DIRECT
+  - DOMAIN-SUFFIX,music.migu.cn,DIRECT
+  # 音乐进程
+  - PROCESS-NAME,cloudmusic.exe,DIRECT
+  - PROCESS-NAME,KuGou.exe,DIRECT
+  - PROCESS-NAME,kwmusic.exe,DIRECT
+  - PROCESS-NAME,KuwoMusic.exe,DIRECT
+
+  # ── 哔哩哔哩（全部直连）──
+  # 主站 / API / 视频 CDN / 直播 / 漫画 / 游戏
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,bilibili.tv,DIRECT
+  - DOMAIN-SUFFIX,bilibili.cn,DIRECT
+  - DOMAIN-SUFFIX,biliapi.com,DIRECT
+  - DOMAIN-SUFFIX,biliapi.net,DIRECT
+  - DOMAIN-SUFFIX,bilivideo.com,DIRECT
+  - DOMAIN-SUFFIX,bilivideo.cn,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,b23.tv,DIRECT
+  - DOMAIN-SUFFIX,bilicdn.com,DIRECT
+  - DOMAIN-SUFFIX,bilibiligame.com,DIRECT
+  - DOMAIN-SUFFIX,biligame.com,DIRECT
+  - DOMAIN-SUFFIX,bilibilimall.com,DIRECT
+  - DOMAIN-SUFFIX,bilicomic.com,DIRECT
+  - DOMAIN-SUFFIX,bilibilijp.com,DIRECT
+  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.org,DIRECT
+  - DOMAIN-KEYWORD,bilibili,DIRECT
+  - DOMAIN-KEYWORD,bilivideo,DIRECT
+  # B 站进程
+  - PROCESS-NAME,bilibili.exe,DIRECT
+  - PROCESS-NAME,Bilibili.exe,DIRECT
+  - PROCESS-NAME,bili.exe,DIRECT
+
+  # ── 淘宝 / 京东 / 拼多多（购物）──
+  - DOMAIN-SUFFIX,tbcdn.cn,DIRECT
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,jd.hk,DIRECT
+  - DOMAIN-SUFFIX,360buyimg.com,DIRECT
+  - DOMAIN-SUFFIX,pinduoduo.com,DIRECT
+  - DOMAIN-SUFFIX,yangkeduo.com,DIRECT
+
+  # ── 微博 / 知乎 / 贴吧 ──
+  - DOMAIN-SUFFIX,weibo.com,DIRECT
+  - DOMAIN-SUFFIX,weibo.cn,DIRECT
+  - DOMAIN-SUFFIX,sina.com.cn,DIRECT
+  - DOMAIN-SUFFIX,sinaimg.cn,DIRECT
+  - DOMAIN-SUFFIX,zhihu.com,DIRECT
+  - DOMAIN-SUFFIX,zhimg.com,DIRECT
+  - DOMAIN-SUFFIX,tieba.baidu.com,DIRECT
+
+  # ── 其他常用国内服务 ──
+  - DOMAIN-SUFFIX,12306.cn,DIRECT
+  - DOMAIN-SUFFIX,amap.com,DIRECT
+  - DOMAIN-SUFFIX,autonavi.com,DIRECT
+  - DOMAIN-SUFFIX,meituan.com,DIRECT
+  - DOMAIN-SUFFIX,dianping.com,DIRECT
+  - DOMAIN-SUFFIX,ctrip.com,DIRECT
+  - DOMAIN-SUFFIX,qunar.com,DIRECT
+  - DOMAIN-SUFFIX,58.com,DIRECT
+  - DOMAIN-SUFFIX,ganji.com,DIRECT
+  - DOMAIN-SUFFIX,jianshu.com,DIRECT
+  - DOMAIN-SUFFIX,csdn.net,DIRECT
+  - DOMAIN-SUFFIX,gitee.com,DIRECT
+  - DOMAIN-SUFFIX,coding.net,DIRECT
+
+  # ==========================================
   # 社交媒体
   # ==========================================
   - DOMAIN-SUFFIX,x.com,{{PROXY}}
@@ -465,18 +793,8 @@ rules:
   - PROCESS-NAME,Darktide.exe,DIRECT
   - PROCESS-NAME,Darktide_Launcher.exe,DIRECT
   - PROCESS-NAME,qbittorrent.exe,DIRECT
-  - PROCESS-NAME,Thunder.exe,DIRECT
   - DOMAIN-KEYWORD,torrent,DIRECT
   - DOMAIN-KEYWORD,peer_id=,DIRECT
-
-  # ==========================================
-  # 哔哩哔哩
-  # ==========================================
-  - DOMAIN-SUFFIX,bilibili.com,DIRECT
-  - DOMAIN-SUFFIX,biliapi.net,DIRECT
-  - DOMAIN-SUFFIX,hdslb.com,DIRECT
-  - DOMAIN-SUFFIX,bilivideo.com,DIRECT
-  - DOMAIN-SUFFIX,bilivideo.cn,DIRECT
 
   # ==========================================
   # 阿里云：国内站直连 / 国际站走代理
@@ -484,8 +802,6 @@ rules:
   - DOMAIN-SUFFIX,swasnext.console.aliyun.com,DIRECT
   - DOMAIN,swasnext.console.aliyun.com,DIRECT
   - DOMAIN-SUFFIX,console.aliyun.com,DIRECT
-  - DOMAIN-SUFFIX,aliyun.com,DIRECT
-  - DOMAIN-SUFFIX,aliyuncs.com,DIRECT
   - DOMAIN-SUFFIX,alibabacloud.com,{{PROXY}}
   - DOMAIN-KEYWORD,alibabacloud,{{PROXY}}
 
