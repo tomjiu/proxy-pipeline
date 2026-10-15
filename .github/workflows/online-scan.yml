@@ -70,9 +70,33 @@ jobs:
           python scripts/online/scrape.py
 
       - name: Build Clash feed from node sources
+        env:
+          # ⚠️ 关键：0 = 不限量
+          #   原来默认 180 → 3583 个抓取节点只转出 182 个（丢失 95%）
+          MAX_PROXIES: "0"
         run: |
-          if [ -f scripts/online/build_clash_from_feeds.py ]; then
-            python scripts/online/build_clash_from_feeds.py || echo "build_clash skipped/failed"
+          set -e
+          echo "── 抓取 URI 数 ──"
+          wc -l dist/online/nodes.txt || true
+
+          # ① 全量转换：URI → Clash
+          if [ -f scripts/online/nodes_to_clash.py ]; then
+            echo "── 全量转换 nodes_to_clash（MAX_PROXIES=0）──"
+            MAX_PROXIES=0 python scripts/online/nodes_to_clash.py || echo "nodes_to_clash 失败"
+            echo "  产出 $(grep -c '^  - name:' dist/online/clash.yaml 2>/dev/null || echo 0) 个节点"
+          fi
+
+          # ② 补充：精选 feeds（仅当全量产出不足时）
+          N=$(grep -c '^  - name:' dist/online/clash.yaml 2>/dev/null || echo 0)
+          if [ "$N" -lt 100 ] && [ -f scripts/online/build_clash_from_feeds.py ]; then
+            echo "── 全量产出不足（$N），补充精选 feeds ──"
+            MAX_PROXIES=0 python scripts/online/build_clash_from_feeds.py || echo "feeds 失败"
+          fi
+
+          FINAL=$(grep -c '^  - name:' dist/online/clash.yaml 2>/dev/null || echo 0)
+          echo "── 最终 clash.yaml: $FINAL 个节点 ──"
+          if [ "$FINAL" -lt 50 ]; then
+            echo "::warning::转换产出仅 $FINAL 个"
           fi
 
       - name: Light HTTP sample check (pool only — skipped in nodes scope)
