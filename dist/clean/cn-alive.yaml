@@ -1,43 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T05:10:00.209482+00:00
-# count: 2
+# updated: 2026-10-15T07:57:48.923722+00:00
+# count: 0
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1827619967-340"
-    type: "vless"
-    server: "web-tomcat.pages.dev"
-    port: 443
-    network: "ws"
-    servername: "web-tomcat.pages.dev"
-    skip-cert-verify: false
-    tls: true
-    udp: true
-    uuid: "2cf94f4d-9d5b-49ca-81a3-ddc0529a2dac"
-  - name: "trojan-1827148746-318"
-    type: "trojan"
-    server: "66.23.203.21"
-    port: 59689
-    password: "ae7eb4dwyaz25pxwgq59"
-    skip-cert-verify: true
-    sni: ""
-    udp: true
-proxy-groups:
-  - name: "PROXY"
-    type: select
-    proxies:
-      - "AUTO"
-      - DIRECT
-      - vless-1827619967-340
-      - trojan-1827148746-318
-  - name: "AUTO"
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    proxies:
-      - vless-1827619967-340
-      - trojan-1827148746-318
+proxy-groups: []
 rules:
-  - MATCH,PROXY
+  - MATCH,DIRECT
