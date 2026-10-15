@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T15:09:14.549930+00:00
-# count: 15
+# updated: 2026-10-15T17:21:02.875255+00:00
+# count: 20
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -203,6 +203,75 @@ proxies:
       public-key: "_XNcU39HOvqF8GXyfA8OAG-dp6ZMl9L10r6K646npHc"
       short-id: "ce3dccc84e5bac0c"
     servername: "www.mozilla.org"
+  - name: "vless-1828138090-1265"
+    type: "vless"
+    server: "154.44.0.40"
+    port: 18319
+    uuid: "4dc796cb-5617-42e0-8003-187afd83fa13"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "JO-5AKvbFUlZieDWC8oIVsUzUhFNvG7dt8o3MkN7IT8"
+      short-id: "57d6e1335cc506b9"
+    servername: "www.apple.com"
+  - name: "vmess-1827158935-524"
+    type: "vmess"
+    server: "us5-1.998998.best"
+    port: 443
+    uuid: "5504eaa8-1395-402f-8e0e-75ecd762e627"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "server4.9966338.xyz"
+    ws-opts:
+      path: "/androirfdsreoightrjh"
+      headers:
+        Host: "server4.9966338.xyz"
+  - name: "vless-1827147394-2385"
+    type: "vless"
+    server: "162.159.192.125"
+    port: 443
+    uuid: "c4edb87e-8544-4fa4-bd1c-b0cda9a34b46"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "a.cwvps.eu.org"
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "a.cwvps.eu.org"
+  - name: "vless-1827155678-3013"
+    type: "vless"
+    server: "cf.877774.xyz"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1827151678-1541"
+    type: "vless"
+    server: "freeus.aiage.work"
+    port: 443
+    uuid: "6338c01a-310e-42c3-bf4f-2a20e161054b"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "pxLk0ocXqKYYqUFyALvH2BVXaswI-6NE00posKNayy0"
+      short-id: "ccaf7283610c6fa8"
+    servername: "freeus.aiage.work"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -224,6 +293,11 @@ proxy-groups:
       - vmess-1827158699-634
       - vless-1828129523-533
       - vless-1828138087-1103
+      - vless-1828138090-1265
+      - vmess-1827158935-524
+      - vless-1827147394-2385
+      - vless-1827155678-3013
+      - vless-1827151678-1541
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -244,5 +318,10 @@ proxy-groups:
       - vmess-1827158699-634
       - vless-1828129523-533
       - vless-1828138087-1103
+      - vless-1828138090-1265
+      - vmess-1827158935-524
+      - vless-1827147394-2385
+      - vless-1827155678-3013
+      - vless-1827151678-1541
 rules:
   - MATCH,PROXY
