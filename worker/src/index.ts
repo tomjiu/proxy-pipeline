@@ -289,6 +289,7 @@ async function createSub(req: Request, env: Env): Promise<Response> {
     rename: body.rename !== false,
     min_tier: ["all", "A", "S"].includes(body.min_tier) ? body.min_tier : "all",
     probe: body.probe === true,
+    cn_only: body.cn_only === true,
     filter: body.filter !== false,
     target_nodes: Number.isFinite(body.target_nodes)
       ? Math.min(1000, Math.max(10, Number(body.target_nodes)))
@@ -319,6 +320,7 @@ async function handleSubApi(req: Request, env: Env, token: string,
       if (typeof b.name === "string") cfg.name = b.name.slice(0, 60);
       if (typeof b.rename === "boolean") cfg.rename = b.rename;
       if (typeof b.probe === "boolean") cfg.probe = b.probe;
+      if (typeof b.cn_only === "boolean") cfg.cn_only = b.cn_only;
       if (typeof b.filter === "boolean") cfg.filter = b.filter;
       if (Number.isFinite(b.target_nodes)) {
         cfg.target_nodes = Math.min(1000, Math.max(10, Number(b.target_nodes)));
@@ -470,7 +472,49 @@ async function serveSubscription(env: Env, token: string, ext: string,
     }
   }
 
-  // ── 3. 重命名 ──
+  // ── 3.5 CN 连通性过滤（只保留中国实测可达的节点）──
+  // 数据来源：GitHub Actions 用 ip112.cn 双端 API 测出的 cn-alive.yaml
+  //   · 国内端 api.ycwxgzs.com + 国外端 api.52bwg.com 对比
+  //   · 判定规则：国内端口不可达 = 被墙，剔除
+  //
+  // ⚠️ 用 server:port 匹配（不依赖节点名，因为订阅里的名字可能被重命名）
+  // ⚠️ 数据过期或为空时**不过滤**（避免全空）
+  let cnStats: { loaded: number; before: number; after: number } | null = null;
+  if (cfg.cn_only === true && nodes.length) {
+    try {
+      const res = await fetchDist(env, "clean/cn-alive.yaml");
+      if (res.ok) {
+        const yaml = await res.text();
+        const allowed = new Set<string>();
+        // 按块提取 server:port（不依赖节点名，避免重命名导致匹配失败）
+        const body = yaml.split(/^proxies:\s*$/m)[1] || "";
+        for (const ch of body.split(/^\s*- /m).slice(1)) {
+          const sv = ch.match(/^\s*server:\s*"?([^"\s,}]+)"?/m);
+          const pt = ch.match(/^\s*port:\s*"?(\d+)"?/m);
+          if (sv && pt) allowed.add(`${sv[1]}:${pt[1]}`);
+        }
+
+        if (allowed.size > 0) {
+          const before = nodes.length;
+          const kept = nodes.filter(n => allowed.has(`${n.server}:${n.port}`));
+          if (kept.length > 0) {
+            nodes = kept;
+            cnStats = { loaded: allowed.size, before, after: kept.length };
+            console.log(`[cn] ${before} -> ${kept.length} (CN whitelist ${allowed.size})`);
+          } else {
+            console.log(`[cn] no match (whitelist ${allowed.size}, nodes ${before}), keeping all`);
+          }
+        } else {
+          console.log("[cn] whitelist empty, skipping filter");
+        }
+      } else {
+        console.log(`[cn] cn-alive.yaml fetch failed: HTTP ${res.status}`);
+      }
+    } catch (e) {
+      console.error("[cn] filter failed:", e);
+    }
+  }
+
   // ── 4. tier 过滤（在重命名之前，用原名匹配）──
   // ⚠️ 必须在 renameSimple 之前做：quality_tiers.json 里的 key 是**原始节点名**，
   //    重命名后无法匹配。早期实现先重命名再过滤，导致过滤永不命中并触发回退，
@@ -531,6 +575,8 @@ async function serveSubscription(env: Env, token: string, ext: string,
     return json({
       token, name: cfg.name, nodes: nodes.length,
       probe: probeStats,
+      cn: cnStats,
+      cn_config: { enabled: cfg.cn_only === true },
       filter: filterStats,
       filter_config: { enabled: cfg.filter !== false, target: cfg.target_nodes || 300 },
       probe_method: "CF-node WebSocket/HTTP (only network:ws + CF IP)",
@@ -587,7 +633,9 @@ async function serveSubscription(env: Env, token: string, ext: string,
     await Promise.all([
       cachePut(env, token, yamlContent, GEN_CACHE_TTL),
       cachePut(env, token + ":stats", JSON.stringify({
-        filter: filterStats,
+        cn: cnStats,
+      cn_config: { enabled: cfg.cn_only === true },
+      filter: filterStats,
         sources: agg.results.map(r => ({
           url: r.url, ok: r.ok, format: r.format,
           nodes: r.nodes.length, error: r.error,
