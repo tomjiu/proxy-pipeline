@@ -16,6 +16,8 @@ export interface Env {
   /** 每人上限（字节），默认 1TB */
   QUOTA_PER_USER?: string;
   KV?: KVNamespace;
+  /** D1 数据库（CN 验证结果存储，写额度比 KV 宽 100 倍） */
+  DB?: D1Database;
   BUCKET?: R2Bucket;
 }
 
