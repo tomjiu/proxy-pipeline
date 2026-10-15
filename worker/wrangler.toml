@@ -6,36 +6,37 @@ compatibility_date = "2024-11-01"
 #  部署说明
 # ═══════════════════════════════════════════════════════════
 #
-#  1. 创建 KV 命名空间
+#  1. 创建 KV（订阅配置 / 会话 / 缓存）
 #       npx wrangler kv namespace create PROXY_KV
-#     把输出里的 id 填到下面 [[kv_namespaces]]
 #
-#  2. 设置 secrets（不要写在文件里）
-#       npx wrangler secret put ADMIN_PASSWORD     # 登录密码
-#       npx wrangler secret put SESSION_SECRET     # Cookie 签名密钥
-#       npx wrangler secret put TRAFFIC_SECRET     # 流量接口密钥（可选）
+#  2. 创建 D1（CN 验证结果 —— 写配额比 KV 宽 100 倍）
+#       npx wrangler d1 create proxy-pipeline
+#       npx wrangler d1 execute proxy-pipeline --remote --file=schema.sql
 #
-#  3. 部署
+#  3. 设置 secrets
+#       npx wrangler secret put ADMIN_PASSWORD
+#       npx wrangler secret put SESSION_SECRET
+#       npx wrangler secret put TRAFFIC_SECRET     # 可选
+#       npx wrangler secret put API_TOKEN          # 预热接口鉴权
+#
+#  4. 部署
 #       npx wrangler deploy
 #
 # ═══════════════════════════════════════════════════════════
 
 [vars]
-# 数据源（GitHub 仓库的 dist 目录，可通过 jsDelivr 回退）
 RAW_BASE = "https://raw.githubusercontent.com/tomjiu/proxy-pipeline/main/dist"
 
-# 流量统计接口（可选，不配则订阅不显示流量）
-# TRAFFIC_API = "https://your-domain/api/traffic"
-
-# 配额（字节）2.5TB 总量 / 1TB 每人；不配则用默认值
-# QUOTA_TOTAL = "2748779069440"
-# QUOTA_PER_USER = "1099511627776"
-
+# ── KV：读多写少（订阅配置、会话）──
 [[kv_namespaces]]
 binding = "KV"
 id = "REPLACE_WITH_YOUR_KV_ID"
 
-# ── R2（可选）──
-# [[r2_buckets]]
-# binding = "BUCKET"
-# bucket_name = "proxy-pipeline-dist"
+# ── D1：频繁写入（CN 验证结果）──
+# 为什么用 D1 而不是 KV：
+#   KV 免费版写配额 1,000/天，预热会耗尽
+#   D1 免费版写 100,000 行/天（宽 100 倍）
+[[d1_databases]]
+binding = "DB"
+database_name = "proxy-pipeline"
+database_id = "REPLACE_WITH_YOUR_D1_ID"
