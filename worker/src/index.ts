@@ -824,6 +824,55 @@ async function handlePublicApi(req: Request, env: Env,
                   kv: !!env.KV, auth: authRequired(env) });
   }
 
+  // ── KV 健康检查（诊断配额/权限）──
+  if (path === "/admin/kv-check") {
+    if (!env.API_TOKEN) return json({ error: "API_TOKEN not configured" }, 503);
+    const provided = req.headers.get("X-Api-Token") || "";
+    if (!(await constantTimeEqual(provided, env.API_TOKEN))) {
+      return json({ error: "unauthorized" }, 401);
+    }
+    const k = "kv-check:" + Date.now();
+    const res: Record<string, unknown> = {
+      kv_bound: !!env.KV,
+      db_bound: !!(env as any).DB,
+    };
+    try {
+      await env.KV!.put(k, "1", { expirationTtl: 60 });
+      res.write = "ok";
+      const v = await env.KV!.get(k, "text");
+      res.read = v === "1" ? "ok" : `unexpected:${v}`;
+      await env.KV!.delete(k);
+      res.delete = "ok";
+    } catch (e) {
+      res.write = "FAILED";
+      res.error = e instanceof Error ? e.message : String(e);
+    }
+
+    // D1 测试
+    const db = (env as any).DB;
+    if (db) {
+      try {
+        const t = "d1check_" + Date.now();
+        await db.prepare(
+          "CREATE TABLE IF NOT EXISTS d1_check (k TEXT PRIMARY KEY, v TEXT)",
+        ).run();
+        await db.prepare("INSERT OR REPLACE INTO d1_check (k,v) VALUES (?,?)")
+          .bind(t, "1").run();
+        const row = await db.prepare("SELECT v FROM d1_check WHERE k=?").bind(t).first();
+        res.d1_write = "ok";
+        res.d1_read = (row as any)?.v === "1" ? "ok" : "mismatch";
+        await db.prepare("DELETE FROM d1_check WHERE k=?").bind(t).run();
+        res.d1_delete = "ok";
+      } catch (e) {
+        res.d1_write = "FAILED";
+        res.d1_error = e instanceof Error ? e.message : String(e);
+      }
+    } else {
+      res.d1_write = "NOT_BOUND";
+    }
+    return json(res);
+  }
+
   // ── CN 缓存预热（需 API_TOKEN）──
   // 用途：立即填充 CN 验证缓存，让用户请求只读缓存（避免 CPU 超限）
   // ⚠️ 安全：不返回任何节点信息，只返回数量统计
