@@ -133,10 +133,18 @@ jobs:
             echo "No clean changes"
           else
             git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git fetch origin
-            git rebase origin/main
-            git push
-          fi
+            for i in 1 2 3 4 5; do
+            echo "── push 尝试 $i ──"
+            git fetch origin main
+            if git rebase -X theirs origin/main 2>/dev/null; then
+              git push origin HEAD:main && { echo "✅ 推送成功"; exit 0; }
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
+            sleep 5
+          done
+          echo "::warning::推送失败，下次补上"
+          exit 0
 
       - name: Sync dist/clean to R2
         if: ${{ success() }}

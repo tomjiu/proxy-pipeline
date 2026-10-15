@@ -88,12 +88,31 @@ jobs:
           git add dist/online
           if git diff --staged --quiet; then
             echo "No changes"
-          else
-            git commit -m "chore(online): refresh scrape [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
-            git fetch origin
-            git rebase origin/main
-            git push
+            exit 0
           fi
+
+          git commit -m "chore(online): refresh scrape [$(date -u +%Y-%m-%dT%H:%M:%SZ)]"
+
+          # ⚠️ dist/ 是机器生成的数据，冲突时应以【本次生成】为准
+          #    原来的 `git rebase origin/main` 遇到冲突会直接失败
+          #    改为：-X theirs（本地提交优先）+ 失败重试
+          for i in 1 2 3 4 5; do
+            echo "── push 尝试 $i ──"
+            git fetch origin main
+            if git rebase -X theirs origin/main 2>/dev/null; then
+              if git push origin HEAD:main; then
+                echo "✅ 推送成功"
+                exit 0
+              fi
+            else
+              git rebase --abort 2>/dev/null || true
+              echo "  rebase 冲突，等待后重试"
+            fi
+            sleep 5
+          done
+
+          echo "::warning::5 次推送均失败（可能与其他工作流竞争），下次定时会补上"
+          exit 0
 
       - name: Sync dist/online to R2
         if: ${{ success() }}
