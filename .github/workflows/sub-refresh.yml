@@ -9,7 +9,7 @@ name: sub-refresh
 #   3. 源失效时能及时发现
 #
 # 触发频率：
-#   - 每 15 分钟（短效源如 lw.234.qzz.io 变化快）
+#   - 每 15 分钟（短效源变化快）
 #   - 也可手动触发
 
 on:
@@ -34,8 +34,45 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
+      - name: Warm CN cache
+        env:
+          # CN 预热需要 API_TOKEN（Worker 的 X-Api-Token）
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::WORKER_API_TOKEN 未配置，跳过 CN 预热"
+            exit 0
+          fi
+
+          # ⚠️ 安全：CN 预热在 Worker 内部完成，节点不离开 Worker
+          #    本步骤只触发 + 读统计，日志里**不会有任何节点信息**
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── CN 预热 token: ${TOKEN:0:6}… ──"
+            for ROUND in 1 2 3 4 5 6 7 8; do
+              RESP=$(curl -s -m 600 \
+                -H "X-Api-Token: $API_TOKEN" \
+                "$WORKER_BASE/admin/warm-cn?limit=150&token=$TOKEN" || echo '{}')
+
+              PROBED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('probed',0))" 2>/dev/null || echo 0)
+              ALIVE=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('alive',0))" 2>/dev/null || echo 0)
+              BLOCKED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('blocked',0))" 2>/dev/null || echo 0)
+              CACHED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('cached_hits',0))" 2>/dev/null || echo 0)
+
+              echo "  轮次 $ROUND: 实测=$PROBED 可达=$ALIVE 被墙=$BLOCKED 缓存命中=$CACHED"
+
+              # probed=0 表示没有待验证节点了
+              if [ "$PROBED" = "0" ]; then
+                echo "  ✅ CN 缓存已填满"
+                break
+              fi
+            done
+          done
+
       - name: Warm subscription cache
         env:
           # 从 secrets 读，不落明文
