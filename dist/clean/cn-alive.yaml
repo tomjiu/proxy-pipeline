@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-15T19:57:27.227821+00:00
-# count: 15
+# updated: 2026-10-15T21:41:12.698782+00:00
+# count: 19
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -15,20 +15,6 @@ proxies:
     tls: false
     client-fingerprint: "chrome"
     servername: "45.138.100.248"
-  - name: "🇸🇬 新加坡 | SGP 2-2942"
-    type: "vless"
-    server: "104.18.35.86"
-    port: 8080
-    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "hhlfy.twiladaphne.ndjp.net"
-    network: "ws"
-    ws-opts:
-      path: "/sg-melbi"
-      headers:
-        Host: "hhlfy.twiladaphne.ndjp.net"
   - name: "🇺🇸 美国 | USA 18-2186"
     type: "vless"
     server: "45.138.100.248"
@@ -43,6 +29,20 @@ proxies:
       path: "/vless"
       headers:
         Host: "45.138.100.248"
+  - name: "🇸🇬 新加坡 | SGP 2-2942"
+    type: "vless"
+    server: "104.18.35.86"
+    port: 8080
+    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "hhlfy.twiladaphne.ndjp.net"
+    network: "ws"
+    ws-opts:
+      path: "/sg-melbi"
+      headers:
+        Host: "hhlfy.twiladaphne.ndjp.net"
   - name: "vless-1827155284-2956"
     type: "vless"
     server: "172.64.144.82"
@@ -57,13 +57,6 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "🇨🇦 加拿大 | CAN 2-2401"
-    type: "ss"
-    server: "15.223.182.197"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "🇨🇦 加拿大 | CAN 1-2399"
     type: "ss"
     server: "15.175.213.130"
@@ -192,6 +185,70 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1828129523-568"
+    type: "vless"
+    server: "77.221.157.213"
+    port: 10443
+    uuid: "1d006ad5-1de1-4520-a5f4-875dae1b0a5d"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "77.221.157.213"
+  - name: "vless-1828138087-1134"
+    type: "vless"
+    server: "zuoan.tranyoo888.com"
+    port: 443
+    uuid: "435feec2-0421-44b9-a8b0-60da252556c0"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "_XNcU39HOvqF8GXyfA8OAG-dp6ZMl9L10r6K646npHc"
+      short-id: "ce3dccc84e5bac0c"
+    servername: "www.mozilla.org"
+  - name: "vless-1828138090-1318"
+    type: "vless"
+    server: "154.44.0.40"
+    port: 18319
+    uuid: "4dc796cb-5617-42e0-8003-187afd83fa13"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "JO-5AKvbFUlZieDWC8oIVsUzUhFNvG7dt8o3MkN7IT8"
+      short-id: "57d6e1335cc506b9"
+    servername: "www.apple.com"
+  - name: "vmess-1827158935-539"
+    type: "vmess"
+    server: "us5-1.998998.best"
+    port: 443
+    uuid: "5504eaa8-1395-402f-8e0e-75ecd762e627"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "server4.9966338.xyz"
+    ws-opts:
+      path: "/androirfdsreoightrjh"
+      headers:
+        Host: "server4.9966338.xyz"
+  - name: "vless-1827155678-3048"
+    type: "vless"
+    server: "cf.877774.xyz"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -199,10 +256,9 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - vless-1828405282-2182
-      - "🇸🇬 新加坡 | SGP 2-2942"
       - "🇺🇸 美国 | USA 18-2186"
+      - "🇸🇬 新加坡 | SGP 2-2942"
       - vless-1827155284-2956
-      - "🇨🇦 加拿大 | CAN 2-2401"
       - "🇨🇦 加拿大 | CAN 1-2399"
       - vless-1827662288-2950
       - vless-1828142544-2964
@@ -213,16 +269,20 @@ proxy-groups:
       - vless-1827533126-2954
       - vmess-1827741481-629
       - vmess-1827158699-634
+      - vless-1828129523-568
+      - vless-1828138087-1134
+      - vless-1828138090-1318
+      - vmess-1827158935-539
+      - vless-1827155678-3048
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - vless-1828405282-2182
-      - "🇸🇬 新加坡 | SGP 2-2942"
       - "🇺🇸 美国 | USA 18-2186"
+      - "🇸🇬 新加坡 | SGP 2-2942"
       - vless-1827155284-2956
-      - "🇨🇦 加拿大 | CAN 2-2401"
       - "🇨🇦 加拿大 | CAN 1-2399"
       - vless-1827662288-2950
       - vless-1828142544-2964
@@ -233,5 +293,10 @@ proxy-groups:
       - vless-1827533126-2954
       - vmess-1827741481-629
       - vmess-1827158699-634
+      - vless-1828129523-568
+      - vless-1828138087-1134
+      - vless-1828138090-1318
+      - vmess-1827158935-539
+      - vless-1827155678-3048
 rules:
   - MATCH,PROXY
