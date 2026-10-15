@@ -1,0 +1,194 @@
+name: verify-proxy
+
+# ═══════════════════════════════════════════════════════════════════
+#  代理真实可用性验证（mihomo 实测）
+# ═══════════════════════════════════════════════════════════════════
+#
+#  为什么需要这个：
+#    ip112.cn 只测「TCP 端口可达」，端口通 ≠ 代理能用。
+#    实测（2026-10-15）：84 个端口可达的节点里只有 37 个真能用（43%）。
+#    56% 是假阳性 —— 这是「订阅能用但成功率低」的根因。
+#
+#  本 workflow 用 mihomo 核心对每个节点做真实握手（与 Clash 客户端同标准）。
+#
+#  在链路中的位置：
+#    online-scan → check-nodes → ai-probe → cn-check → 【verify-proxy】
+#                                                        ↓
+#                                              only-alive.yaml（真可用节点）
+#                                                        ↓
+#                                              Worker 订阅输出
+#
+# ═══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_run:
+    workflows: ["cn-check"]
+    types: [completed]
+  schedule:
+    - cron: "45 */2 * * *"     # 每 2 小时（错开 cn-check 的 :25）
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "输入文件（留空=自动选择）"
+        required: false
+        default: ""
+      timeout_ms:
+        description: "单节点超时（毫秒）"
+        required: false
+        default: "8000"
+      retries:
+        description: "重试次数"
+        required: false
+        default: "2"
+      limit:
+        description: "最多测多少个节点（0=不限）"
+        required: false
+        default: "0"
+
+concurrency:
+  group: verify-proxy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装 mihomo
+        run: |
+          set -e
+          mkdir -p bin
+
+          # 按已知版本直接下载（api.github.com 在 Actions 里常被限流）
+          for TAG in v1.19.12 v1.19.11 v1.19.9 v1.19.2 v1.19.19; do
+            for ARCH in amd64 arm64; do
+              URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-${ARCH}-${TAG}.gz"
+              echo "尝试 ${TAG} ${ARCH} ..."
+              if curl -fsSL --retry 2 --connect-timeout 15 -o mihomo.gz "$URL"; then
+                gunzip -f mihomo.gz
+                chmod +x mihomo
+                mv mihomo bin/mihomo
+                echo "MIHOMO=$(pwd)/bin/mihomo" >> "$GITHUB_ENV"
+                echo "✅ 已安装: $TAG ($ARCH)"
+                ./bin/mihomo -v | head -2
+                exit 0
+              fi
+            done
+          done
+
+          echo "::error::mihomo 下载失败（所有版本组合都试过）"
+          exit 1
+
+      - name: 确定输入
+        id: src
+        run: |
+          SRC="${{ inputs.source }}"
+
+          if [ -z "$SRC" ]; then
+            # 优先级：CN 实测存活 > AI 质量 > 连通性 > 原始
+            for CAND in dist/clean/cn-alive.yaml \
+                        dist/clean/clash-tier-s.yaml \
+                        dist/clean/clash.yaml \
+                        dist/online/clash.yaml; do
+              if [ -f "$CAND" ]; then
+                N=$(grep -c '^  - name:' "$CAND" 2>/dev/null || echo 0)
+                if [ "$N" -gt 0 ]; then
+                  SRC="$CAND"
+                  echo "选定: $CAND ($N 个节点)"
+                  break
+                fi
+              fi
+            done
+          fi
+
+          if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
+            echo "::error::找不到输入"
+            exit 1
+          fi
+
+          echo "value=$SRC" >> "$GITHUB_OUTPUT"
+
+      - name: 代理真实可用性验证
+        run: |
+          set -e
+          TIMEOUT="${{ inputs.timeout_ms }}"
+          [ -z "$TIMEOUT" ] && TIMEOUT=8000
+          RETRIES="${{ inputs.retries }}"
+          [ -z "$RETRIES" ] && RETRIES=2
+
+          echo "输入:     ${{ steps.src.outputs.value }}"
+          echo "超时:     ${TIMEOUT}ms × ${RETRIES}"
+          echo
+
+          python scripts/online/verify_proxy.py \
+            "${{ steps.src.outputs.value }}" \
+            "$TIMEOUT" \
+            --retries "$RETRIES" \
+            --out dist/clean/proxy-verified.json \
+            --out-clash dist/clean/proxy-alive.yaml
+
+      - name: 汇总
+        if: always()
+        run: |
+          {
+            echo "## 代理真实可用性验证"
+            echo ""
+            if [ -f dist/clean/proxy-verified.json ]; then
+              python3 - <<'PY'
+          import json
+          d = json.load(open("dist/clean/proxy-verified.json"))
+          print(f"| 指标 | 值 |")
+          print(f"|---|---|")
+          print(f"| 输入节点 | {d['total']} |")
+          print(f"| **真可用** | **{d['ok']}** |")
+          print(f"| 失败 | {d['fail']} |")
+          print(f"| 可用率 | {d['alive_rate']}% |")
+          print(f"| 耗时 | {d['elapsed_s']}s |")
+          if d["ok_nodes"]:
+              ds = [n["delay"] for n in d["ok_nodes"]]
+              print(f"| 最快延迟 | {min(ds)}ms |")
+              print(f"| 中位延迟 | {sorted(ds)[len(ds)//2]}ms |")
+          PY
+            else
+              echo "（无结果）"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit dist/clean
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -f dist/clean/proxy-verified.json dist/clean/proxy-alive.yaml 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "无变化"
+            exit 0
+          fi
+
+          git commit -m "chore(verify-proxy): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          for i in 1 2 3 4 5; do
+            if git push origin main 2>&1; then
+              echo "✅ push 成功"
+              exit 0
+            fi
+            echo "push 失败，重试 $i"
+            git pull --rebase -X theirs origin main 2>/dev/null || true
+            sleep 5
+          done
+
+          echo "::warning::push 重试 5 次都失败（数据已生成，下次运行会覆盖）"
