@@ -66,6 +66,13 @@ NON_NODE_TYPES = {
     "Direct", "Reject", "RejectDrop", "Compatible", "Pass", "Dns", "Smart",
 }
 
+# mihomo 内置代理名（不是订阅里的节点）
+BUILTIN_PROXY_NAMES = {
+    "DIRECT", "REJECT", "REJECT-DROP", "PASS", "COMPATIBLE",
+    "GLOBAL", "PASS-RULE", "REJECT-RULE", "DIRECT-RULE",
+    "REJECT-DROP-RULE", "COMPATIBLE-RULE", "MATCH", "FINAL",
+}
+
 # ── 已知 mihomo 下载地址（Actions 用）──
 MIHOMO_RELEASES = [
     "v1.19.12", "v1.19.11", "v1.19.9", "v1.19.2",
@@ -297,8 +304,15 @@ def main() -> int:
     print("✅ 核心已启动\n")
 
     proxies = api("/proxies")["proxies"]
-    names = [n for n, v in proxies.items()
-             if v.get("type") not in NON_NODE_TYPES]
+    names = [
+        n for n, v in proxies.items()
+        if v.get("type") not in NON_NODE_TYPES
+        and n.upper() not in BUILTIN_PROXY_NAMES      # 过滤内置代理名
+        and not n.upper().endswith("-RULE")           # PASS-RULE 等
+    ]
+    skipped = len(proxies) - len(names)
+    if skipped:
+        print(f"（跳过 {skipped} 个内置/策略组条目）")
     print(f"待测节点: {len(names)}\n")
 
     ok: list[dict] = []
