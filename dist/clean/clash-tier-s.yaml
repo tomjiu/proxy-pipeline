@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-16T00:43:39.186954+00:00
+# updated: 2026-10-16T05:00:25.554586+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-16T04:42:20.808443+00:00
-# kept 178 / dropped 545
+# updated: 2026-10-16T05:00:38.991324+00:00
+# kept 175 / dropped 566
   - name: "vmess-1827160934-259"
     type: "vmess"
     server: "129.146.77.248"
@@ -44,6 +44,15 @@ proxies:
       public-key: "hDRm-rHVu-ClNhBhPfp-JUGtFM91NGjlhVf-JjnPCnI"
       short-id: "058ea2b1"
     servername: "www.amd.com"
+  - name: "vmess-1827161032-244"
+    type: "vmess"
+    server: "129.146.143.80"
+    port: 48111
+    uuid: "d4603cc2-e0ee-4651-83f5-1db5b7168177"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "raw"
   - name: "vless-1828293798-2630"
     type: "vless"
     server: "131.143.180.87"
@@ -57,20 +66,6 @@ proxies:
       public-key: "ZxdYEReKF-M_vIMpZWVMHf7ixDZmzIg-6Xt7IzstgwE"
       short-id: "16e300b06a6a7413"
     servername: "www.logitech.com"
-  - name: "vless-1827147650-3258"
-    type: "vless"
-    server: "104.18.0.181"
-    port: 2082
-    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "hhlfy.twiladaphne.ndjp.net"
-    network: "ws"
-    ws-opts:
-      path: "/fp"
-      headers:
-        Host: "hhlfy.twiladaphne.ndjp.net"
   - name: "vless-1828141631-2716"
     type: "vless"
     server: "154.29.159.211"
@@ -97,13 +92,6 @@ proxies:
       public-key: "ABZFDD3Ne57Q0i7skCnEpyUVTKTdMhm3aqJ9mwLZ7lw"
       short-id: "62169cb853fb7503"
     servername: "learn.microsoft.com"
-  - name: "shadowsocks-1827534198-2263"
-    type: "ss"
-    server: "216.105.168.18"
-    port: 443
-    cipher: "chacha20-ietf-poly1305"
-    password: "hCCWOcIsK5wrFz4OX70rWf"
-    udp: true
   - name: "hysteria2-1827145259-440"
     type: "hysteria2"
     server: "142.249.37.90"
@@ -316,6 +304,19 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
+  - name: "vless-1827145668-463"
+    type: "vless"
+    server: "3h-unitedstates1.09vpn.com"
+    port: 80
+    uuid: "18cf8db1-9f86-43f7-baa0-382efb7f2dfa"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    network: "ws"
+    ws-opts:
+      path: "/vless/"
+      headers:
+        Host: "3h-unitedstates1.09vpn.com"
   - name: "vmess-1828663580-733"
     type: "vmess"
     server: "node8.liudonghoe.com"
@@ -330,14 +331,6 @@ proxies:
       path: "/hoe8"
       headers:
         Host: "node8.liudonghoe.com"
-  - name: "🇺🇸 美国 | USA 11-818"
-    type: "trojan"
-    server: "66.23.203.21"
-    port: 59689
-    password: "ae7eb4dwyaz25pxwgq59"
-    udp: true
-    sni: "66.23.203.21"
-    skip-cert-verify: true
   - name: "shadowsocks-1827146248-2511"
     type: "ss"
     server: "37.19.198.160"
@@ -352,19 +345,6 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1831071624-3256"
-    type: "vless"
-    server: "104.17.44.17"
-    port: 8080
-    uuid: "e5cc16a6-ea42-46b2-82ae-ad2157e1641b"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    network: "ws"
-    ws-opts:
-      path: "/sg-melbi"
-      headers:
-        Host: "hhlfy.twiladaphne.ndjp.net"
   - name: "shadowsocks-1827146742-2517"
     type: "ss"
     server: "37.19.198.244"
@@ -470,13 +450,6 @@ proxies:
     cipher: "aes-256-cfb"
     password: "amazonskr05"
     udp: true
-  - name: "🇨🇦 加拿大 | CAN 1-2541"
-    type: "ss"
-    server: "15.175.213.130"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "vless-1827156461-3562"
     type: "vless"
     server: "147.45.60.160"
@@ -505,13 +478,6 @@ proxies:
       public-key: "k2hPp0tTW0Da-HK94wYpSCLbuK44LfGqC2MSJIM1Ti0"
       short-id: "48050fab"
     servername: "www.apple.com"
-  - name: "🇨🇦 www.v2nodes.com ss-CA-1559... 1-2627"
-    type: "ss"
-    server: "51.79.85.185"
-    port: 8118
-    cipher: "aes-256-gcm"
-    password: "cdBIDV42DCwnfIN"
-    udp: true
   - name: "vmess-1827158296-464"
     type: "vmess"
     server: "23.162.200.198"
@@ -657,6 +623,20 @@ proxies:
       public-key: "_XNcU39HOvqF8GXyfA8OAG-dp6ZMl9L10r6K646npHc"
       short-id: "ce3dccc84e5bac0c"
     servername: "www.mozilla.org"
+  - name: "vless-1831076076-2612"
+    type: "vless"
+    server: "104.19.4.149"
+    port: 443
+    uuid: "c4edb87e-8544-4fa4-bd1c-b0cda9a34b46"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "a.cwvps.eu.org"
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "a.cwvps.eu.org"
   - name: "vless-1827147365-3028"
     type: "vless"
     server: "169.40.42.95"
