@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-16T16:48:21.036717+00:00
-# count: 10
+# updated: 2026-10-16T16:56:38.967658+00:00
+# count: 11
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -89,20 +89,6 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1827662288-3382"
-    type: "vless"
-    server: "104.18.43.174"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1827155553-3406"
     type: "vless"
     server: "172.67.155.65"
@@ -115,6 +101,20 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/cart/docs/www/proxyip"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1827662288-3382"
+    type: "vless"
+    server: "104.18.43.174"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
   - name: "🇺🇸 www.v2nodes.com trojan-US--810"
@@ -140,6 +140,20 @@ proxies:
       path: "/efrsdioy98wert"
       headers:
         Host: "server1.9966338.xyz"
+  - name: "🇺🇸 美国 | USA 11-144"
+    type: "vmess"
+    server: "172.66.203.67"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -152,10 +166,11 @@ proxy-groups:
       - vless-1828973943-3396
       - "🇺🇸 美国 | USA 1-3346"
       - vless-1827533126-3392
-      - vless-1827662288-3382
       - vless-1827155553-3406
+      - vless-1827662288-3382
       - "🇺🇸 www.v2nodes.com trojan-US--810"
       - vmess-1827158680-579
+      - "🇺🇸 美国 | USA 11-144"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -167,9 +182,10 @@ proxy-groups:
       - vless-1828973943-3396
       - "🇺🇸 美国 | USA 1-3346"
       - vless-1827533126-3392
-      - vless-1827662288-3382
       - vless-1827155553-3406
+      - vless-1827662288-3382
       - "🇺🇸 www.v2nodes.com trojan-US--810"
       - vmess-1827158680-579
+      - "🇺🇸 美国 | USA 11-144"
 rules:
   - MATCH,PROXY
