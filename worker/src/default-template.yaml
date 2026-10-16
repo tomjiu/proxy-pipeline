@@ -405,6 +405,20 @@ rules:
   - DOMAIN-SUFFIX,windhub.cc,DIRECT
 
   # ==========================================
+  # 代理服务商面板 / 订阅站（直连）
+  #
+  # ⚠️ 为什么必须直连：
+  #   这些站是给你【管理订阅、查看流量】用的。
+  #   如果走代理访问，会形成「用代理去访问代理站」的绕路：
+  #     · 慢（多一跳）
+  #     · 流量算在你的订阅额度里
+  #     · 节点挂了就连面板都打不开（无法自救）
+  # ==========================================
+  - DOMAIN-SUFFIX,akspeedy.com,DIRECT
+  - DOMAIN-SUFFIX,mygo11.cc.cd,DIRECT
+  - DOMAIN-SUFFIX,qzz.io,DIRECT
+
+  # ==========================================
   # Steam 规则
   #   社区 / 商店 / 好友 / 聊天  → 代理（被墙）
   #   游戏下载 / CDN / 更新      → 直连（国内有节点，直连更快）
@@ -833,15 +847,32 @@ rules:
   - DOMAIN-SUFFIX,xiaomimimo.com,{{PROXY}}
 
   # ==========================================
-  # 各类服务
+  # 国内直连 —— 【必须放在国外规则之前】
+  #
+  # ⚠️ 修复记录（2026-10-16）：
+  #   原来写的是 RULE-SET,cn,{{PROXY}} —— CN 域名走代理！
+  #   这是严重错误：所有未显式列出的国内站点都被送去代理，
+  #   导致国内网站变慢、被风控、浪费流量。
+  #
+  #   正确：cn / geolocation-cn / cn-ip / private 全部 DIRECT，
+  #         且必须排在 geolocation-!cn 等国外规则【之前】。
+  #
+  #   放在前面还有一个好处：apple.com.cn / google.cn /
+  #   microsoft.com.cn 这类「国外品牌的中国站」会正确直连。
+  # ==========================================
+  - RULE-SET,private,DIRECT
+  - RULE-SET,private-ip,DIRECT,no-resolve
+  - RULE-SET,cn,DIRECT
+  - RULE-SET,geolocation-cn,DIRECT
+  - RULE-SET,cn-ip,DIRECT,no-resolve
+  - GEOIP,CN,DIRECT
+
+  # ==========================================
+  # 国外服务（代理）
   # ==========================================
   - RULE-SET,youtube,{{PROXY}}
   - RULE-SET,google,{{PROXY}}
   - RULE-SET,google-ip,{{PROXY}},no-resolve
-  - RULE-SET,private,{{PROXY}}
-  - RULE-SET,private-ip,{{PROXY}},no-resolve
-  - RULE-SET,geolocation-cn,{{PROXY}}
-  - RULE-SET,cn-ip,{{PROXY}},no-resolve
   - RULE-SET,telegram,{{PROXY}}
   - RULE-SET,telegram-ip,{{PROXY}},no-resolve
   - IP-CIDR,91.108.4.0/22,{{PROXY}},no-resolve
@@ -855,6 +886,4 @@ rules:
   - RULE-SET,apple,{{PROXY}}
   - RULE-SET,icloud,{{PROXY}}
   - RULE-SET,geolocation-!cn,{{PROXY}}
-  - RULE-SET,cn,{{PROXY}}
-  - GEOIP,CN,DIRECT
   - MATCH,{{PROXY}}
