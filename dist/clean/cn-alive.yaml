@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-17T15:44:49.071528+00:00
-# count: 10
+# updated: 2026-10-17T15:52:51.854470+00:00
+# count: 12
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -48,20 +48,6 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1828142572-3369"
-    type: "vless"
-    server: "104.18.35.15"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1833035366-3423"
     type: "vless"
     server: "188.114.97.6"
@@ -74,6 +60,20 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/?---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1828142572-3369"
+    type: "vless"
+    server: "104.18.35.15"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
       headers:
         Host: "lucasjow.us.ci"
   - name: "vless-1827155284-3403"
@@ -147,6 +147,31 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1841014091-1187"
+    type: "vless"
+    server: "208.84.100.209"
+    port: 2112
+    uuid: "36c3dcc2-17b6-4478-b8a7-3978e6d5afe9"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    reality-opts:
+      public-key: "p8pUe3hwND5rhAti-yRQ5qMaIkNdhxOV1K1jpbtJlEQ"
+      short-id: "125ba3"
+    servername: "play.google.com"
+  - name: "vmess-1827158699-906"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -156,13 +181,15 @@ proxy-groups:
       - vless-1833713792-3385
       - vless-1828973943-3399
       - vless-1828142544-3415
-      - vless-1828142572-3369
       - vless-1833035366-3423
+      - vless-1828142572-3369
       - vless-1827155284-3403
       - vless-1827662288-3371
       - vmess-1833713800-684
       - vmess-1828806120-659
       - vmess-1833713781-649
+      - vless-1841014091-1187
+      - vmess-1827158699-906
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -171,12 +198,14 @@ proxy-groups:
       - vless-1833713792-3385
       - vless-1828973943-3399
       - vless-1828142544-3415
-      - vless-1828142572-3369
       - vless-1833035366-3423
+      - vless-1828142572-3369
       - vless-1827155284-3403
       - vless-1827662288-3371
       - vmess-1833713800-684
       - vmess-1828806120-659
       - vmess-1833713781-649
+      - vless-1841014091-1187
+      - vmess-1827158699-906
 rules:
   - MATCH,PROXY
