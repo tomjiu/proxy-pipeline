@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-17T19:00:54.396233+00:00
-# count: 13
+# updated: 2026-10-17T20:54:54.775212+00:00
+# count: 17
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -19,9 +19,9 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "vless-1828973943-3456"
+  - name: "vless-1827662288-3428"
     type: "vless"
-    server: "162.159.250.29"
+    server: "104.18.43.174"
     port: 443
     uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
     udp: true
@@ -33,9 +33,9 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1827662288-3428"
+  - name: "vless-1828973943-3456"
     type: "vless"
-    server: "104.18.43.174"
+    server: "162.159.250.29"
     port: 443
     uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
     udp: true
@@ -187,6 +187,63 @@ proxies:
       public-key: "0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo"
       short-id: "1a"
     servername: "www.amazon.com"
+  - name: "vless-1827155678-3628"
+    type: "vless"
+    server: "cf.877774.xyz"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vmess-1827158935-774"
+    type: "vmess"
+    server: "us5-1.998998.best"
+    port: 443
+    uuid: "5504eaa8-1395-402f-8e0e-75ecd762e627"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "server4.9966338.xyz"
+    ws-opts:
+      path: "/androirfdsreoightrjh"
+      headers:
+        Host: "server4.9966338.xyz"
+  - name: "vmess-1827741481-874"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1849677851-2720"
+    type: "vless"
+    server: "t17.qifei.app"
+    port: 443
+    uuid: "b98d4c6e-6770-4a31-8256-a4750cdea0e7"
+    udp: true
+    tls: true
+    client-fingerprint: "ios"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo"
+      short-id: "1a"
+    servername: "www.amazon.com"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -194,8 +251,8 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - vmess-1833713800-624
-      - vless-1828973943-3456
       - vless-1827662288-3428
+      - vless-1828973943-3456
       - vless-1828142572-3426
       - vmess-1833713781-594
       - vmess-1828806120-604
@@ -206,14 +263,18 @@ proxy-groups:
       - vmess-1827158699-879
       - vless-1833035366-3478
       - vless-1849677857-2712
+      - vless-1827155678-3628
+      - vmess-1827158935-774
+      - vmess-1827741481-874
+      - vless-1849677851-2720
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - vmess-1833713800-624
-      - vless-1828973943-3456
       - vless-1827662288-3428
+      - vless-1828973943-3456
       - vless-1828142572-3426
       - vmess-1833713781-594
       - vmess-1828806120-604
@@ -224,5 +285,9 @@ proxy-groups:
       - vmess-1827158699-879
       - vless-1833035366-3478
       - vless-1849677857-2712
+      - vless-1827155678-3628
+      - vmess-1827158935-774
+      - vmess-1827741481-874
+      - vless-1849677851-2720
 rules:
   - MATCH,PROXY
