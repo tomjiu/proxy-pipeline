@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-17T08:15:29.466607+00:00
-# kept 94 / dropped 537
+# updated: 2026-10-17T09:12:23.343250+00:00
+# kept 96 / dropped 535
   - name: "hysteria2-1828372350-505"
     type: "hysteria2"
     server: "155.248.209.237"
@@ -401,6 +401,13 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "shadowsocks-1827146248-2787"
+    type: "ss"
+    server: "37.19.198.160"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
   - name: "shadowsocks-1827146742-2793"
     type: "ss"
     server: "37.19.198.244"
@@ -456,6 +463,20 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "vless-1831076076-2770"
+    type: "vless"
+    server: "104.19.4.149"
+    port: 443
+    uuid: "c4edb87e-8544-4fa4-bd1c-b0cda9a34b46"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "a.cwvps.eu.org"
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "a.cwvps.eu.org"
   - name: "vmess-1827158296-664"
     type: "vmess"
     server: "23.162.200.198"
