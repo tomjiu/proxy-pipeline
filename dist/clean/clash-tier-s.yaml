@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-18T04:47:26.060413+00:00
+# updated: 2026-10-18T05:07:06.740539+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-18T04:49:02.448374+00:00
-# kept 76 / dropped 539
+# updated: 2026-10-18T05:07:19.501095+00:00
+# kept 78 / dropped 550
   - name: "shadowsocks-1827146556-2436"
     type: "ss"
     server: "156.146.38.167"
@@ -169,20 +169,6 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1855695773-838"
-    type: "vless"
-    server: "104.17.100.185"
-    port: 443
-    uuid: "1e922b22-d169-4461-89c1-07e09ff2617c"
-    udp: true
-    tls: true
-    client-fingerprint: "random"
-    servername: "vlesss.xttd.eu.org"
-    network: "ws"
-    ws-opts:
-      path: "/proxyip=proxyip.fxxk.dedyn.io"
-      headers:
-        Host: "vlesss.xttd.eu.org"
   - name: "shadowsocks-1827146667-2448"
     type: "ss"
     server: "173.244.56.9"
@@ -276,13 +262,13 @@ proxies:
     udp: true
     tls: false
     client-fingerprint: "chrome"
-  - name: "🇨🇦 www.v2nodes.com ss-CA-1588-2396"
-    type: "ss"
-    server: "64.74.163.69"
-    port: 18766
-    cipher: "aes-128-gcm"
-    password: "4efe1af272e7292139b889f6a63ee071"
-    udp: true
+  - name: "hysteria2-1831596676-590"
+    type: "hysteria2"
+    server: "179.255.104.98"
+    port: 443
+    password: "lh92eQnxIpeg2odHHDg0SrcczqwS4e8Y"
+    sni: "dl1.yuanshicheng.com"
+    skip-cert-verify: true
   - name: "hysteria2-1830343753-130"
     type: "hysteria2"
     server: "129.213.91.185"
@@ -355,6 +341,20 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "vless-1856231040-2255"
+    type: "vless"
+    server: "172.67.79.160"
+    port: 2087
+    uuid: "a4a951b9-901d-4db8-8a7d-6df82c4b5c23"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "cvhpyn.pages.dev"
+    network: "ws"
+    ws-opts:
+      path: "/fp=chrome"
+      headers:
+        Host: "cvhpyn.pages.dev"
   - name: "vmess-1835539921-609"
     type: "vmess"
     server: "169.197.142.22"
@@ -377,6 +377,20 @@ proxies:
       public-key: "StPbcmBuzpuYUfa4oZ5SI3Bq1OSF_-oU1vp2AcyvQVE"
       short-id: "19296c9f1bf9c7b1"
     servername: "www.cloudflare.com"
+  - name: "🏳 www.v2nodes.com vless- 14-1007"
+    type: "vless"
+    server: "188.114.96.9"
+    port: 443
+    uuid: "2e305ebe-f6e6-4689-b32f-cd04ab5ff541"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "IdB8ONMVbntuYT5t7t6cEJfw8vLrb.paGEs.DeV"
+    network: "ws"
+    ws-opts:
+      path: "/vl/9yvcoLdzdOXLUYfH7r5gwJhu1CHrjfp=chrome"
+      headers:
+        Host: "idb8onmvbntuyt5t7t6cejfw8vlrb.pages.dev"
   - name: "vless-1827153691-2069"
     type: "vless"
     server: "5.34.178.120"
@@ -655,6 +669,14 @@ proxies:
     port: 44356
     password: "dongtaiwang.com"
     sni: "hy2.561891.xyz"
+    skip-cert-verify: true
+  - name: "trojan-1856450785-162"
+    type: "trojan"
+    server: "155.138.138.2"
+    port: 443
+    password: "Trojan@82164024"
+    udp: true
+    sni: "ca.tronsg.com"
     skip-cert-verify: true
   - name: "vless-1844560418-2639"
     type: "vless"
