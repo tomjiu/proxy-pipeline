@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-18T11:54:11.595435+00:00
-# count: 15
+# updated: 2026-10-18T16:00:47.917209+00:00
+# count: 12
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -48,19 +48,6 @@ proxies:
       path: "/ "
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1853331483-2077"
-    type: "vless"
-    server: "www.csgo.net"
-    port: 2095
-    uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "openapi.pure-ai.us.ci"
   - name: "vless-1853651550-2387"
     type: "vless"
     server: "162.35.126.130"
@@ -131,20 +118,6 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "vless-1827155678-3315"
-    type: "vless"
-    server: "cf.877774.xyz"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vmess-1854107773-229"
     type: "vmess"
     server: "104.21.7.133"
@@ -173,6 +146,20 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1827155678-3315"
+    type: "vless"
+    server: "cf.877774.xyz"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
   - name: "vless-1858135835-3441"
     type: "vless"
     server: "181.214.152.137"
@@ -185,22 +172,6 @@ proxies:
       public-key: "5XPuEa7CkCbN4W1iJH6P0ogGhODHkKUDEhmTosBQASQ"
       short-id: "abcd1234"
     servername: "apple.com"
-  - name: "🇬🇧 英国 | GBR 1-3051"
-    type: "vless"
-    server: "13.135.33.165"
-    port: 22222
-    uuid: "e4514801-0d5a-42ba-869f-39bd605aef9e"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-  - name: "🇬🇧 英国 | GBR 2-3053"
-    type: "vless"
-    server: "13.135.33.165"
-    port: 22224
-    uuid: "e4514801-0d5a-42ba-869f-39bd605aef9e"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -210,18 +181,15 @@ proxy-groups:
       - vless-1833713782-3101
       - vless-1855722768-3153
       - vless-1853331503-3129
-      - vless-1853331483-2077
       - vless-1853651550-2387
       - vless-1828973943-3127
       - vless-1833713792-3115
       - vless-1860736868-3141
       - "🇺🇸 美国 | USA 11-119"
-      - vless-1827155678-3315
       - vmess-1854107773-229
       - vmess-1854107786-214
+      - vless-1827155678-3315
       - vless-1858135835-3441
-      - "🇬🇧 英国 | GBR 1-3051"
-      - "🇬🇧 英国 | GBR 2-3053"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -230,17 +198,14 @@ proxy-groups:
       - vless-1833713782-3101
       - vless-1855722768-3153
       - vless-1853331503-3129
-      - vless-1853331483-2077
       - vless-1853651550-2387
       - vless-1828973943-3127
       - vless-1833713792-3115
       - vless-1860736868-3141
       - "🇺🇸 美国 | USA 11-119"
-      - vless-1827155678-3315
       - vmess-1854107773-229
       - vmess-1854107786-214
+      - vless-1827155678-3315
       - vless-1858135835-3441
-      - "🇬🇧 英国 | GBR 1-3051"
-      - "🇬🇧 英国 | GBR 2-3053"
 rules:
   - MATCH,PROXY
