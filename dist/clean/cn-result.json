@@ -1,18 +1,31 @@
 {
- "at": "2026-10-18T19:00:03.887941+00:00",
- "input": 78,
- "tested": 78,
- "cn_ok": 14,
+ "at": "2026-10-18T21:03:53.548934+00:00",
+ "input": 160,
+ "tested": 160,
+ "cn_ok": 17,
  "verdicts": {
-  "cn_blocked": 64,
-  "ok": 14
+  "cn_blocked": 143,
+  "ok": 17
  },
  "by_type": {
-  "vless": 9,
-  "vmess": 5
+  "vless": 11,
+  "vmess": 5,
+  "trojan": 1
  },
- "elapsed_s": 112.3,
+ "elapsed_s": 247.1,
  "nodes": [
+  {
+   "name": "shadowsocks-1827146131-2000",
+   "type": "ss",
+   "server": "156.146.38.169",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146131-2000\"\n    type: \"ss\"\n    server: \"156.146.38.169\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.8
+  },
   {
    "name": "vless-1859775608-1683",
    "type": "vless",
@@ -23,7 +36,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1827146556-1996",
@@ -35,7 +48,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1827147700-2532",
@@ -50,30 +63,6 @@
    "elapsed": 6.9
   },
   {
-   "name": "shadowsocks-1827146131-2000",
-   "type": "ss",
-   "server": "156.146.38.169",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146131-2000\"\n    type: \"ss\"\n    server: \"156.146.38.169\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 7.0
-  },
-  {
-   "name": "shadowsocks-1827147479-2528",
-   "type": "ss",
-   "server": "137.184.174.93",
-   "port": "8080",
-   "raw": "  - name: \"shadowsocks-1827147479-2528\"\n    type: \"ss\"\n    server: \"137.184.174.93\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.8
-  },
-  {
    "name": "shadowsocks-1827146051-2010",
    "type": "ss",
    "server": "37.19.198.243",
@@ -83,19 +72,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
-  },
-  {
-   "name": "shadowsocks-1827146248-2006",
-   "type": "ss",
-   "server": "37.19.198.160",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146248-2006\"\n    type: \"ss\"\n    server: \"37.19.198.160\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.9
   },
   {
    "name": "shadowsocks-1827146815-1998",
@@ -107,20 +84,31 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.9
   },
   {
-   "name": "vless-1827662288-3021",
-   "type": "vless",
-   "server": "104.18.43.174",
+   "name": "shadowsocks-1827147479-2528",
+   "type": "ss",
+   "server": "137.184.174.93",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827147479-2528\"\n    type: \"ss\"\n    server: \"137.184.174.93\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.9
+  },
+  {
+   "name": "shadowsocks-1827146248-2006",
+   "type": "ss",
+   "server": "37.19.198.160",
    "port": "443",
-   "raw": "  - name: \"vless-1827662288-3021\"\n    type: \"vless\"\n    server: \"104.18.43.174\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.1
+   "raw": "  - name: \"shadowsocks-1827146248-2006\"\n    type: \"ss\"\n    server: \"37.19.198.160\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.9
   },
   {
    "name": "vless-1827155284-3085",
@@ -133,7 +121,20 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.1
+   "elapsed": 1.5
+  },
+  {
+   "name": "vless-1827662288-3021",
+   "type": "vless",
+   "server": "104.18.43.174",
+   "port": "443",
+   "raw": "  - name: \"vless-1827662288-3021\"\n    type: \"vless\"\n    server: \"104.18.43.174\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.6
   },
   {
    "name": "vless-1853352399-3095",
@@ -146,7 +147,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.5
+   "elapsed": 1.6
   },
   {
    "name": "vmess-1854107773-269",
@@ -172,7 +173,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 1.5
   },
   {
    "name": "shadowsocks-1827146122-2008",
@@ -184,7 +185,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.8
   },
   {
    "name": "vmess-1853354188-129",
@@ -192,18 +193,6 @@
    "server": "67.220.85.46",
    "port": "18000",
    "raw": "  - name: \"vmess-1853354188-129\"\n    type: \"vmess\"\n    server: \"67.220.85.46\"\n    port: 18000\n    uuid: \"f8c8dc3d-0d37-46b0-8b34-a7232882fcfe\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"raw\"",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.8
-  },
-  {
-   "name": "vmess-1837386484-334",
-   "type": "vmess",
-   "server": "134.195.196.211",
-   "port": "18000",
-   "raw": "  - name: \"vmess-1837386484-334\"\n    type: \"vmess\"\n    server: \"134.195.196.211\"\n    port: 18000\n    uuid: \"f8c8dc3d-0d37-46b0-8b34-a7232882fcfe\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"raw\"",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -220,7 +209,19 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.7
+  },
+  {
+   "name": "vmess-1837386484-334",
+   "type": "vmess",
+   "server": "134.195.196.211",
+   "port": "18000",
+   "raw": "  - name: \"vmess-1837386484-334\"\n    type: \"vmess\"\n    server: \"134.195.196.211\"\n    port: 18000\n    uuid: \"f8c8dc3d-0d37-46b0-8b34-a7232882fcfe\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"raw\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.7
   },
   {
    "name": "vless-1857054120-722",
@@ -232,7 +233,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.9
   },
   {
    "name": "vless-1853352962-103",
@@ -244,7 +245,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.6
   },
   {
    "name": "shadowsocks-1827963904-2534",
@@ -256,7 +257,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 6.8
   },
   {
    "name": "vmess-1828339141-169",
@@ -268,7 +269,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "vless-1853352819-128",
@@ -280,7 +281,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.9
+   "elapsed": 6.8
   },
   {
    "name": "vmess-1837386117-747",
@@ -304,7 +305,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.5
   },
   {
    "name": "vless-1863065761-1411",
@@ -316,7 +317,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.5
   },
   {
    "name": "vless-1853651596-1963",
@@ -329,7 +330,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 1.7
   },
   {
    "name": "trojan-1827955817-622",
@@ -341,7 +342,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.7
   },
   {
    "name": "vless-1835060901-2057",
@@ -353,7 +354,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vless-1853462788-2753",
@@ -378,7 +379,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.6
   },
   {
    "name": "vless-1828293923-3501",
@@ -390,7 +391,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 7.1
   },
   {
    "name": "vless-1828973943-3081",
@@ -403,7 +404,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.5
   },
   {
    "name": "vless-1827149751-658",
@@ -415,7 +416,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "vless-1827162803-2625",
@@ -439,7 +440,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.7
   },
   {
    "name": "vless-1853341771-2761",
@@ -463,7 +464,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.9
   },
   {
    "name": "vmess-1853465786-634",
@@ -475,7 +476,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.7
   },
   {
    "name": "shadowsocks-1827146224-1994",
@@ -487,7 +488,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.6
   },
   {
    "name": "vless-1827156461-3577",
@@ -499,7 +500,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vmess-1837386444-779",
@@ -511,7 +512,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vless-1844558704-1797",
@@ -523,7 +524,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 7.0
   },
   {
    "name": "vless-1853341742-348",
@@ -535,7 +536,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "vless-1854347690-3",
@@ -547,20 +548,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
-  },
-  {
-   "name": "vless-1833035366-3139",
-   "type": "vless",
-   "server": "188.114.97.6",
-   "port": "2053",
-   "raw": "  - name: \"vless-1833035366-3139\"\n    type: \"vless\"\n    server: \"188.114.97.6\"\n    port: 2053\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.0
+   "elapsed": 6.7
   },
   {
    "name": "vless-1828294020-2485",
@@ -575,17 +563,17 @@
    "elapsed": 6.5
   },
   {
-   "name": "🏳 www.v2nodes.com vless- 37-3049",
+   "name": "vless-1833035366-3139",
    "type": "vless",
-   "server": "104.21.91.244",
-   "port": "443",
-   "raw": "  - name: \"🏳 www.v2nodes.com vless- 37-3049\"\n    type: \"vless\"\n    server: \"104.21.91.244\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560fp=chrome\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
+   "server": "188.114.97.6",
+   "port": "2053",
+   "raw": "  - name: \"vless-1833035366-3139\"\n    type: \"vless\"\n    server: \"188.114.97.6\"\n    port: 2053\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
    "cn_ok": true,
    "cn_tcp": "端口可用",
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.8
   },
   {
    "name": "vmess-1827160934-304",
@@ -600,6 +588,19 @@
    "elapsed": 6.6
   },
   {
+   "name": "🏳 www.v2nodes.com vless- 37-3049",
+   "type": "vless",
+   "server": "104.21.91.244",
+   "port": "443",
+   "raw": "  - name: \"🏳 www.v2nodes.com vless- 37-3049\"\n    type: \"vless\"\n    server: \"104.21.91.244\"\n    port: 443\n    uuid: \"e6df2095-a73c-4043-8693-8d5a03686870\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"lucasjow.us.ci\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560fp=chrome\"\n      headers:\n        Host: \"lucasjow.us.ci\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 2.0
+  },
+  {
    "name": "vless-1843685259-2083",
    "type": "vless",
    "server": "131.143.180.87",
@@ -609,7 +610,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 7.0
   },
   {
    "name": "vless-1828535756-2601",
@@ -621,7 +622,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vmess-1855808845-711",
@@ -633,7 +634,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 6.8
   },
   {
    "name": "vless-1853353398-2233",
@@ -645,7 +646,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vless-1854000077-2645",
@@ -657,7 +658,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 6.8
   },
   {
    "name": "vless-1853341808-2371",
@@ -669,7 +670,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "vless-1853340264-829",
@@ -681,7 +682,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 7.0
   },
   {
    "name": "vless-1854029589-2403",
@@ -693,20 +694,19 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.9
   },
   {
-   "name": "vless-1857293337-808",
+   "name": "vless-1827533113-2351",
    "type": "vless",
-   "server": "s2317.kukuss.top",
+   "server": "169.40.42.133",
    "port": "443",
-   "raw": "  - name: \"vless-1857293337-808\"\n    type: \"vless\"\n    server: \"s2317.kukuss.top\"\n    port: 443\n    uuid: \"30e52776-55ac-3cb4-8d36-e2910f07e2c3\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    servername: \"u695098uf24555c7s2316.gogocs.xyz\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.3
+   "raw": "  - name: \"vless-1827533113-2351\"\n    type: \"vless\"\n    server: \"169.40.42.133\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
   },
   {
    "name": "vmess-1828806120-689",
@@ -719,7 +719,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.5
   },
   {
    "name": "vmess-1833713781-684",
@@ -732,19 +732,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.2
-  },
-  {
-   "name": "vless-1827533113-2351",
-   "type": "vless",
-   "server": "169.40.42.133",
-   "port": "443",
-   "raw": "  - name: \"vless-1827533113-2351\"\n    type: \"vless\"\n    server: \"169.40.42.133\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 1.5
   },
   {
    "name": "vless-1853462650-2469",
@@ -752,6 +740,18 @@
    "server": "169.40.42.173",
    "port": "443",
    "raw": "  - name: \"vless-1853462650-2469\"\n    type: \"vless\"\n    server: \"169.40.42.173\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1857293337-808",
+   "type": "vless",
+   "server": "s2317.kukuss.top",
+   "port": "443",
+   "raw": "  - name: \"vless-1857293337-808\"\n    type: \"vless\"\n    server: \"s2317.kukuss.top\"\n    port: 443\n    uuid: \"30e52776-55ac-3cb4-8d36-e2910f07e2c3\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    servername: \"u695098uf24555c7s2316.gogocs.xyz\"",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -768,7 +768,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 7.0
   },
   {
    "name": "vless-1828294004-868",
@@ -804,7 +804,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vless-1827162765-2677",
@@ -816,7 +816,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1827147777-2536",
@@ -840,7 +840,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.7
+   "elapsed": 6.5
   },
   {
    "name": "vless-1835503319-2703",
@@ -852,7 +852,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.5
   },
   {
    "name": "vless-1831043238-2559",
@@ -864,7 +864,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.8
+   "elapsed": 6.5
   },
   {
    "name": "shadowsocks-1827146478-2002",
@@ -888,7 +888,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 7.0
   },
   {
    "name": "vmess-1855820444-878",
@@ -901,7 +901,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 2.2
   },
   {
    "name": "🏳 www.v2nodes.com ss- 8-2098",
@@ -937,7 +937,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.6
+   "elapsed": 6.7
   },
   {
    "name": "shadowsocks-1827146763-1902",
@@ -949,7 +949,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.5
+   "elapsed": 6.8
   },
   {
    "name": "shadowsocks-1827146453-1928",
@@ -961,7 +961,995 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
+   "elapsed": 6.7
+  },
+  {
+   "name": "shadowsocks-1827146630-1936",
+   "type": "ss",
+   "server": "82.38.31.35",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146630-1936\"\n    type: \"ss\"\n    server: \"82.38.31.35\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1854335903-2523",
+   "type": "vless",
+   "server": "169.40.42.184",
+   "port": "443",
+   "raw": "  - name: \"vless-1854335903-2523\"\n    type: \"vless\"\n    server: \"169.40.42.184\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853462750-2621",
+   "type": "vless",
+   "server": "169.40.42.229",
+   "port": "443",
+   "raw": "  - name: \"vless-1853462750-2621\"\n    type: \"vless\"\n    server: \"169.40.42.229\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.8
+  },
+  {
+   "name": "shadowsocks-1827146769-1956",
+   "type": "ss",
+   "server": "82.38.31.66",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146769-1956\"\n    type: \"ss\"\n    server: \"82.38.31.66\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
    "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146805-1938",
+   "type": "ss",
+   "server": "82.38.31.36",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146805-1938\"\n    type: \"ss\"\n    server: \"82.38.31.36\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146486-1926",
+   "type": "ss",
+   "server": "82.38.31.175",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146486-1926\"\n    type: \"ss\"\n    server: \"82.38.31.175\"\n    port: 443\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146148-1932",
+   "type": "ss",
+   "server": "82.38.31.2",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146148-1932\"\n    type: \"ss\"\n    server: \"82.38.31.2\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146782-1884",
+   "type": "ss",
+   "server": "82.38.31.208",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146782-1884\"\n    type: \"ss\"\n    server: \"82.38.31.208\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146852-1830",
+   "type": "ss",
+   "server": "193.29.139.168",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146852-1830\"\n    type: \"ss\"\n    server: \"193.29.139.168\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"QCXDxuDlTTMD7jtgHUjIoj\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146801-1874",
+   "type": "ss",
+   "server": "82.38.31.198",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146801-1874\"\n    type: \"ss\"\n    server: \"82.38.31.198\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146559-1914",
+   "type": "ss",
+   "server": "82.38.31.159",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146559-1914\"\n    type: \"ss\"\n    server: \"82.38.31.159\"\n    port: 443\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146385-1944",
+   "type": "ss",
+   "server": "82.38.31.47",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146385-1944\"\n    type: \"ss\"\n    server: \"82.38.31.47\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.8
+  },
+  {
+   "name": "shadowsocks-1827146514-1946",
+   "type": "ss",
+   "server": "82.38.31.48",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146514-1946\"\n    type: \"ss\"\n    server: \"82.38.31.48\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146792-1908",
+   "type": "ss",
+   "server": "193.29.139.235",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146792-1908\"\n    type: \"ss\"\n    server: \"193.29.139.235\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146475-1954",
+   "type": "ss",
+   "server": "82.38.31.62",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146475-1954\"\n    type: \"ss\"\n    server: \"82.38.31.62\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "🇮🇹 www.v2nodes.com ss-IT-1597-2078",
+   "type": "ss",
+   "server": "185.164.175.81",
+   "port": "19999",
+   "raw": "  - name: \"🇮🇹 www.v2nodes.com ss-IT-1597-2078\"\n    type: \"ss\"\n    server: \"185.164.175.81\"\n    port: 19999\n    cipher: \"aes-256-gcm\"\n    password: \"ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146065-1930",
+   "type": "ss",
+   "server": "82.38.31.26",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146065-1930\"\n    type: \"ss\"\n    server: \"82.38.31.26\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1827151931-1291",
+   "type": "vless",
+   "server": "154.40.55.185",
+   "port": "443",
+   "raw": "  - name: \"vless-1827151931-1291\"\n    type: \"vless\"\n    server: \"154.40.55.185\"\n    port: 443\n    uuid: \"52919204-4ed9-42c8-97a0-0f01d007f898\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"XY0OTrgnRWxHbqBC8u4qFWvZakjNZY83AAnL_lwHu1M\"\n      short-id: \"7f\"\n    servername: \"www.oracle.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vmess-1853493211-739",
+   "type": "vmess",
+   "server": "31.76.11.83",
+   "port": "22366",
+   "raw": "  - name: \"vmess-1853493211-739\"\n    type: \"vmess\"\n    server: \"31.76.11.83\"\n    port: 22366\n    uuid: \"632cfa69-ae00-49d1-81e0-554979d1e9fa\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true\n    network: \"raw\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146144-1896",
+   "type": "ss",
+   "server": "193.29.139.179",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146144-1896\"\n    type: \"ss\"\n    server: \"193.29.139.179\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146845-1924",
+   "type": "ss",
+   "server": "82.38.31.174",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146845-1924\"\n    type: \"ss\"\n    server: \"82.38.31.174\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1846613000-2327",
+   "type": "vless",
+   "server": "169.40.42.104",
+   "port": "443",
+   "raw": "  - name: \"vless-1846613000-2327\"\n    type: \"vless\"\n    server: \"169.40.42.104\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146674-1868",
+   "type": "ss",
+   "server": "82.38.31.187",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146674-1868\"\n    type: \"ss\"\n    server: \"82.38.31.187\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146413-1898",
+   "type": "ss",
+   "server": "193.29.139.197",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146413-1898\"\n    type: \"ss\"\n    server: \"193.29.139.197\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146078-1900",
+   "type": "ss",
+   "server": "193.29.139.202",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146078-1900\"\n    type: \"ss\"\n    server: \"193.29.139.202\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146843-1892",
+   "type": "ss",
+   "server": "82.38.31.218",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146843-1892\"\n    type: \"ss\"\n    server: \"82.38.31.218\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827145964-1952",
+   "type": "ss",
+   "server": "82.38.31.61",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827145964-1952\"\n    type: \"ss\"\n    server: \"82.38.31.61\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146686-1882",
+   "type": "ss",
+   "server": "82.38.31.205",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146686-1882\"\n    type: \"ss\"\n    server: \"82.38.31.205\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146828-1922",
+   "type": "ss",
+   "server": "82.38.31.174",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146828-1922\"\n    type: \"ss\"\n    server: \"82.38.31.174\"\n    port: 443\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146128-1832",
+   "type": "ss",
+   "server": "193.29.139.212",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146128-1832\"\n    type: \"ss\"\n    server: \"193.29.139.212\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"QCXDxuDlTTMD7jtgHUjIoj\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146557-1864",
+   "type": "ss",
+   "server": "82.38.31.185",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146557-1864\"\n    type: \"ss\"\n    server: \"82.38.31.185\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146860-1870",
+   "type": "ss",
+   "server": "82.38.31.191",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146860-1870\"\n    type: \"ss\"\n    server: \"82.38.31.191\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 7.0
+  },
+  {
+   "name": "shadowsocks-1827146026-1934",
+   "type": "ss",
+   "server": "82.38.31.34",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146026-1934\"\n    type: \"ss\"\n    server: \"82.38.31.34\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146500-1872",
+   "type": "ss",
+   "server": "82.38.31.194",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146500-1872\"\n    type: \"ss\"\n    server: \"82.38.31.194\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827966278-2538",
+   "type": "ss",
+   "server": "169.150.210.233",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827966278-2538\"\n    type: \"ss\"\n    server: \"169.150.210.233\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827145970-1960",
+   "type": "ss",
+   "server": "82.38.31.7",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827145970-1960\"\n    type: \"ss\"\n    server: \"82.38.31.7\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146202-1942",
+   "type": "ss",
+   "server": "82.38.31.46",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146202-1942\"\n    type: \"ss\"\n    server: \"82.38.31.46\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146582-1858",
+   "type": "ss",
+   "server": "193.29.139.198",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146582-1858\"\n    type: \"ss\"\n    server: \"193.29.139.198\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"k1dBOmOB4oqi7Ump37a1bQ\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853979672-1425",
+   "type": "vless",
+   "server": "freeus.aiage.work",
+   "port": "443",
+   "raw": "  - name: \"vless-1853979672-1425\"\n    type: \"vless\"\n    server: \"freeus.aiage.work\"\n    port: 443\n    uuid: \"6338c01a-310e-42c3-bf4f-2a20e161054b\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"pxLk0ocXqKYYqUFyALvH2BVXaswI-6NE00posKNayy0\"\n      short-id: \"ccaf7283610c6fa8\"\n    servername: \"freeus.aiage.work\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146477-1910",
+   "type": "ss",
+   "server": "82.38.31.10",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146477-1910\"\n    type: \"ss\"\n    server: \"82.38.31.10\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146684-1948",
+   "type": "ss",
+   "server": "82.38.31.49",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146684-1948\"\n    type: \"ss\"\n    server: \"82.38.31.49\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1827146270-1992",
+   "type": "ss",
+   "server": "149.22.87.240",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146270-1992\"\n    type: \"ss\"\n    server: \"149.22.87.240\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1828648602-1980",
+   "type": "ss",
+   "server": "37.148.203.124",
+   "port": "12238",
+   "raw": "  - name: \"shadowsocks-1828648602-1980\"\n    type: \"ss\"\n    server: \"37.148.203.124\"\n    port: 12238\n    cipher: \"aes-128-gcm\"\n    password: \"6163d9d532e40f417dd8ebb5f9716495\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146197-1990",
+   "type": "ss",
+   "server": "149.22.87.204",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146197-1990\"\n    type: \"ss\"\n    server: \"149.22.87.204\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1864005350-1715",
+   "type": "vless",
+   "server": "www.wto.org",
+   "port": "2095",
+   "raw": "  - name: \"vless-1864005350-1715\"\n    type: \"vless\"\n    server: \"www.wto.org\"\n    port: 2095\n    uuid: \"86c50e3a-5b87-49dd-bd20-03c7f2735e40\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/\"\n      headers:\n        Host: \"openapi.pure-ai.us.ci\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.3
+  },
+  {
+   "name": "vless-1853341758-2445",
+   "type": "vless",
+   "server": "169.40.42.16",
+   "port": "443",
+   "raw": "  - name: \"vless-1853341758-2445\"\n    type: \"vless\"\n    server: \"169.40.42.16\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1831099319-2733",
+   "type": "vless",
+   "server": "169.40.42.74",
+   "port": "443",
+   "raw": "  - name: \"vless-1831099319-2733\"\n    type: \"vless\"\n    server: \"169.40.42.74\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "🇺🇸 美国 | USA 7-442",
+   "type": "trojan",
+   "server": "resources.findlocaljobnetworkandbuildcommunityconnections.com",
+   "port": "443",
+   "raw": "  - name: \"🇺🇸 美国 | USA 7-442\"\n    type: \"trojan\"\n    server: \"resources.findlocaljobnetworkandbuildcommunityconnections.com\"\n    port: 443\n    password: \"f0eb8c92ce8946aaba856569cff1a16b\"\n    udp: true\n    sni: \"resources.findlocaljobnetworkandbuildcommunityconnections.com\"\n    skip-cert-verify: true",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.1
+  },
+  {
+   "name": "vless-1863584737-1967",
+   "type": "vless",
+   "server": "us-4bf85a22b1.shamanapp.online",
+   "port": "10453",
+   "raw": "  - name: \"vless-1863584737-1967\"\n    type: \"vless\"\n    server: \"us-4bf85a22b1.shamanapp.online\"\n    port: 10453\n    uuid: \"b3a11068-1a7e-4643-85de-7c82cce46943\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    reality-opts:\n      public-key: \"rAHMmpeUJ6uOoGgk31dTF4-1RTtLZFnOEs_li2AYQWc\"\n      short-id: \"\"\n    servername: \"www.google.com\"\n    network: \"grpc\"\n    grpc-opts:\n      grpc-service-name: \"TunService\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 2.1
+  },
+  {
+   "name": "🇦🇹 www.v2nodes.com ss-AT-1595-2082",
+   "type": "ss",
+   "server": "82.110.60.9",
+   "port": "19999",
+   "raw": "  - name: \"🇦🇹 www.v2nodes.com ss-AT-1595-2082\"\n    type: \"ss\"\n    server: \"82.110.60.9\"\n    port: 19999\n    cipher: \"aes-256-gcm\"\n    password: \"ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1854297431-2815",
+   "type": "vless",
+   "server": "169.40.42.95",
+   "port": "443",
+   "raw": "  - name: \"vless-1854297431-2815\"\n    type: \"vless\"\n    server: \"169.40.42.95\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827145909-1950",
+   "type": "ss",
+   "server": "82.38.31.54",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827145909-1950\"\n    type: \"ss\"\n    server: \"82.38.31.54\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1827150894-897",
+   "type": "vless",
+   "server": "tk1.high-speed-test-56424.me",
+   "port": "443",
+   "raw": "  - name: \"vless-1827150894-897\"\n    type: \"vless\"\n    server: \"tk1.high-speed-test-56424.me\"\n    port: 443\n    uuid: \"37615d66-5467-44a3-bc23-f2c3bef7f761\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"p8VhFzvFOBAhWAEAeWmwDxT3xBSRsGYixqi0qnLFnBM\"\n      short-id: \"21270a66\"\n    servername: \"aws.amazon.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.7
+  },
+  {
+   "name": "vless-1853464676-1767",
+   "type": "vless",
+   "server": "95.111.212.241",
+   "port": "443",
+   "raw": "  - name: \"vless-1853464676-1767\"\n    type: \"vless\"\n    server: \"95.111.212.241\"\n    port: 443\n    uuid: \"924fe46b-b6e0-479e-ae7f-a3661680e706\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"BSTnEthBXhb_UyuWpLBDxg82-C-wcpU2_kOD5ohS12g\"\n      short-id: \"3a697adb4c58d495\"\n    servername: \"www.samsung.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853341557-1117",
+   "type": "vless",
+   "server": "51.158.206.20",
+   "port": "23576",
+   "raw": "  - name: \"vless-1853341557-1117\"\n    type: \"vless\"\n    server: \"51.158.206.20\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"random\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1856200554-2007",
+   "type": "vless",
+   "server": "t17.qifei.app",
+   "port": "443",
+   "raw": "  - name: \"vless-1856200554-2007\"\n    type: \"vless\"\n    server: \"t17.qifei.app\"\n    port: 443\n    uuid: \"b98d4c6e-6770-4a31-8256-a4750cdea0e7\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo\"\n      short-id: \"1a\"\n    servername: \"www.amazon.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1853341522-1127",
+   "type": "vless",
+   "server": "51.158.206.93",
+   "port": "23576",
+   "raw": "  - name: \"vless-1853341522-1127\"\n    type: \"vless\"\n    server: \"51.158.206.93\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"random\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853341592-1119",
+   "type": "vless",
+   "server": "51.158.206.26",
+   "port": "23576",
+   "raw": "  - name: \"vless-1853341592-1119\"\n    type: \"vless\"\n    server: \"51.158.206.26\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"random\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1832313914-1487",
+   "type": "vless",
+   "server": "138.124.70.41",
+   "port": "14430",
+   "raw": "  - name: \"vless-1832313914-1487\"\n    type: \"vless\"\n    server: \"138.124.70.41\"\n    port: 14430\n    uuid: \"6cc745e3-4eb9-46c8-a4a1-85dee7b87edc\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/vless\"\n      headers:\n        Host: \"138.124.70.41\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1866916019-1709",
+   "type": "vless",
+   "server": "www.csgo.net",
+   "port": "2095",
+   "raw": "  - name: \"vless-1866916019-1709\"\n    type: \"vless\"\n    server: \"www.csgo.net\"\n    port: 2095\n    uuid: \"86c50e3a-5b87-49dd-bd20-03c7f2735e40\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"\n    servername: \"www.csgo.net\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/\"\n      headers:\n        Host: \"openapi.pure-ai.us.ci\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.4
+  },
+  {
+   "name": "vless-1828372615-1051",
+   "type": "vless",
+   "server": "86.54.28.75",
+   "port": "443",
+   "raw": "  - name: \"vless-1828372615-1051\"\n    type: \"vless\"\n    server: \"86.54.28.75\"\n    port: 443\n    uuid: \"44ae52b9-76fc-444d-8e43-186b4384b80a\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"PryGoq51ilG0eLUPl9i0xCvmk1xpwkyFSr_tG4GNLlU\"\n      short-id: \"1d86d17709852910\"\n    servername: \"www.apple.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146558-1912",
+   "type": "ss",
+   "server": "82.38.31.13",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146558-1912\"\n    type: \"ss\"\n    server: \"82.38.31.13\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1853341420-1115",
+   "type": "vless",
+   "server": "51.158.206.12",
+   "port": "23576",
+   "raw": "  - name: \"vless-1853341420-1115\"\n    type: \"vless\"\n    server: \"51.158.206.12\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"random\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853341458-1129",
+   "type": "vless",
+   "server": "62.210.91.10",
+   "port": "23576",
+   "raw": "  - name: \"vless-1853341458-1129\"\n    type: \"vless\"\n    server: \"62.210.91.10\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"random\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853462712-2583",
+   "type": "vless",
+   "server": "169.40.42.224",
+   "port": "443",
+   "raw": "  - name: \"vless-1853462712-2583\"\n    type: \"vless\"\n    server: \"169.40.42.224\"\n    port: 443\n    uuid: \"d65cc14c-f53f-4fe2-b262-97856601319c\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg\"\n      short-id: \"c39cc7310a\"\n    servername: \"yahoo.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1827153691-1759",
+   "type": "vless",
+   "server": "5.34.178.120",
+   "port": "443",
+   "raw": "  - name: \"vless-1827153691-1759\"\n    type: \"vless\"\n    server: \"5.34.178.120\"\n    port: 443\n    uuid: \"9063f9fb-e88a-4ee0-b4a4-a92ca7316a9f\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"EVhq2BxKuw2Cody1DmF_HPvUYKwzdXbHP47blUv-eRM\"\n      short-id: \"55ab5559e3a6d10a\"\n    servername: \"www.cloudflare.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1832650249-1123",
+   "type": "vless",
+   "server": "51.158.206.80",
+   "port": "23576",
+   "raw": "  - name: \"vless-1832650249-1123\"\n    type: \"vless\"\n    server: \"51.158.206.80\"\n    port: 23576\n    uuid: \"48ff2b70-e180-582f-8866-d9a2edeed5f5\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s\"\n      short-id: \"01\"\n    servername: \"fuck.rkn\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1854025592-3587",
+   "type": "vless",
+   "server": "178.17.57.33",
+   "port": "8444",
+   "raw": "  - name: \"vless-1854025592-3587\"\n    type: \"vless\"\n    server: \"178.17.57.33\"\n    port: 8444\n    uuid: \"f55e9aba-7b14-4f6f-b59a-d5b3d45c9309\"\n    udp: true\n    tls: true\n    client-fingerprint: \"firefox\"\n    reality-opts:\n      public-key: \"FWitre1jinQR7qz5HQ0q2Q4Gg9xA9B0SyizCziN7Ch0\"\n      short-id: \"457fab2ac885dbe0\"\n    servername: \"github.com\"\n    network: \"grpc\"\n    grpc-opts:\n      grpc-service-name: \"GunService\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1843255157-3537",
+   "type": "vless",
+   "server": "31.59.180.155",
+   "port": "443",
+   "raw": "  - name: \"vless-1843255157-3537\"\n    type: \"vless\"\n    server: \"31.59.180.155\"\n    port: 443\n    uuid: \"ee18d188-14cc-417e-beb1-70e4add6d023\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"_0bRaAOYHd4ccDCmnlIq9I13WLRuT4LzlXfV_GGHKE0\"\n      short-id: \"5aab0b0401044801\"\n    servername: \"italynew.nztvpn.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "shadowsocks-1854076895-1822",
+   "type": "ss",
+   "server": "130.49.189.158",
+   "port": "43558",
+   "raw": "  - name: \"shadowsocks-1854076895-1822\"\n    type: \"ss\"\n    server: \"130.49.189.158\"\n    port: 43558\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"MYkM/b5ww6KhyHjBKB6OZifqzcXEnDT2jDIBWywYAws=\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1854282059-2071",
+   "type": "vless",
+   "server": "157.228.155.184",
+   "port": "443",
+   "raw": "  - name: \"vless-1854282059-2071\"\n    type: \"vless\"\n    server: \"157.228.155.184\"\n    port: 443\n    uuid: \"c39f95b5-64b5-4f7a-a93d-fa9e9cf24de8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"uYU7UXkfNB-BEfjyrCUtRcN2JfFdlFWfMHCeX7bz4Qc\"\n      short-id: \"e022bfea\"\n    servername: \"addons.mozilla.org\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1827154808-2027",
+   "type": "vless",
+   "server": "130.12.242.106",
+   "port": "443",
+   "raw": "  - name: \"vless-1827154808-2027\"\n    type: \"vless\"\n    server: \"130.12.242.106\"\n    port: 443\n    uuid: \"bc058e69-0444-4c7b-98da-bd67f0b143da\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"vnjp7zIK2H3CGdjSis_79KXqS6IG-opmpbETPUD-EC8\"\n      short-id: \"15affa0af66dfc79\"\n    servername: \"deepl.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853652565-1735",
+   "type": "vless",
+   "server": "77.90.61.135",
+   "port": "443",
+   "raw": "  - name: \"vless-1853652565-1735\"\n    type: \"vless\"\n    server: \"77.90.61.135\"\n    port: 443\n    uuid: \"8815925b-c7b8-4f94-9c24-9dc864f63a29\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    reality-opts:\n      public-key: \"XlEzAhUOUC-hZA2Uk2sctG5WR9lPeAUAHGNQVu9oAVg\"\n      short-id: \"ce1dc482\"\n    servername: \"www.cloudflare.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vmess-1827158035-414",
+   "type": "vmess",
+   "server": "140.238.2.250",
+   "port": "443",
+   "raw": "  - name: \"vmess-1827158035-414\"\n    type: \"vmess\"\n    server: \"140.238.2.250\"\n    port: 443\n    uuid: \"41a7089a-040b-4538-8b8d-010902405bde\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853336829-563",
+   "type": "vless",
+   "server": "130.17.25.67",
+   "port": "443",
+   "raw": "  - name: \"vless-1853336829-563\"\n    type: \"vless\"\n    server: \"130.17.25.67\"\n    port: 443\n    uuid: \"1c5ed2e1-56da-41ab-9a78-159d9892ec17\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"lHCkAu_DOVFtE-iL2JGrPt44QeTCFijXuRfuGaSni3Q\"\n      short-id: \"9e4eced6e98ed4d4\"\n    servername: \"github.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vless-1853998089-814",
+   "type": "vless",
+   "server": "179.61.145.245",
+   "port": "443",
+   "raw": "  - name: \"vless-1853998089-814\"\n    type: \"vless\"\n    server: \"179.61.145.245\"\n    port: 443\n    uuid: \"318c935d-c195-41d3-99ad-9bbcfdab3386\"\n    udp: true\n    tls: true\n    client-fingerprint: \"firefox\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"0-or5ogGhYbBgsVSrSC2Fhxyp2BN97Y9pqIdg61Qd08\"\n      short-id: \"4be4110078ebed4a\"\n    servername: \"de2.srv.vbuste.ru\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827145755-1806",
+   "type": "ss",
+   "server": "103.11.76.248",
+   "port": "28679",
+   "raw": "  - name: \"shadowsocks-1827145755-1806\"\n    type: \"ss\"\n    server: \"103.11.76.248\"\n    port: 28679\n    cipher: \"2022-blake3-aes-128-gcm\"\n    password: \"NzJlOTQ5NWYtM2ZkYi00Cg==\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "shadowsocks-1827146086-1920",
+   "type": "ss",
+   "server": "82.38.31.171",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827146086-1920\"\n    type: \"ss\"\n    server: \"82.38.31.171\"\n    port: 8080\n    cipher: \"chacha20-ietf-poly1305\"\n    password: \"oZIoA69Q8yhcQV8ka3Pa3A\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1827530457-333",
+   "type": "vless",
+   "server": "5.252.179.15",
+   "port": "443",
+   "raw": "  - name: \"vless-1827530457-333\"\n    type: \"vless\"\n    server: \"5.252.179.15\"\n    port: 443\n    uuid: \"0ab273e4-cea6-41d0-bbab-41071d2fc455\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    flow: \"xtls-rprx-vision\"\n    reality-opts:\n      public-key: \"XQB2zIgrhD8AtxgYFM8UiiWYt1sLVBLhMg1M4-sGMAY\"\n      short-id: \"296f27de82dad7ff\"\n    servername: \"www.bing.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.6
+  },
+  {
+   "name": "vless-1855700086-1447",
+   "type": "vless",
+   "server": "162.55.242.208",
+   "port": "2053",
+   "raw": "  - name: \"vless-1855700086-1447\"\n    type: \"vless\"\n    server: \"162.55.242.208\"\n    port: 2053\n    uuid: \"659ffdfa-47d2-47d7-af40-5afe0907eead\"\n    udp: true\n    tls: true\n    client-fingerprint: \"firefox\"\n    reality-opts:\n      public-key: \"jeS6Zu-p1Gf6GtraIAbpgQoSeT26Xq3GqgqVxccbVhY\"\n      short-id: \"4d14da19b19cfc8c\"\n    servername: \"www.cloudflare.com\"",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "vmess-1828150763-434",
+   "type": "vmess",
+   "server": "149.88.23.207",
+   "port": "18000",
+   "raw": "  - name: \"vmess-1828150763-434\"\n    type: \"vmess\"\n    server: \"149.88.23.207\"\n    port: 18000\n    uuid: \"f8c8dc3d-0d37-46b0-8b34-a7232882fcfe\"\n    alterId: 0\n    cipher: \"auto\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
+  },
+  {
+   "name": "trojan-1827149654-412",
+   "type": "trojan",
+   "server": "45.32.52.173",
+   "port": "8886",
+   "raw": "  - name: \"trojan-1827149654-412\"\n    type: \"trojan\"\n    server: \"45.32.52.173\"\n    port: 8886\n    password: \"e26a229d-e8f2-4ff9-8c7d-58a9d83ee437\"\n    udp: true\n    sni: \"45.32.52.173\"\n    skip-cert-verify: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.5
   }
  ]
 }

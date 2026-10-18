@@ -1,25 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-18T19:00:03.889180+00:00
-# count: 14
+# updated: 2026-10-18T21:03:53.551008+00:00
+# count: 17
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1827662288-3021"
-    type: "vless"
-    server: "104.18.43.174"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1827155284-3085"
     type: "vless"
     server: "172.64.144.82"
@@ -32,6 +18,20 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1827662288-3021"
+    type: "vless"
+    server: "104.18.43.174"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
   - name: "vless-1853352399-3095"
@@ -145,16 +145,6 @@ proxies:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560fp=chrome"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1857293337-808"
-    type: "vless"
-    server: "s2317.kukuss.top"
-    port: 443
-    uuid: "30e52776-55ac-3cb4-8d36-e2910f07e2c3"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    servername: "u695098uf24555c7s2316.gogocs.xyz"
   - name: "vmess-1828806120-689"
     type: "vmess"
     server: "172.66.203.67"
@@ -198,14 +188,64 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1864005350-1715"
+    type: "vless"
+    server: "www.wto.org"
+    port: 2095
+    uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "openapi.pure-ai.us.ci"
+  - name: "🇺🇸 美国 | USA 7-442"
+    type: "trojan"
+    server: "resources.findlocaljobnetworkandbuildcommunityconnections.com"
+    port: 443
+    password: "f0eb8c92ce8946aaba856569cff1a16b"
+    udp: true
+    sni: "resources.findlocaljobnetworkandbuildcommunityconnections.com"
+    skip-cert-verify: true
+  - name: "vless-1863584737-1967"
+    type: "vless"
+    server: "us-4bf85a22b1.shamanapp.online"
+    port: 10453
+    uuid: "b3a11068-1a7e-4643-85de-7c82cce46943"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    reality-opts:
+      public-key: "rAHMmpeUJ6uOoGgk31dTF4-1RTtLZFnOEs_li2AYQWc"
+      short-id: ""
+    servername: "www.google.com"
+    network: "grpc"
+    grpc-opts:
+      grpc-service-name: "TunService"
+  - name: "vless-1866916019-1709"
+    type: "vless"
+    server: "www.csgo.net"
+    port: 2095
+    uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    servername: "www.csgo.net"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "openapi.pure-ai.us.ci"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1827662288-3021
       - vless-1827155284-3085
+      - vless-1827662288-3021
       - vless-1853352399-3095
       - vmess-1854107773-269
       - vmess-1833713800-694
@@ -214,17 +254,20 @@ proxy-groups:
       - vless-1828973943-3081
       - vless-1833035366-3139
       - "🏳 www.v2nodes.com vless- 37-3049"
-      - vless-1857293337-808
       - vmess-1828806120-689
       - vmess-1833713781-684
       - vmess-1855820444-878
+      - vless-1864005350-1715
+      - "🇺🇸 美国 | USA 7-442"
+      - vless-1863584737-1967
+      - vless-1866916019-1709
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1827662288-3021
       - vless-1827155284-3085
+      - vless-1827662288-3021
       - vless-1853352399-3095
       - vmess-1854107773-269
       - vmess-1833713800-694
@@ -233,9 +276,12 @@ proxy-groups:
       - vless-1828973943-3081
       - vless-1833035366-3139
       - "🏳 www.v2nodes.com vless- 37-3049"
-      - vless-1857293337-808
       - vmess-1828806120-689
       - vmess-1833713781-684
       - vmess-1855820444-878
+      - vless-1864005350-1715
+      - "🇺🇸 美国 | USA 7-442"
+      - vless-1863584737-1967
+      - vless-1866916019-1709
 rules:
   - MATCH,PROXY
