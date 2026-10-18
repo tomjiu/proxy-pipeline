@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-18T21:03:53.551008+00:00
-# count: 17
+# updated: 2026-10-18T21:16:02.333325+00:00
+# count: 16
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -48,9 +48,9 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vmess-1854107773-269"
+  - name: "vmess-1833713800-694"
     type: "vmess"
-    server: "104.21.7.133"
+    server: "172.67.187.145"
     port: 80
     uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
     alterId: 0
@@ -61,9 +61,9 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "vmess-1833713800-694"
+  - name: "vmess-1854107773-269"
     type: "vmess"
-    server: "172.67.187.145"
+    server: "104.21.7.133"
     port: 80
     uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
     alterId: 0
@@ -224,20 +224,6 @@ proxies:
     network: "grpc"
     grpc-opts:
       grpc-service-name: "TunService"
-  - name: "vless-1866916019-1709"
-    type: "vless"
-    server: "www.csgo.net"
-    port: 2095
-    uuid: "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "www.csgo.net"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "openapi.pure-ai.us.ci"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -247,8 +233,8 @@ proxy-groups:
       - vless-1827155284-3085
       - vless-1827662288-3021
       - vless-1853352399-3095
-      - vmess-1854107773-269
       - vmess-1833713800-694
+      - vmess-1854107773-269
       - vless-1853651596-1963
       - vless-1828142572-3015
       - vless-1828973943-3081
@@ -260,7 +246,6 @@ proxy-groups:
       - vless-1864005350-1715
       - "🇺🇸 美国 | USA 7-442"
       - vless-1863584737-1967
-      - vless-1866916019-1709
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -269,8 +254,8 @@ proxy-groups:
       - vless-1827155284-3085
       - vless-1827662288-3021
       - vless-1853352399-3095
-      - vmess-1854107773-269
       - vmess-1833713800-694
+      - vmess-1854107773-269
       - vless-1853651596-1963
       - vless-1828142572-3015
       - vless-1828973943-3081
@@ -282,6 +267,5 @@ proxy-groups:
       - vless-1864005350-1715
       - "🇺🇸 美国 | USA 7-442"
       - vless-1863584737-1967
-      - vless-1866916019-1709
 rules:
   - MATCH,PROXY
