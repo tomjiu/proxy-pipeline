@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-19T05:03:15.176279+00:00
+# updated: 2026-10-19T05:27:53.318983+00:00
 # count: 9
 mixed-port: 7890
 allow-lan: false
@@ -48,20 +48,6 @@ proxies:
       path: "/ "
       headers:
         Host: "lucasjow.us.ci"
-  - name: "美国+CloudFlare节点-3079"
-    type: "vless"
-    server: "172.67.222.62"
-    port: 443
-    uuid: "ea50b1a3-3a98-4c5e-a150-48ada40d68d7"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "cf-vless-4cf55824.aimall.fr"
-    network: "ws"
-    ws-opts:
-      path: "/connect"
-      headers:
-        Host: "cf-vless-4cf55824.aimall.fr"
   - name: "vless-1833713783-2875"
     type: "vless"
     server: "188.114.97.6"
@@ -93,6 +79,19 @@ proxies:
   - name: "vmess-1833713800-609"
     type: "vmess"
     server: "172.67.187.145"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vmess-1854107784-219"
+    type: "vmess"
+    server: "104.17.147.222"
     port: 80
     uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
     alterId: 0
@@ -139,10 +138,10 @@ proxy-groups:
       - vless-1833713782-2807
       - "🏳 www.v2nodes.com vless- 13-2821"
       - vless-1853331503-2841
-      - 美国+CloudFlare节点-3079
       - vless-1833713783-2875
       - vless-1828142544-2853
       - vmess-1833713800-609
+      - vmess-1854107784-219
       - vmess-1833713781-599
       - vless-1841014091-783
   - name: "AUTO"
@@ -153,10 +152,10 @@ proxy-groups:
       - vless-1833713782-2807
       - "🏳 www.v2nodes.com vless- 13-2821"
       - vless-1853331503-2841
-      - 美国+CloudFlare节点-3079
       - vless-1833713783-2875
       - vless-1828142544-2853
       - vmess-1833713800-609
+      - vmess-1854107784-219
       - vmess-1833713781-599
       - vless-1841014091-783
 rules:
