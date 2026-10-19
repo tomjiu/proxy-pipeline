@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-19T20:17:54.045154+00:00
-# count: 15
+# updated: 2026-10-19T22:39:13.415881+00:00
+# count: 20
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -218,6 +218,71 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1827155678-2955"
+    type: "vless"
+    server: "cf.877774.xyz"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vmess-1827158699-774"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vmess-1828806120-584"
+    type: "vmess"
+    server: "172.66.203.67"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "🇯🇵JP_1|2.5MB/s-377"
+    type: "trojan"
+    server: "45.32.52.173"
+    port: 8886
+    password: "e26a229d-e8f2-4ff9-8c7d-58a9d83ee437"
+    udp: true
+    sni: "45.32.52.173"
+    skip-cert-verify: true
+  - name: "vmess-1827741481-771"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -239,6 +304,11 @@ proxy-groups:
       - vmess-1854107786-259
       - vmess-1854107788-768
       - vmess-1833713781-579
+      - vless-1827155678-2955
+      - vmess-1827158699-774
+      - vmess-1828806120-584
+      - "🇯🇵JP_1|2.5MB/s-377"
+      - vmess-1827741481-771
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -259,5 +329,10 @@ proxy-groups:
       - vmess-1854107786-259
       - vmess-1854107788-768
       - vmess-1833713781-579
+      - vless-1827155678-2955
+      - vmess-1827158699-774
+      - vmess-1828806120-584
+      - "🇯🇵JP_1|2.5MB/s-377"
+      - vmess-1827741481-771
 rules:
   - MATCH,PROXY
