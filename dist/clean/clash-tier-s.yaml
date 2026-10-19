@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-19T20:08:15.824178+00:00
+# updated: 2026-10-19T22:39:03.451651+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-19T22:28:24.858323+00:00
-# kept 172 / dropped 256
+# updated: 2026-10-19T22:39:18.170475+00:00
+# kept 174 / dropped 288
   - name: "vless-1853451826-2001"
     type: "vless"
     server: "131.143.180.87"
@@ -42,13 +42,26 @@ proxies:
       public-key: "yzpUjsMEI7c7nBB5A3M_VVnROlrZdIR50XEhUQfXnC0"
       short-id: ""
     servername: "www.amazon.com"
-  - name: "hysteria2-1831596676-405"
-    type: "hysteria2"
-    server: "179.255.104.98"
+  - name: "🇨🇦 www.v2nodes.com ss-CA-1588-1884"
+    type: "ss"
+    server: "64.74.163.69"
+    port: 18766
+    cipher: "aes-128-gcm"
+    password: "4efe1af272e7292139b889f6a63ee071"
+    udp: true
+  - name: "vless-1828149353-1441"
+    type: "vless"
+    server: "195.123.235.177"
     port: 443
-    password: "lh92eQnxIpeg2odHHDg0SrcczqwS4e8Y"
-    sni: "dl1.yuanshicheng.com"
-    skip-cert-verify: true
+    uuid: "729dd5f2-f5ff-4070-8c10-863eceded0b1"
+    udp: true
+    tls: true
+    client-fingerprint: "random"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "5B83otQ5ZQwtBFhR7xzsGJRXflkFKRJpQguYbE5JWGI"
+      short-id: "c85d029f5e8eb393"
+    servername: "gateway.icloud.com"
   - name: "shadowsocks-1827146556-1906"
     type: "ss"
     server: "156.146.38.167"
@@ -90,13 +103,6 @@ proxies:
       path: "/cctv13.m3u8"
       headers:
         Host: "129.146.77.248"
-  - name: "shadowsocks-1827146667-1914"
-    type: "ss"
-    server: "173.244.56.9"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
   - name: "vless-1856012994-1895"
     type: "vless"
     server: "172.235.62.90"
@@ -119,6 +125,21 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "vless-1827156461-3077"
+    type: "vless"
+    server: "147.45.60.160"
+    port: 8444
+    uuid: "f55e9aba-7b14-4f6f-b59a-d5b3d45c9309"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    reality-opts:
+      public-key: "FWitre1jinQR7qz5HQ0q2Q4Gg9xA9B0SyizCziN7Ch0"
+      short-id: ""
+    servername: "github.com"
+    network: "grpc"
+    grpc-opts:
+      grpc-service-name: "GunService"
   - name: "hysteria2-1832863516-315"
     type: "hysteria2"
     server: "155.248.209.237"
@@ -300,6 +321,14 @@ proxies:
     password: "pbgLTkd5276SN1sZ"
     sni: "144.24.46.175"
     skip-cert-verify: true
+  - name: "vless-1828293923-2995"
+    type: "vless"
+    server: "136.175.179.94"
+    port: 8444
+    uuid: "eae4af7f-0a0c-4af9-8f5f-b7dd403e59d5"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
   - name: "shadowsocks-1827146248-1916"
     type: "ss"
     server: "37.19.198.160"
@@ -397,6 +426,13 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
+  - name: "🇬🇧 www.v2nodes.com ss-GB-1451-1892"
+    type: "ss"
+    server: "158.173.24.73"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
   - name: "vless-1853488220-1223"
     type: "vless"
     server: "154.40.55.185"
@@ -450,13 +486,6 @@ proxies:
       public-key: "lJ9INPpO4rdnm2Tek_yg0PGFyUrBB6MoKyvqt_Mfqm0"
       short-id: ""
     servername: "www.cloudflare.com"
-  - name: "hysteria2-1827145692-330"
-    type: "hysteria2"
-    server: "hy2.123266.xyz"
-    port: 33333
-    password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
-    sni: "hy2.123266.xyz"
-    skip-cert-verify: false
   - name: "vless-1854038780-647"
     type: "vless"
     server: "185.95.231.156"
@@ -680,26 +709,19 @@ proxies:
     cipher: "aes-256-gcm"
     password: "JuD6MNgtX3nVpCzFzXYVYjDTZ7nsmaTv"
     udp: true
-  - name: "🇨🇦 www.v2nodes.com ss-CA-1558-1956"
-    type: "ss"
-    server: "51.222.200.165"
-    port: 5000
-    cipher: "aes-256-gcm"
-    password: "Y6R9pAtvxxzmGC"
-    udp: true
-  - name: "vless-1831139371-1685"
+  - name: "vless-1854282059-1973"
     type: "vless"
-    server: "95.111.212.241"
+    server: "157.228.155.184"
     port: 443
-    uuid: "924fe46b-b6e0-479e-ae7f-a3661680e706"
+    uuid: "c39f95b5-64b5-4f7a-a93d-fa9e9cf24de8"
     udp: true
     tls: true
     client-fingerprint: "chrome"
     flow: "xtls-rprx-vision"
     reality-opts:
-      public-key: "BSTnEthBXhb_UyuWpLBDxg82-C-wcpU2_kOD5ohS12g"
-      short-id: "3a697adb4c58d495"
-    servername: "www.samsung.com"
+      public-key: "uYU7UXkfNB-BEfjyrCUtRcN2JfFdlFWfMHCeX7bz4Qc"
+      short-id: "e022bfea"
+    servername: "addons.mozilla.org"
   - name: "vmess-1854107786-259"
     type: "vmess"
     server: "104.17.136.198"
@@ -771,6 +793,13 @@ proxies:
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
+    udp: true
+  - name: "shadowsocks-1832968048-1742"
+    type: "ss"
+    server: "31.76.11.83"
+    port: 15731
+    cipher: "chacha20-ietf-poly1305"
+    password: "xAYXtB+XMdfWWOlmL8PWcOZEPfKHKVv7NcTY6jpcL/A="
     udp: true
   - name: "shadowsocks-1870576356-2338"
     type: "ss"
