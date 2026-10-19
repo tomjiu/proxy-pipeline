@@ -1,11 +1,25 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-19T22:39:13.415881+00:00
+# updated: 2026-10-19T22:49:25.277239+00:00
 # count: 20
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
+  - name: "vless-1827662288-2579"
+    type: "vless"
+    server: "104.18.43.174"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
+      headers:
+        Host: "lucasjow.us.ci"
   - name: "vless-1854107776-2631"
     type: "vless"
     server: "172.67.155.65"
@@ -32,20 +46,6 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/?---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---@VPNine1---"
-      headers:
-        Host: "lucasjow.us.ci"
-  - name: "vless-1827662288-2579"
-    type: "vless"
-    server: "104.18.43.174"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
       headers:
         Host: "lucasjow.us.ci"
   - name: "vless-1827155284-2623"
@@ -289,9 +289,9 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
+      - vless-1827662288-2579
       - vless-1854107776-2631
       - vless-1852794069-2669
-      - vless-1827662288-2579
       - vless-1827155284-2623
       - "🏳 www.v2nodes.com vless- 23-2595"
       - vless-1828142544-2639
@@ -314,9 +314,9 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
+      - vless-1827662288-2579
       - vless-1854107776-2631
       - vless-1852794069-2669
-      - vless-1827662288-2579
       - vless-1827155284-2623
       - "🏳 www.v2nodes.com vless- 23-2595"
       - vless-1828142544-2639
