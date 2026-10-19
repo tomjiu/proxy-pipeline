@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-19T13:38:39.074172+00:00
-# count: 13
+# updated: 2026-10-19T13:45:00.570884+00:00
+# count: 15
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -77,20 +77,6 @@ proxies:
       path: "/?---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "🏳 www.v2nodes.com vless- 23-2427"
-    type: "vless"
-    server: "104.21.91.244"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560fp=chrome"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1827662288-2405"
     type: "vless"
     server: "104.18.43.174"
@@ -103,6 +89,20 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "🏳 www.v2nodes.com vless- 23-2427"
+    type: "vless"
+    server: "104.21.91.244"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/?TELEGRAM--MARAMBASHI--MARAMBASHI--MARAMBASHI--MARAMBASHI?ed=2560fp=chrome"
       headers:
         Host: "lucasjow.us.ci"
   - name: "vless-1828142544-2493"
@@ -183,6 +183,36 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
+  - name: "vmess-1868031369-534"
+    type: "vmess"
+    server: "cf.090227.xyz"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vmess-1827741481-539"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -194,14 +224,16 @@ proxy-groups:
       - vless-1828142572-2399
       - vless-1853352399-2487
       - vless-1833713783-2525
-      - "🏳 www.v2nodes.com vless- 23-2427"
       - vless-1827662288-2405
+      - "🏳 www.v2nodes.com vless- 23-2427"
       - vless-1828142544-2493
       - vmess-1853463201-424
       - vmess-1833713781-414
       - vless-1856167238-138
       - vmess-1834875217-434
       - shadowsocks-1870576373-2476
+      - vmess-1868031369-534
+      - vmess-1827741481-539
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -212,13 +244,15 @@ proxy-groups:
       - vless-1828142572-2399
       - vless-1853352399-2487
       - vless-1833713783-2525
-      - "🏳 www.v2nodes.com vless- 23-2427"
       - vless-1827662288-2405
+      - "🏳 www.v2nodes.com vless- 23-2427"
       - vless-1828142544-2493
       - vmess-1853463201-424
       - vmess-1833713781-414
       - vless-1856167238-138
       - vmess-1834875217-434
       - shadowsocks-1870576373-2476
+      - vmess-1868031369-534
+      - vmess-1827741481-539
 rules:
   - MATCH,PROXY
