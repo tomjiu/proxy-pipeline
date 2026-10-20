@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-20T08:54:49.993940+00:00
-# kept 85 / dropped 322
+# updated: 2026-10-20T09:57:34.346390+00:00
+# kept 87 / dropped 320
   - name: "vmess-1827160934-309"
     type: "vmess"
     server: "129.146.77.248"
@@ -57,6 +57,13 @@ proxies:
     password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
     sni: "155.248.209.237"
     skip-cert-verify: true
+  - name: "shadowsocks-1827146556-1835"
+    type: "ss"
+    server: "156.146.38.167"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
   - name: "shadowsocks-1827146131-1839"
     type: "ss"
     server: "156.146.38.169"
@@ -229,6 +236,27 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "trojan-1873664803-362"
+    type: "trojan"
+    server: "216.106.186.32"
+    port: 443
+    password: "dba20dcb635e430fa4d3bfc303a149d2"
+    udp: true
+    sni: "blog.findlocaljobnetworkandbuildcommunityconnections.com"
+    skip-cert-verify: false
+  - name: "vless-1853340796-954"
+    type: "vless"
+    server: "15.204.97.195"
+    port: 23576
+    uuid: "48ff2b70-e180-582f-8866-d9a2edeed5f5"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s"
+      short-id: "01"
+    servername: "fuck.rkn"
   - name: "hysteria2-1832863509-495"
     type: "hysteria2"
     server: "144.24.46.175"
@@ -419,19 +447,6 @@ proxies:
       public-key: "ZJRnFU-1s1JOnO8E9uZ7b00l1fPEh63fGRbdBANFRno"
       short-id: ""
     servername: "aws.amazon.com"
-  - name: "vless-1863065761-1298"
-    type: "vless"
-    server: "212.104.141.233"
-    port: 443
-    uuid: "6338c01a-310e-42c3-bf4f-2a20e161054b"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "pxLk0ocXqKYYqUFyALvH2BVXaswI-6NE00posKNayy0"
-      short-id: "ccaf7283610c6fa8"
-    servername: "freeus.aiage.work"
   - name: "hysteria2-1827145692-400"
     type: "hysteria2"
     server: "hy2.123266.xyz"
@@ -452,19 +467,6 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1856200554-1796"
-    type: "vless"
-    server: "t17.qifei.app"
-    port: 443
-    uuid: "b98d4c6e-6770-4a31-8256-a4750cdea0e7"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo"
-      short-id: "1a"
-    servername: "www.amazon.com"
   - name: "vless-1858658596-1916"
     type: "vless"
     server: "ww9.levikogjgfdd.ir"
@@ -654,6 +656,14 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
+  - name: "🇺🇸 www.v2nodes.com trojan-US-... 1-367"
+    type: "trojan"
+    server: "blog.findlocaljobnetworkandbuildcommunityconnections.com"
+    port: 443
+    password: "dba20dcb635e430fa4d3bfc303a149d2"
+    udp: true
+    sni: "blog.findlocaljobnetworkandbuildcommunityconnections.com"
+    skip-cert-verify: true
   - name: "vless-1828532386-2086"
     type: "vless"
     server: "169.40.42.225"
