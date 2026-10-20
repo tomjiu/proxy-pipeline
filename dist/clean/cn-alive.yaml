@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-20T12:16:57.568255+00:00
-# count: 14
+# updated: 2026-10-20T17:21:06.326969+00:00
+# count: 13
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -9,13 +9,6 @@ proxies:
   - name: "shadowsocks-1875023047-1702"
     type: "ss"
     server: "185.215.132.18"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "shadowsocks-1875023016-1706"
-    type: "ss"
-    server: "185.230.230.18"
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
@@ -41,20 +34,6 @@ proxies:
       path: "/"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1874608702-2243"
-    type: "vless"
-    server: "104.18.43.174"
-    port: 443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/+"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1874608689-2307"
     type: "vless"
     server: "172.64.144.82"
@@ -63,6 +42,20 @@ proxies:
     udp: true
     tls: true
     client-fingerprint: "qq"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/+"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1874608702-2243"
+    type: "vless"
+    server: "104.18.43.174"
+    port: 443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
     servername: "lucasjow.us.ci"
     network: "ws"
     ws-opts:
@@ -161,11 +154,10 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - shadowsocks-1875023047-1702
-      - shadowsocks-1875023016-1706
       - shadowsocks-1875022992-1704
       - vless-1828142572-2239
-      - vless-1874608702-2243
       - vless-1874608689-2307
+      - vless-1874608702-2243
       - shadowsocks-1875023024-1710
       - vless-1828973943-2305
       - vless-1874222470-2359
@@ -180,11 +172,10 @@ proxy-groups:
     interval: 300
     proxies:
       - shadowsocks-1875023047-1702
-      - shadowsocks-1875023016-1706
       - shadowsocks-1875022992-1704
       - vless-1828142572-2239
-      - vless-1874608702-2243
       - vless-1874608689-2307
+      - vless-1874608702-2243
       - shadowsocks-1875023024-1710
       - vless-1828973943-2305
       - vless-1874222470-2359
