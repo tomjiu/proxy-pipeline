@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-21T08:55:55.313721+00:00
+# updated: 2026-10-21T12:21:50.683035+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-21T12:01:38.603913+00:00
-# kept 174 / dropped 221
+# updated: 2026-10-21T12:22:06.439340+00:00
+# kept 172 / dropped 230
   - name: "hysteria2-1853331471-110"
     type: "hysteria2"
     server: "129.213.91.185"
@@ -372,20 +372,6 @@ proxies:
       public-key: "ALT8hIGeZEhi0sQFbXP_ntBg8Xo-v7i0YCLrqTnBxRk"
       short-id: "0990d22f"
     servername: "www.cloudflare.com"
-  - name: "vless-1880209546-1467"
-    type: "vless"
-    server: "188.164.248.67"
-    port: 443
-    uuid: "7b102311-43fd-4e8f-877e-8090623c101d"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "vp21.cc.cd"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "vp21.cc.cd"
   - name: "vless-1876223242-408"
     type: "vless"
     server: "195.211.98.43"
@@ -399,20 +385,6 @@ proxies:
       public-key: "xPnpkXu5qfwIArlHKvJsqKJnGdGbJK1tT2GzWMyLohA"
       short-id: "9c56fddf237e8eaf"
     servername: "www.cloudflare.com"
-  - name: "vless-1880209545-1465"
-    type: "vless"
-    server: "188.164.248.123"
-    port: 8443
-    uuid: "7b102311-43fd-4e8f-877e-8090623c101d"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "vp21.cc.cd"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "vp21.cc.cd"
   - name: "vless-1827153691-1691"
     type: "vless"
     server: "5.34.178.120"
@@ -439,6 +411,13 @@ proxies:
       public-key: "uTmb-ytXsx8p0fkBz7A76SHpWk7_oVutIA4LGTE8BQk"
       short-id: "f98843107912e782"
     servername: "www.cloudflare.com"
+  - name: "shadowsocks-1827147479-2278"
+    type: "ss"
+    server: "137.184.174.93"
+    port: 8080
+    cipher: "rc4-md5"
+    password: "14fFPrbezE3HDZzsMOr6"
+    udp: true
   - name: "vmess-1855808845-709"
     type: "vmess"
     server: "23.162.200.198"
@@ -685,13 +664,6 @@ proxies:
     password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
     sni: "155.248.209.237"
     skip-cert-verify: true
-  - name: "shadowsocks-1878304306-1876"
-    type: "ss"
-    server: "185.212.171.205"
-    port: 18673
-    cipher: "aes-128-gcm"
-    password: "59ded1591b0b45f0b1e9361334c0f7d9"
-    udp: true
   - name: "vless-1854332944-2087"
     type: "vless"
     server: "169.40.42.202"
@@ -705,13 +677,6 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "🇳🇱 www.v2nodes.com ss-NL-1602-1864"
-    type: "ss"
-    server: "62.210.26.134"
-    port: 12571
-    cipher: "aes-128-gcm"
-    password: "3653a8e7d4956b523e18db47e749af30"
-    udp: true
   - name: "hysteria2-1828373435-0"
     type: "hysteria2"
     server: "163.192.14.135"
@@ -760,6 +725,19 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
+  - name: "vless-1878371107-1443"
+    type: "vless"
+    server: "176.122.176.3"
+    port: 443
+    uuid: "71cc25e1-506c-4991-8395-56f4afdfc7e9"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "_PwxJOudmGlsrID420TYkRruB-3TAj9RhsPMBHUlNQE"
+      short-id: "bcd7a51f"
+    servername: "swcdn.apple.com"
   - name: "hysteria2-1876844122-125"
     type: "hysteria2"
     server: "192.236.226.182"
