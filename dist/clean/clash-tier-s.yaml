@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-21T08:56:10.259576+00:00
-# kept 97 / dropped 298
+# updated: 2026-10-21T10:01:27.227488+00:00
+# kept 96 / dropped 299
   - name: "hysteria2-1853331471-110"
     type: "hysteria2"
     server: "129.213.91.185"
@@ -22,6 +22,13 @@ proxies:
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "shadowsocks-1827146742-1904"
+    type: "ss"
+    server: "37.19.198.244"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
     udp: true
   - name: "vmess-1863447742-134"
     type: "vmess"
@@ -432,13 +439,6 @@ proxies:
       public-key: "uTmb-ytXsx8p0fkBz7A76SHpWk7_oVutIA4LGTE8BQk"
       short-id: "f98843107912e782"
     servername: "www.cloudflare.com"
-  - name: "shadowsocks-1827147479-2278"
-    type: "ss"
-    server: "137.184.174.93"
-    port: 8080
-    cipher: "rc4-md5"
-    password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
   - name: "vmess-1855808845-709"
     type: "vmess"
     server: "23.162.200.198"
@@ -638,6 +638,13 @@ proxies:
     password: "pbgLTkd5276SN1sZ"
     sni: "144.24.46.175"
     skip-cert-verify: true
+  - name: "🇬🇧 www.v2nodes.com ss-GB-1451-1878"
+    type: "ss"
+    server: "158.173.24.73"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
   - name: "vless-1827533195-2033"
     type: "vless"
     server: "169.40.42.104"
@@ -698,16 +705,6 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1878371091-3153"
-    type: "vless"
-    server: "172.96.19.92"
-    port: 2096
-    uuid: "e93c7148-2c28-4b5c-b248-ab549ed6ba11"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    servername: "172.96.19.92.nip.io"
   - name: "🇳🇱 www.v2nodes.com ss-NL-1602-1864"
     type: "ss"
     server: "62.210.26.134"
@@ -763,19 +760,6 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1878371107-1443"
-    type: "vless"
-    server: "176.122.176.3"
-    port: 443
-    uuid: "71cc25e1-506c-4991-8395-56f4afdfc7e9"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "_PwxJOudmGlsrID420TYkRruB-3TAj9RhsPMBHUlNQE"
-      short-id: "bcd7a51f"
-    servername: "swcdn.apple.com"
   - name: "hysteria2-1876844122-125"
     type: "hysteria2"
     server: "192.236.226.182"
