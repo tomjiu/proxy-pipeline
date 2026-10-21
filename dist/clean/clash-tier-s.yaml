@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-21T00:45:52.608415+00:00
+# updated: 2026-10-21T05:17:22.944301+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-21T05:00:02.506741+00:00
-# kept 166 / dropped 236
+# updated: 2026-10-21T05:17:38.779977+00:00
+# kept 162 / dropped 245
   - name: "shadowsocks-1827963904-2142"
     type: "ss"
     server: "138.199.43.159"
@@ -46,19 +46,6 @@ proxies:
     password: "gf1:gfhysteria2024"
     sni: "www.broadcom.com"
     skip-cert-verify: true
-  - name: "vless-1853340196-915"
-    type: "vless"
-    server: "15.204.97.198"
-    port: 23576
-    uuid: "48ff2b70-e180-582f-8866-d9a2edeed5f5"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s"
-      short-id: "01"
-    servername: "fuck.rkn"
   - name: "vmess-1853465786-604"
     type: "vmess"
     server: "169.197.142.22"
@@ -338,13 +325,6 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
-  - name: "shadowsocks-1827146742-1770"
-    type: "ss"
-    server: "37.19.198.244"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
   - name: "🇺🇸 美国 | USA 15-1828"
     type: "ss"
     server: "193.151.163.18"
@@ -383,6 +363,19 @@ proxies:
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
+  - name: "vless-1853353398-1883"
+    type: "vless"
+    server: "195.123.240.65"
+    port: 443
+    uuid: "ce18d0eb-5c71-41f9-96e5-1632e22456e4"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "StPbcmBuzpuYUfa4oZ5SI3Bq1OSF_-oU1vp2AcyvQVE"
+      short-id: "19296c9f1bf9c7b1"
+    servername: "www.cloudflare.com"
   - name: "trojan-1832868058-342"
     type: "trojan"
     server: "66.23.203.21"
@@ -420,26 +413,12 @@ proxies:
       public-key: "xPnpkXu5qfwIArlHKvJsqKJnGdGbJK1tT2GzWMyLohA"
       short-id: "9c56fddf237e8eaf"
     servername: "www.cloudflare.com"
-  - name: "shadowsocks-1874175732-1774"
-    type: "ss"
-    server: "18.118.7.63"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "shadowsocks-1827147479-2138"
     type: "ss"
     server: "137.184.174.93"
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "shadowsocks-1874175740-1776"
-    type: "ss"
-    server: "3.133.135.28"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
     udp: true
   - name: "shadowsocks-1827964140-2140"
     type: "ss"
@@ -537,6 +516,19 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "vless-1853352962-63"
+    type: "vless"
+    server: "69.48.201.136"
+    port: 30016
+    uuid: "03dc60cb-a8d4-4226-93fe-0e6cbf77fe5a"
+    udp: true
+    tls: false
+    client-fingerprint: "unsafe"
+    network: "ws"
+    ws-opts:
+      path: "/usserver"
+      headers:
+        Host: "uspanel.unixzone.us"
   - name: "vless-1853352819-93"
     type: "vless"
     server: "uspanel.unixzone.us"
@@ -546,19 +538,6 @@ proxies:
     tls: false
     client-fingerprint: "unsafe"
     servername: "uspanel.unixzone.us"
-    network: "ws"
-    ws-opts:
-      path: "/usserver"
-      headers:
-        Host: "uspanel.unixzone.us"
-  - name: "vless-1853352962-63"
-    type: "vless"
-    server: "69.48.201.136"
-    port: 30016
-    uuid: "03dc60cb-a8d4-4226-93fe-0e6cbf77fe5a"
-    udp: true
-    tls: false
-    client-fingerprint: "unsafe"
     network: "ws"
     ws-opts:
       path: "/usserver"
@@ -743,20 +722,6 @@ proxies:
       public-key: "ALT8hIGeZEhi0sQFbXP_ntBg8Xo-v7i0YCLrqTnBxRk"
       short-id: "0990d22f"
     servername: "www.cloudflare.com"
-  - name: "vless-1878528241-899"
-    type: "vless"
-    server: "nexusmods.com"
-    port: 443
-    uuid: "44d636ef-7056-4bdf-a3f4-acabe2adfc6f"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "xtyr.l53.hhll.vavava.kdns.fr"
-    network: "ws"
-    ws-opts:
-      path: "/?auto=1&ed=2560"
-      headers:
-        Host: "xtyr.l53.hhll.vavava.kdns.fr"
   - name: "vless-1827533195-1949"
     type: "vless"
     server: "169.40.42.104"
