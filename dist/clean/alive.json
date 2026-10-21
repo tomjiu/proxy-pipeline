@@ -169784,12 +169784,11 @@
     },
     "vmess-1828661271-244": {
       "tier": "S",
-      "score": 11.8,
-      "checked_at": "2026-10-17T20:59:50.387136+00:00",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
-          "netflix",
           "youtube",
           "gemini",
           "google"
@@ -169820,11 +169819,6 @@
           "verdict": "ok",
           "reason": "title:google"
         },
-        "gemini": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:"
-        },
         "youtube": {
           "code": 200,
           "verdict": "ok",
@@ -169835,13 +169829,18 @@
           "verdict": "ok",
           "reason": "title:grok"
         },
-        "netflix": {
-          "code": 200,
+        "gemini": {
+          "code": 302,
           "verdict": "ok",
-          "reason": "title:netflix - watch tv shows online, wa"
+          "reason": "title:302 moved"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
         }
       },
-      "elapsed_s": 172.2
+      "elapsed_s": 24.0
     },
     "vless-1828534442-1930": {
       "tier": "S",
@@ -197603,41 +197602,45 @@
     },
     "vless-1854347690-3": {
       "tier": "S",
-      "score": 11.9,
-      "checked_at": "2026-10-21T12:22:06.439340+00:00",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
-          "chatgpt",
           "youtube",
           "gemini",
           "google"
         ],
         "challenged": [
+          "chatgpt",
           "claude"
         ],
         "blocked": [],
         "why": "grok_no_challenge",
         "high_weight_passed": [
-          "grok",
-          "chatgpt"
+          "grok"
         ]
       },
       "detail": {
-        "gemini": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:"
-        },
         "chatgpt": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:chatgpt: chat, work, create &amp; c"
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
         },
         "youtube": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:youtube"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
         },
         "grok": {
           "code": 200,
@@ -197649,18 +197652,13 @@
           "verdict": "ok",
           "reason": "title:google"
         },
-        "claude": {
-          "code": 403,
-          "verdict": "challenge",
-          "reason": "challenge:just a moment"
-        },
         "netflix": {
           "code": null,
           "verdict": "timeout",
           "reason": "_ssl.c:993: The handshake operation timed out"
         }
       },
-      "elapsed_s": 170.1
+      "elapsed_s": 219.6
     },
     "vless-1843512950-2877": {
       "tier": "S",
@@ -212104,7 +212102,7 @@
     "vless-1853352819-118": {
       "tier": "S",
       "score": 11.8,
-      "checked_at": "2026-10-20T17:32:18.384172+00:00",
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
@@ -212124,25 +212122,25 @@
         ]
       },
       "detail": {
-        "claude": {
-          "code": 403,
-          "verdict": "challenge",
-          "reason": "challenge:just a moment"
-        },
         "chatgpt": {
           "code": 403,
           "verdict": "challenge",
           "reason": "challenge:challenge-platform"
         },
-        "youtube": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:youtube"
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
         },
         "google": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
         },
         "gemini": {
           "code": 200,
@@ -212160,7 +212158,7 @@
           "reason": "title:grok"
         }
       },
-      "elapsed_s": 326.8
+      "elapsed_s": 186.5
     },
     "vless-1863065756-1451": {
       "tier": "S",
@@ -217675,12 +217673,14 @@
     },
     "hysteria2-1853503223-0": {
       "tier": "S",
-      "score": 7.8,
-      "checked_at": "2026-10-20T09:57:34.346390+00:00",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
+          "netflix",
           "youtube",
+          "gemini",
           "google"
         ],
         "challenged": [
@@ -217694,43 +217694,43 @@
         ]
       },
       "detail": {
-        "claude": {
-          "code": 403,
-          "verdict": "challenge",
-          "reason": "challenge:just a moment"
-        },
         "chatgpt": {
           "code": 403,
           "verdict": "challenge",
           "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
         },
         "google": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:google"
         },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
         "youtube": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:youtube"
         },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
         "grok": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:grok"
-        },
-        "netflix": {
-          "code": null,
-          "verdict": "timeout",
-          "reason": "_ssl.c:993: The handshake operation timed out"
-        },
-        "gemini": {
-          "code": null,
-          "verdict": "timeout",
-          "reason": "_ssl.c:993: The handshake operation timed out"
         }
       },
-      "elapsed_s": 69.4
+      "elapsed_s": 3.6
     },
     "vless-1854029589-2403": {
       "tier": "S",
@@ -264514,7 +264514,7 @@
     "vless-1827149751-518": {
       "tier": "S",
       "score": 9.8,
-      "checked_at": "2026-10-19T23:49:06.594193+00:00",
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
@@ -264553,15 +264553,15 @@
           "verdict": "ok",
           "reason": "title:"
         },
-        "grok": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:grok"
-        },
         "google": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
         },
         "netflix": {
           "code": null,
@@ -264569,7 +264569,7 @@
           "reason": "_ssl.c:993: The handshake operation timed out"
         }
       },
-      "elapsed_s": 36.4
+      "elapsed_s": 231.5
     },
     "vmess-1871754005-164": {
       "tier": "S",
@@ -267001,7 +267001,7 @@
     "vless-1853352962-93": {
       "tier": "S",
       "score": 11.8,
-      "checked_at": "2026-10-19T23:49:06.594193+00:00",
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "grok",
@@ -267021,43 +267021,43 @@
         ]
       },
       "detail": {
-        "claude": {
-          "code": 403,
-          "verdict": "challenge",
-          "reason": "challenge:just a moment"
-        },
         "chatgpt": {
           "code": 403,
           "verdict": "challenge",
           "reason": "challenge:challenge-platform"
         },
-        "google": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:google"
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
         },
         "youtube": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:youtube"
         },
-        "grok": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:grok"
-        },
         "gemini": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:"
         },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
         "netflix": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
         }
       },
-      "elapsed_s": 236.5
+      "elapsed_s": 220.7
     },
     "vmess-1837386444-670": {
       "tier": "S",
@@ -308345,7 +308345,7 @@
     "shadowsocks-1827146718-1922": {
       "tier": "A",
       "score": 9.7,
-      "checked_at": "2026-10-21T12:22:06.439340+00:00",
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
           "netflix",
@@ -308363,20 +308363,25 @@
         "high_weight_passed": []
       },
       "detail": {
-        "claude": {
+        "chatgpt": {
           "code": 403,
           "verdict": "challenge",
-          "reason": "challenge:just a moment"
+          "reason": "challenge:challenge-platform"
         },
         "grok": {
           "code": 403,
           "verdict": "challenge",
           "reason": "challenge:just a moment"
         },
-        "chatgpt": {
+        "claude": {
           "code": 403,
           "verdict": "challenge",
-          "reason": "challenge:challenge-platform"
+          "reason": "challenge:just a moment"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
         },
         "youtube": {
           "code": 200,
@@ -308388,18 +308393,13 @@
           "verdict": "ok",
           "reason": "title:google"
         },
-        "gemini": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:"
-        },
         "netflix": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:netflix - watch tv shows online, wa"
         }
       },
-      "elapsed_s": 23.8
+      "elapsed_s": 171.0
     },
     "shadowsocks-1870576149-2300": {
       "tier": "A",
@@ -317902,21 +317902,26 @@
       "elapsed_s": 227.1
     },
     "🇯🇵 www.v2nodes.com ss-JP-1598-1928": {
-      "tier": "A",
-      "score": 6.9,
-      "checked_at": "2026-10-21T12:01:38.603913+00:00",
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
       "summary": {
         "passed": [
+          "grok",
           "netflix",
           "youtube",
-          "gemini"
+          "gemini",
+          "google"
         ],
         "challenged": [
+          "chatgpt",
           "claude"
         ],
         "blocked": [],
-        "why": "partial_pass(netflix,youtube,gemini)",
-        "high_weight_passed": []
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
       },
       "detail": {
         "claude": {
@@ -317929,33 +317934,33 @@
           "verdict": "ok",
           "reason": "title:youtube"
         },
-        "gemini": {
-          "code": 200,
-          "verdict": "ok",
-          "reason": "title:"
-        },
-        "chatgpt": {
-          "code": null,
-          "verdict": "connect_fail",
-          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
-        },
-        "google": {
-          "code": null,
-          "verdict": "connect_fail",
-          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
-        },
         "netflix": {
           "code": 200,
           "verdict": "ok",
           "reason": "title:netflix japan - watch tv shows onli"
         },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
         "grok": {
-          "code": null,
-          "verdict": "timeout",
-          "reason": "_ssl.c:993: The handshake operation timed out"
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
         }
       },
-      "elapsed_s": 237.2
+      "elapsed_s": 202.1
     },
     "shadowsocks-1827146287-1886": {
       "tier": "S",
@@ -319742,13 +319747,5566 @@
         }
       },
       "elapsed_s": 360.7
+    },
+    "shadowsocks-1827969041-2322": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 0.7
+    },
+    "hysteria2-1832863516-450": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 1.7
+    },
+    "shadowsocks-1827963705-2300": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 2.6
+    },
+    "hysteria2-1876844122-140": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 4.7
+    },
+    "shadowsocks-1827963043-2298": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 5.5
+    },
+    "shadowsocks-1870576345-2334": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 6.3
+    },
+    "shadowsocks-1827962976-2296": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 7.4
+    },
+    "shadowsocks-1827963904-2310": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 8.2
+    },
+    "vless-1881059382-2617": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 9.8
+    },
+    "vless-1874608689-2587": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 10.6
+    },
+    "vless-1835055729-268": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 13.1
+    },
+    "shadowsocks-1828227588-2332": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 13.9
+    },
+    "🏳 www.v2nodes.com vless- 16-2491": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        }
+      },
+      "elapsed_s": 25.0
+    },
+    "vless-1828142572-2447": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 26.6
+    },
+    "vless-1853353398-2023": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 36.7
+    },
+    "vless-1833035366-2673": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 38.3
+    },
+    "vless-1853340796-1011": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 48.4
+    },
+    "vless-1853340196-1023": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        }
+      },
+      "elapsed_s": 51.9
+    },
+    "vless-1853340423-1027": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 52.6
+    },
+    "vless-1853341600-1031": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 62.7
+    },
+    "vless-1853340740-1033": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        }
+      },
+      "elapsed_s": 63.3
+    },
+    "shadowsocks-1875129452-2008": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 64.5
+    },
+    "vless-1827662288-2457": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 65.5
+    },
+    "vless-1853475583-1019": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 66.2
+    },
+    "vless-1853340242-1047": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 67.0
+    },
+    "vless-1853340775-1041": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 302,
+          "verdict": "ok",
+          "reason": "title:302 moved"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 75.5
+    },
+    "vless-1875764143-2579": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 77.1
+    },
+    "shadowsocks-1827146224-1870": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix canada - watch tv shows onl"
+        }
+      },
+      "elapsed_s": 78.7
+    },
+    "vless-1873265853-1897": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 429,
+          "verdict": "ok",
+          "reason": "title:https://www.google.com/"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        }
+      },
+      "elapsed_s": 84.1
+    },
+    "vless-1827155158-2001": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 94.2
+    },
+    "vmess-1827160934-324": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 95.6
+    },
+    "hysteria2-1854030108-545": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 96.7
+    },
+    "hysteria2-1832764823-510": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 97.7
+    },
+    "shadowsocks-1827146556-1872": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 98.7
+    },
+    "shadowsocks-1827146815-1874": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 99.8
+    },
+    "shadowsocks-1827146549-1878": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 100.9
+    },
+    "vless-1827151191-791": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 111.0
+    },
+    "shadowsocks-1827146131-1876": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 112.0
+    },
+    "vless-1878371107-1461": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        }
+      },
+      "elapsed_s": 113.4
+    },
+    "shadowsocks-1827147700-2308": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 114.9
+    },
+    "🇺🇸 www.v2nodes.com ss-US-1602... 3-1954": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 116.1
+    },
+    "shadowsocks-1875023047-1988": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 117.3
+    },
+    "vless-1878371101-568": {
+      "tier": "S",
+      "score": 10.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 124.8
+    },
+    "🇺🇸 www.v2nodes.com ss-US-1602-1958": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 126.1
+    },
+    "vmess-1837386484-339": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix canada - watch tv shows onl"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 302,
+          "verdict": "ok",
+          "reason": "title:302 moved"
+        }
+      },
+      "elapsed_s": 131.1
+    },
+    "trojan-1832868058-502": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 141.1
+    },
+    "shadowsocks-1827146248-1882": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 142.0
+    },
+    "shadowsocks-1827146051-1884": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 143.1
+    },
+    "🇺🇸 www.v2nodes.com ss-US-1602... 2-1956": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 144.3
+    },
+    "shadowsocks-1827147801-2028": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 144.7
+    },
+    "shadowsocks-1827146529-1776": {
+      "tier": "A",
+      "score": 9.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(netflix,youtube,gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 429,
+          "verdict": "ok",
+          "reason": "title:https://www.google.com/"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        }
+      },
+      "elapsed_s": 146.4
+    },
+    "shadowsocks-1880507771-1892": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        }
+      },
+      "elapsed_s": 147.6
+    },
+    "vmess-1837386117-729": {
+      "tier": "S",
+      "score": 11.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 302,
+          "verdict": "ok",
+          "reason": "title:302 moved"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 157.6
+    },
+    "shadowsocks-1827146742-1886": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 167.7
+    },
+    "vless-1828656714-1837": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 168.2
+    },
+    "shadowsocks-1875023016-1992": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 169.4
+    },
+    "shadowsocks-1882367543-1890": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        }
+      },
+      "elapsed_s": 170.5
+    },
+    "🇺🇸 www.v2nodes.com ss-US-1602... 1-1980": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 171.8
+    },
+    "shadowsocks-1827964140-2306": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix canada - watch tv shows onl"
+        }
+      },
+      "elapsed_s": 173.5
+    },
+    "vless-1853340437-1071": {
+      "tier": "A",
+      "score": 7.7,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "grok",
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "partial_pass(youtube,gemini,google)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "grok": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 183.6
+    },
+    "vless-1876223242-413": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 184.1
+    },
+    "hysteria2-1853331471-135": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 185.6
+    },
+    "trojan-1827955817-806": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 196.5
+    },
+    "hysteria2-1836922990-470": {
+      "tier": "S",
+      "score": 8.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "gemini": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "claude": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 197.4
+    },
+    "vless-1880210958-1839": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        }
+      },
+      "elapsed_s": 205.4
+    },
+    "shadowsocks-1827146287-1868": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix japan - watch tv shows onli"
+        }
+      },
+      "elapsed_s": 207.6
+    },
+    "vless-1853340371-1951": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 403,
+          "verdict": "ok",
+          "reason": "title:error 403 (forbidden)!!1"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 208.5
+    },
+    "vless-1869872038-1501": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "gemini": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 209.6
+    },
+    "vless-1853341831-1845": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 221.4
+    },
+    "vless-1853462668-308": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 241.6
+    },
+    "vless-1827533195-2093": {
+      "tier": "S",
+      "score": 11.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 251.6
+    },
+    "vless-1828293998-1717": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 261.7
+    },
+    "trojan-1879326045-322": {
+      "tier": "S",
+      "score": 11.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 271.8
+    },
+    "shadowsocks-1827147777-2320": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix united kingdom – watch seri"
+        }
+      },
+      "elapsed_s": 274.1
+    },
+    "vless-1853341707-2131": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 284.2
+    },
+    "vless-1831099319-2265": {
+      "tier": "S",
+      "score": 11.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 294.3
+    },
+    "🇬🇧 www.v2nodes.com ss-GB-1451-1862": {
+      "tier": "A",
+      "score": 2,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "gemini"
+        ],
+        "challenged": [],
+        "blocked": [],
+        "why": "partial_pass(gemini)",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "youtube": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "google": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "chatgpt": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "grok": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "claude": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "connect_fail",
+          "reason": "[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violatio"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        }
+      },
+      "elapsed_s": 294.9
+    },
+    "vless-1856818262-747": {
+      "tier": "S",
+      "score": 6.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        },
+        "youtube": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "google": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "gemini": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 305.0
+    },
+    "vless-1827162803-2193": {
+      "tier": "S",
+      "score": 11.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 315.1
+    },
+    "vless-1827533136-2213": {
+      "tier": "S",
+      "score": 13.9,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "chatgpt",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok",
+          "chatgpt"
+        ]
+      },
+      "detail": {
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:chatgpt: chat, work, create &amp; c"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix - watch tv shows online, wa"
+        }
+      },
+      "elapsed_s": 315.9
+    },
+    "vless-1827151931-1279": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 326.0
+    },
+    "vless-1853462750-2189": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 336.1
+    },
+    "vless-1882427738-2427": {
+      "tier": "B",
+      "score": 0,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [],
+        "challenged": [],
+        "blocked": [],
+        "why": "all_failed",
+        "high_weight_passed": []
+      },
+      "detail": {
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "chatgpt": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "google": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "gemini": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "youtube": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "claude": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        },
+        "grok": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 346.1
+    },
+    "vless-1828535756-2165": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 356.2
+    },
+    "shadowsocks-1827146478-1880": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "gemini": {
+          "code": 403,
+          "verdict": "ok",
+          "reason": "title:error 403 (forbidden)!!1"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix netherlands – watch series "
+        }
+      },
+      "elapsed_s": 357.6
+    },
+    "shadowsocks-1827147824-2024": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix united kingdom – watch seri"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        }
+      },
+      "elapsed_s": 359.0
+    },
+    "shadowsocks-1827963919-2318": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix united kingdom – watch seri"
+        }
+      },
+      "elapsed_s": 360.4
+    },
+    "vless-1881710278-2421": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix france - watch tv shows onl"
+        },
+        "gemini": {
+          "code": 302,
+          "verdict": "ok",
+          "reason": "title:302 moved"
+        }
+      },
+      "elapsed_s": 367.3
+    },
+    "shadowsocks-1827146143-1866": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix united kingdom – watch seri"
+        }
+      },
+      "elapsed_s": 369.0
+    },
+    "shadowsocks-1870576373-2316": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix united kingdom – watch seri"
+        }
+      },
+      "elapsed_s": 371.6
+    },
+    "vless-1854332944-2153": {
+      "tier": "S",
+      "score": 9.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": null,
+          "verdict": "timeout",
+          "reason": "_ssl.c:993: The handshake operation timed out"
+        }
+      },
+      "elapsed_s": 381.7
+    },
+    "shadowsocks-1870576356-2312": {
+      "tier": "S",
+      "score": 11.8,
+      "checked_at": "2026-10-21T13:58:34.840915+00:00",
+      "summary": {
+        "passed": [
+          "grok",
+          "netflix",
+          "youtube",
+          "gemini",
+          "google"
+        ],
+        "challenged": [
+          "chatgpt",
+          "claude"
+        ],
+        "blocked": [],
+        "why": "grok_no_challenge",
+        "high_weight_passed": [
+          "grok"
+        ]
+      },
+      "detail": {
+        "claude": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:just a moment"
+        },
+        "chatgpt": {
+          "code": 403,
+          "verdict": "challenge",
+          "reason": "challenge:challenge-platform"
+        },
+        "youtube": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:youtube"
+        },
+        "google": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:google"
+        },
+        "gemini": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:"
+        },
+        "grok": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:grok"
+        },
+        "netflix": {
+          "code": 200,
+          "verdict": "ok",
+          "reason": "title:netflix germany - watch tv shows on"
+        }
+      },
+      "elapsed_s": 383.3
     }
   },
-  "quality_updated_at": "2026-10-21T12:22:06.439340+00:00",
+  "quality_updated_at": "2026-10-21T13:58:34.840915+00:00",
   "quality_counts": {
-    "S": 85,
-    "A": 10,
-    "B": 5,
+    "S": 81,
+    "A": 18,
+    "B": 1,
     "X": 0,
     "select_failed": 0
   }
