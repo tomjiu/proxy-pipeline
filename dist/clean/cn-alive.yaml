@@ -1,25 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-21T09:04:52.467974+00:00
+# updated: 2026-10-21T10:09:59.826865+00:00
 # count: 12
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1828142544-2621"
-    type: "vless"
-    server: "172.67.155.65"
-    port: 8443
-    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "lucasjow.us.ci"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "lucasjow.us.ci"
   - name: "vless-1833713783-2671"
     type: "vless"
     server: "188.114.97.6"
@@ -32,6 +18,20 @@ proxies:
     network: "ws"
     ws-opts:
       path: "/?---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---@Fear_Config---"
+      headers:
+        Host: "lucasjow.us.ci"
+  - name: "vless-1828142544-2621"
+    type: "vless"
+    server: "172.67.155.65"
+    port: 8443
+    uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "lucasjow.us.ci"
+    network: "ws"
+    ws-opts:
+      path: "/"
       headers:
         Host: "lucasjow.us.ci"
   - name: "vless-1828973943-2589"
@@ -179,8 +179,8 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1828142544-2621
       - vless-1833713783-2671
+      - vless-1828142544-2621
       - vless-1828973943-2589
       - vless-1827662288-2493
       - vless-1828142572-2485
@@ -196,8 +196,8 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1828142544-2621
       - vless-1833713783-2671
+      - vless-1828142544-2621
       - vless-1828973943-2589
       - vless-1827662288-2493
       - vless-1828142572-2485
