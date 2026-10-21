@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-21T05:10:55.557606+00:00
-# count: 20
+# updated: 2026-10-21T05:29:33.118523+00:00
+# count: 19
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -20,10 +20,10 @@ proxies:
       path: "/vl/9yvcoLdzdOXLUYfH7r5gwJhu1CHrjfp=chrome"
       headers:
         Host: "idb8onmvbntuyt5t7t6cejfw8vlrb.pages.dev"
-  - name: "vless-1828142544-2517"
+  - name: "vless-1828142572-2379"
     type: "vless"
-    server: "172.67.155.65"
-    port: 8443
+    server: "104.18.35.15"
+    port: 443
     uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
     udp: true
     tls: true
@@ -41,10 +41,10 @@ proxies:
     cipher: "2022-blake3-aes-128-gcm"
     password: "iCV7KreiPg3BR4k500isPA=="
     udp: true
-  - name: "vless-1828142572-2379"
+  - name: "vless-1828142544-2517"
     type: "vless"
-    server: "104.18.35.15"
-    port: 443
+    server: "172.67.155.65"
+    port: 8443
     uuid: "e6df2095-a73c-4043-8693-8d5a03686870"
     udp: true
     tls: true
@@ -149,20 +149,6 @@ proxies:
       public-key: "p8pUe3hwND5rhAti-yRQ5qMaIkNdhxOV1K1jpbtJlEQ"
       short-id: "125ba3"
     servername: "play.google.com"
-  - name: "vless-1878528241-899"
-    type: "vless"
-    server: "nexusmods.com"
-    port: 443
-    uuid: "44d636ef-7056-4bdf-a3f4-acabe2adfc6f"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "xtyr.l53.hhll.vavava.kdns.fr"
-    network: "ws"
-    ws-opts:
-      path: "/?auto=1&ed=2560"
-      headers:
-        Host: "xtyr.l53.hhll.vavava.kdns.fr"
   - name: "trojan-1827149654-417"
     type: "trojan"
     server: "45.32.52.173"
@@ -184,13 +170,6 @@ proxies:
       public-key: "XEFPrL1_DWJ_lx0MLgOiXdEdn_6eysDDWlTxga7_z2E"
       short-id: "04b065db"
     servername: "www.cloudflare.com"
-  - name: "🇮🇹 意大利 | ITA 1-1830"
-    type: "ss"
-    server: "202.50.253.27"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
   - name: "shadowsocks-1875023031-1862"
     type: "ss"
     server: "202.50.253.99"
@@ -198,9 +177,23 @@ proxies:
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
+  - name: "🇮🇹 意大利 | ITA 1-1830"
+    type: "ss"
+    server: "202.50.253.27"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
   - name: "shadowsocks-1875023048-1856"
     type: "ss"
     server: "202.50.253.72"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "shadowsocks-1875022975-1858"
+    type: "ss"
+    server: "202.50.253.81"
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
@@ -226,13 +219,6 @@ proxies:
       path: "/+"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "shadowsocks-1875022975-1858"
-    type: "ss"
-    server: "202.50.253.81"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -240,9 +226,9 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - "🏳 www.v2nodes.com vless- 16-613"
-      - vless-1828142544-2517
-      - shadowsocks-1878371098-1618
       - vless-1828142572-2379
+      - shadowsocks-1878371098-1618
+      - vless-1828142544-2517
       - vless-1833035366-2557
       - vless-1878371108-478
       - vless-1827662288-2389
@@ -250,24 +236,23 @@ proxy-groups:
       - vless-1878371102-747
       - vless-1853651596-1719
       - vless-1856818262-657
-      - vless-1878528241-899
       - trojan-1827149654-417
       - vless-1878371099-1317
-      - "🇮🇹 意大利 | ITA 1-1830"
       - shadowsocks-1875023031-1862
+      - "🇮🇹 意大利 | ITA 1-1830"
       - shadowsocks-1875023048-1856
+      - shadowsocks-1875022975-1858
       - "🇮🇹 意大利 | ITA 2-1832"
       - vless-1874608679-3047
-      - shadowsocks-1875022975-1858
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - "🏳 www.v2nodes.com vless- 16-613"
-      - vless-1828142544-2517
-      - shadowsocks-1878371098-1618
       - vless-1828142572-2379
+      - shadowsocks-1878371098-1618
+      - vless-1828142544-2517
       - vless-1833035366-2557
       - vless-1878371108-478
       - vless-1827662288-2389
@@ -275,14 +260,13 @@ proxy-groups:
       - vless-1878371102-747
       - vless-1853651596-1719
       - vless-1856818262-657
-      - vless-1878528241-899
       - trojan-1827149654-417
       - vless-1878371099-1317
-      - "🇮🇹 意大利 | ITA 1-1830"
       - shadowsocks-1875023031-1862
+      - "🇮🇹 意大利 | ITA 1-1830"
       - shadowsocks-1875023048-1856
+      - shadowsocks-1875022975-1858
       - "🇮🇹 意大利 | ITA 2-1832"
       - vless-1874608679-3047
-      - shadowsocks-1875022975-1858
 rules:
   - MATCH,PROXY
