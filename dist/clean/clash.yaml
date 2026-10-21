@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-21T00:45:52.608415+00:00
+# updated: 2026-10-21T05:17:22.944301+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -762,6 +762,19 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
+  - name: "vless-1853352962-63"
+    type: "vless"
+    server: "69.48.201.136"
+    port: 30016
+    uuid: "03dc60cb-a8d4-4226-93fe-0e6cbf77fe5a"
+    udp: true
+    tls: false
+    client-fingerprint: "unsafe"
+    network: "ws"
+    ws-opts:
+      path: "/usserver"
+      headers:
+        Host: "uspanel.unixzone.us"
   - name: "vless-1853352819-93"
     type: "vless"
     server: "uspanel.unixzone.us"
@@ -771,19 +784,6 @@ proxies:
     tls: false
     client-fingerprint: "unsafe"
     servername: "uspanel.unixzone.us"
-    network: "ws"
-    ws-opts:
-      path: "/usserver"
-      headers:
-        Host: "uspanel.unixzone.us"
-  - name: "vless-1853352962-63"
-    type: "vless"
-    server: "69.48.201.136"
-    port: 30016
-    uuid: "03dc60cb-a8d4-4226-93fe-0e6cbf77fe5a"
-    udp: true
-    tls: false
-    client-fingerprint: "unsafe"
     network: "ws"
     ws-opts:
       path: "/usserver"
@@ -994,6 +994,13 @@ proxies:
       path: "/?auto=1&ed=2560"
       headers:
         Host: "xtyr.l53.hhll.vavava.kdns.fr"
+  - name: "🏳 www.v2nodes.com ss- 2-1748"
+    type: "ss"
+    server: "158.173.24.73"
+    port: 443
+    cipher: "aes-128-gcm"
+    password: "shadowsocks"
+    udp: true
   - name: "vless-1827533195-1949"
     type: "vless"
     server: "169.40.42.104"
@@ -1735,6 +1742,13 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
+  - name: "🇳🇴 www.v2nodes.com ss-NO-1220-1624"
+    type: "ss"
+    server: "185.213.23.63"
+    port: 990
+    cipher: "chacha20-ietf-poly1305"
+    password: "ARgvGZywA+gacgGV26Bvmu05+wZmRW/j+AdU+Z8Bt44="
+    udp: true
   - name: "vless-1875790264-1415"
     type: "vless"
     server: "3.114.220.22"
@@ -2456,6 +2470,20 @@ proxies:
     udp: true
     tls: true
     client-fingerprint: "chrome"
+    servername: "jp3.yohototo.top"
+    network: "ws"
+    ws-opts:
+      path: "/tyxyws"
+      headers:
+        Host: "jp3.yohototo.top"
+  - name: "vless-1837364467-1141"
+    type: "vless"
+    server: "43.170.8.95"
+    port: 443
+    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
     servername: "jp3.yohototo.top"
     network: "ws"
     ws-opts:
@@ -4046,6 +4074,19 @@ proxies:
       path: "/tyxyws"
       headers:
         Host: "jp3.yohototo.top"
+  - name: "vless-1875949547-2191"
+    type: "vless"
+    server: "156.246.88.125"
+    port: 26518
+    uuid: "e01fcb68-3112-49da-b85d-dffb799cfc9b"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "1fa6iCY7vhoQyKu91FeaK04FN-mr1qeHnrtdyLZ79mk"
+      short-id: "6caead99"
+    servername: "github.com"
   - name: "vless-1854029661-2037"
     type: "vless"
     server: "169.40.42.231"
@@ -4087,6 +4128,19 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
+  - name: "vless-1827153542-1611"
+    type: "vless"
+    server: "156.229.161.107"
+    port: 10001
+    uuid: "9c79aceb-4649-44ea-9698-b5e9ecf6d6da"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "4jNz4Bw-FZlaX-WtfAdwK0hegY28W_k8AttGd-7hZn4"
+      short-id: "fb2c6678"
+    servername: "www.icloud.com"
   - name: "🇸🇪 www.v2nodes.com vless-SE-1... 4-1213"
     type: "vless"
     server: "193.188.21.253"
@@ -4186,8 +4240,8 @@ proxy-groups:
       - vless-1827151931-1149
       - trojan-1827613948-612
       - vmess-1837386117-682
-      - vless-1853352819-93
       - vless-1853352962-63
+      - vless-1853352819-93
       - vless-1867109440-1787
       - vless-1853651596-1719
       - hysteria2-1832863509-490
@@ -4205,6 +4259,7 @@ proxy-groups:
       - vless-1853340493-1573
       - vless-1853341692-3
       - vless-1878528241-899
+      - "🏳 www.v2nodes.com ss- 2-1748"
       - vless-1827533195-1949
       - vless-1835503319-2069
       - vless-1831099319-2085
@@ -4295,6 +4350,7 @@ proxy-groups:
       - "🇦🇹 www.v2nodes.com ss-AT-1595-1836"
       - vless-1853341771-2097
       - vless-1827147237-2007
+      - "🇳🇴 www.v2nodes.com ss-NO-1220-1624"
       - vless-1875790264-1415
       - shadowsocks-1827145755-1616
       - vless-1854332944-2001
@@ -4360,6 +4416,7 @@ proxy-groups:
       - trojan-1870103761-42
       - vless-1856231185-408
       - vless-1843512959-1083
+      - vless-1837364467-1141
       - trojan-1873104489-17
       - vless-1874137534-1691
       - vless-1863756470-1859
@@ -4500,10 +4557,12 @@ proxy-groups:
       - "🇨🇦 www.v2nodes.com ss-CA-1538-1902"
       - vless-1827151238-628
       - vless-1829720999-1081
+      - vless-1875949547-2191
       - vless-1854029661-2037
       - "🏳 www.v2nodes.com vless- 14-233"
       - "🇨🇦 www.v2nodes.com ss-CA-1546-1874"
       - vless-1828535756-2015
+      - vless-1827153542-1611
       - "🇸🇪 www.v2nodes.com vless-SE-1... 4-1213"
   - name: "AUTO"
     type: url-test
@@ -4591,8 +4650,8 @@ proxy-groups:
       - vless-1827151931-1149
       - trojan-1827613948-612
       - vmess-1837386117-682
-      - vless-1853352819-93
       - vless-1853352962-63
+      - vless-1853352819-93
       - vless-1867109440-1787
       - vless-1853651596-1719
       - hysteria2-1832863509-490
@@ -4610,6 +4669,7 @@ proxy-groups:
       - vless-1853340493-1573
       - vless-1853341692-3
       - vless-1878528241-899
+      - "🏳 www.v2nodes.com ss- 2-1748"
       - vless-1827533195-1949
       - vless-1835503319-2069
       - vless-1831099319-2085
@@ -4659,6 +4719,5 @@ proxy-groups:
       - shadowsocks-1827146437-1684
       - shadowsocks-1827146277-1692
       - shadowsocks-1827146065-1714
-      - shadowsocks-1827146202-1722
 rules:
   - MATCH,PROXY
