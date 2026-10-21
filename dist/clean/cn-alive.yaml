@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-21T10:09:59.826865+00:00
-# count: 12
+# updated: 2026-10-21T12:12:10.656084+00:00
+# count: 21
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -173,6 +173,75 @@ proxies:
       path: "/+"
       headers:
         Host: "lucasjow.us.ci"
+  - name: "vless-1879607309-1641"
+    type: "vless"
+    server: "156.229.164.4"
+    port: 9443
+    uuid: "82eb8419-59f4-4d3e-9106-d05d22af615c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "0hIFPaEn4RdFib8_eP8HYxMywR5izEwM3JA2W1Zo8U4"
+      short-id: "b390142456517acc"
+    servername: "www.amazon.com"
+  - name: "新西兰+V2CROSS.COM-1972"
+    type: "ss"
+    server: "202.50.253.63"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇮🇹IT_2|1.4MB/s-1966"
+    type: "ss"
+    server: "202.50.253.18"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "shadowsocks-1875022946-2008"
+    type: "ss"
+    server: "202.50.253.54"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "新西兰+V2CROSS.COM-1974"
+    type: "ss"
+    server: "202.50.253.81"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "shadowsocks-1875023031-2018"
+    type: "ss"
+    server: "202.50.253.99"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "shadowsocks-1878725045-1932"
+    type: "ss"
+    server: "46.17.44.216"
+    port: 18443
+    cipher: "aes-256-gcm"
+    password: "NTiHBg64fsY8u8DbGrtypD9gPGSL386p"
+    udp: true
+  - name: "shadowsocks-1875023007-2006"
+    type: "ss"
+    server: "202.50.253.45"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "新西兰+V2CROSS.COM-1970"
+    type: "ss"
+    server: "202.50.253.36"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -191,6 +260,15 @@ proxy-groups:
       - vless-1880209545-1465
       - vless-1853977565-728
       - vless-1874608679-3137
+      - vless-1879607309-1641
+      - 新西兰+V2CROSS.COM-1972
+      - "🇮🇹IT_2|1.4MB/s-1966"
+      - shadowsocks-1875022946-2008
+      - 新西兰+V2CROSS.COM-1974
+      - shadowsocks-1875023031-2018
+      - shadowsocks-1878725045-1932
+      - shadowsocks-1875023007-2006
+      - 新西兰+V2CROSS.COM-1970
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -208,5 +286,14 @@ proxy-groups:
       - vless-1880209545-1465
       - vless-1853977565-728
       - vless-1874608679-3137
+      - vless-1879607309-1641
+      - 新西兰+V2CROSS.COM-1972
+      - "🇮🇹IT_2|1.4MB/s-1966"
+      - shadowsocks-1875022946-2008
+      - 新西兰+V2CROSS.COM-1974
+      - shadowsocks-1875023031-2018
+      - shadowsocks-1878725045-1932
+      - shadowsocks-1875023007-2006
+      - 新西兰+V2CROSS.COM-1970
 rules:
   - MATCH,PROXY
