@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-22T12:01:52.850026+00:00
+# updated: 2026-10-22T12:23:26.247162+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-22T12:06:09.583739+00:00
-# kept 97 / dropped 258
+# updated: 2026-10-22T12:23:41.047477+00:00
+# kept 98 / dropped 273
   - name: "🇺🇸 www.v2nodes.com ss-US-1603-1988"
     type: "ss"
     server: "185.230.230.18"
@@ -152,6 +152,21 @@ proxies:
     udp: true
     sni: "69.164.240.85"
     skip-cert-verify: true
+  - name: "vless-1874175789-1861"
+    type: "vless"
+    server: "162.35.126.130"
+    port: 10453
+    uuid: "b3a11068-1a7e-4643-85de-7c82cce46943"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    reality-opts:
+      public-key: "rAHMmpeUJ6uOoGgk31dTF4-1RTtLZFnOEs_li2AYQWc"
+      short-id: ""
+    servername: "www.google.com"
+    network: "grpc"
+    grpc-opts:
+      grpc-service-name: "TunService"
   - name: "vless-1828373905-483"
     type: "vless"
     server: "185.95.231.156"
