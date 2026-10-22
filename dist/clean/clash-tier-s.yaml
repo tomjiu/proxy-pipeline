@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-22T04:53:29.688194+00:00
+# updated: 2026-10-22T05:20:22.004865+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-22T05:01:48.358145+00:00
-# kept 183 / dropped 218
+# updated: 2026-10-22T05:20:39.539356+00:00
+# kept 183 / dropped 229
   - name: "🇺🇸 www.v2nodes.com ss-US-1603-2081"
     type: "ss"
     server: "185.230.230.18"
@@ -95,19 +95,6 @@ proxies:
       path: "/+"
       headers:
         Host: "lucasjow.us.ci"
-  - name: "vless-1885232190-2078"
-    type: "vless"
-    server: "104.21.70.21"
-    port: 8080
-    uuid: "d342d11e-d424-4583-b36e-524ab1f0afa4"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    network: "ws"
-    ws-opts:
-      path: "?ed=2560"
-      headers:
-        Host: "newwk1.f1w.de5.net"
   - name: "vless-1828373905-488"
     type: "vless"
     server: "185.95.231.156"
@@ -255,6 +242,19 @@ proxies:
       path: "/vless"
       headers:
         Host: "45.138.100.248"
+  - name: "vless-1881900442-1944"
+    type: "vless"
+    server: "172.235.58.21"
+    port: 443
+    uuid: "b98d4c6e-6770-4a31-8256-a4750cdea0e7"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "0i_xAxYgSNx5NMpK2lOaWGS-CvAiD_LneYPO0MF0owo"
+      short-id: ""
+    servername: "www.amazon.com"
   - name: "vmess-1837386434-749"
     type: "vmess"
     server: "23.162.200.198"
