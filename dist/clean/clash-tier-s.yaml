@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-22T17:21:22.561509+00:00
+# updated: 2026-10-22T17:37:30.678694+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-22T17:22:00.871509+00:00
-# kept 83 / dropped 265
+# updated: 2026-10-22T17:37:47.614834+00:00
+# kept 81 / dropped 278
   - name: "shadowsocks-1827146556-1885"
     type: "ss"
     server: "156.146.38.167"
@@ -50,13 +50,6 @@ proxies:
     port: 8080
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
-    udp: true
-  - name: "🇺🇸 www.v2nodes.com ss-US-1603... 1-1869"
-    type: "ss"
-    server: "64.42.181.102"
-    port: 12996
-    cipher: "aes-128-gcm"
-    password: "a7be96a98392ef40dab7693317a81cc0"
     udp: true
   - name: "🇺🇸 www.v2nodes.com ss-US-1603... 4-1951"
     type: "ss"
@@ -122,13 +115,6 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "🇨🇦 www.v2nodes.com ss-CA-1557-2037"
-    type: "ss"
-    server: "51.222.136.236"
-    port: 8882
-    cipher: "aes-256-gcm"
-    password: "kDWvXYZoTBcGkC4"
-    udp: true
   - name: "vmess-1828661271-169"
     type: "vmess"
     server: "84.17.41.2"
@@ -172,19 +158,6 @@ proxies:
     password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
     sni: "hy2.123266.xyz"
     skip-cert-verify: true
-  - name: "vless-1853340740-964"
-    type: "vless"
-    server: "15.204.97.214"
-    port: 23576
-    uuid: "48ff2b70-e180-582f-8866-d9a2edeed5f5"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s"
-      short-id: "01"
-    servername: "fuck.rkn"
   - name: "shadowsocks-1827963904-2227"
     type: "ss"
     server: "138.199.43.159"
@@ -499,6 +472,19 @@ proxies:
   - name: "vless-1827533195-2010"
     type: "vless"
     server: "169.40.42.104"
+    port: 443
+    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
+      short-id: "c39cc7310a"
+    servername: "yahoo.com"
+  - name: "vless-1853462712-2078"
+    type: "vless"
+    server: "169.40.42.224"
     port: 443
     uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
     udp: true
