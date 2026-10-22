@@ -1,24 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-22T21:54:20.183602+00:00
+# updated: 2026-10-22T22:03:25.867300+00:00
 # count: 11
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1887262069-1672"
-    type: "vless"
-    server: "156.229.164.149"
-    port: 9443
-    uuid: "82eb8419-59f4-4d3e-9106-d05d22af615c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "0hIFPaEn4RdFib8_eP8HYxMywR5izEwM3JA2W1Zo8U4"
-      short-id: "b390142456517acc"
-    servername: "www.amazon.com"
   - name: "vless-1874608689-2474"
     type: "vless"
     server: "172.64.144.82"
@@ -33,6 +20,19 @@ proxies:
       path: "/+"
       headers:
         Host: "lucasjow.us.ci"
+  - name: "vless-1887262069-1672"
+    type: "vless"
+    server: "156.229.164.149"
+    port: 9443
+    uuid: "82eb8419-59f4-4d3e-9106-d05d22af615c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "0hIFPaEn4RdFib8_eP8HYxMywR5izEwM3JA2W1Zo8U4"
+      short-id: "b390142456517acc"
+    servername: "www.amazon.com"
   - name: "vless-1874608702-2316"
     type: "vless"
     server: "104.18.43.174"
@@ -166,8 +166,8 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1887262069-1672
       - vless-1874608689-2474
+      - vless-1887262069-1672
       - vless-1874608702-2316
       - vless-1853352399-2484
       - vless-1882247379-2314
@@ -182,8 +182,8 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1887262069-1672
       - vless-1874608689-2474
+      - vless-1887262069-1672
       - vless-1874608702-2316
       - vless-1853352399-2484
       - vless-1882247379-2314
