@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-23T08:53:51.784413+00:00
+# updated: 2026-10-23T12:05:04.755536+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-23T11:49:38.294727+00:00
-# kept 158 / dropped 215
+# updated: 2026-10-23T12:05:20.372279+00:00
+# kept 158 / dropped 231
   - name: "shadowsocks-1827147700-2338"
     type: "ss"
     server: "138.199.42.68"
@@ -88,6 +88,14 @@ proxies:
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
+  - name: "trojan-1856450785-587"
+    type: "trojan"
+    server: "155.138.138.2"
+    port: 443
+    password: "Trojan@82164024"
+    udp: true
+    sni: "ca.tronsg.com"
+    skip-cert-verify: true
   - name: "shadowsocks-1827146556-1954"
     type: "ss"
     server: "156.146.38.167"
@@ -118,13 +126,6 @@ proxies:
     cipher: "auto"
     udp: true
     network: "raw"
-  - name: "🇺🇸 www.v2nodes.com ss-US-1603... 1-1938"
-    type: "ss"
-    server: "64.42.181.102"
-    port: 12996
-    cipher: "aes-128-gcm"
-    password: "a7be96a98392ef40dab7693317a81cc0"
-    udp: true
   - name: "hysteria2-1830343753-100"
     type: "hysteria2"
     server: "129.213.91.185"
@@ -248,6 +249,19 @@ proxies:
     udp: true
     sni: "69.164.240.85"
     skip-cert-verify: true
+  - name: "vless-1853341707-2095"
+    type: "vless"
+    server: "169.40.42.168"
+    port: 443
+    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
+      short-id: "c39cc7310a"
+    servername: "yahoo.com"
   - name: "vless-1827162803-2155"
     type: "vless"
     server: "169.40.42.231"
@@ -553,13 +567,6 @@ proxies:
       path: "/cctv13.m3u8"
       headers:
         Host: "129.146.77.248"
-  - name: "🇬🇧 www.v2nodes.com ss-GB-1451-1942"
-    type: "ss"
-    server: "158.173.24.73"
-    port: 443
-    cipher: "aes-128-gcm"
-    password: "shadowsocks"
-    udp: true
   - name: "shadowsocks-1887769478-2004"
     type: "ss"
     server: "50.7.41.118"
