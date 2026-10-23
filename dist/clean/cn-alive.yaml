@@ -1,11 +1,19 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-23T17:27:59.559641+00:00
+# updated: 2026-10-23T17:38:00.340453+00:00
 # count: 7
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
+  - name: "vless-1891672401-2654"
+    type: "vless"
+    server: "15.188.237.199"
+    port: 22223
+    uuid: "e4514801-0d5a-42ba-869f-39bd605aef9e"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
   - name: "vless-1891636715-1062"
     type: "vless"
     server: "rn.20066002.xyz"
@@ -19,20 +27,6 @@ proxies:
       public-key: "q6WMAqAzFYui3TiWXdOJ1-E4NbiHHk5o1mx6W6m4hEM"
       short-id: "c4623fa4291795e7"
     servername: "gateway.icloud.com"
-  - name: "vless-1891557860-2666"
-    type: "vless"
-    server: "fm3.pages.dev"
-    port: 443
-    uuid: "e5833a75-2095-48bb-8bb5-ce17291efd13"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "fm3.pages.dev"
-    network: "ws"
-    ws-opts:
-      path: "/?ed=2560fp=random"
-      headers:
-        Host: "fm3.pages.dev"
   - name: "vmess-1827158680-868"
     type: "vmess"
     server: "us16-4.998998.best"
@@ -90,8 +84,8 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
+      - vless-1891672401-2654
       - vless-1891636715-1062
-      - vless-1891557860-2666
       - vmess-1827158680-868
       - "🇯🇵 www.v2nodes.com ss-JP-1599-2175"
       - 新西兰+V2CROSS.COM-2239
@@ -102,8 +96,8 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
+      - vless-1891672401-2654
       - vless-1891636715-1062
-      - vless-1891557860-2666
       - vmess-1827158680-868
       - "🇯🇵 www.v2nodes.com ss-JP-1599-2175"
       - 新西兰+V2CROSS.COM-2239
