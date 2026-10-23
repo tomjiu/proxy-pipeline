@@ -1,45 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-23T23:17:08.569443+00:00
-# count: 2
+# updated: 2026-10-23T23:27:36.787114+00:00
+# count: 0
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2443"
-    type: "ss"
-    server: "202.50.253.36"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vless-1891636715-1132"
-    type: "vless"
-    server: "rn.20066002.xyz"
-    port: 443
-    uuid: "444715e6-1c6a-4027-90df-fa01ac984669"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "q6WMAqAzFYui3TiWXdOJ1-E4NbiHHk5o1mx6W6m4hEM"
-      short-id: "c4623fa4291795e7"
-    servername: "gateway.icloud.com"
-proxy-groups:
-  - name: "PROXY"
-    type: select
-    proxies:
-      - "AUTO"
-      - DIRECT
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2443"
-      - vless-1891636715-1132
-  - name: "AUTO"
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    proxies:
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2443"
-      - vless-1891636715-1132
+proxy-groups: []
 rules:
-  - MATCH,PROXY
+  - MATCH,DIRECT
