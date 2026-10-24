@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-24T11:11:25.039800+00:00
+# updated: 2026-10-24T11:36:45.458657+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-24T11:15:44.691942+00:00
-# kept 91 / dropped 305
+# updated: 2026-10-24T11:37:03.373640+00:00
+# kept 91 / dropped 316
   - name: "hysteria2-1832863516-586"
     type: "hysteria2"
     server: "155.248.209.237"
@@ -115,14 +115,6 @@ proxies:
       path: "/cctv13.m3u8"
       headers:
         Host: "129.146.77.248"
-  - name: "trojan-1865509361-292"
-    type: "trojan"
-    server: "resources.findlocaljobnetworkandbuildcommunityconnections.com"
-    port: 443
-    password: "f0eb8c92ce8946aaba856569cff1a16b"
-    udp: true
-    sni: "resources.findlocaljobnetworkandbuildcommunityconnections.com"
-    skip-cert-verify: true
   - name: "trojan-1875790321-242"
     type: "trojan"
     server: "216.106.186.32"
@@ -397,6 +389,19 @@ proxies:
       public-key: "C_GA8wVjeLmyqLK6em5OHn4WPlsbndA-RyvyNU1aGFM"
       short-id: "8a9725533854a7e8"
     servername: "www.apple.com"
+  - name: "vless-1853462668-373"
+    type: "vless"
+    server: "159.89.87.21"
+    port: 28190
+    uuid: "14c80e0e-f7ce-4991-94fc-99a1db4a9b1e"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "ZJRnFU-1s1JOnO8E9uZ7b00l1fPEh63fGRbdBANFRno"
+      short-id: ""
+    servername: "aws.amazon.com"
   - name: "vless-1878371100-3179"
     type: "vless"
     server: "216.167.126.97"
