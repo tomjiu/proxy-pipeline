@@ -441,9 +441,6 @@ rules:
   - DOMAIN-SUFFIX,st.dl.eccdnx.com,DIRECT
   - DOMAIN-SUFFIX,st.dl.bscstorage.net,DIRECT
   - DOMAIN-KEYWORD,steamcontent,DIRECT
-  # 下载相关进程
-  - PROCESS-NAME,steam.exe,DIRECT
-  - PROCESS-NAME,steamwebhelper.exe,DIRECT
 
   # ── 社区 / 商店 / API 走代理 ──
   - DOMAIN-SUFFIX,steamcommunity.com,{{PROXY}}
@@ -522,16 +519,6 @@ rules:
   - DOMAIN-SUFFIX,myqcloud.com,DIRECT
   - DOMAIN-KEYWORD,wechat,DIRECT
   - DOMAIN-KEYWORD,weixin,DIRECT
-  # 腾讯系进程
-  - PROCESS-NAME,QQ.exe,DIRECT
-  - PROCESS-NAME,QQProtect.exe,DIRECT
-  - PROCESS-NAME,QQMusic.exe,DIRECT
-  - PROCESS-NAME,TIM.exe,DIRECT
-  - PROCESS-NAME,WeChat.exe,DIRECT
-  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
-  - PROCESS-NAME,WeChatOCR.exe,DIRECT
-  - PROCESS-NAME,wxwork.exe,DIRECT
-  - PROCESS-NAME,WXWork.exe,DIRECT
   # 腾讯系 IP 段
   - IP-CIDR,119.28.0.0/15,DIRECT,no-resolve
   - IP-CIDR,119.29.0.0/16,DIRECT,no-resolve
@@ -559,10 +546,6 @@ rules:
   - DOMAIN-SUFFIX,pstatp.com,DIRECT
   - DOMAIN-KEYWORD,feishu,DIRECT
   - DOMAIN-KEYWORD,larksuite,DIRECT
-  # 飞书进程
-  - PROCESS-NAME,Feishu.exe,DIRECT
-  - PROCESS-NAME,Lark.exe,DIRECT
-  - PROCESS-NAME,bytedance.exe,DIRECT
   # 字节 IP 段
   - IP-CIDR,110.249.192.0/18,DIRECT,no-resolve
   - IP-CIDR,111.225.0.0/16,DIRECT,no-resolve
@@ -585,10 +568,6 @@ rules:
   - DOMAIN-SUFFIX,tmall.com,DIRECT
   - DOMAIN-KEYWORD,dingtalk,DIRECT
   - DOMAIN-KEYWORD,alipay,DIRECT
-  # 钉钉进程
-  - PROCESS-NAME,DingTalk.exe,DIRECT
-  - PROCESS-NAME,AliWork.exe,DIRECT
-  - PROCESS-NAME,Alipay.exe,DIRECT
   # 阿里 IP 段
   - IP-CIDR,203.119.128.0/17,DIRECT,no-resolve
   - IP-CIDR,42.120.0.0/15,DIRECT,no-resolve
@@ -598,7 +577,6 @@ rules:
   - DOMAIN-SUFFIX,voovmeeting.com,DIRECT
   - DOMAIN-SUFFIX,wemeet.com,DIRECT
   - DOMAIN-SUFFIX,work.weixin.qq.com,DIRECT
-  - PROCESS-NAME,wemeetapp.exe,DIRECT
 
   # ==========================================
   # 国内视频 / 下载站 —— 全部直连
@@ -630,13 +608,6 @@ rules:
   - DOMAIN-SUFFIX,71.am,DIRECT
   - DOMAIN-KEYWORD,baidu,DIRECT
   - DOMAIN-KEYWORD,baidupcs,DIRECT
-  # 百度进程
-  - PROCESS-NAME,BaiduNetdisk.exe,DIRECT
-  - PROCESS-NAME,BaiduNetdiskHost.exe,DIRECT
-  - PROCESS-NAME,baidunetdiskhost.exe,DIRECT
-  - PROCESS-NAME,BaiduAn.exe,DIRECT
-  - PROCESS-NAME,iQIYI.exe,DIRECT
-  - PROCESS-NAME,QiyiPlayer.exe,DIRECT
 
   # ── 迅雷 ──
   - DOMAIN-SUFFIX,xunlei.com,DIRECT
@@ -645,10 +616,6 @@ rules:
   - DOMAIN-SUFFIX,xunleixf.com,DIRECT
   - DOMAIN-SUFFIX,thundercdn.com,DIRECT
   - DOMAIN-KEYWORD,xunlei,DIRECT
-  - PROCESS-NAME,Thunder.exe,DIRECT
-  - PROCESS-NAME,ThunderPlatform.exe,DIRECT
-  - PROCESS-NAME,XLService.exe,DIRECT
-  - PROCESS-NAME,DownloadSDKServer.exe,DIRECT
 
   # ── 腾讯视频 ──
   - DOMAIN-SUFFIX,v.qq.com,DIRECT
@@ -661,15 +628,12 @@ rules:
   - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
   - DOMAIN-SUFFIX,music.qq.com,DIRECT
   - DOMAIN-KEYWORD,tencentvideo,DIRECT
-  - PROCESS-NAME,Tenvideo.exe,DIRECT
 
   # ── 优酷 / 土豆 ──
   - DOMAIN-SUFFIX,youku.com,DIRECT
   - DOMAIN-SUFFIX,youku.tv,DIRECT
   - DOMAIN-SUFFIX,ykimg.com,DIRECT
   - DOMAIN-SUFFIX,tudou.com,DIRECT
-  - PROCESS-NAME,YoukuDesktop.exe,DIRECT
-  - PROCESS-NAME,YoukuClient.exe,DIRECT
 
   # ── 芒果 TV ──
   - DOMAIN-SUFFIX,mgtv.com,DIRECT
@@ -727,11 +691,6 @@ rules:
   - DOMAIN-SUFFIX,migu.cn,DIRECT
   - DOMAIN-SUFFIX,migu.com,DIRECT
   - DOMAIN-SUFFIX,music.migu.cn,DIRECT
-  # 音乐进程
-  - PROCESS-NAME,cloudmusic.exe,DIRECT
-  - PROCESS-NAME,KuGou.exe,DIRECT
-  - PROCESS-NAME,kwmusic.exe,DIRECT
-  - PROCESS-NAME,KuwoMusic.exe,DIRECT
 
   # ── 哔哩哔哩（全部直连）──
   # 主站 / API / 视频 CDN / 直播 / 漫画 / 游戏
@@ -754,10 +713,6 @@ rules:
   - DOMAIN-SUFFIX,hdslb.org,DIRECT
   - DOMAIN-KEYWORD,bilibili,DIRECT
   - DOMAIN-KEYWORD,bilivideo,DIRECT
-  # B 站进程
-  - PROCESS-NAME,bilibili.exe,DIRECT
-  - PROCESS-NAME,Bilibili.exe,DIRECT
-  - PROCESS-NAME,bili.exe,DIRECT
 
   # ── 淘宝 / 京东 / 拼多多（购物）──
   - DOMAIN-SUFFIX,tbcdn.cn,DIRECT
@@ -800,13 +755,8 @@ rules:
   - DOMAIN-SUFFIX,discord.gg,{{PROXY}}
 
   # ==========================================
-  # 游戏进程与 P2P (直连)
+  # P2P (直连)
   # ==========================================
-  - PROCESS-NAME,r5apex.exe,DIRECT
-  - PROCESS-NAME,EasyAntiCheat_launcher.exe,DIRECT
-  - PROCESS-NAME,Darktide.exe,DIRECT
-  - PROCESS-NAME,Darktide_Launcher.exe,DIRECT
-  - PROCESS-NAME,qbittorrent.exe,DIRECT
   - DOMAIN-KEYWORD,torrent,DIRECT
   - DOMAIN-KEYWORD,peer_id=,DIRECT
 
@@ -886,4 +836,55 @@ rules:
   - RULE-SET,apple,{{PROXY}}
   - RULE-SET,icloud,{{PROXY}}
   - RULE-SET,geolocation-!cn,{{PROXY}}
+  # ==========================================
+  # 进程兜底规则 —— 【必须放在最后】
+  #
+  # ⚠️ PROCESS-NAME 只匹配「发起请求的进程」，不区分目标域名。
+  #    放在前面会覆盖后面所有域名规则，例如：
+  #      PROCESS-NAME,WeChat.exe,DIRECT 写在前面
+  #      → 微信内打开 x.com / discord / z.ai 也走直连 → 打不开
+  #
+  #    放最后 = 只兜底「没匹配到任何域名规则」的流量。
+  # ==========================================
+  - PROCESS-NAME,QQ.exe,DIRECT
+  - PROCESS-NAME,QQProtect.exe,DIRECT
+  - PROCESS-NAME,QQMusic.exe,DIRECT
+  - PROCESS-NAME,TIM.exe,DIRECT
+  - PROCESS-NAME,WeChat.exe,DIRECT
+  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
+  - PROCESS-NAME,WeChatOCR.exe,DIRECT
+  - PROCESS-NAME,wxwork.exe,DIRECT
+  - PROCESS-NAME,WXWork.exe,DIRECT
+  - PROCESS-NAME,Feishu.exe,DIRECT
+  - PROCESS-NAME,Lark.exe,DIRECT
+  - PROCESS-NAME,bytedance.exe,DIRECT
+  - PROCESS-NAME,DingTalk.exe,DIRECT
+  - PROCESS-NAME,AliWork.exe,DIRECT
+  - PROCESS-NAME,Alipay.exe,DIRECT
+  - PROCESS-NAME,wemeetapp.exe,DIRECT
+  - PROCESS-NAME,BaiduNetdisk.exe,DIRECT
+  - PROCESS-NAME,BaiduNetdiskHost.exe,DIRECT
+  - PROCESS-NAME,baidunetdiskhost.exe,DIRECT
+  - PROCESS-NAME,BaiduAn.exe,DIRECT
+  - PROCESS-NAME,iQIYI.exe,DIRECT
+  - PROCESS-NAME,QiyiPlayer.exe,DIRECT
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,ThunderPlatform.exe,DIRECT
+  - PROCESS-NAME,XLService.exe,DIRECT
+  - PROCESS-NAME,DownloadSDKServer.exe,DIRECT
+  - PROCESS-NAME,Tenvideo.exe,DIRECT
+  - PROCESS-NAME,YoukuDesktop.exe,DIRECT
+  - PROCESS-NAME,YoukuClient.exe,DIRECT
+  - PROCESS-NAME,cloudmusic.exe,DIRECT
+  - PROCESS-NAME,KuGou.exe,DIRECT
+  - PROCESS-NAME,kwmusic.exe,DIRECT
+  - PROCESS-NAME,KuwoMusic.exe,DIRECT
+  - PROCESS-NAME,bilibili.exe,DIRECT
+  - PROCESS-NAME,Bilibili.exe,DIRECT
+  - PROCESS-NAME,bili.exe,DIRECT
+  - PROCESS-NAME,r5apex.exe,DIRECT
+  - PROCESS-NAME,EasyAntiCheat_launcher.exe,DIRECT
+  - PROCESS-NAME,Darktide.exe,DIRECT
+  - PROCESS-NAME,Darktide_Launcher.exe,DIRECT
+  - PROCESS-NAME,qbittorrent.exe,DIRECT
   - MATCH,{{PROXY}}
