@@ -420,16 +420,26 @@ rules:
 
   # ==========================================
   # Steam 规则
-  #   社区 / 商店 / 好友 / 聊天  → 代理（被墙）
-  #   游戏下载 / CDN / 更新      → 直连（国内有节点，直连更快）
+  #
+  #   原则：**除了「下载游戏」，其余全部走代理**
+  #     · 游戏本体 / 更新包 / 创意工坊 下载 → 直连（国内有 CDN，更快）
+  #     · 商店 / 社区 / 好友 / 聊天 / 静态资源 / 游戏服务器 → 代理
+  #
+  # ⚠️ 修复记录（2026-10-24）：
+  #   之前把 steamstatic.com 错放在「下载直连」段：
+  #     · store.steampowered.com 的 HTML 通过代理拿回来了
+  #     · 但页面的 CSS/JS/图片来自 cdn.steamstatic.com，
+  #       被 DOMAIN-SUFFIX,steamstatic.com,DIRECT 抢先匹配成直连
+  #     · 直连加载失败 → 商店/社区页面白屏或报错
+  #   而且后面的 DOMAIN-SUFFIX,cdn.steamstatic.com,{{PROXY}} 成了死规则。
+  #
+  #   steamstatic.com 属于「商店/社区网页资源」，不是游戏下载 →
+  #   必须与商店保持一致走代理。
   # ==========================================
 
-  # ── 下载 CDN 直连（必须放在代理规则之前）──
-  # 这些域名承载游戏本体、更新包、创意工坊内容
+  # ── ① 游戏下载 CDN 直连（只放真正的下载域名）──
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com.cn,DIRECT
-  - DOMAIN-SUFFIX,steamserver.net,DIRECT
-  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,DIRECT
   - DOMAIN-SUFFIX,steampipe.akamaized.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.tm,DIRECT
@@ -442,21 +452,24 @@ rules:
   - DOMAIN-SUFFIX,st.dl.bscstorage.net,DIRECT
   - DOMAIN-KEYWORD,steamcontent,DIRECT
 
-  # ── 社区 / 商店 / API 走代理 ──
-  - DOMAIN-SUFFIX,steamcommunity.com,{{PROXY}}
+  # ── ② 商店 / 社区 / 静态资源 / 游戏服务器 → 代理 ──
   - DOMAIN-SUFFIX,steampowered.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steamcommunity.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steamstatic.com,{{PROXY}}
+  - DOMAIN-SUFFIX,steamserver.net,{{PROXY}}
+  - DOMAIN-SUFFIX,steamusercontent.com,{{PROXY}}
   - DOMAIN-SUFFIX,steam-chat.com,{{PROXY}}
   - DOMAIN-SUFFIX,steamgames.com,{{PROXY}}
-  - DOMAIN-SUFFIX,steamusercontent.com,{{PROXY}}
   - DOMAIN-SUFFIX,steam-api.com,{{PROXY}}
   - DOMAIN-SUFFIX,steam.tv,{{PROXY}}
   - DOMAIN-SUFFIX,steamdeck.com,{{PROXY}}
   - DOMAIN-SUFFIX,valvesoftware.com,{{PROXY}}
   - DOMAIN-SUFFIX,s.team,{{PROXY}}
-  - DOMAIN-SUFFIX,cdn.steamstatic.com,{{PROXY}}
   - DOMAIN-KEYWORD,steamcommunity,{{PROXY}}
   - DOMAIN-KEYWORD,steampowered,{{PROXY}}
-  # Epic / 其他游戏平台商店（同样被墙）
+  - DOMAIN-KEYWORD,steamstatic,{{PROXY}}
+
+  # ── ③ Epic / GOG 等其他游戏平台商店（同样被墙）──
   - DOMAIN-SUFFIX,epicgames.com,{{PROXY}}
   - DOMAIN-SUFFIX,epicgames.dev,{{PROXY}}
   - DOMAIN-SUFFIX,unrealengine.com,{{PROXY}}
