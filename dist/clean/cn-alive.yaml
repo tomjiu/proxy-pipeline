@@ -1,11 +1,51 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-24T04:49:04.031724+00:00
-# count: 0
+# updated: 2026-10-24T04:56:37.565072+00:00
+# count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-proxy-groups: []
+  - name: "vless-1897684345-1403"
+    type: "vless"
+    server: "jjkkll.ccwu.cc"
+    port: 443
+    uuid: "49ef59c5-3491-4cba-824d-0fc76133f67c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "jjkkll.ccwu.cc"
+  - name: "vless-1897516840-2185"
+    type: "vless"
+    server: "la.20066002.xyz"
+    port: 443
+    uuid: "9866e390-c95d-409f-bb0d-5618e5c10978"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "Otc1A9KX3_itArtCHz4N5O33kONWoRdyWUyeZPF9rl8"
+      short-id: "57156f2a944d2034"
+    servername: "gateway.icloud.com"
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - "AUTO"
+      - DIRECT
+      - vless-1897684345-1403
+      - vless-1897516840-2185
+  - name: "AUTO"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - vless-1897684345-1403
+      - vless-1897516840-2185
 rules:
-  - MATCH,DIRECT
+  - MATCH,PROXY
