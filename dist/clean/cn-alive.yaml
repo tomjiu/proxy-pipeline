@@ -1,24 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-24T21:21:56.012675+00:00
-# count: 6
+# updated: 2026-10-24T22:37:52.749005+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "🇺🇸 美国 | USA 8-124"
-    type: "vmess"
-    server: "23.254.194.215"
-    port: 8080
-    uuid: "3c75a551-81d6-46d0-876d-79519719bb22"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "ws"
-    ws-opts:
-      path: "3c75a551-81d6-46d0-876d-79519719bb22-vm"
-      headers:
-        Host: "www.bing.com"
   - name: "trojan-1905414643-92"
     type: "trojan"
     server: "uis175.pacemakere.com"
@@ -35,13 +22,6 @@ proxies:
     udp: true
     sni: "45.32.52.173"
     skip-cert-verify: true
-  - name: "shadowsocks-1906021573-2437"
-    type: "ss"
-    server: "213.202.216.117"
-    port: 17001
-    cipher: "aes-256-gcm"
-    password: "I6o9NnialYLMEjVt28RF4dpjmr9wMvNL"
-    udp: true
   - name: "trojan-1908518025-17"
     type: "trojan"
     server: "tjmg2.m2k699.com"
@@ -63,10 +43,8 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
-      - "🇺🇸 美国 | USA 8-124"
       - trojan-1905414643-92
       - trojan-1827149654-347
-      - shadowsocks-1906021573-2437
       - trojan-1908518025-17
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 7-2475"
   - name: "AUTO"
@@ -74,10 +52,8 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - "🇺🇸 美国 | USA 8-124"
       - trojan-1905414643-92
       - trojan-1827149654-347
-      - shadowsocks-1906021573-2437
       - trojan-1908518025-17
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 7-2475"
 rules:
