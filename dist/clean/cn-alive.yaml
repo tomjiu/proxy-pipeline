@@ -1,11 +1,111 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-24T11:17:38.707587+00:00
-# count: 0
+# updated: 2026-10-24T11:25:51.271151+00:00
+# count: 6
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-proxy-groups: []
+  - name: "vmess-1901904719-837"
+    type: "vmess"
+    server: "23.254.194.215"
+    port: 8080
+    uuid: "3c75a551-81d6-46d0-876d-79519719bb22"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "3c75a551-81d6-46d0-876d-79519719bb22-vm"
+      headers:
+        Host: "www.bing.com"
+  - name: "vless-1853998074-2521"
+    type: "vless"
+    server: "104.16.111.193"
+    port: 443
+    uuid: "c4edb87e-8544-4fa4-bd1c-b0cda9a34b46"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "a.cwvps.eu.org"
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "a.cwvps.eu.org"
+  - name: "🇺🇸 美国 | USA 7-462"
+    type: "trojan"
+    server: "vpn.liumr.top"
+    port: 443
+    password: "va3E77I9fZCnCVcGKkxBCfz5"
+    udp: true
+    sni: "vpn.liumr.top"
+    skip-cert-verify: true
+  - name: "vmess-1827158680-928"
+    type: "vmess"
+    server: "us16-4.998998.best"
+    port: 443
+    uuid: "5504eaa8-1395-402f-8e0e-75ecd762e627"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "server1.9966338.xyz"
+    ws-opts:
+      path: "/efrsdioy98wert"
+      headers:
+        Host: "server1.9966338.xyz"
+  - name: "vless-1827961865-1405"
+    type: "vless"
+    server: "104.16.10.84"
+    port: 443
+    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "jp3.yohototo.top"
+    network: "ws"
+    ws-opts:
+      path: "/tyxyws"
+      headers:
+        Host: "jp3.yohototo.top"
+  - name: "vless-1831067347-1409"
+    type: "vless"
+    server: "104.16.111.195"
+    port: 443
+    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "jp3.yohototo.top"
+    network: "ws"
+    ws-opts:
+      path: "/tyxyws"
+      headers:
+        Host: "jp3.yohototo.top"
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - "AUTO"
+      - DIRECT
+      - vmess-1901904719-837
+      - vless-1853998074-2521
+      - "🇺🇸 美国 | USA 7-462"
+      - vmess-1827158680-928
+      - vless-1827961865-1405
+      - vless-1831067347-1409
+  - name: "AUTO"
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    proxies:
+      - vmess-1901904719-837
+      - vless-1853998074-2521
+      - "🇺🇸 美国 | USA 7-462"
+      - vmess-1827158680-928
+      - vless-1827961865-1405
+      - vless-1831067347-1409
 rules:
-  - MATCH,DIRECT
+  - MATCH,PROXY
