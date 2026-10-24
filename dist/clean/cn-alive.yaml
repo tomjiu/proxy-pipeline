@@ -1,60 +1,38 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-24T22:37:52.749005+00:00
-# count: 4
+# updated: 2026-10-24T22:48:41.514406+00:00
+# count: 1
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "trojan-1905414643-92"
-    type: "trojan"
-    server: "uis175.pacemakere.com"
-    port: 20005
-    password: "7343dd3d00b74cd2"
+  - name: "vmess-1897614116-736"
+    type: "vmess"
+    server: "172.66.0.1"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
     udp: true
-    sni: "uis175.pacemakere.com"
-    skip-cert-verify: false
-  - name: "trojan-1827149654-347"
-    type: "trojan"
-    server: "45.32.52.173"
-    port: 8886
-    password: "e26a229d-e8f2-4ff9-8c7d-58a9d83ee437"
-    udp: true
-    sni: "45.32.52.173"
-    skip-cert-verify: true
-  - name: "trojan-1908518025-17"
-    type: "trojan"
-    server: "tjmg2.m2k699.com"
-    port: 24999
-    password: "29086912-33e4-4e06-ba2b-60f1a195864f"
-    udp: true
-    sni: "www.itunes.com"
-    skip-cert-verify: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 7-2475"
-    type: "ss"
-    server: "202.50.253.27"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - trojan-1905414643-92
-      - trojan-1827149654-347
-      - trojan-1908518025-17
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 7-2475"
+      - vmess-1897614116-736
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - trojan-1905414643-92
-      - trojan-1827149654-347
-      - trojan-1908518025-17
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 7-2475"
+      - vmess-1897614116-736
 rules:
   - MATCH,PROXY
