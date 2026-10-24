@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-24T18:52:41.363653+00:00
+# updated: 2026-10-24T19:08:03.899340+00:00
 # count: 2
 mixed-port: 7890
 allow-lan: false
@@ -19,13 +19,14 @@ proxies:
       path: "3c75a551-81d6-46d0-876d-79519719bb22-vm"
       headers:
         Host: "www.bing.com"
-  - name: "shadowsocks-1906021573-2368"
-    type: "ss"
-    server: "213.202.216.117"
-    port: 17001
-    cipher: "aes-256-gcm"
-    password: "I6o9NnialYLMEjVt28RF4dpjmr9wMvNL"
+  - name: "trojan-1827149654-347"
+    type: "trojan"
+    server: "45.32.52.173"
+    port: 8886
+    password: "e26a229d-e8f2-4ff9-8c7d-58a9d83ee437"
     udp: true
+    sni: "45.32.52.173"
+    skip-cert-verify: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -33,13 +34,13 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - "🇺🇸 美国 | USA 8-124"
-      - shadowsocks-1906021573-2368
+      - trojan-1827149654-347
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - "🇺🇸 美国 | USA 8-124"
-      - shadowsocks-1906021573-2368
+      - trojan-1827149654-347
 rules:
   - MATCH,PROXY
