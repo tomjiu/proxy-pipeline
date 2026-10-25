@@ -1,12 +1,24 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-25T11:47:23.808245+00:00
-# count: 1
+# updated: 2026-10-25T11:56:28.067856+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vmess-1903174772-802"
+  - name: "vless-1916642179-1866"
+    type: "vless"
+    server: "87.58.199.144"
+    port: 443
+    uuid: "7f6adf9d-42f1-4fec-ab22-fb7f66bf3adc"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
+    servername: "i4kht12omvvhyz.hat.onl"
+    network: "grpc"
+    grpc-opts:
+      grpc-service-name: "hls-vod.imbsklb92t.segment-75-v1-a1.ts"
+  - name: "vmess-1903174772-773"
     type: "vmess"
     server: "172.66.0.1"
     port: 443
@@ -21,18 +33,45 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1918528856-1556"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 2053
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp7.1145678.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/question/watch"
+      headers:
+        Host: "vp7.1145678.xyz"
+  - name: "新西兰+V2CROSS.COM-2449"
+    type: "ss"
+    server: "202.50.253.36"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vmess-1903174772-802
+      - vless-1916642179-1866
+      - vmess-1903174772-773
+      - vless-1918528856-1556
+      - 新西兰+V2CROSS.COM-2449
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vmess-1903174772-802
+      - vless-1916642179-1866
+      - vmess-1903174772-773
+      - vless-1918528856-1556
+      - 新西兰+V2CROSS.COM-2449
 rules:
   - MATCH,PROXY
