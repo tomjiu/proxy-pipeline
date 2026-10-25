@@ -1,6 +1,6 @@
-# Proxy-Verified — 1 个真实可用（mihomo 实测）
-# at: 2026-10-25T21:13:26Z
-# rate: 50%
+# Proxy-Verified — 2 个真实可用（mihomo 实测）
+# at: 2026-10-25T21:22:09Z
+# rate: 100%
 proxies:
   - name: "vmess-1854107773-354"
     type: "vmess"
@@ -11,6 +11,21 @@ proxies:
     cipher: "auto"
     udp: true
     network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "vmess-1903174772-797"
+    type: "vmess"
+    server: "172.66.0.1"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
     ws-opts:
       path: "/ws"
       headers:
