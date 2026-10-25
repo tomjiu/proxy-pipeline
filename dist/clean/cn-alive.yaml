@@ -1,27 +1,12 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-25T21:07:06.771571+00:00
-# count: 5
+# updated: 2026-10-25T21:12:33.459380+00:00
+# count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vmess-1903174772-815"
-    type: "vmess"
-    server: "172.66.0.1"
-    port: 443
-    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "ws"
-    tls: true
-    servername: "vmess.lbw666.dpdns.org"
-    ws-opts:
-      path: "/ws"
-      headers:
-        Host: "vmess.lbw666.dpdns.org"
-  - name: "vmess-1854107773-389"
+  - name: "vmess-1854107773-354"
     type: "vmess"
     server: "104.21.7.133"
     port: 80
@@ -34,55 +19,31 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "shadowsocks-1909214422-2500"
-    type: "ss"
-    server: "195.133.23.50"
-    port: 18443
-    cipher: "aes-256-gcm"
-    password: "Lpq5UPVHtQYiuB9jEUNc2WkeIYCUH9DE"
+  - name: "vless-1925510500-2463"
+    type: "vless"
+    server: "80.243.228.84"
+    port: 2085
+    uuid: "a7c66f66-76b7-42ea-8d2b-890a37239368"
     udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
-    type: "ss"
-    server: "202.50.253.99"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vmess-1827741481-1061"
-    type: "vmess"
-    server: "cf.0sm.com"
-    port: 443
-    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "ws"
-    tls: true
-    servername: "vmess.lbw666.dpdns.org"
-    ws-opts:
-      path: "/ws"
-      headers:
-        Host: "vmess.lbw666.dpdns.org"
+    tls: false
+    client-fingerprint: "chrome"
+    network: "grpc"
+    grpc-opts:
+      grpc-service-name: "vless"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vmess-1903174772-815
-      - vmess-1854107773-389
-      - shadowsocks-1909214422-2500
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
-      - vmess-1827741481-1061
+      - vmess-1854107773-354
+      - vless-1925510500-2463
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vmess-1903174772-815
-      - vmess-1854107773-389
-      - shadowsocks-1909214422-2500
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
-      - vmess-1827741481-1061
+      - vmess-1854107773-354
+      - vless-1925510500-2463
 rules:
   - MATCH,PROXY
