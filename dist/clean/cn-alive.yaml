@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-25T21:12:33.459380+00:00
+# updated: 2026-10-25T21:21:51.238926+00:00
 # count: 2
 mixed-port: 7890
 allow-lan: false
@@ -19,17 +19,21 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "vless-1925510500-2463"
-    type: "vless"
-    server: "80.243.228.84"
-    port: 2085
-    uuid: "a7c66f66-76b7-42ea-8d2b-890a37239368"
+  - name: "vmess-1903174772-797"
+    type: "vmess"
+    server: "172.66.0.1"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
     udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    network: "grpc"
-    grpc-opts:
-      grpc-service-name: "vless"
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -37,13 +41,13 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - vmess-1854107773-354
-      - vless-1925510500-2463
+      - vmess-1903174772-797
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
       - vmess-1854107773-354
-      - vless-1925510500-2463
+      - vmess-1903174772-797
 rules:
   - MATCH,PROXY
