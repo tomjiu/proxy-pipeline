@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-25T16:30:09.576741+00:00
+# updated: 2026-10-25T16:49:21.706265+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-25T16:34:25.930767+00:00
-# kept 90 / dropped 322
+# updated: 2026-10-25T16:49:35.787192+00:00
+# kept 91 / dropped 337
   - name: "shadowsocks-1827147700-3016"
     type: "ss"
     server: "138.199.42.68"
@@ -173,19 +173,6 @@ proxies:
       path: "/usserver"
       headers:
         Host: "uspanel.unixzone.us"
-  - name: "vless-1831132333-123"
-    type: "vless"
-    server: "69.48.201.136"
-    port: 30016
-    uuid: "03dc60cb-a8d4-4226-93fe-0e6cbf77fe5a"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    network: "ws"
-    ws-opts:
-      path: "/usserver"
-      headers:
-        Host: "zoom.us"
   - name: "vmess-1853355715-264"
     type: "vmess"
     server: "67.220.95.3"
@@ -202,6 +189,19 @@ proxies:
     password: "94c2b91777f8de3a5bc12d2a91b732c2"
     sni: "promo3.betust.net"
     skip-cert-verify: false
+  - name: "vless-1882338667-2407"
+    type: "vless"
+    server: "45.138.100.248"
+    port: 14430
+    uuid: "ae908ff5-f749-402c-af25-e6e9aef4d6bb"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    network: "ws"
+    ws-opts:
+      path: "/vless"
+      headers:
+        Host: "45.138.100.248"
   - name: "vmess-1837386484-414"
     type: "vmess"
     server: "134.195.196.211"
@@ -555,19 +555,6 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
-  - name: "vless-1853340196-1261"
-    type: "vless"
-    server: "15.204.97.198"
-    port: 23576
-    uuid: "48ff2b70-e180-582f-8866-d9a2edeed5f5"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s"
-      short-id: "01"
-    servername: "fuck.rkn"
   - name: "vmess-1855790042-394"
     type: "vmess"
     server: "129.146.77.248"
@@ -816,3 +803,17 @@ proxies:
     password: "1671a252e2a97dc2bda4e515475931da"
     sni: "132.226.226.189"
     skip-cert-verify: true
+  - name: "shadowsocks-1827146467-2342"
+    type: "ss"
+    server: "82.38.31.217"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
+  - name: "shadowsocks-1827145955-2340"
+    type: "ss"
+    server: "82.38.31.216"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
