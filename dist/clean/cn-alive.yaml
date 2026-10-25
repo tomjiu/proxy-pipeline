@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-25T20:59:39.720036+00:00
-# count: 2
+# updated: 2026-10-25T21:07:06.771571+00:00
+# count: 5
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -34,6 +34,35 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
+  - name: "shadowsocks-1909214422-2500"
+    type: "ss"
+    server: "195.133.23.50"
+    port: 18443
+    cipher: "aes-256-gcm"
+    password: "Lpq5UPVHtQYiuB9jEUNc2WkeIYCUH9DE"
+    udp: true
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
+    type: "ss"
+    server: "202.50.253.99"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "vmess-1827741481-1061"
+    type: "vmess"
+    server: "cf.0sm.com"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -42,6 +71,9 @@ proxy-groups:
       - DIRECT
       - vmess-1903174772-815
       - vmess-1854107773-389
+      - shadowsocks-1909214422-2500
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
+      - vmess-1827741481-1061
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -49,5 +81,8 @@ proxy-groups:
     proxies:
       - vmess-1903174772-815
       - vmess-1854107773-389
+      - shadowsocks-1909214422-2500
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2562"
+      - vmess-1827741481-1061
 rules:
   - MATCH,PROXY
