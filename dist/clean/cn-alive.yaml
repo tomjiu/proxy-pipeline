@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-27T21:01:46.697565+00:00
-# count: 10
+# updated: 2026-10-27T22:32:09.848710+00:00
+# count: 13
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -27,13 +27,6 @@ proxies:
     udp: true
     sni: "www.searchnationwidecareerchangehelperandguidancetoday.com"
     skip-cert-verify: true
-  - name: "shadowsocks-1933640070-2460"
-    type: "ss"
-    server: "3.99.147.49"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "vless-1934374910-1455"
     type: "vless"
     server: "151.247.22.58"
@@ -122,6 +115,48 @@ proxies:
       public-key: "aZDDxJRwRH2J4FPtoIr7DmOvpQPh9sbGbvV-NpVpfms"
       short-id: "336c2cff6e3717c4"
     servername: "node-usa.blok-signalon.top"
+  - name: "vmess-1903174772-709"
+    type: "vmess"
+    server: "172.66.0.1"
+    port: 443
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    tls: true
+    servername: "vmess.lbw666.dpdns.org"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2542"
+    type: "ss"
+    server: "202.50.253.99"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇺🇸 美国 | USA 19-2528"
+    type: "ss"
+    server: "202.50.253.45"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "vless-1932471798-3449"
+    type: "vless"
+    server: "185.14.30.98"
+    port: 8443
+    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "Q0dPyF2hFWgxL7hxntJWJammcb6zcRCyA-NOiOFrsAo"
+      short-id: "1433a38abea1191c"
+    servername: "twitch.tv"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -130,7 +165,6 @@ proxy-groups:
       - DIRECT
       - vless-1934374897-1457
       - trojan-1930537301-262
-      - shadowsocks-1933640070-2460
       - vless-1934374910-1455
       - vless-1934374866-1467
       - vless-1934374872-1483
@@ -138,6 +172,10 @@ proxy-groups:
       - vmess-1913366977-319
       - vless-1933850807-1763
       - vless-1934374875-1471
+      - vmess-1903174772-709
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2542"
+      - "🇺🇸 美国 | USA 19-2528"
+      - vless-1932471798-3449
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -145,7 +183,6 @@ proxy-groups:
     proxies:
       - vless-1934374897-1457
       - trojan-1930537301-262
-      - shadowsocks-1933640070-2460
       - vless-1934374910-1455
       - vless-1934374866-1467
       - vless-1934374872-1483
@@ -153,5 +190,9 @@ proxy-groups:
       - vmess-1913366977-319
       - vless-1933850807-1763
       - vless-1934374875-1471
+      - vmess-1903174772-709
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2542"
+      - "🇺🇸 美国 | USA 19-2528"
+      - vless-1932471798-3449
 rules:
   - MATCH,PROXY
