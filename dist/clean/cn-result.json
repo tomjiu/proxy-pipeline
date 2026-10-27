@@ -1,5 +1,5 @@
 {
- "at": "2026-10-27T18:23:11.363814+00:00",
+ "at": "2026-10-27T20:48:10.213112+00:00",
  "input": 74,
  "tested": 74,
  "cn_ok": 23,
@@ -10,14 +10,38 @@
  "by_type": {
   "vless": 23
  },
- "elapsed_s": 82.7,
+ "elapsed_s": 81.3,
  "nodes": [
+  {
+   "name": "trojan-1875790321-687",
+   "type": "trojan",
+   "server": "216.106.186.32",
+   "port": "443",
+   "raw": "  - name: \"trojan-1875790321-687\"\n    type: \"trojan\"\n    server: \"216.106.186.32\"\n    port: 443\n    password: \"dba20dcb635e430fa4d3bfc303a149d2\"\n    udp: true\n    sni: \"blog.findlocaljobnetworkandbuildcommunityconnections.com\"\n    skip-cert-verify: false",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.0
+  },
   {
    "name": "trojan-1926289807-302",
    "type": "trojan",
    "server": "216.106.186.66",
    "port": "443",
    "raw": "  - name: \"trojan-1926289807-302\"\n    type: \"trojan\"\n    server: \"216.106.186.66\"\n    port: 443\n    password: \"242a3d8eee5e4ed1a6bfa4141d549a25\"\n    udp: true\n    sni: \"www.findlocaljobnetworkandbuildcommunityconnections.com\"\n    skip-cert-verify: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.0
+  },
+  {
+   "name": "shadowsocks-1827963904-3089",
+   "type": "ss",
+   "server": "138.199.43.159",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1827963904-3089\"\n    type: \"ss\"\n    server: \"138.199.43.159\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -34,31 +58,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.1
-  },
-  {
-   "name": "shadowsocks-1827963904-3089",
-   "type": "ss",
-   "server": "138.199.43.159",
-   "port": "8080",
-   "raw": "  - name: \"shadowsocks-1827963904-3089\"\n    type: \"ss\"\n    server: \"138.199.43.159\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.1
-  },
-  {
-   "name": "trojan-1875790321-687",
-   "type": "trojan",
-   "server": "216.106.186.32",
-   "port": "443",
-   "raw": "  - name: \"trojan-1875790321-687\"\n    type: \"trojan\"\n    server: \"216.106.186.32\"\n    port: 443\n    password: \"dba20dcb635e430fa4d3bfc303a149d2\"\n    udp: true\n    sni: \"blog.findlocaljobnetworkandbuildcommunityconnections.com\"\n    skip-cert-verify: false",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.1
+   "elapsed": 6.0
   },
   {
    "name": "vless-1929112371-1328",
@@ -71,7 +71,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.2
+   "elapsed": 1.4
   },
   {
    "name": "vless-1923902919-1300",
@@ -84,7 +84,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.2
+   "elapsed": 1.4
   },
   {
    "name": "vmess-1929111869-134",
@@ -96,19 +96,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.7
-  },
-  {
-   "name": "shadowsocks-1827146224-2493",
-   "type": "ss",
-   "server": "149.22.95.183",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146224-2493\"\n    type: \"ss\"\n    server: \"149.22.95.183\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 6.0
   },
   {
    "name": "vmess-1853465786-719",
@@ -120,7 +108,19 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 6.0
+  },
+  {
+   "name": "shadowsocks-1827146224-2493",
+   "type": "ss",
+   "server": "149.22.95.183",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146224-2493\"\n    type: \"ss\"\n    server: \"149.22.95.183\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 6.0
   },
   {
    "name": "vless-1929112346-1350",
@@ -146,7 +146,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.3
+   "elapsed": 1.4
   },
   {
    "name": "shadowsocks-1875129452-2629",
@@ -158,7 +158,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.9
+   "elapsed": 5.8
   },
   {
    "name": "vless-1927184314-1310",
@@ -171,19 +171,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.0
-  },
-  {
-   "name": "shadowsocks-1870576345-3113",
-   "type": "ss",
-   "server": "79.110.54.250",
-   "port": "8080",
-   "raw": "  - name: \"shadowsocks-1870576345-3113\"\n    type: \"ss\"\n    server: \"79.110.54.250\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 1.4
   },
   {
    "name": "shadowsocks-1828227588-3111",
@@ -195,7 +183,19 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
+  },
+  {
+   "name": "shadowsocks-1870576345-3113",
+   "type": "ss",
+   "server": "79.110.54.250",
+   "port": "8080",
+   "raw": "  - name: \"shadowsocks-1870576345-3113\"\n    type: \"ss\"\n    server: \"79.110.54.250\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1932477922-212",
@@ -207,7 +207,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.7
+   "elapsed": 5.8
   },
   {
    "name": "shadowsocks-1827146549-2501",
@@ -231,7 +231,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 5.8
   },
   {
    "name": "trojan-1930077596-197",
@@ -243,7 +243,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 5.8
   },
   {
    "name": "trojan-1929965362-237",
@@ -255,7 +255,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.7
+   "elapsed": 5.8
   },
   {
    "name": "shadowsocks-1827146815-2497",
@@ -267,7 +267,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "vless-1929112375-1360",
@@ -280,7 +280,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 0.9
+   "elapsed": 1.2
   },
   {
    "name": "vless-1931758590-1370",
@@ -293,7 +293,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.2
+   "elapsed": 0.9
   },
   {
    "name": "vless-1926288583-1322",
@@ -306,19 +306,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 0.6
-  },
-  {
-   "name": "shadowsocks-1827146556-2495",
-   "type": "ss",
-   "server": "156.146.38.167",
-   "port": "443",
-   "raw": "  - name: \"shadowsocks-1827146556-2495\"\n    type: \"ss\"\n    server: \"156.146.38.167\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 0.9
   },
   {
    "name": "shadowsocks-1827147700-3087",
@@ -326,6 +314,18 @@
    "server": "138.199.42.68",
    "port": "8080",
    "raw": "  - name: \"shadowsocks-1827147700-3087\"\n    type: \"ss\"\n    server: \"138.199.42.68\"\n    port: 8080\n    cipher: \"rc4-md5\"\n    password: \"14fFPrbezE3HDZzsMOr6\"\n    udp: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.8
+  },
+  {
+   "name": "shadowsocks-1827146556-2495",
+   "type": "ss",
+   "server": "156.146.38.167",
+   "port": "443",
+   "raw": "  - name: \"shadowsocks-1827146556-2495\"\n    type: \"ss\"\n    server: \"156.146.38.167\"\n    port: 443\n    cipher: \"aes-128-gcm\"\n    password: \"shadowsocks\"\n    udp: true",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -343,7 +343,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 0.7
+   "elapsed": 0.8
   },
   {
    "name": "vless-1927723276-1330",
@@ -356,7 +356,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.0
+   "elapsed": 0.8
   },
   {
    "name": "shadowsocks-1827146131-2499",
@@ -368,7 +368,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "vless-1923902899-1326",
@@ -393,7 +393,20 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
+  },
+  {
+   "name": "vless-1927723274-1314",
+   "type": "vless",
+   "server": "104.17.210.8",
+   "port": "443",
+   "raw": "  - name: \"vless-1927723274-1314\"\n    type: \"vless\"\n    server: \"104.17.210.8\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.0
   },
   {
    "name": "trojan-1929965355-227",
@@ -408,30 +421,16 @@
    "elapsed": 5.6
   },
   {
-   "name": "vless-1927723274-1314",
-   "type": "vless",
-   "server": "104.17.210.8",
+   "name": "trojan-1932467277-222",
+   "type": "trojan",
+   "server": "66.163.114.126",
    "port": "443",
-   "raw": "  - name: \"vless-1927723274-1314\"\n    type: \"vless\"\n    server: \"104.17.210.8\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 1.2
-  },
-  {
-   "name": "vless-1927723268-1304",
-   "type": "vless",
-   "server": "104.17.172.92",
-   "port": "443",
-   "raw": "  - name: \"vless-1927723268-1304\"\n    type: \"vless\"\n    server: \"104.17.172.92\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 0.9
+   "raw": "  - name: \"trojan-1932467277-222\"\n    type: \"trojan\"\n    server: \"66.163.114.126\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"resources.findconnectwithemployersandbuildprofessionalnetwork.com\"\n    skip-cert-verify: false",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.6
   },
   {
    "name": "vless-1927723291-1346",
@@ -444,32 +443,20 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.1
+   "elapsed": 0.7
   },
   {
-   "name": "trojan-1932467277-222",
-   "type": "trojan",
-   "server": "66.163.114.126",
-   "port": "443",
-   "raw": "  - name: \"trojan-1932467277-222\"\n    type: \"trojan\"\n    server: \"66.163.114.126\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"resources.findconnectwithemployersandbuildprofessionalnetwork.com\"\n    skip-cert-verify: false",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 5.8
-  },
-  {
-   "name": "vless-1925771116-1318",
+   "name": "vless-1927723268-1304",
    "type": "vless",
-   "server": "104.17.97.13",
+   "server": "104.17.172.92",
    "port": "443",
-   "raw": "  - name: \"vless-1925771116-1318\"\n    type: \"vless\"\n    server: \"104.17.97.13\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
+   "raw": "  - name: \"vless-1927723268-1304\"\n    type: \"vless\"\n    server: \"104.17.172.92\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
    "cn_ok": true,
    "cn_tcp": "端口可用",
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 1.0
   },
   {
    "name": "vless-1929112337-1298",
@@ -482,7 +469,20 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.4
+   "elapsed": 0.9
+  },
+  {
+   "name": "vless-1925771116-1318",
+   "type": "vless",
+   "server": "104.17.97.13",
+   "port": "443",
+   "raw": "  - name: \"vless-1925771116-1318\"\n    type: \"vless\"\n    server: \"104.17.97.13\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 1.0
   },
   {
    "name": "vmess-1827160934-329",
@@ -494,7 +494,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "shadowsocks-1827146051-2513",
@@ -506,7 +506,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.0
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1930077586-162",
@@ -518,7 +518,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1929965329-187",
@@ -530,7 +530,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "vmess-1853465189-799",
@@ -542,7 +542,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "vless-1929112327-1316",
@@ -555,7 +555,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.2
+   "elapsed": 0.7
   },
   {
    "name": "trojan-1929965350-157",
@@ -563,6 +563,30 @@
    "server": "66.163.112.13",
    "port": "443",
    "raw": "  - name: \"trojan-1929965350-157\"\n    type: \"trojan\"\n    server: \"66.163.112.13\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"blog.unlockyourfuturefindyourperfectcareer.com\"\n    skip-cert-verify: false",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.6
+  },
+  {
+   "name": "trojan-1929965357-172",
+   "type": "trojan",
+   "server": "66.163.112.147",
+   "port": "443",
+   "raw": "  - name: \"trojan-1929965357-172\"\n    type: \"trojan\"\n    server: \"66.163.112.147\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"courses.unlockyourfuturefindyourperfectcareer.com\"\n    skip-cert-verify: false",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.8
+  },
+  {
+   "name": "trojan-1929965338-177",
+   "type": "trojan",
+   "server": "66.163.112.242",
+   "port": "443",
+   "raw": "  - name: \"trojan-1929965338-177\"\n    type: \"trojan\"\n    server: \"66.163.112.242\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"resources.unlockyourfuturefindyourperfectcareer.com\"\n    skip-cert-verify: false",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -580,31 +604,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 0.9
-  },
-  {
-   "name": "trojan-1929965357-172",
-   "type": "trojan",
-   "server": "66.163.112.147",
-   "port": "443",
-   "raw": "  - name: \"trojan-1929965357-172\"\n    type: \"trojan\"\n    server: \"66.163.112.147\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"courses.unlockyourfuturefindyourperfectcareer.com\"\n    skip-cert-verify: false",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.0
-  },
-  {
-   "name": "trojan-1929965338-177",
-   "type": "trojan",
-   "server": "66.163.112.242",
-   "port": "443",
-   "raw": "  - name: \"trojan-1929965338-177\"\n    type: \"trojan\"\n    server: \"66.163.112.242\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"resources.unlockyourfuturefindyourperfectcareer.com\"\n    skip-cert-verify: false",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 6.0
+   "elapsed": 0.7
   },
   {
    "name": "trojan-1929965349-152",
@@ -616,7 +616,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1929965344-192",
@@ -628,7 +628,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "shadowsocks-1827146248-2509",
@@ -640,7 +640,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.0
+   "elapsed": 5.6
   },
   {
    "name": "shadowsocks-1827146122-2511",
@@ -652,7 +652,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.0
+   "elapsed": 5.6
   },
   {
    "name": "vless-1929113357-3310",
@@ -680,17 +680,16 @@
    "elapsed": 0.7
   },
   {
-   "name": "vless-1926288632-1320",
-   "type": "vless",
-   "server": "104.18.33.100",
+   "name": "🇺🇸 美国 | USA 9-52",
+   "type": "trojan",
+   "server": "216.152.155.23",
    "port": "443",
-   "raw": "  - name: \"vless-1926288632-1320\"\n    type: \"vless\"\n    server: \"104.18.33.100\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
-   "cn_ok": true,
-   "cn_tcp": "端口可用",
-   "en_ok": true,
-   "en_tcp": "端口可用",
-   "verdict": "ok",
-   "elapsed": 0.7
+   "raw": "  - name: \"🇺🇸 美国 | USA 9-52\"\n    type: \"trojan\"\n    server: \"216.152.155.23\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"courses.nextjobopportunityandclaimyouridealrole.com\"\n    skip-cert-verify: true",
+   "cn_ok": false,
+   "cn_tcp": "端口不可用",
+   "en_ok": null,
+   "verdict": "cn_blocked",
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1932466739-22",
@@ -702,7 +701,20 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
+  },
+  {
+   "name": "vless-1926288632-1320",
+   "type": "vless",
+   "server": "104.18.33.100",
+   "port": "443",
+   "raw": "  - name: \"vless-1926288632-1320\"\n    type: \"vless\"\n    server: \"104.18.33.100\"\n    port: 443\n    uuid: \"45ceaca9-30f4-4035-85b7-8f83493911d8\"\n    udp: true\n    tls: true\n    client-fingerprint: \"chrome\"\n    servername: \"tamoai.ccwu.cc\"\n    network: \"ws\"\n    ws-opts:\n      path: \"/proxyip=163.192.47.40,47.57.181.17,34.83.245.149,4.155.83.212,64.227.62.172,24.144.68.139,161.35.232.123,107.170.248.68\"\n      headers:\n        Host: \"tamoai.ccwu.cc\"",
+   "cn_ok": true,
+   "cn_tcp": "端口可用",
+   "en_ok": true,
+   "en_tcp": "端口可用",
+   "verdict": "ok",
+   "elapsed": 0.6
   },
   {
    "name": "trojan-1930077602-67",
@@ -714,14 +726,14 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 5.5
   },
   {
-   "name": "🇺🇸 美国 | USA 9-52",
-   "type": "trojan",
-   "server": "216.152.155.23",
-   "port": "443",
-   "raw": "  - name: \"🇺🇸 美国 | USA 9-52\"\n    type: \"trojan\"\n    server: \"216.152.155.23\"\n    port: 443\n    password: \"0ab6c98dae3b48e8b9c4a776b6c9c19a\"\n    udp: true\n    sni: \"courses.nextjobopportunityandclaimyouridealrole.com\"\n    skip-cert-verify: true",
+   "name": "vless-1882338658-2482",
+   "type": "vless",
+   "server": "45.138.100.248",
+   "port": "10443",
+   "raw": "  - name: \"vless-1882338658-2482\"\n    type: \"vless\"\n    server: \"45.138.100.248\"\n    port: 10443\n    uuid: \"ae908ff5-f749-402c-af25-e6e9aef4d6bb\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -741,11 +753,11 @@
    "elapsed": 5.6
   },
   {
-   "name": "vless-1882338658-2482",
-   "type": "vless",
-   "server": "45.138.100.248",
-   "port": "10443",
-   "raw": "  - name: \"vless-1882338658-2482\"\n    type: \"vless\"\n    server: \"45.138.100.248\"\n    port: 10443\n    uuid: \"ae908ff5-f749-402c-af25-e6e9aef4d6bb\"\n    udp: true\n    tls: false\n    client-fingerprint: \"chrome\"",
+   "name": "shadowsocks-1875023016-2601",
+   "type": "ss",
+   "server": "185.230.230.18",
+   "port": "19999",
+   "raw": "  - name: \"shadowsocks-1875023016-2601\"\n    type: \"ss\"\n    server: \"185.230.230.18\"\n    port: 19999\n    cipher: \"aes-256-gcm\"\n    password: \"ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=\"\n    udp: true",
    "cn_ok": false,
    "cn_tcp": "端口不可用",
    "en_ok": null,
@@ -765,18 +777,6 @@
    "elapsed": 5.6
   },
   {
-   "name": "shadowsocks-1875023016-2601",
-   "type": "ss",
-   "server": "185.230.230.18",
-   "port": "19999",
-   "raw": "  - name: \"shadowsocks-1875023016-2601\"\n    type: \"ss\"\n    server: \"185.230.230.18\"\n    port: 19999\n    cipher: \"aes-256-gcm\"\n    password: \"ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4=\"\n    udp: true",
-   "cn_ok": false,
-   "cn_tcp": "端口不可用",
-   "en_ok": null,
-   "verdict": "cn_blocked",
-   "elapsed": 5.6
-  },
-  {
    "name": "vless-1929112351-1348",
    "type": "vless",
    "server": "172.64.153.116",
@@ -787,7 +787,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.1
+   "elapsed": 0.7
   },
   {
    "name": "vless-1929112411-1358",
@@ -800,7 +800,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.0
+   "elapsed": 0.8
   },
   {
    "name": "trojan-1832868058-657",
@@ -812,7 +812,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 6.0
+   "elapsed": 5.6
   },
   {
    "name": "vmess-1863447742-164",
@@ -836,7 +836,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "trojan-1929965327-12",
@@ -848,7 +848,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.8
+   "elapsed": 5.6
   },
   {
    "name": "vless-1927184317-1312",
@@ -861,7 +861,7 @@
    "en_ok": true,
    "en_tcp": "端口可用",
    "verdict": "ok",
-   "elapsed": 1.0
+   "elapsed": 0.7
   },
   {
    "name": "shadowsocks-1875022945-2625",
@@ -897,7 +897,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 5.5
   },
   {
    "name": "vless-1854347690-3",
@@ -909,7 +909,7 @@
    "cn_tcp": "端口不可用",
    "en_ok": null,
    "verdict": "cn_blocked",
-   "elapsed": 5.6
+   "elapsed": 5.8
   },
   {
    "name": "shadowsocks-1827146143-2487",
