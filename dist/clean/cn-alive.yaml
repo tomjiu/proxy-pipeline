@@ -1,12 +1,61 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T22:50:34.338864+00:00
+# updated: 2026-10-28T22:53:33.584058+00:00
 # count: 6
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1936406286-3438"
+  - name: "美国 CloudFlare节点-164"
+    type: "vmess"
+    server: "172.67.187.145"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
+  - name: "🇭🇰HK_3|1.5MB/s-134"
+    type: "vmess"
+    server: "206.237.11.17"
+    port: 8080
+    uuid: "edcf3108-da2b-45c8-a852-a7e58dd55a43"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "http"
+  - name: "🇭🇰HK_2|1.1MB/s-129"
+    type: "vmess"
+    server: "206.237.11.17"
+    port: 44441
+    uuid: "de4e0335-2a3b-4006-d746-c939fa85fdc3"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "http"
+  - name: "vmess-1938432111-814"
+    type: "vmess"
+    server: "206.237.11.17"
+    port: 50376
+    uuid: "9091fd64-7e8e-4b7a-8ae7-84474f234926"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "none"
+  - name: "🇺🇸US_7|1.1MB/s-3360"
+    type: "vless"
+    server: "us001.zestapp778.com"
+    port: 54857
+    uuid: "e9a8144e-5237-488a-afb1-9ca3d8d54c80"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "us001.zestapp778.com"
+  - name: "vless-1936406286-3362"
     type: "vless"
     server: "us007.zestapp778.com"
     port: 18580
@@ -15,82 +64,28 @@ proxies:
     tls: true
     client-fingerprint: "chrome"
     servername: "us007.zestapp778.com"
-  - name: "vmess-1937966725-799"
-    type: "vmess"
-    server: "185.19.33.68"
-    port: 52918
-    uuid: "da8cdfd1-d9d5-4687-b381-3804fda4e302"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-  - name: "vless-1937733881-1432"
-    type: "vless"
-    server: "156.229.160.98"
-    port: 9443
-    uuid: "4a270d3e-27b4-497d-8c8c-28f1f54958d9"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "0hIFPaEn4RdFib8_eP8HYxMywR5izEwM3JA2W1Zo8U4"
-      short-id: "b390142456517acc"
-    servername: "www.amazon.com"
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2589"
-    type: "ss"
-    server: "202.50.253.90"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vless-1935750593-3500"
-    type: "vless"
-    server: "185.14.30.98"
-    port: 8443
-    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
-    udp: true
-    tls: true
-    client-fingerprint: "safari"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "Q0dPyF2hFWgxL7hxntJWJammcb6zcRCyA-NOiOFrsAo"
-      short-id: "1433a38abea1191c"
-    servername: "twitch.tv"
-  - name: "vless-1930538329-3498"
-    type: "vless"
-    server: "147.45.51.171"
-    port: 8443
-    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
-    udp: true
-    tls: true
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "dPa581kev2x9-st7VQ-DTh3NjXlHJ2830YDySuI8n2U"
-      short-id: "e723d26df67888b9"
-    servername: "twitch.tv"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1936406286-3438
-      - vmess-1937966725-799
-      - vless-1937733881-1432
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2589"
-      - vless-1935750593-3500
-      - vless-1930538329-3498
+      - "美国 CloudFlare节点-164"
+      - "🇭🇰HK_3|1.5MB/s-134"
+      - "🇭🇰HK_2|1.1MB/s-129"
+      - vmess-1938432111-814
+      - "🇺🇸US_7|1.1MB/s-3360"
+      - vless-1936406286-3362
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1936406286-3438
-      - vmess-1937966725-799
-      - vless-1937733881-1432
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2589"
-      - vless-1935750593-3500
-      - vless-1930538329-3498
+      - "美国 CloudFlare节点-164"
+      - "🇭🇰HK_3|1.5MB/s-134"
+      - "🇭🇰HK_2|1.1MB/s-129"
+      - vmess-1938432111-814
+      - "🇺🇸US_7|1.1MB/s-3360"
+      - vless-1936406286-3362
 rules:
   - MATCH,PROXY
