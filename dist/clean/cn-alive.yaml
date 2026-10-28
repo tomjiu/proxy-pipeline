@@ -1,12 +1,12 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T16:46:39.616812+00:00
-# count: 7
+# updated: 2026-10-28T17:00:26.106500+00:00
+# count: 3
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1935807350-3410"
+  - name: "vless-1936406286-3438"
     type: "vless"
     server: "us007.zestapp778.com"
     port: 18580
@@ -15,84 +15,43 @@ proxies:
     tls: true
     client-fingerprint: "chrome"
     servername: "us007.zestapp778.com"
-  - name: "美国+CloudFlare节点-1720"
-    type: "vless"
-    server: "ld.235231.xyz"
-    port: 443
-    uuid: "65d3f9b3-d289-4a8e-9c87-90bba156de30"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "ld.235231.xyz"
-  - name: "🇮🇹 意大利 | ITA 1-2593"
-    type: "ss"
-    server: "202.50.253.99"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2575"
-    type: "ss"
-    server: "202.50.253.36"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "新西兰+V2CROSS.COM-2577"
-    type: "ss"
-    server: "202.50.253.45"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602-2583"
-    type: "ss"
-    server: "202.50.253.63"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vmess-1854107773-339"
+  - name: "vmess-1937966725-799"
     type: "vmess"
-    server: "104.21.7.133"
-    port: 80
-    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    server: "185.19.33.68"
+    port: 52918
+    uuid: "da8cdfd1-d9d5-4687-b381-3804fda4e302"
     alterId: 0
     cipher: "auto"
     udp: true
-    network: "ws"
-    ws-opts:
-      path: "/ws"
-      headers:
-        Host: "vmess.lbw666.dpdns.org"
+  - name: "vless-1937733881-1432"
+    type: "vless"
+    server: "156.229.160.98"
+    port: 9443
+    uuid: "4a270d3e-27b4-497d-8c8c-28f1f54958d9"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "0hIFPaEn4RdFib8_eP8HYxMywR5izEwM3JA2W1Zo8U4"
+      short-id: "b390142456517acc"
+    servername: "www.amazon.com"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1935807350-3410
-      - 美国+CloudFlare节点-1720
-      - "🇮🇹 意大利 | ITA 1-2593"
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2575"
-      - 新西兰+V2CROSS.COM-2577
-      - "🇮🇹 www.v2nodes.com ss-IT-1602-2583"
-      - vmess-1854107773-339
+      - vless-1936406286-3438
+      - vmess-1937966725-799
+      - vless-1937733881-1432
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1935807350-3410
-      - 美国+CloudFlare节点-1720
-      - "🇮🇹 意大利 | ITA 1-2593"
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2575"
-      - 新西兰+V2CROSS.COM-2577
-      - "🇮🇹 www.v2nodes.com ss-IT-1602-2583"
-      - vmess-1854107773-339
+      - vless-1936406286-3438
+      - vmess-1937966725-799
+      - vless-1937733881-1432
 rules:
   - MATCH,PROXY
