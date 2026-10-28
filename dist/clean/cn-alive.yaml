@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T01:38:47.686855+00:00
-# count: 8
+# updated: 2026-10-28T06:06:19.439474+00:00
+# count: 10
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -118,6 +118,28 @@ proxies:
       path: "/"
       headers:
         Host: "wallweb11.wallwebc992h7.workers.dev"
+  - name: "🇺🇸US_1|1.4MB/s-297"
+    type: "trojan"
+    server: "66.163.122.7"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "www.searchnationwidecareerchangehelperandguidancetoday.com"
+    skip-cert-verify: false
+  - name: "vless-1878561558-1525"
+    type: "vless"
+    server: "104.21.70.21"
+    port: 443
+    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
+    servername: "jp3.yohototo.top"
+    network: "ws"
+    ws-opts:
+      path: "/tyxyws"
+      headers:
+        Host: "jp3.yohototo.top"
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -132,6 +154,8 @@ proxy-groups:
       - vless-1856230108-2801
       - vless-1934984139-1693
       - vless-1934984142-1691
+      - "🇺🇸US_1|1.4MB/s-297"
+      - vless-1878561558-1525
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -145,5 +169,7 @@ proxy-groups:
       - vless-1856230108-2801
       - vless-1934984139-1693
       - vless-1934984142-1691
+      - "🇺🇸US_1|1.4MB/s-297"
+      - vless-1878561558-1525
 rules:
   - MATCH,PROXY
