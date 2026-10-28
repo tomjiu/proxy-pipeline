@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-28T10:07:54.520797+00:00
+# updated: 2026-10-28T13:31:47.005353+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-28T13:12:37.158919+00:00
-# kept 175 / dropped 320
+# updated: 2026-10-28T13:32:02.662061+00:00
+# kept 175 / dropped 343
   - name: "shadowsocks-1827147700-3089"
     type: "ss"
     server: "138.199.42.68"
@@ -395,13 +395,6 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "hysteria2-1832863516-775"
-    type: "hysteria2"
-    server: "155.248.209.237"
-    port: 33333
-    password: "bce6c821-200d-421f-bf3d-7159e5246ea0"
-    sni: "155.248.209.237"
-    skip-cert-verify: true
   - name: "vless-1827162803-3062"
     type: "vless"
     server: "169.40.42.231"
@@ -685,6 +678,19 @@ proxies:
       public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
       short-id: "c39cc7310a"
     servername: "yahoo.com"
+  - name: "vless-1875764228-1136"
+    type: "vless"
+    server: "208.84.100.209"
+    port: 8080
+    uuid: "36c3dcc2-17b6-4478-b8a7-3978e6d5afe9"
+    udp: true
+    tls: false
+    client-fingerprint: "chrome"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "208.84.100.209"
   - name: "vless-1853462712-2972"
     type: "vless"
     server: "169.40.42.224"
