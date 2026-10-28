@@ -1,53 +1,51 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T08:46:29.165519+00:00
+# updated: 2026-10-28T08:49:57.875329+00:00
 # count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "🇸🇬 www.v2nodes.com vless-SG 4-3449"
+  - name: "美国+CloudFlare节点-1720"
     type: "vless"
-    server: "104.21.70.21"
-    port: 8080
-    uuid: "fc60147e-76b8-4bc5-b691-90b2da79e3d2"
-    udp: true
-    tls: false
-    client-fingerprint: "chrome"
-    servername: "nautica-cff.kloningstrife002.workers.dev"
-    network: "ws"
-    ws-opts:
-      path: "/138.2.74.219-28616"
-      headers:
-        Host: "nautica-cff.kloningstrife002.workers.dev"
-  - name: "vless-1878561558-1525"
-    type: "vless"
-    server: "104.21.70.21"
+    server: "ld.235231.xyz"
     port: 443
-    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    uuid: "65d3f9b3-d289-4a8e-9c87-90bba156de30"
     udp: true
     tls: true
-    client-fingerprint: "firefox"
-    servername: "jp3.yohototo.top"
+    client-fingerprint: "chrome"
     network: "ws"
     ws-opts:
-      path: "/tyxyws"
+      path: "/"
       headers:
-        Host: "jp3.yohototo.top"
+        Host: "ld.235231.xyz"
+  - name: "vmess-1854107773-339"
+    type: "vmess"
+    server: "104.21.7.133"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/ws"
+      headers:
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - "🇸🇬 www.v2nodes.com vless-SG 4-3449"
-      - vless-1878561558-1525
+      - 美国+CloudFlare节点-1720
+      - vmess-1854107773-339
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - "🇸🇬 www.v2nodes.com vless-SG 4-3449"
-      - vless-1878561558-1525
+      - 美国+CloudFlare节点-1720
+      - vmess-1854107773-339
 rules:
   - MATCH,PROXY
