@@ -1,11 +1,20 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T13:40:24.429889+00:00
-# count: 6
+# updated: 2026-10-28T16:46:39.616812+00:00
+# count: 7
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
+  - name: "vless-1935807350-3410"
+    type: "vless"
+    server: "us007.zestapp778.com"
+    port: 18580
+    uuid: "e9a8144e-5237-488a-afb1-9ca3d8d54c80"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "us007.zestapp778.com"
   - name: "美国+CloudFlare节点-1720"
     type: "vless"
     server: "ld.235231.xyz"
@@ -66,6 +75,7 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
+      - vless-1935807350-3410
       - 美国+CloudFlare节点-1720
       - "🇮🇹 意大利 | ITA 1-2593"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2575"
@@ -77,6 +87,7 @@ proxy-groups:
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
+      - vless-1935807350-3410
       - 美国+CloudFlare节点-1720
       - "🇮🇹 意大利 | ITA 1-2593"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2575"
