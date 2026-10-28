@@ -28,6 +28,26 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   default-nameserver: [180.76.76.76, 182.254.118.118, 8.8.8.8, 180.184.2.2]
+
+  # ⚠️ 代理服务器域名专用解析器 —— 【必须配，否则 REALITY 握手超时】
+  #
+  # fake-ip 模式下，节点域名（如 san.mingjiu.store）如果走 nameserver 解析，
+  # 会被分到 fake-ip（198.18.x.x），导致连不上节点。
+  #
+  # 实测（2026-10-28）：
+  #   · 不加 proxy-server-nameserver：
+  #       Hysteria2 侥幸能用（UDP 走不同路径）
+  #       VLESS REALITY 完全超时 —— 因为 servername=www.apple.com 与 fake-ip 冲突
+  #   · 加上之后：
+  #       Hy2 gstatic 423ms / Steam 1084ms  ✅
+  #       Reality gstatic 1917ms / Steam 1929ms ✅
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 180.76.76.76
+    - "https://doh.pub/dns-query"
+    - "https://dns.alidns.com/dns-query"
+
   nameserver:
     [
       180.76.76.76,
