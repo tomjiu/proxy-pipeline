@@ -92,6 +92,24 @@ dns:
     }
   fake-ip-filter:
     [
+      # ══════════════════════════════════════════════════════════════
+      # 代理节点域名 —— 【必须排除 fake-ip，否则延迟测试全部超时】
+      #
+      # 实测（2026-10-28）：
+      #   san.mingjiu.store 被解析成 198.18.0.20（fake-ip），
+      #   导致 Clash Verge 里 REALITY 节点测速超时、连接失败。
+      #
+      #   为什么 Hy2 侥幸能用：UDP/QUIC 走不同解析路径
+      #   为什么 REALITY 挂：TCP 443 走 DNS 模块，拿到 fake-ip 连不上
+      #
+      #   proxy-server-nameserver 只影响「内核自己解析节点域名」，
+      #   而 url-test / delay-test 走 DNS 模块 → 仍会拿到 fake-ip。
+      #   所以必须把节点域名写进 fake-ip-filter。
+      # ══════════════════════════════════════════════════════════════
+      "+.mingjiu.store",
+      "san.mingjiu.store",
+      "*.mingjiu.store",
+
       # --- dsh / DeepSeek API: 必须走真实 DNS，否则 Node fetch 拿 fake-IP 连不上 ---
       "api.deepseek.com",
       "*.deepseek.com",
