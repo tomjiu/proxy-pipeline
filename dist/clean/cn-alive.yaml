@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-28T22:53:33.584058+00:00
-# count: 6
+# updated: 2026-10-28T22:58:15.174713+00:00
+# count: 3
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -19,33 +19,6 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "🇭🇰HK_3|1.5MB/s-134"
-    type: "vmess"
-    server: "206.237.11.17"
-    port: 8080
-    uuid: "edcf3108-da2b-45c8-a852-a7e58dd55a43"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "http"
-  - name: "🇭🇰HK_2|1.1MB/s-129"
-    type: "vmess"
-    server: "206.237.11.17"
-    port: 44441
-    uuid: "de4e0335-2a3b-4006-d746-c939fa85fdc3"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "http"
-  - name: "vmess-1938432111-814"
-    type: "vmess"
-    server: "206.237.11.17"
-    port: 50376
-    uuid: "9091fd64-7e8e-4b7a-8ae7-84474f234926"
-    alterId: 0
-    cipher: "auto"
-    udp: true
-    network: "none"
   - name: "🇺🇸US_7|1.1MB/s-3360"
     type: "vless"
     server: "us001.zestapp778.com"
@@ -71,9 +44,6 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - "美国 CloudFlare节点-164"
-      - "🇭🇰HK_3|1.5MB/s-134"
-      - "🇭🇰HK_2|1.1MB/s-129"
-      - vmess-1938432111-814
       - "🇺🇸US_7|1.1MB/s-3360"
       - vless-1936406286-3362
   - name: "AUTO"
@@ -82,9 +52,6 @@ proxy-groups:
     interval: 300
     proxies:
       - "美国 CloudFlare节点-164"
-      - "🇭🇰HK_3|1.5MB/s-134"
-      - "🇭🇰HK_2|1.1MB/s-129"
-      - vmess-1938432111-814
       - "🇺🇸US_7|1.1MB/s-3360"
       - vless-1936406286-3362
 rules:
