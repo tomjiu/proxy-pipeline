@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T06:07:41.593852+00:00
-# count: 9
+# updated: 2026-10-29T06:32:58.733290+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -19,14 +19,6 @@ proxies:
       path: "/ws"
       headers:
         Host: "vmess.lbw666.dpdns.org"
-  - name: "trojan-1939845052-57"
-    type: "trojan"
-    server: "216.152.147.201"
-    port: 443
-    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
-    udp: true
-    sni: "resources.connectingpeoplewithgreatjobs.com"
-    skip-cert-verify: false
   - name: "trojan-1939845075-52"
     type: "trojan"
     server: "216.152.147.152"
@@ -34,22 +26,6 @@ proxies:
     password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
     udp: true
     sni: "learn.connectingpeoplewithgreatjobs.com"
-    skip-cert-verify: false
-  - name: "trojan-1939845081-72"
-    type: "trojan"
-    server: "216.152.147.93"
-    port: 443
-    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
-    udp: true
-    sni: "connectingpeoplewithgreatjobs.com"
-    skip-cert-verify: false
-  - name: "trojan-1939845057-62"
-    type: "trojan"
-    server: "216.152.147.48"
-    port: 443
-    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
-    udp: true
-    sni: "courses.connectingpeoplewithgreatjobs.com"
     skip-cert-verify: false
   - name: "vless-1940466072-2999"
     type: "vless"
@@ -65,28 +41,6 @@ proxies:
       path: "/eyJqdW5rIjoiZWlPODVjTnhnaSIsInByb3RvY29sIjoidmwiLCJtb2RlIjoicHJveHlpcCIsInBhbmVsSVBzIjpbXX0"
       headers:
         Host: "ezaccess-project-f62c30.pages.dev"
-  - name: "vless-1941064092-508"
-    type: "vless"
-    server: "104.18.35.86"
-    port: 443
-    uuid: "1c7f675f-5923-463f-83fb-af4c898cecea"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "0ee6woqz4w8w0cdqitgq6xz-q0o9r6o9.mertesswagger08.workers.dev"
-    network: "ws"
-    ws-opts:
-      path: "/eyJqdW5rIjoiZWhuWFFGNWRISXBjSmRGWSIsInByb3RvY29sIjoidmwiLCJtb2RlIjoicHJveHlpcCIsInBhbmVsSVBzIjpbXX0="
-      headers:
-        Host: "0ee6woqz4w8w0cdqitgq6xz-q0o9r6o9.mertesswagger08.workers.dev"
-  - name: "trojan-1939845053-22"
-    type: "trojan"
-    server: "169.197.140.224"
-    port: 443
-    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
-    udp: true
-    sni: "resources.discoverfreshgraduatejobsstartyourprofessionaljourney.com"
-    skip-cert-verify: false
   - name: "vless-1940442202-3055"
     type: "vless"
     server: "ca001.zestapp778.com"
@@ -102,13 +56,8 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - vmess-1854107773-369
-      - trojan-1939845052-57
       - trojan-1939845075-52
-      - trojan-1939845081-72
-      - trojan-1939845057-62
       - vless-1940466072-2999
-      - vless-1941064092-508
-      - trojan-1939845053-22
       - vless-1940442202-3055
   - name: "AUTO"
     type: url-test
@@ -116,13 +65,8 @@ proxy-groups:
     interval: 300
     proxies:
       - vmess-1854107773-369
-      - trojan-1939845052-57
       - trojan-1939845075-52
-      - trojan-1939845081-72
-      - trojan-1939845057-62
       - vless-1940466072-2999
-      - vless-1941064092-508
-      - trojan-1939845053-22
       - vless-1940442202-3055
 rules:
   - MATCH,PROXY
