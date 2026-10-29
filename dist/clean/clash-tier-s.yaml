@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-29T19:52:47.437104+00:00
+# updated: 2026-10-29T22:58:57.930156+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-29T22:50:46.733913+00:00
-# kept 185 / dropped 267
+# updated: 2026-10-29T22:59:12.346019+00:00
+# kept 184 / dropped 295
   - name: "shadowsocks-1941957292-2391"
     type: "ss"
     server: "54.227.18.80"
@@ -19,13 +19,6 @@ proxies:
   - name: "🇺🇸 美国 | USA 5-2379"
     type: "ss"
     server: "54.83.84.17"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
-  - name: "🇺🇸 美国 | USA 9-2377"
-    type: "ss"
-    server: "54.237.60.0"
     port: 443
     cipher: "aes-256-cfb"
     password: "amazonskr05"
@@ -91,19 +84,16 @@ proxies:
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
-  - name: "vless-1944210162-1744"
-    type: "vless"
-    server: "167.88.172.62"
-    port: 443
-    uuid: "76ef5ab3-7075-4e23-b445-f3b1bd05d431"
-    udp: true
-    tls: true
-    client-fingerprint: "firefox"
-    flow: "xtls-rprx-vision"
-    servername: "us.qik-fin.uk"
   - name: "🇨🇦 加拿大 | CAN 3-2371"
     type: "ss"
     server: "15.156.207.17"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "shadowsocks-1941951313-2389"
+    type: "ss"
+    server: "16.52.78.159"
     port: 443
     cipher: "aes-256-cfb"
     password: "amazonskr05"
@@ -245,6 +235,13 @@ proxies:
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇨🇦 加拿大 | CAN 1-2373"
+    type: "ss"
+    server: "16.54.253.154"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
     udp: true
   - name: "vless-1943105428-2778"
     type: "vless"
@@ -409,19 +406,19 @@ proxies:
     udp: true
     sni: "www.explorecreativejobsandenhanceyourcareerportfolio.com"
     skip-cert-verify: false
-  - name: "vless-1945028577-2020"
-    type: "vless"
-    server: "89.46.38.58"
-    port: 443
-    uuid: "8bab5583-04b1-4b83-96e8-4ed46062eeb7"
+  - name: "vmess-1942606378-354"
+    type: "vmess"
+    server: "130.94.16.109"
+    port: 80
+    uuid: "f88c14b4-056d-4731-93f4-66a2cb09672b"
+    alterId: 0
+    cipher: "auto"
     udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "HNC4xdL0kgaIcgnPtMyc21hxY6dk0zl_vAclmQZHigw"
-      short-id: "323da253"
-    servername: "us-a1.netfix.app"
+    network: "ws"
+    ws-opts:
+      path: "/vmess-ws"
+      headers:
+        Host: "130.94.16.109"
   - name: "vless-1943754325-2552"
     type: "vless"
     server: "104.18.37.0"
@@ -762,16 +759,6 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
-  - name: "vless-1943676171-1768"
-    type: "vless"
-    server: "us.qik-fin.uk"
-    port: 443
-    uuid: "76ef5ab3-7075-4e23-b445-f3b1bd05d431"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    servername: "us.qik-fin.uk"
   - name: "trojan-1933715123-672"
     type: "trojan"
     server: "66.163.114.166"
