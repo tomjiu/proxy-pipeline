@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T13:30:41.090244+00:00
-# count: 6
+# updated: 2026-10-29T13:51:22.232595+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -20,13 +20,6 @@ proxies:
       path: "/index/content"
       headers:
         Host: "vp13.1145678.xyz"
-  - name: "shadowsocks-1941955286-2338"
-    type: "ss"
-    server: "35.183.129.117"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "vless-1939844080-1567"
     type: "vless"
     server: "saas.sin.fan"
@@ -41,13 +34,6 @@ proxies:
       path: "/community/redirect.html"
       headers:
         Host: "vp14.1145678.xyz"
-  - name: "shadowsocks-1941951299-2336"
-    type: "ss"
-    server: "16.54.253.154"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "vmess-1942606378-404"
     type: "vmess"
     server: "130.94.16.109"
@@ -75,9 +61,7 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - vless-1942077252-1569
-      - shadowsocks-1941955286-2338
       - vless-1939844080-1567
-      - shadowsocks-1941951299-2336
       - vmess-1942606378-404
       - 新西兰+V2CROSS.COM-2396
   - name: "AUTO"
@@ -86,9 +70,7 @@ proxy-groups:
     interval: 300
     proxies:
       - vless-1942077252-1569
-      - shadowsocks-1941955286-2338
       - vless-1939844080-1567
-      - shadowsocks-1941951299-2336
       - vmess-1942606378-404
       - 新西兰+V2CROSS.COM-2396
 rules:
