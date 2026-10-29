@@ -1,36 +1,71 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T11:32:54.569289+00:00
-# count: 1
+# updated: 2026-10-29T13:20:21.615707+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vmess-1854107773-369"
-    type: "vmess"
-    server: "104.21.7.133"
-    port: 80
-    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
-    alterId: 0
-    cipher: "auto"
+  - name: "vless-1942077252-1569"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 2096
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
     udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp13.1145678.xyz"
     network: "ws"
     ws-opts:
-      path: "/ws"
+      path: "/index/content"
       headers:
-        Host: "vmess.lbw666.dpdns.org"
+        Host: "vp13.1145678.xyz"
+  - name: "shadowsocks-1941955286-2338"
+    type: "ss"
+    server: "35.183.129.117"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "shadowsocks-1941951299-2336"
+    type: "ss"
+    server: "16.54.253.154"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "vless-1939844080-1567"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 2083
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp14.1145678.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/community/redirect.html"
+      headers:
+        Host: "vp14.1145678.xyz"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vmess-1854107773-369
+      - vless-1942077252-1569
+      - shadowsocks-1941955286-2338
+      - shadowsocks-1941951299-2336
+      - vless-1939844080-1567
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vmess-1854107773-369
+      - vless-1942077252-1569
+      - shadowsocks-1941955286-2338
+      - shadowsocks-1941951299-2336
+      - vless-1939844080-1567
 rules:
   - MATCH,PROXY
