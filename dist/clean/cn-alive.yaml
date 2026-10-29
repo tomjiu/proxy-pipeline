@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T19:59:53.701005+00:00
-# count: 7
+# updated: 2026-10-29T22:59:33.081748+00:00
+# count: 12
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -76,6 +76,61 @@ proxies:
       path: "/torrent/documents/photos"
       headers:
         Host: "vp12.1145678.xyz"
+  - name: "🇮🇹 意大利 | ITA 3-2461"
+    type: "ss"
+    server: "202.50.253.81"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "vless-1943754363-2554"
+    type: "vless"
+    server: "104.18.45.184"
+    port: 443
+    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
+    network: "ws"
+    ws-opts:
+      path: "/ranking/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
+      headers:
+        Host: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
+  - name: "vless-1935750593-3256"
+    type: "vless"
+    server: "185.14.30.98"
+    port: 8443
+    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
+    udp: true
+    tls: true
+    client-fingerprint: "safari"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "Q0dPyF2hFWgxL7hxntJWJammcb6zcRCyA-NOiOFrsAo"
+      short-id: "1433a38abea1191c"
+    servername: "twitch.tv"
+  - name: "vless-1930538329-3254"
+    type: "vless"
+    server: "147.45.51.171"
+    port: 8443
+    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
+    udp: true
+    tls: true
+    client-fingerprint: "firefox"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "dPa581kev2x9-st7VQ-DTh3NjXlHJ2830YDySuI8n2U"
+      short-id: "e723d26df67888b9"
+    servername: "twitch.tv"
+  - name: "trojan-1945021228-172"
+    type: "trojan"
+    server: "208.69.78.19"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "www.yourultimateprofessionalcareerhub.com"
+    skip-cert-verify: false
   - name: "新西兰+V2CROSS.COM-2449"
     type: "ss"
     server: "202.50.253.45"
@@ -95,6 +150,11 @@ proxy-groups:
       - vless-1943754325-2552
       - vless-1945028577-2020
       - vless-1941532362-1552
+      - "🇮🇹 意大利 | ITA 3-2461"
+      - vless-1943754363-2554
+      - vless-1935750593-3256
+      - vless-1930538329-3254
+      - trojan-1945021228-172
       - 新西兰+V2CROSS.COM-2449
   - name: "AUTO"
     type: url-test
@@ -107,6 +167,11 @@ proxy-groups:
       - vless-1943754325-2552
       - vless-1945028577-2020
       - vless-1941532362-1552
+      - "🇮🇹 意大利 | ITA 3-2461"
+      - vless-1943754363-2554
+      - vless-1935750593-3256
+      - vless-1930538329-3254
+      - trojan-1945021228-172
       - 新西兰+V2CROSS.COM-2449
 rules:
   - MATCH,PROXY
