@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T22:59:33.081748+00:00
+# updated: 2026-10-29T23:06:29.375291+00:00
 # count: 12
 mixed-port: 7890
 allow-lan: false
@@ -9,6 +9,13 @@ proxies:
   - name: "🇨🇦 加拿大 | CAN 2-2375"
     type: "ss"
     server: "35.183.129.117"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
+  - name: "🇨🇦 加拿大 | CAN 1-2373"
+    type: "ss"
+    server: "16.54.253.154"
     port: 443
     cipher: "aes-256-cfb"
     password: "amazonskr05"
@@ -49,19 +56,6 @@ proxies:
       path: "/tag/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
       headers:
         Host: "gy-cffc2-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "vless-1945028577-2020"
-    type: "vless"
-    server: "89.46.38.58"
-    port: 443
-    uuid: "8bab5583-04b1-4b83-96e8-4ed46062eeb7"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "HNC4xdL0kgaIcgnPtMyc21hxY6dk0zl_vAclmQZHigw"
-      short-id: "323da253"
-    servername: "us-a1.netfix.app"
   - name: "vless-1941532362-1552"
     type: "vless"
     server: "saas.sin.fan"
@@ -145,10 +139,10 @@ proxy-groups:
       - "AUTO"
       - DIRECT
       - "🇨🇦 加拿大 | CAN 2-2375"
+      - "🇨🇦 加拿大 | CAN 1-2373"
       - vless-1943754338-2566
       - trojan-1941512523-222
       - vless-1943754325-2552
-      - vless-1945028577-2020
       - vless-1941532362-1552
       - "🇮🇹 意大利 | ITA 3-2461"
       - vless-1943754363-2554
@@ -162,10 +156,10 @@ proxy-groups:
     interval: 300
     proxies:
       - "🇨🇦 加拿大 | CAN 2-2375"
+      - "🇨🇦 加拿大 | CAN 1-2373"
       - vless-1943754338-2566
       - trojan-1941512523-222
       - vless-1943754325-2552
-      - vless-1945028577-2020
       - vless-1941532362-1552
       - "🇮🇹 意大利 | ITA 3-2461"
       - vless-1943754363-2554
