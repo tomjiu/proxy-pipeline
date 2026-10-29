@@ -1,5 +1,5 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-29T13:20:21.615707+00:00
+# updated: 2026-10-29T13:22:26.400294+00:00
 # count: 4
 mixed-port: 7890
 allow-lan: false
@@ -27,13 +27,6 @@ proxies:
     cipher: "aes-256-cfb"
     password: "amazonskr05"
     udp: true
-  - name: "shadowsocks-1941951299-2336"
-    type: "ss"
-    server: "16.54.253.154"
-    port: 443
-    cipher: "aes-256-cfb"
-    password: "amazonskr05"
-    udp: true
   - name: "vless-1939844080-1567"
     type: "vless"
     server: "saas.sin.fan"
@@ -48,6 +41,13 @@ proxies:
       path: "/community/redirect.html"
       headers:
         Host: "vp14.1145678.xyz"
+  - name: "shadowsocks-1941951299-2336"
+    type: "ss"
+    server: "16.54.253.154"
+    port: 443
+    cipher: "aes-256-cfb"
+    password: "amazonskr05"
+    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -56,8 +56,8 @@ proxy-groups:
       - DIRECT
       - vless-1942077252-1569
       - shadowsocks-1941955286-2338
-      - shadowsocks-1941951299-2336
       - vless-1939844080-1567
+      - shadowsocks-1941951299-2336
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -65,7 +65,7 @@ proxy-groups:
     proxies:
       - vless-1942077252-1569
       - shadowsocks-1941955286-2338
-      - shadowsocks-1941951299-2336
       - vless-1939844080-1567
+      - shadowsocks-1941951299-2336
 rules:
   - MATCH,PROXY
