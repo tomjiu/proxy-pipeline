@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-30T00:13:21.239648+00:00
-# count: 6
+# updated: 2026-10-30T06:02:39.664737+00:00
+# count: 5
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -62,14 +62,6 @@ proxies:
       path: "/thread/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
       headers:
         Host: "gy-cffc4-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "trojan-1941512523-152"
-    type: "trojan"
-    server: "216.152.147.79"
-    port: 443
-    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
-    udp: true
-    sni: "blog.connectingpeoplewithgreatjobs.com"
-    skip-cert-verify: false
   - name: "vless-1943754338-2622"
     type: "vless"
     server: "172.64.159.157"
@@ -94,7 +86,6 @@ proxy-groups:
       - vless-1943754325-2610
       - vless-1943754340-2620
       - vless-1943754341-2618
-      - trojan-1941512523-152
       - vless-1943754338-2622
   - name: "AUTO"
     type: url-test
@@ -105,7 +96,6 @@ proxy-groups:
       - vless-1943754325-2610
       - vless-1943754340-2620
       - vless-1943754341-2618
-      - trojan-1941512523-152
       - vless-1943754338-2622
 rules:
   - MATCH,PROXY
