@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-10-30T06:00:47.305322+00:00
+# updated: 2026-10-30T06:25:10.321314+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-30T06:01:56.896555+00:00
-# kept 96 / dropped 389
+# updated: 2026-10-30T06:25:25.332241+00:00
+# kept 95 / dropped 401
   - name: "shadowsocks-1827147700-2952"
     type: "ss"
     server: "138.199.42.68"
@@ -61,6 +61,19 @@ proxies:
     udp: true
     sni: "216.152.155.54"
     skip-cert-verify: true
+  - name: "vless-1891858677-1735"
+    type: "vless"
+    server: "195.123.235.177"
+    port: 443
+    uuid: "729dd5f2-f5ff-4070-8c10-863eceded0b1"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "5B83otQ5ZQwtBFhR7xzsGJRXflkFKRJpQguYbE5JWGI"
+      short-id: "c85d029f5e8eb393"
+    servername: "gateway.icloud.com"
   - name: "🇺🇸 美国 | USA 11-3225"
     type: "vless"
     server: "us007.zestapp778.com"
@@ -226,19 +239,6 @@ proxies:
     udp: true
     sni: "blog.findconnectwithemployersandbuildprofessionalnetwork.com"
     skip-cert-verify: true
-  - name: "vless-1853331613-498"
-    type: "vless"
-    server: "195.211.98.43"
-    port: 443
-    uuid: "1b4b11d5-4c2d-4533-9a55-636757cdee94"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "xPnpkXu5qfwIArlHKvJsqKJnGdGbJK1tT2GzWMyLohA"
-      short-id: "9c56fddf237e8eaf"
-    servername: "www.cloudflare.com"
   - name: "trojan-1945500823-847"
     type: "trojan"
     server: "66.163.114.245"
@@ -623,19 +623,6 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
-  - name: "vless-1891867409-2505"
-    type: "vless"
-    server: "209.200.246.148"
-    port: 443
-    uuid: "ca52e2b6-fb9f-4dac-b6dc-49da9923f251"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "uTmb-ytXsx8p0fkBz7A76SHpWk7_oVutIA4LGTE8BQk"
-      short-id: "f98843107912e782"
-    servername: "www.cloudflare.com"
   - name: "shadowsocks-1827146667-2378"
     type: "ss"
     server: "173.244.56.9"
