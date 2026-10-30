@@ -1,25 +1,39 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-30T06:30:38.628291+00:00
-# count: 2
+# updated: 2026-10-30T10:37:08.944399+00:00
+# count: 3
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1946894790-863"
+  - name: "vless-1941532362-1591"
     type: "vless"
-    server: "172.64.152.52"
+    server: "saas.sin.fan"
     port: 443
-    uuid: "2d4b819d-6fa6-4db2-8434-61e7db0fe93c"
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
     udp: true
     tls: true
     client-fingerprint: "chrome"
-    servername: "cf.zhahui.de5.net"
+    servername: "vp12.1145678.xyz"
     network: "ws"
     ws-opts:
-      path: "/"
+      path: "/torrent/documents/photos"
       headers:
-        Host: "cf.zhahui.de5.net"
+        Host: "vp12.1145678.xyz"
+  - name: "vless-1942077252-1589"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 2096
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp13.1145678.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/index/content"
+      headers:
+        Host: "vp13.1145678.xyz"
   - name: "美国 CloudFlare节点-149"
     type: "vmess"
     server: "172.67.187.145"
@@ -39,14 +53,16 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1946894790-863
+      - vless-1941532362-1591
+      - vless-1942077252-1589
       - "美国 CloudFlare节点-149"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1946894790-863
+      - vless-1941532362-1591
+      - vless-1942077252-1589
       - "美国 CloudFlare节点-149"
 rules:
   - MATCH,PROXY
