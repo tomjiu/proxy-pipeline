@@ -1,101 +1,52 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-30T06:02:39.664737+00:00
-# count: 5
+# updated: 2026-10-30T06:07:22.527902+00:00
+# count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1943754363-2612"
+  - name: "vless-1946894790-863"
     type: "vless"
-    server: "104.18.45.184"
+    server: "172.64.152.52"
     port: 443
-    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
+    uuid: "2d4b819d-6fa6-4db2-8434-61e7db0fe93c"
     udp: true
     tls: true
     client-fingerprint: "chrome"
-    servername: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
+    servername: "cf.zhahui.de5.net"
     network: "ws"
     ws-opts:
-      path: "/ranking/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
+      path: "/"
       headers:
-        Host: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "vless-1943754325-2610"
-    type: "vless"
-    server: "104.18.37.0"
-    port: 443
-    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
+        Host: "cf.zhahui.de5.net"
+  - name: "美国 CloudFlare节点-149"
+    type: "vmess"
+    server: "172.67.187.145"
+    port: 80
+    uuid: "0cf6d970-3f1d-4aae-a989-92a8f76ae3db"
+    alterId: 0
+    cipher: "auto"
     udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "gy-cffc2-node-project-lb5p6r204ts3xuoz.pages.dev"
     network: "ws"
     ws-opts:
-      path: "/tag/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
+      path: "/ws"
       headers:
-        Host: "gy-cffc2-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "vless-1943754340-2620"
-    type: "vless"
-    server: "172.64.158.47"
-    port: 443
-    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "gy-cffc4-node-project-lb5p6r204ts3xuoz.pages.dev"
-    network: "ws"
-    ws-opts:
-      path: "/site/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
-      headers:
-        Host: "gy-cffc4-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "vless-1943754341-2618"
-    type: "vless"
-    server: "172.64.155.111"
-    port: 443
-    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "gy-cffc4-node-project-lb5p6r204ts3xuoz.pages.dev"
-    network: "ws"
-    ws-opts:
-      path: "/thread/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
-      headers:
-        Host: "gy-cffc4-node-project-lb5p6r204ts3xuoz.pages.dev"
-  - name: "vless-1943754338-2622"
-    type: "vless"
-    server: "172.64.159.157"
-    port: 443
-    uuid: "cf92529d-9c4a-4d71-ab87-ae784a2da6bb"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
-    network: "ws"
-    ws-opts:
-      path: "/photos/list/feedback/proxyip=ProxyIP.KR.CMLiussss.net?ed=2560"
-      headers:
-        Host: "gy-cffc3-node-project-lb5p6r204ts3xuoz.pages.dev"
+        Host: "vmess.lbw666.dpdns.org"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1943754363-2612
-      - vless-1943754325-2610
-      - vless-1943754340-2620
-      - vless-1943754341-2618
-      - vless-1943754338-2622
+      - vless-1946894790-863
+      - "美国 CloudFlare节点-149"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1943754363-2612
-      - vless-1943754325-2610
-      - vless-1943754340-2620
-      - vless-1943754341-2618
-      - vless-1943754338-2622
+      - vless-1946894790-863
+      - "美国 CloudFlare节点-149"
 rules:
   - MATCH,PROXY
