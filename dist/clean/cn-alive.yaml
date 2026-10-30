@@ -1,12 +1,12 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-30T19:31:14.111113+00:00
-# count: 2
+# updated: 2026-10-30T19:44:20.459592+00:00
+# count: 4
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1946224541-2547"
+  - name: "vless-1946224541-2551"
     type: "vless"
     server: "172.67.199.126"
     port: 2053
@@ -20,7 +20,7 @@ proxies:
       path: "/ws-tesla"
       headers:
         Host: "fast.145779.xyz"
-  - name: "vless-1941532362-1621"
+  - name: "vless-1941532362-1597"
     type: "vless"
     server: "saas.sin.fan"
     port: 443
@@ -34,20 +34,51 @@ proxies:
       path: "/torrent/documents/photos"
       headers:
         Host: "vp12.1145678.xyz"
+  - name: "vless-1944902761-2553"
+    type: "vless"
+    server: "fast.145779.xyz"
+    port: 2053
+    uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "fast.145779.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/ws-tesla"
+      headers:
+        Host: "fast.145779.xyz"
+  - name: "vless-1854332952-3071"
+    type: "vless"
+    server: "169.40.42.89"
+    port: 443
+    uuid: "d65cc14c-f53f-4fe2-b262-97856601319c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    flow: "xtls-rprx-vision"
+    reality-opts:
+      public-key: "e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg"
+      short-id: "c39cc7310a"
+    servername: "yahoo.com"
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1946224541-2547
-      - vless-1941532362-1621
+      - vless-1946224541-2551
+      - vless-1941532362-1597
+      - vless-1944902761-2553
+      - vless-1854332952-3071
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1946224541-2547
-      - vless-1941532362-1621
+      - vless-1946224541-2551
+      - vless-1941532362-1597
+      - vless-1944902761-2553
+      - vless-1854332952-3071
 rules:
   - MATCH,PROXY
