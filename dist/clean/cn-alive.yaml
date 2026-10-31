@@ -1,6 +1,6 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-31T05:59:58.470288+00:00
-# count: 3
+# updated: 2026-10-31T06:07:06.647418+00:00
+# count: 11
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -48,6 +48,83 @@ proxies:
       path: "/index/content"
       headers:
         Host: "vp13.1145678.xyz"
+  - name: "vless-1946224541-2590"
+    type: "vless"
+    server: "172.67.199.126"
+    port: 2053
+    uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "fast.145779.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/ws-tesla"
+      headers:
+        Host: "fast.145779.xyz"
+  - name: "vless-1941532359-1622"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 2053
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp11.1145678.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/videos/forum"
+      headers:
+        Host: "vp11.1145678.xyz"
+  - name: "vless-1832764144-1426"
+    type: "vless"
+    server: "104.16.10.22"
+    port: 443
+    uuid: "4e4f1f70-5e56-4a76-bb9d-db087f4690c4"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "jp3.yohototo.top"
+    network: "ws"
+    ws-opts:
+      path: "/tyxyws"
+      headers:
+        Host: "jp3.yohototo.top"
+  - name: "🇮🇹 意大利 | ITA 1-2505"
+    type: "ss"
+    server: "202.50.253.27"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "新西兰+V2CROSS.COM-2507"
+    type: "ss"
+    server: "202.50.253.36"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2503"
+    type: "ss"
+    server: "202.50.253.18"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2513"
+    type: "ss"
+    server: "202.50.253.54"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇺🇸 美国 | USA 7-2519"
+    type: "ss"
+    server: "202.50.253.81"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
@@ -57,6 +134,14 @@ proxy-groups:
       - vless-1947014531-2040
       - vless-1941532362-1626
       - vless-1942077252-1624
+      - vless-1946224541-2590
+      - vless-1941532359-1622
+      - vless-1832764144-1426
+      - "🇮🇹 意大利 | ITA 1-2505"
+      - 新西兰+V2CROSS.COM-2507
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2503"
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2513"
+      - "🇺🇸 美国 | USA 7-2519"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
@@ -65,5 +150,13 @@ proxy-groups:
       - vless-1947014531-2040
       - vless-1941532362-1626
       - vless-1942077252-1624
+      - vless-1946224541-2590
+      - vless-1941532359-1622
+      - vless-1832764144-1426
+      - "🇮🇹 意大利 | ITA 1-2505"
+      - 新西兰+V2CROSS.COM-2507
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2503"
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2513"
+      - "🇺🇸 美国 | USA 7-2519"
 rules:
   - MATCH,PROXY
