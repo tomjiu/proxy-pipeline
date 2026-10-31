@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-10-31T10:05:38.463816+00:00
-# kept 191 / dropped 270
+# updated: 2026-10-31T10:50:58.727673+00:00
+# kept 192 / dropped 269
   - name: "shadowsocks-1827146131-2435"
     type: "ss"
     server: "156.146.38.169"
@@ -301,6 +301,20 @@ proxies:
     udp: true
     sni: "66.163.114.114"
     skip-cert-verify: true
+  - name: "vless-1947014531-2040"
+    type: "vless"
+    server: "104.18.40.171"
+    port: 443
+    uuid: "8895be79-9817-4011-b81a-14a35a3d328e"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "wallweb-boi.pages.dev"
+    network: "ws"
+    ws-opts:
+      path: "/"
+      headers:
+        Host: "wallweb-boi.pages.dev"
   - name: "vmess-1827158946-1002"
     type: "vmess"
     server: "38.110.1.246"
