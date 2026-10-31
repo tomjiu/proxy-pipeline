@@ -1,26 +1,12 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-10-30T23:57:41.503502+00:00
-# count: 8
+# updated: 2026-10-31T00:04:08.944554+00:00
+# count: 2
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1946224541-2551"
-    type: "vless"
-    server: "172.67.199.126"
-    port: 2053
-    uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "fast.145779.xyz"
-    network: "ws"
-    ws-opts:
-      path: "/ws-tesla"
-      headers:
-        Host: "fast.145779.xyz"
-  - name: "vless-1941532362-1597"
+  - name: "vless-1941532362-1602"
     type: "vless"
     server: "saas.sin.fan"
     port: 443
@@ -34,9 +20,9 @@ proxies:
       path: "/torrent/documents/photos"
       headers:
         Host: "vp12.1145678.xyz"
-  - name: "vless-1944902761-2553"
+  - name: "vless-1946224541-2582"
     type: "vless"
-    server: "fast.145779.xyz"
+    server: "172.67.199.126"
     port: 2053
     uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
     udp: true
@@ -48,85 +34,20 @@ proxies:
       path: "/ws-tesla"
       headers:
         Host: "fast.145779.xyz"
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2468"
-    type: "ss"
-    server: "202.50.253.27"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
-  - name: "vless-1935750593-3329"
-    type: "vless"
-    server: "185.14.30.98"
-    port: 8443
-    uuid: "f5e70ce3-cfb4-4df1-b25c-d19bfae627c0"
-    udp: true
-    tls: true
-    client-fingerprint: "safari"
-    flow: "xtls-rprx-vision"
-    reality-opts:
-      public-key: "Q0dPyF2hFWgxL7hxntJWJammcb6zcRCyA-NOiOFrsAo"
-      short-id: "1433a38abea1191c"
-    servername: "twitch.tv"
-  - name: "vless-1946593165-2289"
-    type: "vless"
-    server: "189.74.114.119"
-    port: 443
-    uuid: "abd5755a-8b77-4ed4-afbd-f2ccbc08e6f5"
-    udp: true
-    tls: true
-    client-fingerprint: "firefox"
-    servername: "api.mediaklenov.cc"
-    network: "grpc"
-    grpc-opts:
-      grpc-service-name: "3e99d50d5740985d"
-  - name: "vless-1941532359-1593"
-    type: "vless"
-    server: "saas.sin.fan"
-    port: 2053
-    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "vp11.1145678.xyz"
-    network: "ws"
-    ws-opts:
-      path: "/videos/forum"
-      headers:
-        Host: "vp11.1145678.xyz"
-  - name: "🏳 www.v2nodes.com ss- 2-2480"
-    type: "ss"
-    server: "202.50.253.72"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
 proxy-groups:
   - name: "PROXY"
     type: select
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1946224541-2551
-      - vless-1941532362-1597
-      - vless-1944902761-2553
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2468"
-      - vless-1935750593-3329
-      - vless-1946593165-2289
-      - vless-1941532359-1593
-      - "🏳 www.v2nodes.com ss- 2-2480"
+      - vless-1941532362-1602
+      - vless-1946224541-2582
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1946224541-2551
-      - vless-1941532362-1597
-      - vless-1944902761-2553
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 6-2468"
-      - vless-1935750593-3329
-      - vless-1946593165-2289
-      - vless-1941532359-1593
-      - "🏳 www.v2nodes.com ss- 2-2480"
+      - vless-1941532362-1602
+      - vless-1946224541-2582
 rules:
   - MATCH,PROXY
