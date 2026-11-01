@@ -1,0 +1,159 @@
+name: ai-probe
+
+# 节点质量探测 —— 多维连通性画像
+#
+# 判据来源（实测 + 经验）：
+#   - Grok 不跳挑战页   → IP 质量好（xAI 风控认可）
+#   - ChatGPT 挑战页    → 中性（Cloudflare 对机房 IP 的默认行为，不代表差）
+#   - ChatGPT 451/硬封  → IP 差
+#   - Netflix/YouTube   → 对机房 IP 敏感，是有效判据
+#
+# 分档：
+#   S — ≥2 个高权重服务无挑战直接通过
+#   A — 1 个通过，或存在挑战页（IP 未被硬封）
+#   B — 全部失败
+#   X — 被明确地区封锁（451）
+#
+# 策略：每天 1 次全量 + 每 6 小时增量（只测新增节点）
+
+on:
+  # ⚠️ 流程位置：check-nodes 完成后跑 AI 质量筛选
+  #    online-scan → check-nodes → 【ai-probe】→ cn-check
+  workflow_run:
+    workflows: ["check-nodes"]
+    types: [completed]
+  schedule:
+    - cron: "10 5 * * *"     # daily full
+    - cron: "25 */6 * * *"   # incremental
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: full or incremental
+        required: true
+        default: full
+        type: choice
+        options:
+          - full
+          - incremental
+      limit:
+        description: max nodes to probe this run
+        required: false
+        default: "150"
+
+concurrency:
+  group: ai-probe
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mihomo
+        run: |
+          set -e
+          mkdir -p bin
+          # ⚠️ 不用 api.github.com（Actions 里常 403 限流）
+          for TAG in v1.19.32 v1.19.29 v1.19.19 v1.19.11; do
+            URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
+            echo "尝试 $TAG ..."
+            if curl -fsSL --retry 2 --retry-delay 2 "$URL" -o /tmp/mihomo.gz 2>/dev/null; then
+              gunzip -c /tmp/mihomo.gz > bin/mihomo
+              chmod +x bin/mihomo
+              if ./bin/mihomo -v >/dev/null 2>&1; then
+                echo "✅ $TAG"
+                ./bin/mihomo -v
+                exit 0
+              fi
+            fi
+          done
+          echo "::error::mihomo 下载失败"
+          exit 1
+
+      - name: Resolve mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "limit=${{ inputs.limit }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # 上游 check-nodes 完成后触发 → full
+            echo "value=full" >> "$GITHUB_OUTPUT"
+            echo "limit=400" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "10 5 * * *" ]; then
+            echo "value=full" >> "$GITHUB_OUTPUT"
+            echo "limit=400" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=incremental" >> "$GITHUB_OUTPUT"
+            echo "limit=150" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 拉取最新 dist
+        run: |
+          git pull --rebase origin main || true
+          echo "最新: $(git log -1 --format='%h %s')"
+
+      - name: Check prerequisites
+        run: |
+          if [ ! -f dist/clean/clash.yaml ]; then
+            echo "::error::dist/clean/clash.yaml missing — run check-nodes first"
+            exit 1
+          fi
+          echo "nodes: $(grep -c '^  - name:' dist/clean/clash.yaml || echo 0)"
+
+      - name: Quality probe
+        run: |
+          # deadline 留出充足余量（job timeout 50min，脚本预算 20min）
+          # 脚本超时会优雅停止并保存已测结果，不会丢数据
+          python scripts/online/ai_probe.py \
+            --input dist/clean/clash.yaml \
+            --mode "${{ steps.mode.outputs.value }}" \
+            --limit "${{ steps.mode.outputs.limit }}" \
+            --timeout 10 \
+            --deadline-s 1200 \
+            --out-clash dist/clean/clash-tier-s.yaml \
+            --min-tier S
+
+      - name: Show tier summary
+        if: always()
+        run: |
+          echo "=== quality_report.json ==="
+          cat dist/clean/quality_report.json 2>/dev/null || echo "(none)"
+          echo
+          echo "=== tier counts ==="
+          python - <<'PY' 2>/dev/null || true
+          import json
+          try:
+              d = json.load(open("dist/clean/quality_tiers.json", encoding="utf-8"))
+              print("counts:", d.get("counts"))
+              print("tier_S (top 20):")
+              for n in (d.get("tier_S") or [])[:20]:
+                  print("  ", n)
+          except Exception as e:
+              print("no tiers:", e)
+          PY
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore(quality): tier probe ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git fetch origin
+            git rebase origin/main
+            git push
+          fi

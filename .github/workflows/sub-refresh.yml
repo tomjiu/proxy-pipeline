@@ -1,0 +1,231 @@
+name: sub-refresh
+
+# ═══════════════════════════════════════════════════════════════════
+#  订阅刷新 —— 更新源 → 验证 → 预热缓存
+# ═══════════════════════════════════════════════════════════════════
+#
+#  设计原则（2026-10 定稿）：
+#    1. 用户源是【短效的】—— 批量死掉后更新链接就能复活
+#       → 测之前必须先从源重新拉一遍（不能用旧快照）
+#    2. 只预热缓存，不落任何节点数据到仓库
+#    3. 全流程在 Worker 内部 + Actions 私有环境，节点不泄露
+#
+#  ⚠️ 关键顺序（用户明确要求）：
+#       ① 刷新源（从上游重新拉取）
+#       ② 再验证（CN 端口测活）
+#       ③ 最后预热订阅缓存
+#     不能反过来 —— 否则测的是过期节点
+#
+#  触发频率：
+#    - 每 15 分钟（短效源变化快）
+#    - 也可手动触发
+#
+# ═══════════════════════════════════════════════════════════════════
+
+on:
+  schedule:
+    # 每 15 分钟（公开仓库 Actions 分钟数无限制）
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "强制忽略缓存"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      reset_cn:
+        description: "清空 CN 验证结果（节点大换代时用）"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+concurrency:
+  group: sub-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      # ── ⓪ 清空 CN 验证（可选，节点大换代时用）──
+      - name: Reset CN verification
+        if: ${{ inputs.reset_cn == 'true' }}
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::未配置 API_TOKEN，跳过"
+            exit 0
+          fi
+          # 源节点大换代时，旧的验证结果会误杀新节点
+          curl -s -m 60 -X POST -H "X-Api-Token: $API_TOKEN" \
+            "$WORKER_BASE/admin/reset-cn" || true
+          echo "已请求清空 CN 验证结果"
+
+      # ── ⓪ 预热 dist 缓存（关键：让订阅请求不碰 GitHub）──
+      - name: ⓪ Warm dist cache
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::未配置 API_TOKEN，跳过 dist 预热"
+            exit 0
+          fi
+
+          # 把 GitHub 上的 dist 文件预拉进 D1，订阅请求直接读本地缓存
+          # 不预热的话，用户每次「更新订阅」都要现去 GitHub 拉（6-41 秒 → 超时）
+          echo "── 预热 dist ──"
+          RESP=$(curl -s -m 180 -H "X-Api-Token: $API_TOKEN" \
+            "$WORKER_BASE/admin/warm-dist" || echo '{}')
+
+          echo "$RESP" | python3 -c "
+          import sys, json
+          try:
+              d = json.load(sys.stdin)
+              print(f\"  缓存: {d.get('warmed',0)}/{d.get('total',0)} 个文件\")
+              for k, v in (d.get('files') or {}).items():
+                  print(f'    {k:<32} {v}')
+          except Exception as e:
+              print('  解析失败:', e)
+          " || echo "$RESP" | head -c 300
+
+      # ── ① 刷新源（关键：先拉最新的）──
+      - name: ① Refresh sources
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+        run: |
+          set -e
+          if [ -z "$WORKER_BASE" ] || [ -z "$SUB_TOKENS" ]; then
+            echo "::notice::WORKER_BASE / SUB_TOKENS 未配置，跳过"
+            exit 0
+          fi
+
+          # 让 Worker 从上游重新拉取 5 个源（不带缓存）
+          # 这一步保证后续验证的是【最新节点】，而不是 15 分钟前的旧数据
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── 刷新 token: ${TOKEN:0:6}… ──"
+            RESP=$(curl -s -m 180 -H "X-Api-Token: $API_TOKEN" \
+              "$WORKER_BASE/admin/refresh-sources?token=$TOKEN" || echo '{}')
+            echo "  $RESP" | head -c 400
+            echo
+          done
+
+      # ── ② 验证（CN 端口测活，基于刚刷新的节点）──
+      - name: ② Warm CN cache
+        env:
+          API_TOKEN: ${{ secrets.WORKER_API_TOKEN }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+        run: |
+          set -e
+          if [ -z "$API_TOKEN" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::WORKER_API_TOKEN 未配置，跳过 CN 预热"
+            exit 0
+          fi
+
+          # ⚠️ 安全：CN 预热在 Worker 内部完成，节点不离开 Worker
+          #    本步骤只触发 + 读统计，日志里**不会有任何节点信息**
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── CN 预热 token: ${TOKEN:0:6}… ──"
+            for ROUND in 1 2 3 4 5 6 7 8; do
+              RESP=$(curl -s -m 600 \
+                -H "X-Api-Token: $API_TOKEN" \
+                "$WORKER_BASE/admin/warm-cn?limit=150&token=$TOKEN" || echo '{}')
+
+              PROBED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('probed',0))" 2>/dev/null || echo 0)
+              ALIVE=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('alive',0))" 2>/dev/null || echo 0)
+              BLOCKED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('blocked',0))" 2>/dev/null || echo 0)
+              CACHED=$(echo "$RESP" | python3 -c "import sys,json;d=json.load(sys.stdin);print(d.get('cached_hits',0))" 2>/dev/null || echo 0)
+
+              echo "  轮次 $ROUND: 实测=$PROBED 可达=$ALIVE 被墙=$BLOCKED 缓存命中=$CACHED"
+
+              # probed=0 表示没有待验证节点了
+              if [ "$PROBED" = "0" ]; then
+                echo "  ✅ CN 缓存已填满"
+                break
+              fi
+            done
+          done
+
+      - name: Warm subscription cache
+        env:
+          # 从 secrets 读，不落明文
+          SUB_TOKENS: ${{ secrets.SUB_TOKENS }}
+          WORKER_BASE: ${{ vars.WORKER_BASE }}
+          FORCE: ${{ inputs.force || 'true' }}
+        run: |
+          set -e
+
+          if [ -z "$SUB_TOKENS" ] || [ -z "$WORKER_BASE" ]; then
+            echo "::notice::SUB_TOKENS / WORKER_BASE 未配置，跳过"
+            echo ""
+            echo "配置方法："
+            echo "  Settings → Secrets and variables → Actions"
+            echo "    Secrets:   SUB_TOKENS = <token>[,<token2>]"
+            echo "    Variables: WORKER_BASE = https://<worker>.workers.dev"
+            exit 0
+          fi
+
+          CB=$(date +%s)
+          echo "worker: $WORKER_BASE"
+          echo "time:   $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo
+
+          FAIL=0
+          for TOKEN in $(echo "$SUB_TOKENS" | tr ',' ' '); do
+            echo "── token: ${TOKEN:0:6}… ──"
+
+            # 只预热 yaml（会员用最多的）；txt 按需生成
+            URL="$WORKER_BASE/sub/$TOKEN.yaml"
+            [ "$FORCE" = "true" ] && URL="$URL?cb=$CB"
+
+            CODE=""
+            for TRY in 1 2 3; do
+              CODE=$(curl -s -o /tmp/out.yaml -w '%{http_code}' -m 90 "$URL" || echo "000")
+              [ "$CODE" = "200" ] && break
+              echo "    try $TRY: HTTP $CODE"
+              sleep 4
+            done
+
+            SIZE=$(wc -c < /tmp/out.yaml 2>/dev/null || echo 0)
+            if [ "$CODE" = "200" ] && [ "$SIZE" -gt 500 ]; then
+              NODES=$(grep -c '^  - name:' /tmp/out.yaml 2>/dev/null || echo "?")
+              echo "    ✅ HTTP 200, ${SIZE} bytes, ${NODES} nodes"
+            else
+              echo "    ❌ HTTP $CODE, ${SIZE} bytes"
+              FAIL=$((FAIL+1))
+            fi
+
+            # 源状态（用 jq 解析，避免内嵌 Python 破坏 YAML 缩进）
+            JSON=$(curl -s -m 120 "$WORKER_BASE/sub/$TOKEN.json?cb=$CB" || echo "{}")
+            echo "$JSON" | python3 "$GITHUB_WORKSPACE/scripts/online/show_stats.py" || echo "    (no stats)"
+            echo
+          done
+
+          if [ "$FAIL" -gt 0 ]; then
+            echo "::warning::$FAIL refresh attempt(s) failed"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### 订阅预热"
+            echo ""
+            echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- worker: ${{ vars.WORKER_BASE }}"
+            echo "- 模式: 勤更新（不测活）"
+          } >> $GITHUB_STEP_SUMMARY

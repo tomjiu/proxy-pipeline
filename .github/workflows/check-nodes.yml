@@ -1,0 +1,171 @@
+name: check-nodes
+
+# 国外（Actions）测活 —— 用 mihomo delay-test 筛掉死节点
+#
+# 数据流位置：
+#   online-scan  → dist/online/clash.yaml   （抓取 + 转 Clash）
+#   check-nodes  → dist/clean/clash.yaml    ← 本工作流
+#   cn-check     → dist/clean/cn-alive.yaml （CN 白名单）
+#
+# 触发：
+#   ① workflow_run：online-scan 成功后自动跑（保证数据新鲜）
+#   ② 定时：每天 full 一次 + 每 6 小时增量
+#   ③ 手动
+
+on:
+  workflow_run:
+    workflows: ["online-scan"]
+    types: [completed]
+  schedule:
+    - cron: "27 3 * * *"      # daily full
+    - cron: "40 */6 * * *"    # incremental
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: full or incremental
+        required: true
+        default: full
+        type: choice
+        options:
+          - full
+          - incremental
+
+concurrency:
+  group: check-nodes
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时拿最新 main（含上游刚提交的 dist）
+          ref: main
+          fetch-depth: 1
+
+      - name: 拉取最新 dist
+        run: |
+          git pull --rebase origin main || true
+          echo "最新: $(git log -1 --format='%h %s')"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mihomo
+        run: |
+          set -e
+          mkdir -p bin
+          # ⚠️ 不用 api.github.com 取最新版本：Actions 里常被限流返回 403
+          #    改为依次尝试已知版本，第一个能用的即成功
+          for TAG in v1.19.32 v1.19.29 v1.19.19 v1.19.11; do
+            URL="https://github.com/MetaCubeX/mihomo/releases/download/${TAG}/mihomo-linux-amd64-${TAG}.gz"
+            echo "尝试 $TAG ..."
+            if curl -fsSL --retry 2 --retry-delay 2 "$URL" -o /tmp/mihomo.gz 2>/dev/null; then
+              gunzip -c /tmp/mihomo.gz > bin/mihomo
+              chmod +x bin/mihomo
+              if ./bin/mihomo -v >/dev/null 2>&1; then
+                echo "✅ 安装成功: $TAG"
+                ./bin/mihomo -v
+                exit 0
+              fi
+            fi
+            echo "  $TAG 不可用"
+          done
+          echo "::error::所有 mihomo 版本下载失败"
+          exit 1
+
+      - name: Resolve mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # 上游 online-scan 完成后触发 → 用 full 保证筛干净
+            echo "value=full" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "27 3 * * *" ]; then
+            echo "value=full" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=incremental" >> "$GITHUB_OUTPUT"
+          fi
+          echo "触发方式: ${{ github.event_name }}"
+
+      - name: Ensure clash.yaml exists
+        run: |
+          if [ ! -f dist/online/clash.yaml ]; then
+            echo "No dist/online/clash.yaml — run online-scan first"
+            exit 1
+          fi
+          wc -l dist/online/clash.yaml
+          grep -c '^  - name:' dist/online/clash.yaml || echo "0 nodes"
+
+      - name: Delay-test nodes
+        run: |
+          mkdir -p bin dist/clean
+          # 并发测活：16 线程（原来是串行，3955 节点需 7.8 小时）
+          # 实测并发后约几分钟完成
+          python scripts/online/check_clash_nodes.py \
+            --mode "${{ steps.mode.outputs.value }}" \
+            --timeout-ms 5000 \
+            --workers 16 \
+            --input dist/online/clash.yaml
+
+      - name: Report
+        if: always()
+        run: |
+          echo "### 测活结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python scripts/online/show_report.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: Commit dist/clean
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+
+          if git diff --staged --quiet; then
+            echo "No clean changes"
+            exit 0
+          fi
+
+          git commit -m "chore(clean): node check ${{ steps.mode.outputs.value }} $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          # dist/ 是机器生成数据，冲突时以本次为准
+          for i in 1 2 3 4 5; do
+            echo "push 尝试 $i"
+            git fetch origin main
+            if git rebase -X theirs origin/main 2>/dev/null; then
+              if git push origin HEAD:main; then
+                echo "推送成功"
+                exit 0
+              fi
+            else
+              git rebase --abort 2>/dev/null || true
+            fi
+            sleep 5
+          done
+
+          echo "::warning::推送失败，等待下次运行"
+          exit 0
+
+      - name: Sync dist/clean to R2
+        if: ${{ success() }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "R2 secrets not configured — skipping sync"
+            exit 0
+          fi
+          aws s3 sync dist/clean/ "s3://proxy-pipeline-dist/clean/" \
+            --endpoint-url "https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --region auto --delete --quiet

@@ -1,0 +1,148 @@
+name: cn-check
+
+# CN 连通性测活 —— 用 ip112.cn 的国内/国外双端 API
+#
+# 数据流（重要）：
+#   online-scan  → dist/online/clash.yaml   （原始抓取 + 转 Clash）
+#   check-nodes  → dist/clean/clash.yaml    （国外测活，筛掉死节点）
+#   cn-check     → dist/clean/cn-alive.yaml （CN 连通性，最终白名单）
+#
+# 触发方式：
+#   ① workflow_run：check-nodes 成功后自动跑（保证数据新鲜）
+#   ② 定时：每 2 小时兜底
+#   ③ 手动
+#
+# 为什么用 ip112 而不是 ping.pe：
+#   · ping.pe 需浏览器 cookie + 反爬
+#   · itdog 有 JS 混淆 + 验证码
+#   · ip112 无混淆、无验证码、无限次，且专做国内外对比
+
+on:
+  # ⚠️ 流程位置：全链路的最后一环
+  #    online-scan → check-nodes → ai-probe → 【cn-check】
+  #    cn-check 读 ai-probe 产出的 clash-tier-s.yaml（已过质量筛选）
+  workflow_run:
+    workflows: ["ai-probe"]
+    types: [completed]
+  schedule:
+    - cron: "25 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "输入文件（留空=自动选 tier-s > clash > online）"
+        required: false
+        default: ""
+      workers:
+        description: "并发数"
+        required: false
+        default: "4"
+
+concurrency:
+  group: cn-check
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  cn-check:
+    # workflow_run 触发时，只有上游成功才继续
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时要拿最新的 main（含上游刚提交的 dist）
+          ref: main
+          fetch-depth: 1
+
+      - name: 拉取最新 dist
+        run: |
+          git pull --rebase origin main || true
+          echo "最新提交: $(git log -1 --format='%h %s')"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 确定输入
+        id: src
+        run: |
+          SRC="${{ inputs.source }}"
+
+          if [ -z "$SRC" ]; then
+            # ⚠️ 按流程：CN 测活的对象应该是【已过 AI 质量筛选】的节点
+            #    优先级：tier-s（AI 高质量）> clash（仅连通性）> online（原始）
+            for CAND in dist/clean/clash-tier-s.yaml dist/clean/clash.yaml dist/online/clash.yaml; do
+              if [ -f "$CAND" ]; then
+                N=$(grep -c '^  - name:' "$CAND" 2>/dev/null || echo 0)
+                if [ "$N" -gt 0 ]; then
+                  SRC="$CAND"
+                  echo "选定输入: $CAND ($N 个节点)"
+                  break
+                fi
+              fi
+            done
+          fi
+
+          if [ -z "$SRC" ] || [ ! -f "$SRC" ]; then
+            echo "::error::找不到输入文件"
+            exit 1
+          fi
+
+          N=$(grep -c '^  - name:' "$SRC" || echo 0)
+          echo "value=$SRC" >> "$GITHUB_OUTPUT"
+          echo "输入: $SRC ($N 个节点)"
+          echo "input_file=$SRC" >> "$GITHUB_STEP_SUMMARY"
+          echo "input_nodes=$N" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: CN 连通性测活
+        run: |
+          set -e
+          WORKERS="${{ inputs.workers }}"
+          [ -z "$WORKERS" ] && WORKERS=4
+
+          python scripts/online/cn_check.py \
+            --input "${{ steps.src.outputs.value }}" \
+            --out dist/clean/cn-result.json \
+            --out-yaml dist/clean/cn-alive.yaml \
+            --workers "$WORKERS" \
+            --skip-udp
+
+      - name: Report
+        if: always()
+        run: |
+          echo "### CN 连通性测活" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 输入: \`${{ steps.src.outputs.value }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 触发: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          python scripts/online/cn_report.py >> $GITHUB_STEP_SUMMARY || true
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/clean
+          if git diff --staged --quiet; then
+            echo "无变化"
+          else
+            git commit -m "chore(cn): CN connectivity $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            for i in 1 2 3; do
+              git fetch origin
+              git rebase -X theirs origin/main && git push origin HEAD:main && break
+              echo "push 失败，重试 $i"
+              sleep 5
+            done
+          fi
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cn-result
+          path: dist/clean/cn-result.json
+          retention-days: 7

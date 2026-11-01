@@ -1,0 +1,42 @@
+name = "proxy-pipeline-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# ═══════════════════════════════════════════════════════════
+#  部署说明
+# ═══════════════════════════════════════════════════════════
+#
+#  1. 创建 KV（订阅配置 / 会话 / 缓存）
+#       npx wrangler kv namespace create PROXY_KV
+#
+#  2. 创建 D1（CN 验证结果 —— 写配额比 KV 宽 100 倍）
+#       npx wrangler d1 create proxy-pipeline
+#       npx wrangler d1 execute proxy-pipeline --remote --file=schema.sql
+#
+#  3. 设置 secrets
+#       npx wrangler secret put ADMIN_PASSWORD
+#       npx wrangler secret put SESSION_SECRET
+#       npx wrangler secret put TRAFFIC_SECRET     # 可选
+#       npx wrangler secret put API_TOKEN          # 预热接口鉴权
+#
+#  4. 部署
+#       npx wrangler deploy
+#
+# ═══════════════════════════════════════════════════════════
+
+[vars]
+RAW_BASE = "https://raw.githubusercontent.com/tomjiu/proxy-pipeline/main/dist"
+
+# ── KV：读多写少（订阅配置、会话）──
+[[kv_namespaces]]
+binding = "KV"
+id = "REPLACE_WITH_YOUR_KV_ID"
+
+# ── D1：频繁写入（CN 验证结果）──
+# 为什么用 D1 而不是 KV：
+#   KV 免费版写配额 1,000/天，预热会耗尽
+#   D1 免费版写 100,000 行/天（宽 100 倍）
+[[d1_databases]]
+binding = "DB"
+database_name = "proxy-pipeline"
+database_id = "REPLACE_WITH_YOUR_D1_ID"
