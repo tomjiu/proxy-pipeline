@@ -1,25 +1,11 @@
 # CN-Alive — 仅 CN 实测可达（ip112 双端验证）
-# updated: 2026-11-01T06:58:19.058815+00:00
+# updated: 2026-11-01T11:04:15.205342+00:00
 # count: 11
 mixed-port: 7890
 allow-lan: false
 mode: rule
 log-level: warning
 proxies:
-  - name: "vless-1941532362-1656"
-    type: "vless"
-    server: "saas.sin.fan"
-    port: 443
-    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "vp12.1145678.xyz"
-    network: "ws"
-    ws-opts:
-      path: "/torrent/documents/photos"
-      headers:
-        Host: "vp12.1145678.xyz"
   - name: "vless-1947014531-2088"
     type: "vless"
     server: "104.18.40.171"
@@ -34,9 +20,37 @@ proxies:
       path: "/"
       headers:
         Host: "wallweb-boi.pages.dev"
+  - name: "vless-1941532362-1656"
+    type: "vless"
+    server: "saas.sin.fan"
+    port: 443
+    uuid: "5d7b401c-78fa-4254-872e-6d42bf7e75ec"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "vp12.1145678.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/torrent/documents/photos"
+      headers:
+        Host: "vp12.1145678.xyz"
   - name: "vless-1946224541-2646"
     type: "vless"
     server: "172.67.199.126"
+    port: 2053
+    uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
+    udp: true
+    tls: true
+    client-fingerprint: "chrome"
+    servername: "fast.145779.xyz"
+    network: "ws"
+    ws-opts:
+      path: "/ws-tesla"
+      headers:
+        Host: "fast.145779.xyz"
+  - name: "vless-1944902761-2648"
+    type: "vless"
+    server: "fast.145779.xyz"
     port: 2053
     uuid: "c83f15bf-1817-4ec8-a19f-6393d226434c"
     udp: true
@@ -62,20 +76,6 @@ proxies:
       path: "/index/content"
       headers:
         Host: "vp13.1145678.xyz"
-  - name: "vless-1946894790-948"
-    type: "vless"
-    server: "172.64.152.52"
-    port: 443
-    uuid: "2d4b819d-6fa6-4db2-8434-61e7db0fe93c"
-    udp: true
-    tls: true
-    client-fingerprint: "chrome"
-    servername: "cf.zhahui.de5.net"
-    network: "ws"
-    ws-opts:
-      path: "/"
-      headers:
-        Host: "cf.zhahui.de5.net"
   - name: "vless-1941532359-1652"
     type: "vless"
     server: "saas.sin.fan"
@@ -90,13 +90,6 @@ proxies:
       path: "/videos/forum"
       headers:
         Host: "vp11.1145678.xyz"
-  - name: "🇮🇹 意大利 | ITA 2-2559"
-    type: "ss"
-    server: "202.50.253.45"
-    port: 19999
-    cipher: "aes-256-gcm"
-    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
-    udp: true
   - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2561"
     type: "ss"
     server: "202.50.253.54"
@@ -104,16 +97,23 @@ proxies:
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2567"
     type: "ss"
-    server: "202.50.253.99"
+    server: "202.50.253.72"
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
     udp: true
-  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2567"
+  - name: "🇮🇹 意大利 | ITA 2-2559"
     type: "ss"
-    server: "202.50.253.72"
+    server: "202.50.253.45"
+    port: 19999
+    cipher: "aes-256-gcm"
+    password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
+    udp: true
+  - name: "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
+    type: "ss"
+    server: "202.50.253.99"
     port: 19999
     cipher: "aes-256-gcm"
     password: "ZRpgaBeGxtENIXgvhpkZBKz9GnWRS2dYcx9O+a2iwN4="
@@ -131,32 +131,32 @@ proxy-groups:
     proxies:
       - "AUTO"
       - DIRECT
-      - vless-1941532362-1656
       - vless-1947014531-2088
+      - vless-1941532362-1656
       - vless-1946224541-2646
+      - vless-1944902761-2648
       - vless-1942077252-1654
-      - vless-1946894790-948
       - vless-1941532359-1652
-      - "🇮🇹 意大利 | ITA 2-2559"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2561"
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2567"
+      - "🇮🇹 意大利 | ITA 2-2559"
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2553"
   - name: "AUTO"
     type: url-test
     url: http://www.gstatic.com/generate_204
     interval: 300
     proxies:
-      - vless-1941532362-1656
       - vless-1947014531-2088
+      - vless-1941532362-1656
       - vless-1946224541-2646
+      - vless-1944902761-2648
       - vless-1942077252-1654
-      - vless-1946894790-948
       - vless-1941532359-1652
-      - "🇮🇹 意大利 | ITA 2-2559"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 1-2561"
-      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 2-2567"
+      - "🇮🇹 意大利 | ITA 2-2559"
+      - "🇮🇹 www.v2nodes.com ss-IT-1602... 4-2573"
       - "🇮🇹 www.v2nodes.com ss-IT-1602... 3-2553"
 rules:
   - MATCH,PROXY
