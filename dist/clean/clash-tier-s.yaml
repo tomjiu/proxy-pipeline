@@ -1,5 +1,5 @@
 # Alive only — mihomo delay-tested (GitHub Actions)
-# updated: 2026-11-05T18:14:13.172533+00:00
+# updated: 2026-11-05T20:17:47.805632+00:00
 mixed-port: 7890
 allow-lan: false
 mode: rule
@@ -7,8 +7,8 @@ log-level: warning
 external-controller: 127.0.0.1:9090
 proxies:
 # Quality-filtered subscription (tier >= S)
-# updated: 2026-11-05T20:05:57.051829+00:00
-# kept 230 / dropped 131
+# updated: 2026-11-05T20:18:06.418830+00:00
+# kept 241 / dropped 150
   - name: "vmess-1828661271-219"
     type: "vmess"
     server: "84.17.41.2"
@@ -155,6 +155,20 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
+  - name: "shadowsocks-1828227588-3213"
+    type: "ss"
+    server: "79.110.53.169"
+    port: 8080
+    cipher: "rc4-md5"
+    password: "14fFPrbezE3HDZzsMOr6"
+    udp: true
+  - name: "shadowsocks-1827963676-3185"
+    type: "ss"
+    server: "107.155.57.51"
+    port: 8080
+    cipher: "rc4-md5"
+    password: "14fFPrbezE3HDZzsMOr6"
+    udp: true
   - name: "shadowsocks-1827146815-2615"
     type: "ss"
     server: "156.146.38.168"
@@ -169,6 +183,14 @@ proxies:
     cipher: "aes-128-gcm"
     password: "shadowsocks"
     udp: true
+  - name: "trojan-1938971762-457"
+    type: "trojan"
+    server: "216.152.156.65"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "216.152.156.65"
+    skip-cert-verify: true
   - name: "shadowsocks-1827146556-2613"
     type: "ss"
     server: "156.146.38.167"
@@ -190,6 +212,22 @@ proxies:
     cipher: "rc4-md5"
     password: "14fFPrbezE3HDZzsMOr6"
     udp: true
+  - name: "trojan-1940485921-417"
+    type: "trojan"
+    server: "216.152.156.212"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "216.152.156.212"
+    skip-cert-verify: true
+  - name: "trojan-1930077596-692"
+    type: "trojan"
+    server: "66.163.114.106"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "www.findconnectwithemployersandbuildprofessionalnetwork.com"
+    skip-cert-verify: true
   - name: "hysteria2-1853503223-0"
     type: "hysteria2"
     server: "163.192.14.135"
@@ -286,6 +324,14 @@ proxies:
     password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
     udp: true
     sni: "unlockyourfuturefindyourperfectcareer.com"
+    skip-cert-verify: true
+  - name: "trojan-1935007680-807"
+    type: "trojan"
+    server: "66.163.114.45"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "cdn.findconnectwithemployersandbuildprofessionalnetwork.com"
     skip-cert-verify: true
   - name: "trojan-1940485908-622"
     type: "trojan"
@@ -794,6 +840,13 @@ proxies:
       public-key: "uTmb-ytXsx8p0fkBz7A76SHpWk7_oVutIA4LGTE8BQk"
       short-id: "f98843107912e782"
     servername: "www.cloudflare.com"
+  - name: "shadowsocks-1827145990-2489"
+    type: "ss"
+    server: "82.38.31.204"
+    port: 8080
+    cipher: "chacha20-ietf-poly1305"
+    password: "k1dBOmOB4oqi7Ump37a1bQ"
+    udp: true
   - name: "vless-1827162803-3126"
     type: "vless"
     server: "169.40.42.231"
@@ -846,6 +899,13 @@ proxies:
     port: 443
     password: "203d1d64-3313-11ed-bb74-f23c9164ca5d"
     sni: "fbe34f09-tmm5c0-trpvht-1ey07.los.hyhuawei.com"
+    skip-cert-verify: true
+  - name: "🧿94@oneclickvpnkeys-860"
+    type: "hysteria2"
+    server: "b8c1a181-tmm5c0-twuk0i-1hzyr.los.hyhuawei.com"
+    port: 443
+    password: "3be8cba8-b721-11ec-8b04-f23c91cfbbc9"
+    sni: "b8c1a181-tmm5c0-twuk0i-1hzyr.los.hyhuawei.com"
     skip-cert-verify: true
   - name: "shadowsocks-1875023013-2723"
     type: "ss"
@@ -1918,6 +1978,19 @@ proxies:
     udp: true
     sni: "66.163.114.114"
     skip-cert-verify: true
+  - name: "vmess-1827160934-314"
+    type: "vmess"
+    server: "129.146.77.248"
+    port: 39495
+    uuid: "f836c736-87fc-4fde-aabc-00857ecdff3e"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "ws"
+    ws-opts:
+      path: "/cctv13.m3u8"
+      headers:
+        Host: "129.146.77.248"
   - name: "hysteria2-1930264641-785"
     type: "hysteria2"
     server: "62.210.7.139"
@@ -1953,6 +2026,14 @@ proxies:
     udp: true
     sni: "resources.findconnectwithemployersandbuildprofessionalnetwork.com"
     skip-cert-verify: true
+  - name: "trojan-1943481635-362"
+    type: "trojan"
+    server: "216.152.147.85"
+    port: 443
+    password: "0ab6c98dae3b48e8b9c4a776b6c9c19a"
+    udp: true
+    sni: "cdn.connectingpeoplewithgreatjobs.com"
+    skip-cert-verify: false
   - name: "hysteria2-1853501557-690"
     type: "hysteria2"
     server: "31.57.248.176"
@@ -1996,6 +2077,15 @@ proxies:
     password: "23c82941-70f4-4381-90db-bd28e9a902e9"
     sni: "steel7.hadsvpn.com"
     skip-cert-verify: false
+  - name: "vmess-1828529207-464"
+    type: "vmess"
+    server: "140.238.2.250"
+    port: 443
+    uuid: "41a7089a-040b-4538-8b8d-010902405bde"
+    alterId: 0
+    cipher: "auto"
+    udp: true
+    network: "none"
   - name: "vmess-1853465189-779"
     type: "vmess"
     server: "23.162.200.198"
